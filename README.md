@@ -16,7 +16,7 @@ Cette extension permet de personnaliser le site EcoleDirecte*.
 A Bastoon project made with ❤️</a>
 </p>
 
-Voici la liste des fonctionnalités ajoutées :
+<H4>Voici la liste des fonctionnalités ajoutées :</H4>
 
 ★ Un calculateur de moyen qui calcule en direct les moyens par matières ainsi que la moyenne générale**
 
