@@ -24,4 +24,3 @@ Voici la liste des fonctionnalités ajoutées :
 - Tous les changements apportés au site son visuel, en aucun cas le fonctionnement du site est changé.
 * Cette extension n'est pas affilié avec le site "ecoledirecte.com"
 ** Les moyennes sont calculées grâce au notes déjà afficher à l'écran, elle ne donne aucun accès supplémentaire
-Afficher moins
