@@ -1,6 +1,16 @@
-Extension web : Nouvelle Interface pour EcoleDirecte
-
+<H1 align="center">
+Nouvelle Interface pour EcoleDirecte
+</H1>
+<H4 align="center">
 Cette extension permet de personnaliser le site EcoleDirecte*.
+</H4>
+<p align="center">
+<a href=""><img alt="Last Commit" src="https://img.shields.io/badge/release-v5.0.0-blue"/></a>
+</p>
+
+<p align="center">
+A Bastoon project made with ❤️</a>
+</p>
 
 Voici la liste des fonctionnalités ajoutées :
 
