@@ -7,8 +7,8 @@ Cette extension permet de personnaliser le site EcoleDirecte.
 <p align="center">
 <a href=""><img alt="Version" src="https://img.shields.io/badge/release-v5.0.0-blue"/></a>
 <a href=""><img alt="Last Commit" src="https://img.shields.io/badge/last%20commit-november-green"/></a> 
-<a href=""><img alt="Chrome" src="https://img.shields.io/badge/Web%20Chrome%20Store-Published-green"/></a>
-<a href=""><img alt="Firefox" src="https://img.shields.io/badge/Firefox%20ADD--ONS-Published-green"/></a> 
+<a href="https://bit.ly/new-interface-for-ed-chrome"><img alt="Chrome" src="https://img.shields.io/badge/Web%20Chrome%20Store-Published-green"/></a>
+<a href="https://bit.ly/new-interface-for-ed-firefox"><img alt="Firefox" src="https://img.shields.io/badge/Firefox%20ADD--ONS-Published-green"/></a> 
          
 </p>
 
