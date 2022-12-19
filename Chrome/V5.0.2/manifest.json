@@ -1,0 +1,42 @@
+{
+  "name": "Nouvelle Interface pour EcoleDirecte",
+  "description": "Nouvelle Interface pour EcoleDirecte",
+  "author": "Bastian NOEL",
+  "version": "5.0.2",
+  "manifest_version": 3,
+  "devtools_page": "options.html",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "*://*.ecoledirecte.com/*"
+  ],
+  "action": {
+    "default_title": "Nouvelle Interface - EcoleDirecte",
+    "default_popup": "options.html",
+    "default_icon": {
+      "16": "/icons/icon16.png",
+      "32": "/icons/icon32.png",
+      "48": "/icons/icon48.png",
+      "128": "/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "/icons/icon16.png",
+    "32": "/icons/icon32.png",
+    "48": "/icons/icon48.png",
+    "128": "/icons/icon128.png"
+  },
+  "content_scripts": [{
+    "matches": ["*://*.ecoledirecte.com/*"],
+    "run_at": "document_start",
+    "all_frames": true,
+    "js": ["start.js"],
+    "css": ["newMenu.css"]
+  }],
+  "web_accessible_resources": [{
+    "resources": ["/icons/favicon.ico"],
+    "matches": ["*://*.ecoledirecte.com/*"]
+  }],
+  "background": {
+    "service_worker": "oninstall.js"
+  }
+}
