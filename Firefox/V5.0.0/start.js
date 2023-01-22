@@ -138,11 +138,14 @@ function averageCalculator() {
       for (line of document.getElementsByClassName("table releve")[0].rows) {
         if (
           line.classList[0] == "ng-star-inserted" &&
-          line.cells.item(3).childNodes.length > 1
+          line.cells.item(1).childNodes.length > 1
         ) {
           lineNotesCoefsSum = 0;
           lineCoefs = 0;
-          for (notes of line.cells.item(3).querySelectorAll("button>span")) {
+          for (notes of line.cells.item(1).querySelectorAll("button>span")) {
+            if (notes.classList[0] != "valeur") {
+                continue;
+            }
             var note = parseFloat(
               notes.childNodes[0].nodeValue.replace(",", ".")
             );
@@ -171,7 +174,7 @@ function averageCalculator() {
             }
           }
           lineAverage = lineNotesCoefsSum / lineCoefs;
-          line.cells.item(2).querySelector("span").innerText = hundredthRound(
+          line.cells.item(1).querySelector("span").innerText = hundredthRound(
             lineAverage
           )
             .toString()

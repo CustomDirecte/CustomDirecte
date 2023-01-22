@@ -169,6 +169,9 @@ function averageCalculator() {
               tableConfiguration["notes"]
             ].querySelectorAll("button > span")) {
               // Récuperation de la note
+              if (notes.classList[0] != "valeur") {
+                  continue;
+              }
               var note = parseFloat(
                 notes.childNodes[0].nodeValue.replace(",", ".")
               );
