@@ -37,4 +37,4 @@ A Bastoon project made with ❤️</a>
 - Cette extension ne récupérera aucune de donné personnel
 - Tous les changements apportés au site son visuel, en aucun cas le fonctionnement du site est changé.
 - Cette extension n'est pas affilié avec le site "ecoledirecte.com"
-[^1]: Les moyennes sont calculées grâce au notes déjà afficher à l'écran, cette extension ne donne aucun accès supplémentaire
+[^1]: Les moyennes sont calculées grâce au notes déjà afficher à l'écran, elle ne donne aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
