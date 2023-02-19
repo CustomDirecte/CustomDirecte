@@ -1,8 +1,8 @@
 <H1 align="center">
-Nouvelle Interface pour EcoleDirecte
+CustomDirecte
 </H1>
 <H4 align="center">
-Cette extension permet de personnaliser le site EcoleDirecte.
+Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...
 </H4>
 <p align="center">
 <a href=""><img alt="Version" src="https://img.shields.io/badge/release-v5.0.0-blue"/></a>
