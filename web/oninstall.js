@@ -11,11 +11,11 @@ defaultOptions = {
 
 chrome.runtime.onInstalled.addListener((reason) => {
   if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       newEcoleDirecteInterface: defaultOptions,
     });
   } else {
-    chrome.storage.sync.get("newEcoleDirecteInterface", function (data) {
+    chrome.storage.local.get("newEcoleDirecteInterface", function (data) {
       localStoreage = data.newEcoleDirecteInterface;
       if (localStoreage != undefined) {
         for (option in defaultOptions) {
@@ -24,7 +24,7 @@ chrome.runtime.onInstalled.addListener((reason) => {
           }
         }
       }
-      chrome.storage.sync.set({
+      chrome.storage.local.set({
         newEcoleDirecteInterface: localStoreage,
       });
     });
