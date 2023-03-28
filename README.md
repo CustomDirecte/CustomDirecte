@@ -9,6 +9,6 @@ Version en développement
 
 <H4>Voici la liste des ajouts et changements :</H4>
 
-★ Optimisation du programme
+★ Optimisation du programme [En cour]
 
-★ Syncronisation sur plusieurs appareils
+★ Syncronisation sur plusieurs appareils [Fait]
