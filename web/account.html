@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomDirecte - Accounts</title>
+  <style>
+    /* ==== Import Fonts ==== */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* ==== Colors ==== */
+    :root {
+      --white: #ffffff;
+
+      /* == background == */
+      --light-background: #2E3359;
+      --background: #262A49;
+      --dark-background: #212441;
+      --bar: #C8194A;
+
+      /* == color == */
+      --default: #092354;
+      --ruby: #5a0920;
+      --amethyst: #440958;
+      --jade: #095844;
+      --gold: #585809;
+
+      --default-text: #0e3e85;
+      --ruby-text: #7F0F2F;
+      --amethyst-text: #640f80;
+      --jade-text: #0f8064;
+      --gold-text: #80800f;
+
+      --default-dark-text: #2e6ac8;
+      --ruby-dark-text: #A3133C;
+      --amethyst-dark-text: #8013a4;
+      --jade-dark-text: #13a480;
+      --gold-dark-text: #a4a413;
+
+      /* == Texte == */
+      --text: var(--white);
+      --dark-text: #7C81B7;
+      --selected-text: var(--white);
+      --dark-selected-text: var(--ruby);
+
+      /* == button == */
+      --selectedButton: #A3133C;
+      --hoveredButton: #a3133c93;
+    }
+
+
+
+    /* ==== Design Popup ==== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* == Header == */
+
+    header {
+      top: 0;
+      position: fixed;
+      display: flex;
+      align-items: center;
+      background: var(--light-background);
+      width: 100vw;
+      height: 70px;
+      overflow: hidden;
+      z-index: 999;
+      justify-content: space-between;
+    }
+
+    header>object {
+      width: 44px;
+      height: 44px;
+      margin-left: 20px;
+      margin-right: 64px;
+    }
+
+    header>h1 {
+      color: var(--white);
+      font-weight: 600;
+      font-size: 23px;
+      line-height: 18px;
+    }
+
+    header>div {
+      background-color: var(--dark-background);
+      border-radius: 5px;
+      width: 108px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      margin-right: 20px;
+    }
+
+    header>div>span {
+      color: var(--white);
+      font-weight: 300;
+      font-size: 15px;
+      height: 22px;
+    }
+
+    /* == Main == */
+
+    .hidden {
+      display: none !important;
+    }
+
+    main {
+      margin-top: 70px;
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      align-items: center;
+      background: var(--background);
+      width: 100vw;
+      height: 100vh;
+      padding-top: 10px;
+      overflow-y: overlay;
+      overflow-x: hidden;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    main:hover::-webkit-scrollbar {
+      display: block;
+    }
+
+    main::-webkit-scrollbar {
+      display: none;
+      width: 12px;
+    }
+
+    main::-webkit-scrollbar-thumb {
+      background: rgb(255, 255, 255, .1);
+      background-clip: content-box;
+      border: 3px solid #0000;
+      border-radius: 9px;
+    }
+
+    section {
+      margin: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: flex-start;
+      background: var(--dark-background);
+      width: 250px;
+      border-radius: 8px;
+    }
+
+    section>span {
+      position: relative;
+      left: 15px;
+      width: 58px;
+      height: 2px;
+      background: var(--bar);
+      overflow: hidden;
+    }
+
+    section>h2 {
+      margin-top: 13px;
+      margin-bottom: 18px;
+      margin-left: 15px;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .users {
+      height: 200px;
+      width: 200px;
+      margin: auto;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      background-color: #7F0F2F;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <object data="./icons/icon.svg"> </object>
+    <h1>CustomDirecte</h1>
+    <div>
+      <span version>Error</span>
+    </div>
+  </header>
+  <main>
+    <section>
+      <span></span>
+      <h2>Prenom NOM</h2>
+      <div class="users">
+      </div>
+    </section>
+    <section>
+      <span></span>
+      <h2>Prenom NOM</h2>
+      <div class="users">
+      </div>
+    </section>
+    <section>
+      <span></span>
+      <h2>Prenom NOM</h2>
+      <div class="users">
+      </div>
+    </section>
+    <section>
+      <span></span>
+      <h2>Prenom NOM</h2>
+      <div class="users">
+      </div>
+    </section>
+  </main>
+  <script src="account.js"></script>
+</body>
+
+</html>
