@@ -11,8 +11,7 @@
 */
 
 // --> Affichage de la version
-document.querySelector("[version]").innerText =
-  "Version " + chrome.runtime.getManifest().version;
+document.querySelector("[version]").innerText = "Version " + chrome.runtime.getManifest().version;
 
 // --> Valeurs par défaut
 averageCalculator = true;
@@ -25,9 +24,7 @@ theme = "dark";
 debug = false;
 
 // --> Elements
-averageCalculatorElement = document.querySelector(
-  "[feature='averageCalculator']"
-);
+averageCalculatorElement = document.querySelector("[feature='averageCalculator']");
 newMenuElement = document.querySelector("[feature='newMenu']");
 newDesignElement = document.querySelector("[feature='newDesign']");
 newColorElements = document.querySelectorAll("[feature='newColor']");
@@ -39,7 +36,7 @@ themeMenuElement = document.querySelector(".themeMenu");
 debugElement = document.querySelector("header>div");
 
 // --> Charge les valeurs enregistrées
-chrome.storage.local.get("newEcoleDirecteInterface", function (data) {
+chrome.storage.sync.get("newEcoleDirecteInterface", function (data) {
   localStoreage = data.newEcoleDirecteInterface;
   if (localStoreage != undefined) {
     averageCalculator = localStoreage.averageCalculator;
@@ -57,9 +54,7 @@ chrome.storage.local.get("newEcoleDirecteInterface", function (data) {
 // --> Met ajour l'interface
 function updateInterface() {
   //  : averageCalculator
-  if (
-    !(averageCalculator == !!averageCalculatorElement.attributes["selected"])
-  ) {
+  if (!(averageCalculator == !!averageCalculatorElement.attributes["selected"])) {
     averageCalculatorElement.toggleAttribute("selected");
   }
   //  : newMenu
@@ -118,7 +113,7 @@ function updateInterface() {
 
 // --> Met a jour le stockage
 function updateLocalStoreage() {
-  chrome.storage.local.set({
+  chrome.storage.sync.set({
     newEcoleDirecteInterface: {
       averageCalculator: averageCalculator,
       newMenu: newMenu,
