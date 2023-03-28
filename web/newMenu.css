@@ -11,7 +11,8 @@
   --borderRadius-thin: 4px;
   --borderRadius-wide: 8px;
   --font-tahoma: Tahoma, sans-serif;
-  --font-poppin: Poppin, sans-serif;;
+  --font-poppin: Poppin, sans-serif;
+  ;
   --font-openSans: Open Sans, sans-serif;
   --font-montserrat: Montserrat, sans-serif;
   --font-roboto: Roboto, sans-serif;
@@ -22,10 +23,42 @@
   --primary-color-light: var(--dark-primary-color);
   --text-color: var(--theme-text-color, #ebebeb);
   --tran-03: all 0.2s ease;
-  --tran-03: all 0.3s ease; 
+  --tran-03: all 0.3s ease;
   --tran-04: all 0.3s ease;
   --tran-05: all 0.3s ease;
+  --table-radius: 12px;
 }
+
+table.newTable {
+  border-collapse: collapse;
+  border-radius: var(--table-radius);
+  border-style: hidden;
+  box-shadow: rgb(100 100 111 / 30%) 3px 3px 20px 0px;
+}
+
+table.newTable thead th:first-child {
+  border-top-left-radius: var(--table-radius);
+}
+
+table.newTable thead th:last-child {
+  border-top-right-radius: var(--table-radius);
+}
+
+table.newTable td {
+  vertical-align: middle !important;
+  line-height: 1.6;
+}
+
+table.newTable td.moyennegeneralelibelle {
+  border-left: 2px solid #e2e1e1;
+}
+
+.averageDisplay {
+  text-align: center;
+  padding: 4px 0 !important;
+  color: var(--primary-color) !important;
+}
+
 
 #newMenu {
   position: absolute;
@@ -46,6 +79,7 @@
   width: calc(100vw - 58px) !important;
   transition: var(--tran-05);
 }
+
 #main-part.sidebarhover {
   margin-left: 220px !important;
   width: calc(100vw - 220px) !important;
@@ -100,7 +134,7 @@
   transition: var(--tran-03);
 }
 
-.sidebar .indice-text{
+.sidebar .indice-text {
   top: -0.5em;
   font-size: 12px;
   position: relative;
@@ -227,10 +261,11 @@ header .image-text .profession {
   overflow-y: scroll;
 }
 
-.sidebar:not(:hover) .menu-bar{
+.sidebar:not(:hover) .menu-bar {
   overflow-y: hidden !important;
   transition: var(--tran-03);
 }
+
 .menu-bar {
   overflow-x: hidden;
   transition: var(--tran-03);
@@ -241,12 +276,12 @@ header .image-text .profession {
 }
 
 .menu-bar::-webkit-scrollbar-track {
-  background: rgba(128, 128, 128, 0.484);     
-  border-radius: 20px;   
+  background: rgba(128, 128, 128, 0.484);
+  border-radius: 20px;
 }
 
 .menu-bar::-webkit-scrollbar-thumb {
-  background-color: rgba(128, 128, 128, 0.484);    
+  background-color: rgba(128, 128, 128, 0.484);
   border-radius: 20px;
 }
 
