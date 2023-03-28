@@ -26,7 +26,7 @@ console.log("%cCustomDirecte", logStyle.title);
 /* ----------------------------------------------- */
 
 /* ------------ Options Recuperateur ------------- */
-chrome.storage.local.get("newEcoleDirecteInterface", function (data) {
+chrome.storage.sync.get("newEcoleDirecteInterface", function (data) {
   statue = data.newEcoleDirecteInterface;
   if (statue != undefined) {
     Start(statue);
@@ -77,8 +77,7 @@ function Start(statue) {
   }
   // Change le logo par un nouveau logo seulement si au moins une option est chargé
   if (statue.averageCalculator || statue.newMenu || statue.newDesign) {
-    document.querySelector("link[rel*='icon']").href =
-      chrome.runtime.getURL("/icons/favicon.ico");
+    document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
   }
 
   // Modules de l'extension et leurs statue
@@ -116,10 +115,7 @@ function averageCalculator(logName) {
 
   // Detecte les changement et execute une fois 'averageLoad()'
   var averageCanLoad = false;
-  const averageTableObserver = new MutationObserver(function (
-    mutationsList,
-    averageTableObserver
-  ) {
+  const averageTableObserver = new MutationObserver(function (mutationsList, averageTableObserver) {
     for (let mutation of mutationsList) {
       if (mutation.type === "childList") {
         if (document.getElementById("encart-notes")) {
@@ -151,17 +147,10 @@ function averageCalculator(logName) {
     if (document.querySelector("table")) {
       // Change le message d'information sur le calcule de la moyenne
       if (document.querySelector("#encart-notes > p")) {
-        document.querySelector("#encart-notes > p").innerHTML =
-          "<b>Moyennes calculées par l'extension : " +
-          chrome.runtime.getManifest().name +
-          "</b>";
-        debug.log(
-          logName + "Zone de la date du derniere calcule --> Mise à jour"
-        );
+        document.querySelector("#encart-notes > p").innerHTML = "<b>Moyennes calculées par l'extension : " + chrome.runtime.getManifest().name + "</b>";
+        debug.log(logName + "Zone de la date du derniere calcule --> Mise à jour");
       } else {
-        debug.log(
-          logName + "⚠️ Zone de la date du derniere calcule --> Non Trouver"
-        );
+        debug.log(logName + "⚠️ Zone de la date du derniere calcule --> Non Trouver");
       }
 
       // Crée la div dedié a la moyenne générale
@@ -196,11 +185,7 @@ function averageCalculator(logName) {
         relevemoyenne: false,
         notes: false,
       };
-      for (
-        var i = 0;
-        i < document.querySelector("thead > tr").cells.length;
-        i++
-      ) {
+      for (var i = 0; i < document.querySelector("thead > tr").cells.length; i++) {
         var obj = [document.querySelector("thead > tr").cells[i].classList, i];
         if (obj[0].contains("coef")) {
           tableConfiguration["coef"] = obj[1];
@@ -225,52 +210,31 @@ function averageCalculator(logName) {
         for (line of document.querySelector("tbody").rows) {
           // Si il y au moins une note
           if (line.cells[tableConfiguration["notes"]].childNodes.length > 1) {
-            debug.log(
-              logName + `> --> Analyse d'une nouvelle ligne du tableau`
-            );
+            debug.log(logName + `> --> Analyse d'une nouvelle ligne du tableau`);
             // Moyenne de la ligne : Note * Coef
             lineNotesCoefsSum = 0;
             // Moyenne de la ligne : Coef
             lineCoefs = 0;
 
             // Pour chaque notes
-            for (notes of line.cells[
-              tableConfiguration["notes"]
-            ].querySelectorAll("button > span:nth-of-type(1)")) {
+            for (notes of line.cells[tableConfiguration["notes"]].querySelectorAll("button > span:nth-of-type(1)")) {
               // Récuperation de la note
-              var note = parseFloat(
-                notes.childNodes[0].nodeValue.replace(",", ".")
-              );
+              var note = parseFloat(notes.childNodes[0].nodeValue.replace(",", "."));
               // Si la note est correcte
               if (!isNaN(note)) {
                 // Si la note n'est pas /20
                 if (notes.querySelector(".quotien") != null) {
-                  note =
-                    note *
-                    (20 /
-                      parseFloat(
-                        notes
-                          .querySelector(".quotien")
-                          .childNodes[0].nodeValue.replace("/", "")
-                      ));
+                  note = note * (20 / parseFloat(notes.querySelector(".quotien").childNodes[0].nodeValue.replace("/", "")));
                 }
                 // Defini le coefitien
                 coef = 1;
                 if (notes.querySelector(".coef ") != null) {
-                  coef = parseFloat(
-                    notes
-                      .querySelector(".coef ")
-                      .childNodes[0].nodeValue.replace("(", "")
-                      .replace(")", "")
-                  );
+                  coef = parseFloat(notes.querySelector(".coef ").childNodes[0].nodeValue.replace("(", "").replace(")", ""));
                 }
                 if (debug.active) {
                   notes.setAttribute("style", "border: solid red;");
                 }
-                debug.log(
-                  logName +
-                    `> --> > Nouvelle note : ${note}  -  coeficient : ${coef}`
-                );
+                debug.log(logName + `> --> > Nouvelle note : ${note}  -  coeficient : ${coef}`);
                 // Ajout des notes et coefs pour la ligne
                 lineNotesCoefsSum += note * coef;
                 lineCoefs += coef;
@@ -290,60 +254,34 @@ function averageCalculator(logName) {
                 if (
                   !(
                     // Si l'element d'affichage n'existe pas, crée un span
-                    line.cells[
-                      tableConfiguration["relevemoyenne"]
-                    ].querySelector("span")
+                    line.cells[tableConfiguration["relevemoyenne"]].querySelector("span")
                   )
                 ) {
-                  debug.log(
-                    logName +
-                      `> --> >> ⚠️ L'élément qui permet d'afficher la moyenne est introuvable`
-                  );
+                  debug.log(logName + `> --> >> ⚠️ L'élément qui permet d'afficher la moyenne est introuvable`);
                   var relevemoyenneSpan = document.createElement("span");
                   relevemoyenneSpan.classList.add("ng-star-inserted");
-                  line.cells[tableConfiguration["relevemoyenne"]].appendChild(
-                    relevemoyenneSpan
-                  );
-                  debug.log(
-                    logName +
-                      `> --> >> L'élément qui permet d'afficher à été crée`
-                  );
+                  line.cells[tableConfiguration["relevemoyenne"]].appendChild(relevemoyenneSpan);
+                  debug.log(logName + `> --> >> L'élément qui permet d'afficher à été crée`);
                 }
                 if (debug.active) {
-                  line.cells[tableConfiguration["relevemoyenne"]]
-                    .querySelector("span")
-                    .setAttribute("style", "border: solid blue;");
+                  line.cells[tableConfiguration["relevemoyenne"]].querySelector("span").setAttribute("style", "border: solid blue;");
                 }
-                line.cells[tableConfiguration["relevemoyenne"]].querySelector(
-                  "span"
-                ).innerText = hundredthRound(lineAverage)
-                  .toString()
-                  .replace(".", ",");
+                line.cells[tableConfiguration["relevemoyenne"]].querySelector("span").innerText = hundredthRound(lineAverage).toString().replace(".", ",");
               }
               // Recherche le coefitiens de la ligne
               coef = 1;
               if (tableConfiguration["coef"]) {
                 if (debug.active) {
-                  line.cells[tableConfiguration["coef"]]
-                    .querySelector("span")
-                    .setAttribute("style", "border: solid yellow;");
+                  line.cells[tableConfiguration["coef"]].querySelector("span").setAttribute("style", "border: solid yellow;");
                 }
-                coef = parseFloat(
-                  line.cells[tableConfiguration["coef"]].querySelector("span")
-                    .innerText
-                );
+                coef = parseFloat(line.cells[tableConfiguration["coef"]].querySelector("span").innerText);
               }
               // Ajout des notes et coefs pour la moyenne générale
               NotesCoefsSum += lineAverage * coef;
               Coefs += coef;
-              debug.log(
-                logName +
-                  `> --> >> Moyenne de la ligne ${lineAverage}  -  coeficient : ${coef}`
-              );
+              debug.log(logName + `> --> >> Moyenne de la ligne ${lineAverage}  -  coeficient : ${coef}`);
             } else {
-              debug.log(
-                logName + `> --> >> ⚠️ Pas de note valide dans la ligne`
-              );
+              debug.log(logName + `> --> >> ⚠️ Pas de note valide dans la ligne`);
             }
           }
         }
@@ -358,8 +296,7 @@ function averageCalculator(logName) {
         } else {
           // Affiche la moyenne
           debug.log(logName + `> Moyenne générale : ${moyenneG}`);
-          averageDiv.innerText =
-            "MOYENNE GENERALE : " + moyenneG.toString().replace(".", ",");
+          averageDiv.innerText = "MOYENNE GENERALE : " + moyenneG.toString().replace(".", ",");
         }
       } else {
         debug.log(logName + `🛑 Impossible de trouver les notes`);
@@ -398,12 +335,8 @@ function newMenu(logName) {
       var menuTitle = menuElement.querySelector("strong").innerText;
       debug.log(logName + `> --> Récupération du titre : ${menuTitle}`);
       // --> Cherche l'url de la photo
-      var menuPhoto = menuElement
-        .querySelector("ed-menu > div > div > a > div")
-        .style.backgroundImage.match(/url\(["']?([^"']*)["']?\)/)[1];
-      debug.log(
-        logName + `> --> Récupération de la photo de profile : ${menuPhoto}`
-      );
+      var menuPhoto = menuElement.querySelector("ed-menu > div > div > a > div").style.backgroundImage.match(/url\(["']?([^"']*)["']?\)/)[1];
+      debug.log(logName + `> --> Récupération de la photo de profile : ${menuPhoto}`);
       // --> Crée la liste
       var menu = {
         Title: menuTitle,
@@ -412,80 +345,41 @@ function newMenu(logName) {
       };
       // --> Ajoute chaque element du menu a la liste
       debug.log(logName + "> --> Récupération des onglets");
-      menuElement
-        .querySelectorAll("ed-menu > div > div > div > ul > li")
-        .forEach((element) => {
-          debug.log(logName + "> --> --> Analyse d'un nouvelle onglet");
-          // --> Cherche le lien dans l'element
-          var menuElmentLink = element.querySelector(
-            "li > ed-menu-block-item > div > a"
-          ).href;
-          debug.log(
-            logName + `> --> --> > Récupération du lien : ${menuElmentLink}`
-          );
-          // --> Cherche l'icon de l'element
-          var menuElmentIcon = [];
-          for (
-            let i = 0;
-            i <
-            element.querySelector("li > ed-menu-block-item > div > a > i")
-              .classList.length;
-            i++
-          ) {
-            menuElmentIcon.push(
-              element.querySelector("li > ed-menu-block-item > div > a > i")
-                .classList[i]
-            );
-          }
-          debug.log(
-            logName + `> --> --> > Récupération de l'icon : ${menuElmentIcon}`
-          );
-          // --> Cherche le texte associer à l'element
-          var menuElmentNom = element.querySelector(
-            "li > ed-menu-block-item > div > a > span"
-          ).innerText;
-          debug.log(
-            logName + `> --> --> > Récupération du texte : ${menuElmentNom}`
-          );
-          // --> Cherche si l'element est selectionné
-          var menuElmentClass =
-            element.querySelector("li > ed-menu-block-item > div > a")
-              .classList[0] == "item-actif";
-          debug.log(
-            logName +
-              `> --> --> > Virifie si l'élément est selectionné : ${menuElmentClass}`
-          );
-          // --> Cherche si l'element à un indice
-          var menuElmentIndice = "";
-          if (
-            element.querySelector(
-              "li > ed-menu-block-item > div > a > span.badge "
-            )
-          ) {
-            var menuElmentIndice = element.querySelector(
-              "li > ed-menu-block-item > div > a > span.badge "
-            ).innerText;
-          }
-          debug.log(
-            logName +
-              `> --> --> > Virifie si l'élément à un indice : ${menuElmentIndice}`
-          );
-          menu.Elements.push({
-            Lien: menuElmentLink,
-            Icon: menuElmentIcon,
-            Name: menuElmentNom,
-            Class: menuElmentClass,
-            Indice: menuElmentIndice,
-          });
+      menuElement.querySelectorAll("ed-menu > div > div > div > ul > li").forEach((element) => {
+        debug.log(logName + "> --> --> Analyse d'un nouvelle onglet");
+        // --> Cherche le lien dans l'element
+        var menuElmentLink = element.querySelector("li > ed-menu-block-item > div > a").href;
+        debug.log(logName + `> --> --> > Récupération du lien : ${menuElmentLink}`);
+        // --> Cherche l'icon de l'element
+        var menuElmentIcon = [];
+        for (let i = 0; i < element.querySelector("li > ed-menu-block-item > div > a > i").classList.length; i++) {
+          menuElmentIcon.push(element.querySelector("li > ed-menu-block-item > div > a > i").classList[i]);
+        }
+        debug.log(logName + `> --> --> > Récupération de l'icon : ${menuElmentIcon}`);
+        // --> Cherche le texte associer à l'element
+        var menuElmentNom = element.querySelector("li > ed-menu-block-item > div > a > span").innerText;
+        debug.log(logName + `> --> --> > Récupération du texte : ${menuElmentNom}`);
+        // --> Cherche si l'element est selectionné
+        var menuElmentClass = element.querySelector("li > ed-menu-block-item > div > a").classList[0] == "item-actif";
+        debug.log(logName + `> --> --> > Virifie si l'élément est selectionné : ${menuElmentClass}`);
+        // --> Cherche si l'element à un indice
+        var menuElmentIndice = "";
+        if (element.querySelector("li > ed-menu-block-item > div > a > span.badge ")) {
+          var menuElmentIndice = element.querySelector("li > ed-menu-block-item > div > a > span.badge ").innerText;
+        }
+        debug.log(logName + `> --> --> > Virifie si l'élément à un indice : ${menuElmentIndice}`);
+        menu.Elements.push({
+          Lien: menuElmentLink,
+          Icon: menuElmentIcon,
+          Name: menuElmentNom,
+          Class: menuElmentClass,
+          Indice: menuElmentIndice,
         });
+      });
 
       // Suprimme le menu
-      menuElement.removeChild(
-        document.querySelector("div[id*='container-menu'] > ed-menu")
-      );
-      menuElement.removeChild(
-        document.querySelector("div[id*='container-menu'] > strong")
-      );
+      menuElement.removeChild(document.querySelector("div[id*='container-menu'] > ed-menu"));
+      menuElement.removeChild(document.querySelector("div[id*='container-menu'] > strong"));
       menuElement.id = "newMenu";
       debug.log(logName + `> --> Suprimme definitive de l'ancien Menu`);
 
@@ -498,10 +392,7 @@ function newMenu(logName) {
       nav.onmouseover = function () {
         document.getElementById("main-part").classList.add("sidebarhover");
         document.querySelector(".menu-bar").style.overflowY = "hidden";
-        if (
-          document.querySelector(".menu-bar").scrollHeight !=
-          document.querySelector(".menu-bar").clientHeight
-        ) {
+        if (document.querySelector(".menu-bar").scrollHeight != document.querySelector(".menu-bar").clientHeight) {
           document.querySelector(".menu-bar").style.overflowY = "scroll";
         }
       };
@@ -527,8 +418,7 @@ function newMenu(logName) {
 
       var _1_1_2_1_span = document.createElement("span");
       _1_1_2_1_span.classList.add("name");
-      _1_1_2_1_span.innerText =
-        document.getElementById("user-account-link").innerText;
+      _1_1_2_1_span.innerText = document.getElementById("user-account-link").innerText;
 
       var _1_1_2_2_span = document.createElement("span");
       _1_1_2_2_span.classList.add("profession");
@@ -653,9 +543,7 @@ function newMenu(logName) {
       debug.log(logName + `> --> >> Injection du menu`);
     } else if (
       // Scrip à executer seulement lorsque la page est celle de login (verifi l'url grace à un paterne 'regex', verifi la presence du bouton 'connexion')
-      /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(
-        window.location.href
-      ) &&
+      /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) &&
       document.getElementById("connexion")
     ) {
       // Recharge la page lors de la supression du formulaire de connection (quand l'utilisateur viens juste de ce connecté)
@@ -706,28 +594,18 @@ function newDesign(logName) {
   }
   newBorderStyle = "";
   if (!!statue.newBorder) {
-    newBorderStyle =
-      "border-radius: var(--borderRadius-" + statue.newBorder + ")";
+    newBorderStyle = "border-radius: var(--borderRadius-" + statue.newBorder + ")";
   }
   themeStyle = "";
   if (!!statue.theme) {
     themeThemes = {
       dark: "--theme-body-color: #fff; --theme-sidebar-color: #1C2130; --theme-text-color:#ccc",
-      light:
-        "--theme-body-color: #fff; --theme-sidebar-color: var(--smalldark-primary-color); --theme-text-color:#ebebeb",
+      light: "--theme-body-color: #fff; --theme-sidebar-color: var(--smalldark-primary-color); --theme-text-color:#ebebeb",
     };
 
     themeStyle = themeThemes[statue.theme];
   }
-  style.innerHTML =
-    ":root {" +
-    newColorStyle +
-    themeStyle +
-    "} \n * {" +
-    newFontStyle +
-    "} \n div {" +
-    newBorderStyle +
-    "}";
+  style.innerHTML = ":root {" + newColorStyle + themeStyle + "} \n * {" + newFontStyle + "} \n div {" + newBorderStyle + "}";
   // --> Ajoute le css personnalisé
   document.head.appendChild(style);
   debug.log(logName + `Injection d'un css personnalisé`);
