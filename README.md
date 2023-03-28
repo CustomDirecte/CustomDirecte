@@ -10,4 +10,5 @@ Version en développement
 <H4>Voici la liste des ajouts et changements :</H4>
 
 ★ Optimisation du programme
+
 ★ Syncronisation sur plusieurs appareils 
