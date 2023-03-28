@@ -475,6 +475,7 @@ function newMenu(logName) {
       nav.onmouseout = function () {
         document.getElementById("main-part").classList.remove("sidebarhover");
       };
+
       debug.log(logName + `> --> > Création d'un mode Hover [1/2]`);
 
       function creerElement(element, classList = null, src = null, innerText = null, onclick = null, tooltip = null, href = null) {
@@ -535,7 +536,7 @@ function newMenu(logName) {
 
       for (let i = 0; i < menu.Elements.length; i++) {
         let navLinkLi = creerElement("li", ["nav-link"]),
-          navLinka = creerElement("a", null, null, null, null, null, menu.Elements[i].Lien, null, menu.Elements[i].Class ? creerElement("a", ["selected"]) : null),
+          navLinka = creerElement("a", menu.Elements[i].Class ? ["selected"] : null, null, null, null, null, menu.Elements[i].Lien),
           navLinki = creerElement("i", [...["icon"], ...menu.Elements[i].Icon, ...(menu.Elements[i].Icon.includes("fa") ? [] : ["iconED"])]),
           navLinkspan = creerElement("span", ["text", "nav-text"], null, menu.Elements[i].Name),
           navLinkSpanIndice = creerElement("span", ["indice-text"], null, menu.Elements[i].Indice);
