@@ -26,7 +26,7 @@ console.log("%cCustomDirecte", logStyle.title);
 /* ----------------------------------------------- */
 
 /* ------------ Options Recuperateur ------------- */
-chrome.storage.sync.get("newEcoleDirecteInterface", function (data) {
+chrome.storage.local.get("newEcoleDirecteInterface", function (data) {
   statue = data.newEcoleDirecteInterface;
   if (statue != undefined) {
     Start(statue);
@@ -77,7 +77,8 @@ function Start(statue) {
   }
   // Change le logo par un nouveau logo seulement si au moins une option est chargé
   if (statue.averageCalculator || statue.newMenu || statue.newDesign) {
-    document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
+    document.querySelector("link[rel*='icon']").href =
+      chrome.runtime.getURL("/icons/favicon.ico");
   }
 
   // Modules de l'extension et leurs statue
@@ -115,7 +116,10 @@ function averageCalculator(logName) {
 
   // Detecte les changement et execute une fois 'averageLoad()'
   var averageCanLoad = false;
-  const averageTableObserver = new MutationObserver(function (mutationsList, averageTableObserver) {
+  const averageTableObserver = new MutationObserver(function (
+    mutationsList,
+    averageTableObserver
+  ) {
     for (let mutation of mutationsList) {
       if (mutation.type === "childList") {
         if (document.getElementById("encart-notes")) {
@@ -145,27 +149,56 @@ function averageCalculator(logName) {
 
   function averageLoad() {
     if (document.querySelector("table")) {
+      // Met a jour le design
+      debug.log(logName + "Design du tableau mis à jour");
+      document.querySelector("table.releve").classList.add("newTable");
+
       // Change le message d'information sur le calcule de la moyenne
       if (document.querySelector("#encart-notes > p")) {
-        document.querySelector("#encart-notes > p").innerHTML = "<b>Moyennes calculées par l'extension : " + chrome.runtime.getManifest().name + "</b>";
-        debug.log(logName + "Zone de la date du derniere calcule --> Mise à jour");
+        document.querySelector("#encart-notes > p").innerHTML =
+          "<b>Moyennes calculées par l'extension : " +
+          chrome.runtime.getManifest().name +
+          "</b>";
+        debug.log(
+          logName + "Zone de la date du derniere calcule --> Mise à jour"
+        );
       } else {
-        debug.log(logName + "⚠️ Zone de la date du derniere calcule --> Non Trouver");
+        debug.log(
+          logName + "⚠️ Zone de la date du derniere calcule --> Non Trouver"
+        );
+      }
+
+      // Supprime les ligne de moyennes générale deja existante
+      if (
+        (table_ligneMoyenneGénérale = document
+          .querySelector("table")
+          .querySelector("tr > td.moyennegenerale-valeur"))
+      ) {
+        debug.log(
+          logName + "⚠️ Ligne de moyenne Générale mal placé --> Supprimé"
+        );
+        var table_ligneMoyenneGénérale = document
+          .querySelector("table")
+          .querySelector("tr > td.moyennegenerale-valeur").parentNode;
+        table_ligneMoyenneGénérale.parentNode.removeChild(
+          table_ligneMoyenneGénérale
+        );
       }
 
       // Crée la div dedié a la moyenne générale
       if (document.getElementById("averageDiv")) {
-        debug.log(logName + "Div de moyenne Générale --> Trouver");
+        debug.log(logName + "Ligne de moyenne Générale --> Trouver");
         averageDiv = document.getElementById("averageDiv");
       } else {
-        debug.log(logName + "Div de moyenne Générale --> Crée");
-        var averageDiv = document.createElement("div");
-        document.querySelector("table").appendChild(averageDiv);
+        debug.log(logName + "Ligne de moyenne Générale --> Crée");
+        var tableEdit_footer = document.querySelector("table").createTFoot();
+        var tableEdit_ligneMoyenneGénérale = tableEdit_footer.insertRow(0);
+        tableEdit_ligneMoyenneGénérale.classList.add("ng-star-inserted");
+        var averageDiv = tableEdit_ligneMoyenneGénérale.insertCell(0);
+        averageDiv.innerHTML = "MOYENNE GENERALE :";
+        averageDiv.colSpan = document.querySelector("thead > tr").cells.length;
+        averageDiv.classList.add("moyennegenerale-valeur", "averageDisplay");
         averageDiv.id = "averageDiv";
-        averageDiv.setAttribute(
-          "style",
-          "font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700; margin-top: 10px; border-radius: 999px; background-color: var(--light-primary-color); color: #fff;padding: 4px; text-align: center;"
-        );
       }
 
       averageDiv.innerText = "Chargement...";
@@ -185,7 +218,11 @@ function averageCalculator(logName) {
         relevemoyenne: false,
         notes: false,
       };
-      for (var i = 0; i < document.querySelector("thead > tr").cells.length; i++) {
+      for (
+        var i = 0;
+        i < document.querySelector("thead > tr").cells.length;
+        i++
+      ) {
         var obj = [document.querySelector("thead > tr").cells[i].classList, i];
         if (obj[0].contains("coef")) {
           tableConfiguration["coef"] = obj[1];
@@ -208,80 +245,236 @@ function averageCalculator(logName) {
         debug.log(logName + `> Analyse du Tableau de note`);
         // Pour chaque ligne
         for (line of document.querySelector("tbody").rows) {
-          // Si il y au moins une note
-          if (line.cells[tableConfiguration["notes"]].childNodes.length > 1) {
-            debug.log(logName + `> --> Analyse d'une nouvelle ligne du tableau`);
-            // Moyenne de la ligne : Note * Coef
-            lineNotesCoefsSum = 0;
-            // Moyenne de la ligne : Coef
-            lineCoefs = 0;
+          // Si il y au moins une note ou si la matiere contient des sous-matiere
+          lineCondition_Length =
+            line.cells[tableConfiguration["notes"]].childNodes.length > 1;
+          lineCondition_MasterType = line.classList.contains("master");
+          lineCondition_SecondaryType = line.classList.contains("secondary");
+          lineCondition_SecondaryNotlastType =
+            line.classList.contains("secondarynotlast");
+          if (
+            lineCondition_Length ||
+            lineCondition_MasterType ||
+            lineCondition_SecondaryType
+          ) {
+            // Ne calcule pas la moyenne des ligne de type "master"
+            if (!lineCondition_MasterType) {
+              debug.log(
+                logName +
+                  `> --> Analyse d'une nouvelle ligne (Normal ou Secondaire) du tableau`
+              );
+              // Moyenne de la ligne : Note * Coef
+              lineNotesCoefsSum = 0;
+              // Moyenne de la ligne : Coef
+              lineCoefs = 0;
 
-            // Pour chaque notes
-            for (notes of line.cells[tableConfiguration["notes"]].querySelectorAll("button > span:nth-of-type(1)")) {
-              // Récuperation de la note
-              var note = parseFloat(notes.childNodes[0].nodeValue.replace(",", "."));
-              // Si la note est correcte
-              if (!isNaN(note)) {
-                // Si la note n'est pas /20
-                if (notes.querySelector(".quotien") != null) {
-                  note = note * (20 / parseFloat(notes.querySelector(".quotien").childNodes[0].nodeValue.replace("/", "")));
+              // Pour chaque notes
+              for (notes of line.cells[
+                tableConfiguration["notes"]
+              ].querySelectorAll("button > span:nth-of-type(1).valeur")) {
+                // Récuperation de la note
+                var note = parseFloat(
+                  notes.childNodes[0].nodeValue.replace(",", ".")
+                );
+                // Si la note est correcte
+                if (!isNaN(note)) {
+                  // Si la note n'est pas /20
+                  if (notes.querySelector(".quotien") != null) {
+                    note =
+                      note *
+                      (20 /
+                        parseFloat(
+                          notes
+                            .querySelector(".quotien")
+                            .childNodes[0].nodeValue.replace("/", "")
+                        ));
+                  }
+                  // Defini le coefitien
+                  coef = 1;
+                  if (notes.querySelector(".coef ") != null) {
+                    coef = parseFloat(
+                      notes
+                        .querySelector(".coef ")
+                        .childNodes[0].nodeValue.replace("(", "")
+                        .replace(")", "")
+                    );
+                  }
+                  if (debug.active) {
+                    notes.setAttribute("style", "border: solid red;");
+                  }
+                  debug.log(
+                    logName +
+                      `> --> > Nouvelle note : ${note}  -  coeficient : ${coef}`
+                  );
+                  // Ajout des notes et coefs pour la ligne
+                  lineNotesCoefsSum += note * coef;
+                  lineCoefs += coef;
+                } else {
+                  if (debug.active) {
+                    notes.setAttribute("style", "border: dashed red;");
+                  }
+                  debug.log(logName + `> --> > ⚠️ Note non valide : ${note}`);
                 }
-                // Defini le coefitien
-                coef = 1;
-                if (notes.querySelector(".coef ") != null) {
-                  coef = parseFloat(notes.querySelector(".coef ").childNodes[0].nodeValue.replace("(", "").replace(")", ""));
-                }
-                if (debug.active) {
-                  notes.setAttribute("style", "border: solid red;");
-                }
-                debug.log(logName + `> --> > Nouvelle note : ${note}  -  coeficient : ${coef}`);
-                // Ajout des notes et coefs pour la ligne
-                lineNotesCoefsSum += note * coef;
-                lineCoefs += coef;
-              } else {
-                if (debug.active) {
-                  notes.setAttribute("style", "border: dashed red;");
-                }
-                debug.log(logName + `> --> > ⚠️ Note non valide : ${note}`);
               }
-            }
-            // Si la ligne à au moins une note correcte
-            if (lineCoefs > 0) {
-              // Calcule de la moyenne de la ligne
-              lineAverage = lineNotesCoefsSum / lineCoefs;
-              // Affiche la nouvelle moyenne
+              // Si la ligne à au moins une note correcte
+              if (lineCoefs > 0) {
+                // Calcule de la moyenne de la ligne
+                lineAverage = lineNotesCoefsSum / lineCoefs;
+                // Affiche la nouvelle moyenne
+                if (tableConfiguration["relevemoyenne"]) {
+                  if (
+                    !(
+                      // Si l'element d'affichage n'existe pas, crée un span
+                      line.cells[
+                        tableConfiguration["relevemoyenne"]
+                      ].querySelector("span")
+                    )
+                  ) {
+                    debug.log(
+                      logName +
+                        `> --> >> ⚠️ L'élément qui permet d'afficher la moyenne est introuvable`
+                    );
+                    var relevemoyenneSpan = document.createElement("span");
+                    relevemoyenneSpan.classList.add("ng-star-inserted");
+                    line.cells[tableConfiguration["relevemoyenne"]].appendChild(
+                      relevemoyenneSpan
+                    );
+                    debug.log(
+                      logName +
+                        `> --> >> L'élément qui permet d'afficher à été crée`
+                    );
+                  }
+                  if (debug.active && !lineCondition_SecondaryType) {
+                    line.cells[tableConfiguration["relevemoyenne"]]
+                      .querySelector("span")
+                      .setAttribute("style", "border: solid blue;");
+                  } else if (debug.active && lineCondition_SecondaryType) {
+                    line.cells[tableConfiguration["relevemoyenne"]]
+                      .querySelector("span")
+                      .setAttribute("style", "border: solid green;");
+                  }
+                  line.cells[tableConfiguration["relevemoyenne"]].querySelector(
+                    "span"
+                  ).innerText = hundredthRound(lineAverage)
+                    .toString()
+                    .replace(".", ",");
+                }
+                // Recherche le coefitiens de la ligne
+                coef = 1;
+                if (tableConfiguration["coef"]) {
+                  if (debug.active && !lineCondition_SecondaryType) {
+                    line.cells[tableConfiguration["coef"]]
+                      .querySelector("span")
+                      .setAttribute("style", "border: solid yellow;");
+                  } else if (debug.active && lineCondition_SecondaryType) {
+                    line.cells[tableConfiguration["coef"]]
+                      .querySelector("span")
+                      .setAttribute("style", "border: solid lightyellow;");
+                  }
+                  coef = parseFloat(
+                    line.cells[tableConfiguration["coef"]].querySelector("span")
+                      .innerText
+                  );
+                }
+                if (lineCondition_SecondaryType) {
+                  // Ajout des notes et coefs pour la ligne Master
+                  masterlineNotesCoefsSum += lineAverage * coef;
+                  masterlineCoefs += coef;
+                  debug.log(
+                    logName +
+                      `> --> >> Moyenne de la ligne secondaire ${lineAverage}  -  coeficient : ${coef}`
+                  );
+                  if (!lineCondition_SecondaryNotlastType) {
+                    // Si c'est la derniere ligne secondaire, calcule la somme de la principale
+                    masterlineAverage =
+                      masterlineNotesCoefsSum / masterlineCoefs;
+                    //
+                    NotesCoefsSum += masterlineAverage * masterCoef;
+                    Coefs += masterCoef;
+                    if (masterMoyenneLine) {
+                      masterMoyenneLine.innerText = hundredthRound(
+                        masterlineAverage
+                      )
+                        .toString()
+                        .replace(".", ",");
+                    }
+                    debug.log(
+                      logName +
+                        `> --> >> Moyenne de la ligne de type "Master" ${lineAverage}  -  coeficient : ${coef}`
+                    );
+                  }
+                } else if (lineCondition_Length) {
+                  // Ajout des notes et coefs pour la moyenne générale
+                  NotesCoefsSum += lineAverage * coef;
+                  Coefs += coef;
+                  debug.log(
+                    logName +
+                      `> --> >> Moyenne de la ligne ${lineAverage}  -  coeficient : ${coef}`
+                  );
+                }
+              } else {
+                debug.log(
+                  logName + `> --> >> ⚠️ Pas de note valide dans la ligne`
+                );
+              }
+            } else {
+              debug.log(
+                logName +
+                  `> --> Analyse d'une nouvelle ligne de type "Master" du tableau`
+              );
+              // Dans le cas de ligne de type "Master"
+              // Defini la zone d'afficharge de la moyenne de la ligne
               if (tableConfiguration["relevemoyenne"]) {
                 if (
                   !(
                     // Si l'element d'affichage n'existe pas, crée un span
-                    line.cells[tableConfiguration["relevemoyenne"]].querySelector("span")
+                    line.cells[
+                      tableConfiguration["relevemoyenne"]
+                    ].querySelector("span")
                   )
                 ) {
-                  debug.log(logName + `> --> >> ⚠️ L'élément qui permet d'afficher la moyenne est introuvable`);
+                  debug.log(
+                    logName +
+                      `> --> >> ⚠️ L'élément qui permet d'afficher la moyenne est introuvable`
+                  );
                   var relevemoyenneSpan = document.createElement("span");
                   relevemoyenneSpan.classList.add("ng-star-inserted");
-                  line.cells[tableConfiguration["relevemoyenne"]].appendChild(relevemoyenneSpan);
-                  debug.log(logName + `> --> >> L'élément qui permet d'afficher à été crée`);
+                  line.cells[tableConfiguration["relevemoyenne"]].appendChild(
+                    relevemoyenneSpan
+                  );
+                  debug.log(
+                    logName +
+                      `> --> >> L'élément qui permet d'afficher à été crée`
+                  );
                 }
                 if (debug.active) {
-                  line.cells[tableConfiguration["relevemoyenne"]].querySelector("span").setAttribute("style", "border: solid blue;");
+                  line.cells[tableConfiguration["relevemoyenne"]]
+                    .querySelector("span")
+                    .setAttribute("style", "border: solid darkblue;");
                 }
-                line.cells[tableConfiguration["relevemoyenne"]].querySelector("span").innerText = hundredthRound(lineAverage).toString().replace(".", ",");
+                masterMoyenneLine =
+                  line.cells[tableConfiguration["relevemoyenne"]].querySelector(
+                    "span"
+                  );
+                masterMoyenneLine.innerText = "...";
               }
-              // Recherche le coefitiens de la ligne
-              coef = 1;
+              // Recherche et Defini le coefitiens de la ligne
+              masterCoef = 1;
               if (tableConfiguration["coef"]) {
                 if (debug.active) {
-                  line.cells[tableConfiguration["coef"]].querySelector("span").setAttribute("style", "border: solid yellow;");
+                  line.cells[tableConfiguration["coef"]]
+                    .querySelector("span")
+                    .setAttribute("style", "border: solid orange;");
                 }
-                coef = parseFloat(line.cells[tableConfiguration["coef"]].querySelector("span").innerText);
+                masterCoef = parseFloat(
+                  line.cells[tableConfiguration["coef"]].querySelector("span")
+                    .innerText
+                );
               }
-              // Ajout des notes et coefs pour la moyenne générale
-              NotesCoefsSum += lineAverage * coef;
-              Coefs += coef;
-              debug.log(logName + `> --> >> Moyenne de la ligne ${lineAverage}  -  coeficient : ${coef}`);
-            } else {
-              debug.log(logName + `> --> >> ⚠️ Pas de note valide dans la ligne`);
+              // Moyenne de la ligne : Note * Coef
+              masterlineNotesCoefsSum = 0;
+              // Moyenne de la ligne : Coef
+              masterlineCoefs = 0;
             }
           }
         }
@@ -296,7 +489,8 @@ function averageCalculator(logName) {
         } else {
           // Affiche la moyenne
           debug.log(logName + `> Moyenne générale : ${moyenneG}`);
-          averageDiv.innerText = "MOYENNE GENERALE : " + moyenneG.toString().replace(".", ",");
+          averageDiv.innerText =
+            "MOYENNE GENERALE : " + moyenneG.toString().replace(".", ",");
         }
       } else {
         debug.log(logName + `🛑 Impossible de trouver les notes`);
@@ -335,8 +529,12 @@ function newMenu(logName) {
       var menuTitle = menuElement.querySelector("strong").innerText;
       debug.log(logName + `> --> Récupération du titre : ${menuTitle}`);
       // --> Cherche l'url de la photo
-      var menuPhoto = menuElement.querySelector("ed-menu > div > div > a > div").style.backgroundImage.match(/url\(["']?([^"']*)["']?\)/)[1];
-      debug.log(logName + `> --> Récupération de la photo de profile : ${menuPhoto}`);
+      var menuPhoto = menuElement
+        .querySelector("ed-menu > div > div > a > div")
+        .style.backgroundImage.match(/url\(["']?([^"']*)["']?\)/)[1];
+      debug.log(
+        logName + `> --> Récupération de la photo de profile : ${menuPhoto}`
+      );
       // --> Crée la liste
       var menu = {
         Title: menuTitle,
@@ -345,41 +543,80 @@ function newMenu(logName) {
       };
       // --> Ajoute chaque element du menu a la liste
       debug.log(logName + "> --> Récupération des onglets");
-      menuElement.querySelectorAll("ed-menu > div > div > div > ul > li").forEach((element) => {
-        debug.log(logName + "> --> --> Analyse d'un nouvelle onglet");
-        // --> Cherche le lien dans l'element
-        var menuElmentLink = element.querySelector("li > ed-menu-block-item > div > a").href;
-        debug.log(logName + `> --> --> > Récupération du lien : ${menuElmentLink}`);
-        // --> Cherche l'icon de l'element
-        var menuElmentIcon = [];
-        for (let i = 0; i < element.querySelector("li > ed-menu-block-item > div > a > i").classList.length; i++) {
-          menuElmentIcon.push(element.querySelector("li > ed-menu-block-item > div > a > i").classList[i]);
-        }
-        debug.log(logName + `> --> --> > Récupération de l'icon : ${menuElmentIcon}`);
-        // --> Cherche le texte associer à l'element
-        var menuElmentNom = element.querySelector("li > ed-menu-block-item > div > a > span").innerText;
-        debug.log(logName + `> --> --> > Récupération du texte : ${menuElmentNom}`);
-        // --> Cherche si l'element est selectionné
-        var menuElmentClass = element.querySelector("li > ed-menu-block-item > div > a").classList[0] == "item-actif";
-        debug.log(logName + `> --> --> > Virifie si l'élément est selectionné : ${menuElmentClass}`);
-        // --> Cherche si l'element à un indice
-        var menuElmentIndice = "";
-        if (element.querySelector("li > ed-menu-block-item > div > a > span.badge ")) {
-          var menuElmentIndice = element.querySelector("li > ed-menu-block-item > div > a > span.badge ").innerText;
-        }
-        debug.log(logName + `> --> --> > Virifie si l'élément à un indice : ${menuElmentIndice}`);
-        menu.Elements.push({
-          Lien: menuElmentLink,
-          Icon: menuElmentIcon,
-          Name: menuElmentNom,
-          Class: menuElmentClass,
-          Indice: menuElmentIndice,
+      menuElement
+        .querySelectorAll("ed-menu > div > div > div > ul > li")
+        .forEach((element) => {
+          debug.log(logName + "> --> --> Analyse d'un nouvelle onglet");
+          // --> Cherche le lien dans l'element
+          var menuElmentLink = element.querySelector(
+            "li > ed-menu-block-item > div > a"
+          ).href;
+          debug.log(
+            logName + `> --> --> > Récupération du lien : ${menuElmentLink}`
+          );
+          // --> Cherche l'icon de l'element
+          var menuElmentIcon = [];
+          for (
+            let i = 0;
+            i <
+            element.querySelector("li > ed-menu-block-item > div > a > i")
+              .classList.length;
+            i++
+          ) {
+            menuElmentIcon.push(
+              element.querySelector("li > ed-menu-block-item > div > a > i")
+                .classList[i]
+            );
+          }
+          debug.log(
+            logName + `> --> --> > Récupération de l'icon : ${menuElmentIcon}`
+          );
+          // --> Cherche le texte associer à l'element
+          var menuElmentNom = element.querySelector(
+            "li > ed-menu-block-item > div > a > span"
+          ).innerText;
+          debug.log(
+            logName + `> --> --> > Récupération du texte : ${menuElmentNom}`
+          );
+          // --> Cherche si l'element est selectionné
+          var menuElmentClass =
+            element.querySelector("li > ed-menu-block-item > div > a")
+              .classList[0] == "item-actif";
+          debug.log(
+            logName +
+              `> --> --> > Virifie si l'élément est selectionné : ${menuElmentClass}`
+          );
+          // --> Cherche si l'element à un indice
+          var menuElmentIndice = "";
+          if (
+            element.querySelector(
+              "li > ed-menu-block-item > div > a > span.badge "
+            )
+          ) {
+            var menuElmentIndice = element.querySelector(
+              "li > ed-menu-block-item > div > a > span.badge "
+            ).innerText;
+          }
+          debug.log(
+            logName +
+              `> --> --> > Virifie si l'élément à un indice : ${menuElmentIndice}`
+          );
+          menu.Elements.push({
+            Lien: menuElmentLink,
+            Icon: menuElmentIcon,
+            Name: menuElmentNom,
+            Class: menuElmentClass,
+            Indice: menuElmentIndice,
+          });
         });
-      });
 
       // Suprimme le menu
-      menuElement.removeChild(document.querySelector("div[id*='container-menu'] > ed-menu"));
-      menuElement.removeChild(document.querySelector("div[id*='container-menu'] > strong"));
+      menuElement.removeChild(
+        document.querySelector("div[id*='container-menu'] > ed-menu")
+      );
+      menuElement.removeChild(
+        document.querySelector("div[id*='container-menu'] > strong")
+      );
       menuElement.id = "newMenu";
       debug.log(logName + `> --> Suprimme definitive de l'ancien Menu`);
 
@@ -392,7 +629,10 @@ function newMenu(logName) {
       nav.onmouseover = function () {
         document.getElementById("main-part").classList.add("sidebarhover");
         document.querySelector(".menu-bar").style.overflowY = "hidden";
-        if (document.querySelector(".menu-bar").scrollHeight != document.querySelector(".menu-bar").clientHeight) {
+        if (
+          document.querySelector(".menu-bar").scrollHeight !=
+          document.querySelector(".menu-bar").clientHeight
+        ) {
           document.querySelector(".menu-bar").style.overflowY = "scroll";
         }
       };
@@ -418,7 +658,8 @@ function newMenu(logName) {
 
       var _1_1_2_1_span = document.createElement("span");
       _1_1_2_1_span.classList.add("name");
-      _1_1_2_1_span.innerText = document.getElementById("user-account-link").innerText;
+      _1_1_2_1_span.innerText =
+        document.getElementById("user-account-link").innerText;
 
       var _1_1_2_2_span = document.createElement("span");
       _1_1_2_2_span.classList.add("profession");
@@ -543,7 +784,9 @@ function newMenu(logName) {
       debug.log(logName + `> --> >> Injection du menu`);
     } else if (
       // Scrip à executer seulement lorsque la page est celle de login (verifi l'url grace à un paterne 'regex', verifi la presence du bouton 'connexion')
-      /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) &&
+      /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(
+        window.location.href
+      ) &&
       document.getElementById("connexion")
     ) {
       // Recharge la page lors de la supression du formulaire de connection (quand l'utilisateur viens juste de ce connecté)
@@ -594,18 +837,28 @@ function newDesign(logName) {
   }
   newBorderStyle = "";
   if (!!statue.newBorder) {
-    newBorderStyle = "border-radius: var(--borderRadius-" + statue.newBorder + ")";
+    newBorderStyle =
+      "border-radius: var(--borderRadius-" + statue.newBorder + ")";
   }
   themeStyle = "";
   if (!!statue.theme) {
     themeThemes = {
       dark: "--theme-body-color: #fff; --theme-sidebar-color: #1C2130; --theme-text-color:#ccc",
-      light: "--theme-body-color: #fff; --theme-sidebar-color: var(--smalldark-primary-color); --theme-text-color:#ebebeb",
+      light:
+        "--theme-body-color: #fff; --theme-sidebar-color: var(--smalldark-primary-color); --theme-text-color:#ebebeb",
     };
 
     themeStyle = themeThemes[statue.theme];
   }
-  style.innerHTML = ":root {" + newColorStyle + themeStyle + "} \n * {" + newFontStyle + "} \n div {" + newBorderStyle + "}";
+  style.innerHTML =
+    ":root {" +
+    newColorStyle +
+    themeStyle +
+    "} \n * {" +
+    newFontStyle +
+    "} \n div {" +
+    newBorderStyle +
+    "}";
   // --> Ajoute le css personnalisé
   document.head.appendChild(style);
   debug.log(logName + `Injection d'un css personnalisé`);
