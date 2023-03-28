@@ -28,9 +28,7 @@ console.log("%cCustomDirecte", logStyle.title);
 /* ------------ Options Recuperateur ------------- */
 chrome.storage.sync.get("newEcoleDirecteInterface", function (data) {
   statue = data.newEcoleDirecteInterface;
-  if (statue != undefined) {
-    Start(statue);
-  }
+  if (statue != undefined) Start(statue);
 });
 /* ----------------------------------------------- */
 
@@ -50,9 +48,7 @@ const debug = new (class Debug {
 
   log(str) {
     if (this.active) {
-      if (str.constructor == Object) {
-        str = JSON.stringify(str);
-      }
+      if (str.constructor == Object) str = JSON.stringify(str);
       console.log("%cDebug | " + str, logStyle.debug);
     }
   }
@@ -72,13 +68,10 @@ const debug = new (class Debug {
 /* ----------- Options Initialisateur ------------ */
 function Start(statue) {
   // Active le mode de debugage si activé
-  if (statue.debug) {
-    debug.start();
-  }
+  if (statue.debug) debug.start();
+
   // Change le logo par un nouveau logo seulement si au moins une option est chargé
-  if (statue.averageCalculator || statue.newMenu || statue.newDesign) {
-    document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
-  }
+  if (statue.averageCalculator || statue.newMenu || statue.newDesign) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
 
   // Modules de l'extension et leurs statue
   Modules = [
@@ -131,9 +124,7 @@ function averageCalculator(logName) {
             averageLoad();
           }
         } else {
-          if (averageCanLoad == true) {
-            averageCanLoad = false;
-          }
+          if (averageCanLoad == true) averageCanLoad = false;
         }
       }
     }
@@ -241,25 +232,17 @@ function averageCalculator(logName) {
                 // Si la note est correcte
                 if (!isNaN(note)) {
                   // Si la note n'est pas /20
-                  if (notes.querySelector(".quotien") != null) {
-                    note = note * (20 / parseFloat(notes.querySelector(".quotien").childNodes[0].nodeValue.replace("/", "")));
-                  }
+                  if (notes.querySelector(".quotien") != null) note = note * (20 / parseFloat(notes.querySelector(".quotien").childNodes[0].nodeValue.replace("/", "")));
                   // Defini le coefitien
                   coef = 1;
-                  if (notes.querySelector(".coef ") != null) {
-                    coef = parseFloat(notes.querySelector(".coef ").childNodes[0].nodeValue.replace("(", "").replace(")", ""));
-                  }
-                  if (debug.active) {
-                    notes.setAttribute("style", "border: solid red;");
-                  }
+                  if (notes.querySelector(".coef ") != null) coef = parseFloat(notes.querySelector(".coef ").childNodes[0].nodeValue.replace("(", "").replace(")", ""));
+                  if (debug.active) notes.setAttribute("style", "border: solid red;");
                   debug.log(logName + `> --> > Nouvelle note : ${note}  -  coeficient : ${coef}`);
                   // Ajout des notes et coefs pour la ligne
                   lineNotesCoefsSum += note * coef;
                   lineCoefs += coef;
                 } else {
-                  if (debug.active) {
-                    notes.setAttribute("style", "border: dashed red;");
-                  }
+                  if (debug.active) notes.setAttribute("style", "border: dashed red;");
                   debug.log(logName + `> --> > ⚠️ Note non valide : ${note}`);
                 }
               }
@@ -309,9 +292,7 @@ function averageCalculator(logName) {
                     //
                     NotesCoefsSum += masterlineAverage * masterCoef;
                     Coefs += masterCoef;
-                    if (masterMoyenneLine) {
-                      masterMoyenneLine.innerText = hundredthRound(masterlineAverage).toString().replace(".", ",");
-                    }
+                    if (masterMoyenneLine) masterMoyenneLine.innerText = hundredthRound(masterlineAverage).toString().replace(".", ",");
                     debug.log(logName + `> --> >> Moyenne de la ligne de type "Master" ${lineAverage}  -  coeficient : ${coef}`);
                   }
                 } else if (lineCondition_Length) {
@@ -340,18 +321,14 @@ function averageCalculator(logName) {
                   line.cells[tableConfiguration["relevemoyenne"]].appendChild(relevemoyenneSpan);
                   debug.log(logName + `> --> >> L'élément qui permet d'afficher à été crée`);
                 }
-                if (debug.active) {
-                  line.cells[tableConfiguration["relevemoyenne"]].querySelector("span").setAttribute("style", "border: solid darkblue;");
-                }
+                if (debug.active) line.cells[tableConfiguration["relevemoyenne"]].querySelector("span").setAttribute("style", "border: solid darkblue;");
                 masterMoyenneLine = line.cells[tableConfiguration["relevemoyenne"]].querySelector("span");
                 masterMoyenneLine.innerText = "...";
               }
               // Recherche et Defini le coefitiens de la ligne
               masterCoef = 1;
               if (tableConfiguration["coef"]) {
-                if (debug.active) {
-                  line.cells[tableConfiguration["coef"]].querySelector("span").setAttribute("style", "border: solid orange;");
-                }
+                if (debug.active) line.cells[tableConfiguration["coef"]].querySelector("span").setAttribute("style", "border: solid orange;");
                 masterCoef = parseFloat(line.cells[tableConfiguration["coef"]].querySelector("span").innerText);
               }
               // Moyenne de la ligne : Note * Coef
@@ -366,9 +343,7 @@ function averageCalculator(logName) {
         moyenneG = hundredthRound(NotesCoefsSum / Coefs);
         if (isNaN(moyenneG)) {
           debug.log(logName + `🛑 Moyenne générale non valide`);
-          if (averageDiv) {
-            averageDiv.innerText = "Notes Introuvables";
-          }
+          if (averageDiv) averageDiv.innerText = "Notes Introuvables";
         } else {
           // Affiche la moyenne
           debug.log(logName + `> Moyenne générale : ${moyenneG}`);
@@ -376,9 +351,7 @@ function averageCalculator(logName) {
         }
       } else {
         debug.log(logName + `🛑 Impossible de trouver les notes`);
-        if (averageDiv) {
-          averageDiv.innerText = "Notes Introuvables";
-        }
+        if (averageDiv) averageDiv.innerText = "Notes Introuvables";
       }
     }
   }
@@ -585,48 +558,38 @@ function newMenu(logName) {
 }
 
 function newDesign(logName) {
-  // --> crée un css personnalisé
-  var style = document.createElement("style");
-  newColorStyle = "";
+  let style = document.createElement("style"),
+    newColorStyle = "",
+    newFontStyle = "",
+    newBorderStyle = "",
+    themeStyle = "";
+  const themeThemes = {
+    dark: "--theme-body-color: #fff; --theme-sidebar-color: #1C2130; --theme-text-color:#ccc",
+    light: "--theme-body-color: #fff; --theme-sidebar-color: var(--smalldark-primary-color); --theme-text-color:#ebebeb",
+  };
+
   if (!!statue.newColor) {
-    // Chnage la pallete de couleur d'ecole direct par celle choisie
-    newColorThemes = {
-      default:
-        "--footer-primary-color: #edf3fd;  --hover-primary-color: #aad8ea;  --light-primary-color: #0f8fd1;  --smalldark-primary-color: #2e6ac8;  --dark-primary-color: #0e3e85;  --ultradark-primary-color: #092354;",
-      magenta:
-        "-footer-primary-color: #FFB3C0;  --hover-primary-color: #FE90A3;  --light-primary-color: #C8194A;  --smalldark-primary-color: #A3133C;  --dark-primary-color: #7F0F2F;  --ultradark-primary-color: #5a0920;",
-      purple:
-        "--footer-primary-color: #ecb3ff;  --hover-primary-color: #e290fe;  --light-primary-color: #9c19c8;  --smalldark-primary-color: #8013a4;  --dark-primary-color: #640f80;  --ultradark-primary-color: #440958;",
-      turquoise:
-        "--footer-primary-color: #b3ffec;  --hover-primary-color: #90fee2;  --light-primary-color: #19c89c;  --smalldark-primary-color: #13a480;  --dark-primary-color: #0f8064;  --ultradark-primary-color: #095844;",
-      gold: "--footer-primary-color: #ffffb3;  --hover-primary-color: #fefe90;  --light-primary-color: #c8c819;  --smalldark-primary-color: #a4a413;  --dark-primary-color: #80800f;  --ultradark-primary-color: #585809;",
-    };
+    const newColorThemes = {
+      default: ["#edf3fd", "#aad8ea", "#0f8fd1", "#2e6ac8", "#0e3e85", "#092354"],
+      magenta: ["#FFB3C0", "#FE90A3", "#C8194A", "#A3133C", "#7F0F2F", "#5a0920"],
+      purple: ["#ecb3ff", "#e290fe", "#9c19c8", "#8013a4", "#640f80", "#440958"],
+      turquoise: ["#b3ffec", "#90fee2", "#19c89c", "#13a480", "#0f8064", "#095844"],
+      gold: ["#ffffb3", "#fefe90", "#c8c819", "#a4a413", "#80800f", "#585809"],
+    }[statue.newColor];
 
-    newColorDefault1 =
-      "--light-secondary-color: #e46bad;  --secondary-color: #cd1478;  --dark-secondary-color: #960b56;  --light-placeholder-color: #f5f6f7;  --smalldark-placeholder-color: #e4e7ea;  --dark-placeholder-color: #c3c3c3;  --ultradark-placeholder-color: #887f7f;  --light-notice-color: #fffca0;  --middle-notice-color: #fff575;  --dark-notice-color: #f2ec9e;  --travail-color: #6aaf11;  --contenu-color: #0c91c6;  --search-color: #a5a7ab;  --menu-hover-color: #f5f5f5;";
+    newColorStyle = `--footer-primary-color: ${newColorThemes[0]};  --hover-primary-color: ${newColorThemes[1]};  --light-primary-color: ${newColorThemes[2]};  --smalldark-primary-color: ${newColorThemes[3]};  --dark-primary-color: ${newColorThemes[4]};  --ultradark-primary-color: ${newColorThemes[5]}; --light-secondary-color: #e46bad;  --secondary-color: #cd1478;  --dark-secondary-color: #960b56;  --light-placeholder-color: #f5f6f7;  --smalldark-placeholder-color: #e4e7ea;  --dark-placeholder-color: #c3c3c3;  --ultradark-placeholder-color: #887f7f;  --light-notice-color: #fffca0;  --middle-notice-color: #fff575;  --dark-notice-color: #f2ec9e;  --travail-color: #6aaf11;  --contenu-color: #0c91c6;  --search-color: #a5a7ab;  --menu-hover-color: #f5f5f5;`;
+  }
 
-    newColorStyle = newColorThemes[statue.newColor] + newColorDefault1;
-  }
-  newFontStyle = "";
-  if (!!statue.newFont) {
-    newFontStyle = "font-family: var(--font-" + statue.newFont + ")";
-  }
-  newBorderStyle = "";
-  if (!!statue.newBorder) {
-    newBorderStyle = "border-radius: var(--borderRadius-" + statue.newBorder + ")";
-  }
-  themeStyle = "";
-  if (!!statue.theme) {
-    themeThemes = {
-      dark: "--theme-body-color: #fff; --theme-sidebar-color: #1C2130; --theme-text-color:#ccc",
-      light: "--theme-body-color: #fff; --theme-sidebar-color: var(--smalldark-primary-color); --theme-text-color:#ebebeb",
-    };
+  if (!!statue.newFont) newFontStyle = `font-family: var(--font-${statue.newFont})`;
 
-    themeStyle = themeThemes[statue.theme];
-  }
-  style.innerHTML = ":root {" + newColorStyle + themeStyle + "} \n * {" + newFontStyle + "} \n div {" + newBorderStyle + "}";
-  // --> Ajoute le css personnalisé
+  if (!!statue.newBorder) newBorderStyle = `border-radius: var(--borderRadius-${statue.newBorder})`;
+
+  if (!!statue.theme) themeStyle = themeThemes[statue.theme];
+
+  style.innerHTML = `:root {${newColorStyle} ${themeStyle}} \n * {${newFontStyle}} \n div {${newBorderStyle}}`;
+
   document.head.appendChild(style);
+
   debug.log(logName + `Injection d'un css personnalisé`);
 }
 /* ----------------------------------------------- */
