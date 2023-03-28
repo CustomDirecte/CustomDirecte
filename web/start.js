@@ -477,133 +477,75 @@ function newMenu(logName) {
       };
       debug.log(logName + `> --> > Création d'un mode Hover [1/2]`);
 
-      // Création du contenue du nouveau menu
-      var _1_header = document.createElement("header");
-
-      var _1_1_div = document.createElement("div");
-      _1_1_div.classList.add("image-text");
-
-      var _1_1_1_span = document.createElement("span");
-      _1_1_1_span.classList.add("image");
-
-      var _1_1_1_2_img = document.createElement("img");
-      _1_1_1_2_img.src = menu.Photo;
-
-      var _1_1_2_div = document.createElement("div");
-      _1_1_2_div.classList.add("text", "logo-text");
-
-      var _1_1_2_1_span = document.createElement("span");
-      _1_1_2_1_span.classList.add("name");
-      _1_1_2_1_span.innerText = document.getElementById("user-account-link").innerText;
-
-      var _1_1_2_2_span = document.createElement("span");
-      _1_1_2_2_span.classList.add("profession");
-      _1_1_2_2_span.innerText = menu.Title;
-
-      var _2_div = document.createElement("div");
-      _2_div.classList.add("menu-bar");
-
-      var _2_1_div = document.createElement("div");
-      _2_1_div.classList.add("menu");
-
-      var _2_2_div = document.createElement("div");
-      _2_2_div.classList.add("bottom-content");
-
-      var _2_2_1_1_li = document.createElement("li");
-      _2_2_1_1_li.classList.add("mode2");
-
-      var _2_2_1_1_1_a = document.createElement("a");
-      _2_2_1_1_1_a.onclick = function () {
-        document.getElementById("user-account-link").click();
-      };
-
-      var _2_2_1_1_1_1_i = document.createElement("i");
-      _2_2_1_1_1_1_i.classList.add("bx", "bxs-user", "icon");
-
-      var _2_2_1_1_1_2_span = document.createElement("span");
-      _2_2_1_1_1_2_span.classList.add("text", "nav-text");
-      _2_2_1_1_1_2_span.innerText = "Mon Compte";
-
-      var _2_2_2_1_li = document.createElement("li");
-      _2_2_2_1_li.classList.add("mode");
-
-      var _2_2_2_1_1_a = document.createElement("a");
-      _2_2_2_1_1_a.onclick = function () {
-        document.querySelector("button[tooltip*='Déconnexion']").click();
-      };
-
-      var _2_2_2_1_1_1_i = document.createElement("i");
-      _2_2_2_1_1_1_i.classList.add("icon-ed_deconnexion", "icon");
-
-      var _2_2_2_1_1_2_span = document.createElement("span");
-      _2_2_2_1_1_2_span.classList.add("text", "nav-text");
-      _2_2_2_1_1_2_span.innerText = "Déconnection";
+      function creerElement(element, classList = null, src = null, innerText = null, onclick = null, tooltip = null, href = null) {
+        let newElement = document.createElement(element);
+        if (classList) newElement.classList.add(...classList);
+        if (src) newElement.src = src;
+        if (innerText) newElement.innerText = innerText;
+        if (onclick) newElement.onclick = onclick;
+        if (tooltip) newElement.setAttribute("tooltip", tooltip);
+        if (href) newElement.href = href;
+        return newElement;
+      }
 
       debug.log(logName + `> --> > Création du contenu du menu`);
 
-      // Assemblage des elements crées precedament
-      nav.appendChild(_1_header);
-      _1_header.appendChild(_1_1_div);
-      _1_1_div.appendChild(_1_1_1_span);
-      _1_1_1_span.appendChild(_1_1_1_2_img);
-      _1_1_div.appendChild(_1_1_2_div);
-      _1_1_2_div.appendChild(_1_1_2_1_span);
-      _1_1_2_div.appendChild(_1_1_2_2_span);
+      let header = creerElement("header"),
+        imageTextDiv = creerElement("div", ["image-text"]),
+        imageSpan = creerElement("span", ["image"]),
+        image = creerElement("img", null, menu.Photo),
+        textDiv = creerElement("div", ["text", "logo-text"]),
+        nameSpan = creerElement("span", ["name"], null, document.getElementById("user-account-link").innerText),
+        professionSpan = creerElement("span", ["profession"], null, menu.Title),
+        menuBarDiv = creerElement("div", ["menu-bar"]),
+        menuDiv = creerElement("div", ["menu"]),
+        bottomContentDiv = creerElement("div", ["bottom-content"]),
+        mode2Li = creerElement("li", ["mode2"]),
+        mode2a = creerElement("a", null, null, null, () => document.getElementById("user-account-link").click()),
+        mode2i = creerElement("i", ["bx", "bxs-user", "icon"]),
+        mode2span = creerElement("span", ["text", "nav-text"], null, "Mon Compte"),
+        modeLi = creerElement("li", ["mode"]),
+        modea = creerElement("a", null, null, null, () => document.querySelector("button[tooltip*='Déconnexion']").click()),
+        modei = creerElement("i", ["icon-ed_deconnexion", "icon"]),
+        modespan = creerElement("span", ["text", "nav-text"], null, "Déconnection");
 
-      nav.appendChild(_2_div);
-      _2_div.appendChild(_2_1_div);
+      nav.appendChild(header);
+      header.appendChild(imageTextDiv);
+      imageTextDiv.appendChild(imageSpan);
+      imageSpan.appendChild(image);
+      imageTextDiv.appendChild(textDiv);
+      textDiv.appendChild(nameSpan);
+      textDiv.appendChild(professionSpan);
 
-      _2_div.appendChild(_2_2_div);
-      _2_2_div.appendChild(_2_2_1_1_li);
-      _2_2_1_1_li.appendChild(_2_2_1_1_1_a);
-      _2_2_1_1_1_a.appendChild(_2_2_1_1_1_1_i);
-      _2_2_1_1_1_a.appendChild(_2_2_1_1_1_2_span);
-
-      _2_2_div.appendChild(_2_2_2_1_li);
-      _2_2_2_1_li.appendChild(_2_2_2_1_1_a);
-      _2_2_2_1_1_a.appendChild(_2_2_2_1_1_1_i);
-      _2_2_2_1_1_a.appendChild(_2_2_2_1_1_2_span);
+      nav.appendChild(menuBarDiv);
+      menuBarDiv.appendChild(menuDiv);
+      menuBarDiv.appendChild(bottomContentDiv);
+      bottomContentDiv.appendChild(mode2Li);
+      mode2Li.appendChild(mode2a);
+      mode2a.appendChild(mode2i);
+      mode2a.appendChild(mode2span);
+      bottomContentDiv.appendChild(modeLi);
+      modeLi.appendChild(modea);
+      modea.appendChild(modei);
+      modea.appendChild(modespan);
 
       debug.log(logName + `> --> > Injection du contenu`);
 
-      // Création des boutons
+      let menuLinksUl = creerElement("ul", ["menu-links"]);
+
       for (let i = 0; i < menu.Elements.length; i++) {
-        var _2_1_1_ul = document.createElement("ul");
-        _2_1_1_ul.classList.add("menu-links");
+        let navLinkLi = creerElement("li", ["nav-link"]),
+          navLinka = creerElement("a", null, null, null, null, null, menu.Elements[i].Lien, null, menu.Elements[i].Class ? creerElement("a", ["selected"]) : null),
+          navLinki = creerElement("i", [...["icon"], ...menu.Elements[i].Icon, ...(menu.Elements[i].Icon.includes("fa") ? [] : ["iconED"])]),
+          navLinkspan = creerElement("span", ["text", "nav-text"], null, menu.Elements[i].Name),
+          navLinkSpanIndice = creerElement("span", ["indice-text"], null, menu.Elements[i].Indice);
 
-        var _2_1_1_1_li = document.createElement("li");
-        _2_1_1_1_li.classList.add("nav-link");
-
-        var _2_1_1_1_1_a = document.createElement("a");
-        _2_1_1_1_1_a.href = menu.Elements[i].Lien;
-        if (menu.Elements[i].Class) {
-          _2_1_1_1_1_a.classList.add("selected");
-        }
-
-        var _2_1_1_1_1_1_i = document.createElement("i");
-        _2_1_1_1_1_1_i.classList.add("icon", "iconED");
-        for (let i2 = 0; i2 < menu.Elements[i].Icon.length; i2++) {
-          _2_1_1_1_1_1_i.classList.add(menu.Elements[i].Icon[i2]);
-          if (menu.Elements[i].Icon[i2] == "fa") {
-            _2_1_1_1_1_1_i.classList.remove("iconED");
-          }
-        }
-
-        var _2_1_1_1_1_2_span = document.createElement("span");
-        _2_1_1_1_1_2_span.classList.add("text", "nav-text");
-        _2_1_1_1_1_2_span.innerText = menu.Elements[i].Name;
-
-        var _2_1_1_1_1_2_span_indice = document.createElement("span");
-        _2_1_1_1_1_2_span_indice.classList.add("indice-text");
-        _2_1_1_1_1_2_span_indice.innerText = menu.Elements[i].Indice;
-
-        // Assemblage des elements conposant les boutons
-        _2_1_div.appendChild(_2_1_1_ul);
-        _2_1_1_ul.appendChild(_2_1_1_1_li);
-        _2_1_1_1_li.appendChild(_2_1_1_1_1_a);
-        _2_1_1_1_1_a.appendChild(_2_1_1_1_1_1_i);
-        _2_1_1_1_1_1_i.appendChild(_2_1_1_1_1_2_span_indice);
-        _2_1_1_1_1_a.appendChild(_2_1_1_1_1_2_span);
+        menuDiv.appendChild(menuLinksUl);
+        menuLinksUl.appendChild(navLinkLi);
+        navLinkLi.appendChild(navLinka);
+        navLinka.appendChild(navLinki);
+        navLinki.appendChild(navLinkSpanIndice);
+        navLinka.appendChild(navLinkspan);
       }
 
       debug.log(logName + `> --> > Création des boutons`);
