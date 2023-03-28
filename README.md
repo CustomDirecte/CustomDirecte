@@ -9,6 +9,8 @@ Version en développement
 
 <H4>Voici la liste des ajouts et changements :</H4>
 
-★ Optimisation du programme [En cour]
+★ Ajout d'un code pin
+
+★ Optimisation du programme [Fait]
 
 ★ Syncronisation sur plusieurs appareils [Fait]
