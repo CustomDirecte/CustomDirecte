@@ -11,4 +11,4 @@ Version en développement
 
 ★ Optimisation du programme
 
-★ Syncronisation sur plusieurs appareils 
+★ Syncronisation sur plusieurs appareils
