@@ -38,7 +38,7 @@
     "css": ["/styles/newMenu.css"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/icons/default/favicon.ico"],
+    "resources": ["/icons/EcoleDirecte/default.ico","/icons/EcoleDirecte/gold.ico","/icons/EcoleDirecte/magenta.ico","/icons/EcoleDirecte/purple.ico","/icons/EcoleDirecte/turquoise.ico"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {
