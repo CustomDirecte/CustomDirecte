@@ -71,7 +71,7 @@ function Start(statue) {
   if (statue.debug) debug.start();
 
   // Change le logo par un nouveau logo seulement si au moins une option est chargé
-  if (statue.averageCalculator || statue.newMenu || statue.newDesign) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
+  if (statue.averageCalculator || statue.newMenu || statue.newDesign) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/default/favicon.ico");
 
   // Modules de l'extension et leurs statue
   Modules = [
