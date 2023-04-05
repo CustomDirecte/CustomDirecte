@@ -525,6 +525,8 @@ function newMenu(logName) {
           navLinkspan = creerElement("span", ["text", "nav-text"], null, menu.Elements[i].Name),
           navLinkSpanIndice = creerElement("span", ["indice-text"], null, menu.Elements[i].Indice);
 
+        navLinka.classList.add("text-underline");
+
         menuDiv.appendChild(menuLinksUl);
         menuLinksUl.appendChild(navLinkLi);
         navLinkLi.appendChild(navLinka);
@@ -537,7 +539,7 @@ function newMenu(logName) {
 
       // Mise en place (à l'aide du css injecté) de l'ouverture fermeture du menu
       document.getElementById("main-part").classList.add("sidebarnothover");
-      //document.getElementById("menu-header").classList.add("none");
+      document.querySelector(".navbar-nav").classList.add("none");
 
       debug.log(logName + `> --> > Création d'un mode Hover [2/2]`);
 
@@ -581,23 +583,23 @@ function newDesign(logName) {
 
   if (!!statue.newColor) {
     const newColorThemes = {
-      default: ["#edf3fd", "#aad8ea", "#0f8fd1", "#2e6ac8", "#0e3e85", "#092354"],
-      magenta: ["#FFB3C0", "#FE90A3", "#C8194A", "#A3133C", "#7F0F2F", "#5a0920"],
-      purple: ["#ecb3ff", "#e290fe", "#9c19c8", "#8013a4", "#640f80", "#440958"],
-      turquoise: ["#b3ffec", "#90fee2", "#19c89c", "#13a480", "#0f8064", "#095844"],
-      gold: ["#ffffb3", "#fefe90", "#c8c819", "#a4a413", "#80800f", "#585809"],
+      default: ["#edf3fd", "#aad8ea", "#0f8fd1", "#2e6ac8", "#0e3e85", "#092354", "15, 143, 209"],
+      magenta: ["#FFB3C0", "#FE90A3", "#C8194A", "#A3133C", "#7F0F2F", "#5a0920", "200, 25, 74"],
+      purple: ["#ecb3ff", "#e290fe", "#9c19c8", "#8013a4", "#640f80", "#440958", "156, 25, 200"],
+      turquoise: ["#b3ffec", "#90fee2", "#19c89c", "#13a480", "#0f8064", "#095844", "25, 200, 156"],
+      gold: ["#ffffb3", "#fefe90", "#c8c819", "#a4a413", "#80800f", "#585809", "200, 200, 25"],
     }[statue.newColor];
 
-    newColorStyle = `--footer-primary-color: ${newColorThemes[0]};  --hover-primary-color: ${newColorThemes[1]};  --light-primary-color: ${newColorThemes[2]};  --smalldark-primary-color: ${newColorThemes[3]};  --dark-primary-color: ${newColorThemes[4]};  --ultradark-primary-color: ${newColorThemes[5]}; --light-secondary-color: #e46bad;  --secondary-color: #cd1478;  --dark-secondary-color: #960b56;  --light-placeholder-color: #f5f6f7;  --smalldark-placeholder-color: #e4e7ea;  --dark-placeholder-color: #c3c3c3;  --ultradark-placeholder-color: #887f7f;  --light-notice-color: #fffca0;  --middle-notice-color: #fff575;  --dark-notice-color: #f2ec9e;  --travail-color: #6aaf11;  --contenu-color: #0c91c6;  --search-color: #a5a7ab;  --menu-hover-color: #f5f5f5;`;
+    newColorStyle = `--footer-primary-color: ${newColorThemes[0]};  --hover-primary-color: ${newColorThemes[1]};  --light-primary-color: ${newColorThemes[2]};  --smalldark-primary-color: ${newColorThemes[3]};  --dark-primary-color: ${newColorThemes[4]};  --ultradark-primary-color: ${newColorThemes[5]}; --bs-primary-rgb:${newColorThemes[6]}; --bs-success-rgb:${newColorThemes[6]}; --ultralight-secondary-color: #f7e0e6; --light-secondary-color: #e46bad; --secondary-color: #cd1478; --dark-secondary-color: #960b56; --light-placeholder-color: #f5f6f7; --smalldark-placeholder-color: #e4e7ea; --dark-placeholder-color: #c3c3c3; --ultradark-placeholder-color: #887f7f; --warning-primary-color: #ffc107; --warning-secondary-color: #8a6d3b; --light-notice-color: #fffca0; --middle-notice-color: #fff575; --dark-notice-color: #f2ec9e; --dark-has-succes-color: #3c763d; --light-has-succes-color: #dff0d8; --travail-color: #6aaf11; --contenu-color: #0c91c6; --search-color: #a5a7ab; --menu-hover-color: #f5f5f5; --bs-secondary-rgb: 205, 20, 120; --bs-danger-rgb: 205, 20, 120; --bs-border-color: var(--smalldark-placeholder-color); --bs-warning-rgb: 138,109,59;`;
   }
 
-  if (!!statue.newFont) newFontStyle = `font-family: var(--font-${statue.newFont})`;
+  if (!!statue.newFont) newFontStyle = `font-family: var(--font-${statue.newFont});`;
 
-  if (!!statue.newBorder) newBorderStyle = `border-radius: var(--borderRadius-${statue.newBorder})`;
+  if (!!statue.newBorder) newBorderStyle = `border-radius: var(--borderRadius-${statue.newBorder});`;
 
   if (!!statue.theme) themeStyle = themeThemes[statue.theme];
 
-  style.innerHTML = `:root {${newColorStyle} ${themeStyle}} \n * {${newFontStyle}} \n div {${newBorderStyle}}`;
+  style.innerHTML = `:root {${newColorStyle} ${themeStyle}; --font-family:${statue.newFont}; --font-family-malvoyant:${statue.newFont}; } \n * {${newFontStyle}} \n #main div {${newBorderStyle}} \n #header-commun, .navbar { background: var(--light-placeholder-color) !important} \n .container-fluid{color: var(--ultradark-primary-color)}`;
 
   document.head.appendChild(style);
 
