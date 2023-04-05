@@ -65,13 +65,21 @@ const debug = new (class Debug {
 })();
 /* ----------------------------------------------- */
 
+/* ------------------ Login Page ----------------- */
+// Teste si la page de connextion est afficher
+function isLoginPage() {
+  return /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) ? true : false;
+}
+/* ----------------------------------------------- */
+
 /* ----------- Options Initialisateur ------------ */
 function Start(statue) {
   // Active le mode de debugage si activé
   if (statue.debug) debug.start();
 
   // Change le logo par un nouveau logo seulement si au moins une option est chargé
-  if (statue.averageCalculator || statue.newMenu || statue.newDesign) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
+  icon = statue.averageCalculator || statue.newMenu || statue.newDesign ? "magenta" : "default";
+  document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL(`/icons/EcoleDirecte/${icon}.ico`);
 
   // Modules de l'extension et leurs statue
   Modules = [
@@ -479,7 +487,10 @@ function newMenu(logName) {
         mode2i = creerElement("i", ["bx", "bxs-user", "icon"]),
         mode2span = creerElement("span", ["text", "nav-text"], null, "Mon Compte"),
         modeLi = creerElement("li", ["mode"]),
-        modea = creerElement("a", null, null, null, () => document.querySelector("button[tooltip*='Déconnexion']").click()),
+        modea = creerElement("a", null, null, null, () => {
+          sessionStorage.clear();
+          window.location.reload();
+        }),
         modei = creerElement("i", ["icon-ed_deconnexion", "icon"]),
         modespan = creerElement("span", ["text", "nav-text"], null, "Déconnection");
 
@@ -526,7 +537,7 @@ function newMenu(logName) {
 
       // Mise en place (à l'aide du css injecté) de l'ouverture fermeture du menu
       document.getElementById("main-part").classList.add("sidebarnothover");
-      document.getElementById("menu-header").classList.add("none");
+      //document.getElementById("menu-header").classList.add("none");
 
       debug.log(logName + `> --> > Création d'un mode Hover [2/2]`);
 
