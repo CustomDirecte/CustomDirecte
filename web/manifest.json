@@ -1,47 +1,42 @@
 {
-  "name": "CustomDirecte - Dev",
+  "name": "CustomDirecte",
   "description": "Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...",
   "author": "Bastian NOEL",
-  "version_name": "5.2.0 beta 3",
-  "version": "5.2.0.2",
+  "version": "5.1.1",
   "manifest_version": 3,
-  "devtools_page": "/pages/popup/index.html",
+  "devtools_page": "options.html",
   "permissions": ["storage"],
   "host_permissions": [
     "*://*.ecoledirecte.com/*"
   ],
-    "options_ui": {
-    "page": "/pages/account/index.html",
-    "open_in_tab": true
-  },
   "action": {
     "default_title": "CustomDirecte",
-    "default_popup": "/pages/popup/index.html",
+    "default_popup": "options.html",
     "default_icon": {
-      "16": "/icons/default/icon16.png",
-      "32": "/icons/default/icon32.png",
-      "48": "/icons/default/icon48.png",
-      "128": "/icons/default/icon128.png"
+      "16": "/icons/icon16.png",
+      "32": "/icons/icon32.png",
+      "48": "/icons/icon48.png",
+      "128": "/icons/icon128.png"
     }
   },
   "icons": {
-    "16": "/icons/default/icon16.png",
-    "32": "/icons/default/icon32.png",
-    "48": "/icons/default/icon48.png",
-    "128": "/icons/default/icon128.png"
+    "16": "/icons/icon16.png",
+    "32": "/icons/icon32.png",
+    "48": "/icons/icon48.png",
+    "128": "/icons/icon128.png"
   },
   "content_scripts": [{
     "matches": ["*://*.ecoledirecte.com/*"],
     "run_at": "document_start",
     "all_frames": true,
-    "js": ["/scripts/main.js"],
-    "css": ["/styles/newMenu.css"]
+    "js": ["start.js"],
+    "css": ["newMenu.css"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/icons/EcoleDirecte/default.ico","/icons/EcoleDirecte/gold.ico","/icons/EcoleDirecte/magenta.ico","/icons/EcoleDirecte/purple.ico","/icons/EcoleDirecte/turquoise.ico"],
+    "resources": ["/icons/favicon.ico"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {
-    "service_worker": "/scripts/oninstall.js"
+    "service_worker": "oninstall.js"
   }
 }

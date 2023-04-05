@@ -70,30 +70,8 @@ function Start(statue) {
   // Active le mode de debugage si activé
   if (statue.debug) debug.start();
 
-  // Teste si la page de connextion est afficher
-  isLoginPage = /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) ? true : false;
-
-  {
-    // Recharge la page lors de la supression du formulaire de connection (quand l'utilisateur viens juste de ce connecté)
-    // --> Pour que le scripte de changement de menu puisse s'executé correctement
-    function onElementRemoved(element, callback) {
-      new MutationObserver(function (mutations) {
-        if (!document.body.contains(element)) {
-          callback();
-          this.disconnect();
-        }
-      }).observe(element.parentElement, {
-        childList: true,
-      });
-    }
-    onElementRemoved(document.querySelector("ng-component"), function () {
-      window.location.reload();
-    });
-  }
-
   // Change le logo par un nouveau logo seulement si au moins une option est chargé
-  icon = statue.averageCalculator || statue.newMenu || statue.newDesign ? "magenta" : "default";
-  document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL(`/icons/EcoleDirecte/${icon}.ico`);
+  if (statue.averageCalculator || statue.newMenu || statue.newDesign) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL("/icons/favicon.ico");
 
   // Modules de l'extension et leurs statue
   Modules = [
@@ -555,6 +533,26 @@ function newMenu(logName) {
       // Ajout du nouveau menu crée dans la page
       menuElement.appendChild(nav);
       debug.log(logName + `> --> >> Injection du menu`);
+    } else if (
+      // Scrip à executer seulement lorsque la page est celle de login (verifi l'url grace à un paterne 'regex', verifi la presence du bouton 'connexion')
+      /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) &&
+      document.getElementById("connexion")
+    ) {
+      // Recharge la page lors de la supression du formulaire de connection (quand l'utilisateur viens juste de ce connecté)
+      // --> Pour que le scripte de changement de menu puisse s'executé correctement
+      function onElementRemoved(element, callback) {
+        new MutationObserver(function (mutations) {
+          if (!document.body.contains(element)) {
+            callback();
+            this.disconnect();
+          }
+        }).observe(element.parentElement, {
+          childList: true,
+        });
+      }
+      onElementRemoved(document.querySelector("ng-component"), function () {
+        window.location.reload();
+      });
     }
   };
 }
