@@ -539,7 +539,7 @@ function newMenu(logName) {
 
       // Mise en place (à l'aide du css injecté) de l'ouverture fermeture du menu
       document.getElementById("main-part").classList.add("sidebarnothover");
-      document.querySelector(".navbar-nav").classList.add("none");
+      document.querySelector(".navbar-nav").style.display = "none";
 
       debug.log(logName + `> --> > Création d'un mode Hover [2/2]`);
 
