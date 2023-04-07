@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomDirecte</title>
+  <style>
+    /* ==== Import Fonts ==== */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* ==== Colors ==== */
+    :root {
+      --white: #ffffff;
+
+      /* == background == */
+      --light-background: #2E3359;
+      --background: #262A49;
+      --dark-background: #212441;
+      --bar: #C8194A;
+
+      /* == color == */
+      --default: #092354;
+      --ruby: #5a0920;
+      --amethyst: #440958;
+      --jade: #095844;
+      --gold: #585809;
+
+      --default-text: #0e3e85;
+      --ruby-text: #7F0F2F;
+      --amethyst-text: #640f80;
+      --jade-text: #0f8064;
+      --gold-text: #80800f;
+
+      --default-dark-text: #2e6ac8;
+      --ruby-dark-text: #A3133C;
+      --amethyst-dark-text: #8013a4;
+      --jade-dark-text: #13a480;
+      --gold-dark-text: #a4a413;
+
+      /* == Texte == */
+      --text: var(--white);
+      --dark-text: #7C81B7;
+      --selected-text: var(--white);
+      --dark-selected-text: var(--ruby);
+
+      /* == button == */
+      --selectedButton: #A3133C;
+      --hoveredButton: #a3133c93;
+    }
+
+
+
+    /* ==== Design Popup ==== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      width: 350px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* == Header == */
+
+    header {
+      top: 0;
+      position: fixed;
+      display: flex;
+      align-items: flex-end;
+      background: var(--light-background);
+      width: 100vw;
+      height: 70px;
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    header>object {
+      width: 44px;
+      height: 44px;
+      margin: 13px;
+    }
+
+    header>h1 {
+      color: var(--white);
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 18px;
+      margin-bottom: 16px;
+    }
+
+    header>div {
+      background-color: var(--dark-background);
+      border-radius: 5px;
+      width: 108px;
+      height: 28px;
+      margin: 0 0 16px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    header>div>span {
+      color: var(--white);
+      font-weight: 300;
+      font-size: 15px;
+      height: 22px;
+    }
+
+    /* == Main == */
+
+    .hidden {
+      display: none !important;
+    }
+
+    main {
+      margin-top: 70px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+      background: var(--background);
+      width: 100vw;
+      height: 520px;
+      padding-top: 10px;
+      overflow-y: overlay;
+      overflow-x: hidden;
+    }
+
+    main:hover::-webkit-scrollbar {
+      display: block;
+    }
+
+    main::-webkit-scrollbar {
+      display: none;
+      width: 12px;
+    }
+
+    main::-webkit-scrollbar-thumb {
+      background: rgb(255, 255, 255, .1);
+      background-clip: content-box;
+      border: 3px solid #0000;
+      border-radius: 9px;
+    }
+
+    section {
+      margin: 0px 10px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: flex-start;
+      background: var(--dark-background);
+      width: calc(100vw - 20px);
+      border-radius: 8px;
+    }
+
+    section>span {
+      position: relative;
+      left: 15px;
+      width: 58px;
+      height: 2px;
+      background: var(--bar);
+      overflow: hidden;
+    }
+
+    section>h2 {
+      margin-top: 13px;
+      margin-bottom: 18px;
+      margin-left: 15px;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .button {
+      background-color: var(--light-background);
+      border-radius: 5px;
+      width: 300px;
+      height: 38px;
+      margin: 15px;
+      margin-top: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 300ms;
+      cursor: pointer;
+    }
+
+    .button>span {
+      color: var(--dark-text);
+      font-weight: 500;
+      font-size: 13px;
+      height: 18px;
+      transition: 300ms;
+    }
+
+    .button:hover {
+      background-color: var(--hoveredButton);
+    }
+
+    .button[selected] {
+      background-color: var(--selectedButton);
+    }
+
+    .button:hover>span,
+    .button[selected]>span {
+      color: var(--selected-text);
+    }
+
+    .themeOption {
+      background-color: var(--background);
+      border-radius: 5px;
+      width: 300px;
+      height: 325px;
+      margin: 15px;
+      margin-top: 0px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .themeOption>div {
+      margin: 2px 5px;
+      text-align: center;
+    }
+
+    .themeOption>div>h3 {
+      color: var(--white);
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    /* = Color Option = */
+
+    .themeOption>div>div.colorElement {
+      display: flex;
+      margin: 10px 0;
+    }
+
+    .themeOption>div>div.colorElement>div {
+      background-color: var(--light-background);
+      border-radius: 5px;
+      width: 52px;
+      height: 28px;
+      margin: 0 3px;
+      margin-top: 0px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      transition: 300ms;
+      cursor: pointer;
+    }
+
+    .themeOption>div>div.colorElement>div>span {
+      color: var(--dark-text);
+      font-weight: 600;
+      font-size: 8px;
+      height: 10px;
+      transition: 300ms;
+    }
+
+    /* Par Défaut */
+
+    .themeOption>div>div.colorElement>div:nth-child(1) {
+      background-color: var(--default);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(1):hover,
+    .themeOption>div>div.colorElement>div:nth-child(1)[selected] {
+      background-color: var(--default-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(1)>span {
+      color: var(--default-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(1)>span:nth-child(2) {
+      color: var(--default-text);
+    }
+
+    /* Rubis */
+
+    .themeOption>div>div.colorElement>div:nth-child(2) {
+      background-color: var(--ruby);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(2):hover,
+    .themeOption>div>div.colorElement>div:nth-child(2)[selected] {
+      background-color: var(--ruby-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(2)>span {
+      color: var(--ruby-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(2)>span:nth-child(2) {
+      color: var(--ruby-text);
+    }
+
+    /* Amétiste */
+
+    .themeOption>div>div.colorElement>div:nth-child(3) {
+      background-color: var(--amethyst);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(3):hover,
+    .themeOption>div>div.colorElement>div:nth-child(3)[selected] {
+      background-color: var(--amethyst-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(3)>span {
+      color: var(--amethyst-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(3)>span:nth-child(2) {
+      color: var(--amethyst-text);
+    }
+
+    /* Jade */
+
+    .themeOption>div>div.colorElement>div:nth-child(4) {
+      background-color: var(--jade);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(4):hover,
+    .themeOption>div>div.colorElement>div:nth-child(4)[selected] {
+      background-color: var(--jade-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(4)>span {
+      color: var(--jade-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(4)>span:nth-child(2) {
+      color: var(--jade-text);
+    }
+
+    /* Gold */
+
+    .themeOption>div>div.colorElement>div:nth-child(5) {
+      background-color: var(--gold);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(5):hover,
+    .themeOption>div>div.colorElement>div:nth-child(5)[selected] {
+      background-color: var(--gold-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(5)>span {
+      color: var(--gold-dark-text);
+    }
+
+    .themeOption>div>div.colorElement>div:nth-child(5)>span:nth-child(2) {
+      color: var(--gold-text);
+    }
+
+    .themeOption>div>div.colorElement>div:hover>span,
+    .themeOption>div>div.colorElement>div[selected]>span {
+      color: var(--white);
+    }
+
+    /* = Font Option = */
+
+    .themeOption>div>div.fontElement {
+      display: flex;
+      margin: 10px 0;
+      margin-top: 5px;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .themeOption>div>div.fontElement>div {
+      background-color: var(--light-background);
+      border-radius: 5px;
+      width: 86px;
+      height: 27px;
+      margin: 5px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      transition: 300ms;
+      cursor: pointer;
+    }
+
+    .themeOption>div>div.fontElement>div>span {
+      color: var(--dark-text);
+      font-weight: 600;
+      font-size: 8px;
+      height: 10px;
+      transition: 300ms;
+    }
+
+    .themeOption>div>div.fontElement>div>span:nth-child(1) {
+      color: var(--white);
+    }
+
+    .themeOption>div>div.fontElement>div:hover {
+      background-color: var(--hoveredButton);
+    }
+
+    .themeOption>div>div.fontElement>div[selected] {
+      background-color: var(--selectedButton);
+    }
+
+    .themeOption>div>div.fontElement>div:hover>span:nth-child(2),
+    .themeOption>div>div.fontElement>div[selected]>span:nth-child(2) {
+      color: var(--dark-selected-text);
+    }
+
+    .themeOption>div>div.fontElement>div:nth-child(1)>span {
+      font-family: 'Tahoma', sans-serif !important;
+    }
+
+    .themeOption>div>div.fontElement>div:nth-child(2)>span {
+      font-family: 'Poppin', sans-serif !important;
+    }
+
+    .themeOption>div>div.fontElement>div:nth-child(3)>span {
+      font-family: 'Open Sans', sans-serif !important;
+    }
+
+    .themeOption>div>div.fontElement>div:nth-child(4)>span {
+      font-family: 'Montserrat', sans-serif !important;
+    }
+
+    .themeOption>div>div.fontElement>div:nth-child(5)>span {
+      font-family: 'Roboto', sans-serif !important;
+    }
+
+    .themeOption>div>div.fontElement>div:nth-child(6)>span {
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    /* = Border Option = */
+
+    .themeOption>div>div.borderElement {
+      display: flex;
+      margin: 10px 0;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .themeOption>div>div.borderElement>div {
+      background-color: var(--light-background);
+      border-radius: 5px;
+      width: 86px;
+      height: 27px;
+      margin: 0 5px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      transition: 300ms;
+      cursor: pointer;
+    }
+
+    .themeOption>div>div.borderElement>div>span {
+      color: var(--dark-text);
+      font-weight: 500;
+      font-size: 8px;
+      height: 10px;
+      transition: 300ms;
+    }
+
+    .themeOption>div>div.borderElement>div:hover>span,
+    .themeOption>div>div.borderElement>div[selected]>span {
+      color: var(--white);
+    }
+
+    .themeOption>div>div.borderElement>div:hover {
+      background-color: var(--hoveredButton);
+    }
+
+    .themeOption>div>div.borderElement>div[selected] {
+      background-color: var(--selectedButton);
+    }
+
+    .themeOption>div>div.borderElement>div:nth-child(1) {
+      border-radius: 0;
+    }
+
+    .themeOption>div>div.borderElement>div:nth-child(2) {
+      border-radius: 4px;
+    }
+
+    .themeOption>div>div.borderElement>div:nth-child(3) {
+      border-radius: 8px;
+    }
+
+    /* = Mode Option = */
+
+    .themeOption>div>div.modeElement {
+      display: flex;
+      margin: 10px 0;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .themeOption>div>div.modeElement>div {
+      background-color: var(--light-background);
+      border-radius: 5px;
+      width: 86px;
+      height: 27px;
+      margin: 0 5px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      transition: 300ms;
+      cursor: pointer;
+    }
+
+    .themeOption>div>div.modeElement>div>span {
+      color: var(--dark-text);
+      font-weight: 500;
+      font-size: 8px;
+      height: 10px;
+      transition: 300ms;
+    }
+
+    .themeOption>div>div.modeElement>div:hover>span,
+    .themeOption>div>div.modeElement>div[selected]>span {
+      color: var(--white);
+    }
+
+    .themeOption>div>div.modeElement>div:hover {
+      background-color: var(--hoveredButton);
+    }
+
+    .themeOption>div>div.modeElement>div[selected] {
+      background-color: var(--selectedButton);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <object data="../../icons/default/icon.svg"> </object>
+    <h1>CustomDirecte<br> pour EcoleDirecte</h1>
+    <div>
+      <span version>Error</span>
+    </div>
+  </header>
+  <main>
+    <section>
+      <span></span>
+      <h2>Fonctionnalités</h2>
+      <div class="button" button feature="averageCalculator" selected>
+        <span>Calculateur de moyennes</span>
+      </div>
+      <div class="button" button feature="newMenu" selected>
+        <span>Nouveau design pour le menu</span>
+      </div>
+    </section>
+    <section>
+      <span></span>
+      <h2>Personnalisations</h2>
+      <div class="button" button feature="newDesign">
+        <span>Activer la personnalisation de l'affichage</span>
+      </div>
+      <div class="themeOption hidden">
+        <div>
+          <h3>Couleur principale</h3>
+          <div class="colorElement">
+            <div button listOption="default" feature="newColor" selected>
+              <span>Par Défaut</span>
+              <span>Bleu</span>
+            </div>
+            <div button listOption="magenta" feature="newColor">
+              <span>Rubis</span>
+              <span>Magenta</span>
+            </div>
+            <div button listOption="purple" feature="newColor">
+              <span>Améthyste</span>
+              <span>Violet</span>
+            </div>
+            <div button listOption="turquoise" feature="newColor">
+              <span>Jade</span>
+              <span>Turquoise</span>
+            </div>
+            <div button listOption="gold" feature="newColor">
+              <span>Or</span>
+              <span>Doré</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3>Police d’écriture</h3>
+          <div class="fontElement">
+            <div button listOption="tahoma" feature="newFont" selected>
+              <span>Lorem Ipsum</span>
+              <span>Tahoma</span>
+            </div>
+            <div button listOption="poppin" feature="newFont">
+              <span>Lorem Ipsum</span>
+              <span>Poppin</span>
+            </div>
+            <div button listOption="openSans" feature="newFont">
+              <span>Lorem Ipsum</span>
+              <span>Open Sans</span>
+            </div>
+            <div button listOption="montserrat" feature="newFont">
+              <span>Lorem Ipsum</span>
+              <span>Montserrat</span>
+            </div>
+            <div button listOption="roboto" feature="newFont">
+              <span>Lorem Ipsum</span>
+              <span>Roboto</span>
+            </div>
+            <div button listOption="inter" feature="newFont">
+              <span>Lorem Ipsum</span>
+              <span>Inter</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3>Degré d'angle</h3>
+          <div class="borderElement">
+            <div button listOption="default" feature="newBorder" selected>
+              <span>Par défaut</span>
+            </div>
+            <div button listOption="thin" feature="newBorder">
+              <span>Faible</span>
+            </div>
+            <div button listOption="wide" feature="newBorder">
+              <span>Moyen</span>
+            </div>
+          </div>
+        </div>
+        <div class="themeMenu">
+          <h3>Mode</h3>
+          <div class="modeElement">
+            <div button listOption="dark" feature="theme" selected>
+              <span>Sombre</span>
+            </div>
+            <div button listOption="light" feature="theme">
+              <span>Claire</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+
+</html>
