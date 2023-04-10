@@ -1,192 +1,137 @@
-/*
-  Liste des paramettres :
-    : averageCalculator True/False
-    : newMenu True/False
-    : newDesign True/False
-    : newColor [default,magenta,purple,turquoise,gold]
-    : newFont [tahoma,poppin,openSans,montserrat,roboto,inter]
-    : newBorder [default,thin,wide]
-    : theme [light,dark]
-    : debug True/False
-*/
+// --> Gére la feremeture du menu
+function closeOptionsPopup() {
+  window.top.postMessage("closeOptionsPopup", "*");
+}
+function reload() {
+  window.top.postMessage("reload", "*");
+}
+function optionChanged(option, value) {
+  window.top.postMessage(`optionChanged;${option};${value}`, "*");
+}
+document.body.addEventListener("keyup", (e) => {
+  if (e.key == "Escape") closeOptionsPopup();
+});
 
 // --> Affichage de la version
 document.querySelector("[version]").innerText = "Version " + chrome.runtime.getManifest().version;
 
-// --> Valeurs par défaut
-averageCalculator = true;
-newMenu = true;
-newDesign = false;
-newColor = "default";
-newFont = "tahoma";
-newBorder = "default";
-theme = "dark";
-debug = false;
-
-// --> Elements
-averageCalculatorElement = document.querySelector("[feature='averageCalculator']");
-newMenuElement = document.querySelector("[feature='newMenu']");
-newDesignElement = document.querySelector("[feature='newDesign']");
-newColorElements = document.querySelectorAll("[feature='newColor']");
-newFontElements = document.querySelectorAll("[feature='newFont']");
-newBorderElements = document.querySelectorAll("[feature='newBorder']");
-themeElements = document.querySelectorAll("[feature='theme']");
-themeOptionElement = document.querySelector(".themeOption");
-themeMenuElement = document.querySelector(".themeMenu");
-debugElement = document.querySelector("header>div");
-
-// --> Charge les valeurs enregistrées
-chrome.storage.sync.get("newEcoleDirecteInterface", function (data) {
-  localStoreage = data.newEcoleDirecteInterface;
-  if (localStoreage != undefined) {
-    averageCalculator = localStoreage.averageCalculator;
-    newMenu = localStoreage.newMenu;
-    newDesign = localStoreage.newDesign;
-    newColor = localStoreage.newColor;
-    newFont = localStoreage.newFont;
-    newBorder = localStoreage.newBorder;
-    theme = localStoreage.theme;
-    debug = localStoreage.debug;
-    updateInterface();
-  }
-});
-
-// --> Met ajour l'interface
-function updateInterface() {
-  //  : averageCalculator
-  if (!(averageCalculator == !!averageCalculatorElement.attributes["selected"])) {
-    averageCalculatorElement.toggleAttribute("selected");
-  }
-  //  : newMenu
-  if (!(newMenu == !!newMenuElement.attributes["selected"])) {
-    newMenuElement.toggleAttribute("selected");
-    themeMenuElement.classList.toggle("hidden");
-  }
-  //  : newDesign
-  if (!(newDesign == !!newDesignElement.attributes["selected"])) {
-    newDesignElement.toggleAttribute("selected");
-    themeOptionElement.classList.toggle("hidden");
-  }
-  //  : newColor
-  newColorElements.forEach(function (item) {
-    if (!!item.attributes["selected"]) {
-      item.toggleAttribute("selected");
-    }
-  });
-  Array.from(newColorElements)
-    .find((element) => element.attributes["listOption"].value == newColor)
-    .toggleAttribute("selected");
-
-  //  : newFont
-  newFontElements.forEach(function (item) {
-    if (!!item.attributes["selected"]) {
-      item.toggleAttribute("selected");
-    }
-  });
-  Array.from(newFontElements)
-    .find((element) => element.attributes["listOption"].value == newFont)
-    .toggleAttribute("selected");
-
-  //  : newBorder
-  newBorderElements.forEach(function (item) {
-    if (!!item.attributes["selected"]) {
-      item.toggleAttribute("selected");
-    }
-  });
-  Array.from(newBorderElements)
-    .find((element) => element.attributes["listOption"].value == newBorder)
-    .toggleAttribute("selected");
-
-  //  : theme
-  themeElements.forEach(function (item) {
-    if (!!item.attributes["selected"]) {
-      item.toggleAttribute("selected");
-    }
-  });
-  Array.from(themeElements)
-    .find((element) => element.attributes["listOption"].value == theme)
-    .toggleAttribute("selected");
-
-  // {Met a jour le stockage}
-  updateLocalStoreage();
+// --> Get elements
+function getFeature(value, all = false) {
+  if (all) return document.querySelectorAll(`[feature='${value}']`);
+  return document.querySelector(`[feature='${value}']`);
 }
 
-// --> Met a jour le stockage
-function updateLocalStoreage() {
-  chrome.storage.sync.set({
-    newEcoleDirecteInterface: {
-      averageCalculator: averageCalculator,
-      newMenu: newMenu,
-      newDesign: newDesign,
-      newColor: newColor,
-      newFont: newFont,
-      newBorder: newBorder,
-      theme: theme,
-      debug: debug,
-    },
-  });
+/* Special */
+PersonnalisationsElement = getFeature("Personnalisations");
+menuThemeParentElement = getFeature("menuThemeParent");
+debugElement = getFeature("debug");
+reloadElement = getFeature("reload");
 
-  async function reloadTabs() {
-    let tabs = await chrome.tabs.query({
-      url: "*://*.ecoledirecte.com/*",
-    });
-    for (tab of tabs) {
-      chrome.tabs.reload(tab.id, {
-        bypassCache: true,
-      });
-    }
+/* Fonctionnalités */
+averageCalculatorElement = getFeature("averageCalculator");
+newMenuElement = getFeature("newMenu");
+newDesignElement = getFeature("newDesign");
+
+/* Personnalisations */
+newColorElements = getFeature("newColor", true);
+newFontElements = getFeature("newFont", true);
+newBorderElements = getFeature("newBorder", true);
+menuThemeElements = getFeature("menuTheme", true);
+themeElements = getFeature("theme", true);
+
+AllElements = {
+  averageCalculator: [averageCalculatorElement, false],
+  newMenu: [newMenuElement, false, [menuThemeParentElement, "hidden", true]],
+  newDesign: [newDesignElement, false, [PersonnalisationsElement, "desactivation", true]],
+  newColor: [newColorElements, true],
+  newFont: [newFontElements, true],
+  newBorder: [newBorderElements, true],
+  menuTheme: [menuThemeElements, true],
+  theme: [themeElements, true],
+};
+
+/* Default Options */
+defaultOptions = {
+  averageCalculator: true,
+  newMenu: true,
+  newDesign: false,
+  newColor: "default",
+  newFont: "tahoma",
+  newBorder: "default",
+  menuTheme: "dark",
+  theme: "dark",
+  debug: false,
+};
+
+/* Actual Options */
+ActualOptions = {};
+chrome.storage.sync.get(["averageCalculator", "newMenu", "newDesign", "newColor", "newFont", "newBorder", "menuTheme", "theme", "debug"], function (data) {
+  for (option in defaultOptions) {
+    if (data[option] == undefined) ActualOptions[option] = defaultOptions[option];
+    else ActualOptions[option] = data[option];
   }
-  reloadTabs();
-}
+  setEvent();
+  updateInterface();
+});
 
-// --> Active/Desacive les options
-averageCalculatorElement.addEventListener("click", function () {
-  averageCalculator = !averageCalculatorElement.attributes["selected"];
-  updateInterface();
-});
-newMenuElement.addEventListener("click", function () {
-  newMenu = !newMenuElement.attributes["selected"];
-  updateInterface();
-});
-newDesignElement.addEventListener("click", function () {
-  newDesign = !newDesignElement.attributes["selected"];
-  updateInterface();
-});
-newColorElements.forEach((newColorElement) => {
-  newColorElement.addEventListener("click", function () {
-    newColor = newColorElement.attributes["listOption"].value;
-    updateInterface();
-  });
-});
-newFontElements.forEach((newFontElement) => {
-  newFontElement.addEventListener("click", function () {
-    newFont = newFontElement.attributes["listOption"].value;
-    updateInterface();
-  });
-});
-newBorderElements.forEach((newBorderElement) => {
-  newBorderElement.addEventListener("click", function () {
-    newBorder = newBorderElement.attributes["listOption"].value;
-    updateInterface();
-  });
-});
-themeElements.forEach((themeElement) => {
-  themeElement.addEventListener("click", function () {
-    theme = themeElement.attributes["listOption"].value;
-    updateInterface();
-  });
-});
-// --> Option de Debug
-debugElement.addEventListener("click", function (e) {
-  if (e.detail === 4) {
-    if (!debug) {
-      if (window.confirm("Activé l'option de Debug ?")) {
-        debug = true;
-      }
+// --> Update Visual
+
+function setEvent() {
+  function eventlement(element, all, option, more) {
+    if (!all) {
+      element.onclick = () => {
+        ActualOptions[option] = !ActualOptions[option];
+        more ? more[0].toggleAttribute(more[1], more[2] ? !ActualOptions[option] : ActualOptions[option]) : false;
+        updateInterface();
+      };
     } else {
-      window.alert("Option de Debug Désactivé");
-      debug = false;
+      element.forEach(
+        (ele) =>
+          (ele.onclick = () => {
+            ActualOptions[option] = ele.attributes["listOption"].value;
+            updateInterface();
+          })
+      );
     }
-    updateInterface();
   }
-});
+  for (option in AllElements) {
+    eventlement(AllElements[option][0], AllElements[option][1], option, AllElements[option][2] ? AllElements[option][2] : false);
+  }
+  // --> Option de Debug
+  debugElement.addEventListener("click", function (e) {
+    if (e.detail === 4) {
+      if (!ActualOptions["debug"]) {
+        if (window.confirm("Activé l'option de Debug ?")) {
+          ActualOptions["debug"] = true;
+        }
+      } else {
+        window.alert("Option de Debug Désactivé");
+        ActualOptions["debug"] = false;
+      }
+      updateInterface();
+    }
+  });
+}
+
+function updateInterface() {
+  function updateElement(element, all, value, more) {
+    if (!all) {
+      more ? more[0].toggleAttribute(more[1], more[2] ? !ActualOptions[option] : ActualOptions[option]) : false;
+      element.toggleAttribute("selected", value);
+    } else {
+      element.forEach((ele) => ele.toggleAttribute("selected", false));
+      Array.from(element)
+        .find((ele) => ele.attributes["listOption"].value == value)
+        .toggleAttribute("selected", true);
+    }
+  }
+  for (option in AllElements) {
+    optionChanged(option, ActualOptions[option]);
+    updateElement(AllElements[option][0], AllElements[option][1], ActualOptions[option], AllElements[option][2] ? AllElements[option][2] : false);
+  }
+  chrome.storage.sync.set(ActualOptions);
+}
+
+reloadElement.onclick = () => {
+  reload();
+};

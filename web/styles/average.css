@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ===== Average ===== */
+
+table.newTable {
+  border-collapse: collapse;
+  border-radius: var(--table-radius);
+  border-style: hidden;
+  box-shadow: rgb(100 100 111 / 30%) 3px 3px 20px 0px;
+}
+
+table.newTable thead th:first-child {
+  border-top-left-radius: var(--table-radius);
+}
+
+table.newTable thead th:last-child {
+  border-top-right-radius: var(--table-radius);
+}
+
+table.newTable td {
+  vertical-align: middle !important;
+  line-height: 1.6;
+}
+
+table.newTable td.moyennegeneralelibelle {
+  border-left: 2px solid #e2e1e1;
+}
+
+.averageDisplay {
+  text-align: center;
+  padding: 4px 0 !important;
+  color: var(--primary-color) !important;
+}

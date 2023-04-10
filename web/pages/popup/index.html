@@ -49,8 +49,8 @@
       --dark-selected-text: var(--ruby);
 
       /* == button == */
-      --selectedButton: #A3133C;
-      --hoveredButton: #a3133c93;
+      --selectedButton: #13a480;
+      --hoveredButton: #13a48040;
     }
 
 
@@ -64,7 +64,6 @@
     }
 
     body {
-      width: 350px;
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -76,26 +75,27 @@
       top: 0;
       position: fixed;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       background: var(--light-background);
       width: 100vw;
-      height: 70px;
+      height: 48px;
       overflow: hidden;
       z-index: 999;
+      justify-content: space-between;
     }
 
     header>object {
       width: 44px;
       height: 44px;
-      margin: 13px;
+      margin-left: 20px;
+      margin-right: 64px;
     }
 
     header>h1 {
       color: var(--white);
       font-weight: 600;
-      font-size: 15px;
+      font-size: 23px;
       line-height: 18px;
-      margin-bottom: 16px;
     }
 
     header>div {
@@ -103,11 +103,11 @@
       border-radius: 5px;
       width: 108px;
       height: 28px;
-      margin: 0 0 16px 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       user-select: none;
+      margin-right: 20px;
     }
 
     header>div>span {
@@ -119,22 +119,24 @@
 
     /* == Main == */
 
-    .hidden {
-      display: none !important;
+    [desactivation] {
+      pointer-events: none;
+      user-select: none;
+      filter: brightness(0.7)
     }
 
     main {
-      margin-top: 70px;
+      margin-top: 48px;
       display: flex;
-      flex-direction: column;
-      align-content: center;
-      align-items: center;
+      flex-direction: row;
+      align-items: flex-start;
       background: var(--background);
       width: 100vw;
-      height: 520px;
+      height: 100vh;
       padding-top: 10px;
       overflow-y: overlay;
       overflow-x: hidden;
+      flex-wrap: nowrap;
     }
 
     main:hover::-webkit-scrollbar {
@@ -154,21 +156,21 @@
     }
 
     section {
+      width: 50vw;
       margin: 0px 10px 10px 10px;
       display: flex;
       flex-direction: column;
       align-content: center;
       align-items: flex-start;
       background: var(--dark-background);
-      width: calc(100vw - 20px);
       border-radius: 8px;
     }
 
     section>span {
       position: relative;
       left: 15px;
-      width: 58px;
-      height: 2px;
+      width: 80px;
+      height: 4px;
       background: var(--bar);
       overflow: hidden;
     }
@@ -179,14 +181,14 @@
       margin-left: 15px;
       color: var(--white);
       font-weight: 500;
-      font-size: 15px;
+      font-size: 22px;
     }
 
     .button {
+      width: calc(100% - 30px);
       background-color: var(--light-background);
       border-radius: 5px;
-      width: 300px;
-      height: 38px;
+      height: 45px;
       margin: 15px;
       margin-top: 0px;
       display: flex;
@@ -196,11 +198,28 @@
       cursor: pointer;
     }
 
+    .reload {
+      background-color: var(--white) !important;
+    }
+
+    .reload span {
+      color: var(--dark-background) !important;
+    }
+
+    .reload:hover {
+      background-color: var(--white) !important;
+      color: var(--dark-background) !important;
+    }
+
+    .reload:hover span {
+      color: var(--dark-background) !important;
+    }
+
     .button>span {
       color: var(--dark-text);
       font-weight: 500;
-      font-size: 13px;
-      height: 18px;
+      font-size: 16px;
+      height: 23px;
       transition: 300ms;
     }
 
@@ -220,8 +239,7 @@
     .themeOption {
       background-color: var(--background);
       border-radius: 5px;
-      width: 300px;
-      height: 325px;
+      width: calc(100% - 30px);
       margin: 15px;
       margin-top: 0px;
       display: flex;
@@ -251,7 +269,7 @@
     .themeOption>div>div.colorElement>div {
       background-color: var(--light-background);
       border-radius: 5px;
-      width: 52px;
+      width: 80px;
       height: 28px;
       margin: 0 3px;
       margin-top: 0px;
@@ -267,9 +285,13 @@
     .themeOption>div>div.colorElement>div>span {
       color: var(--dark-text);
       font-weight: 600;
-      font-size: 8px;
-      height: 10px;
+      font-size: 12px;
+      height: 20px;
       transition: 300ms;
+    }
+
+    .themeOption>div>div.colorElement>div>span:nth-child(2) {
+      margin-top: -6px;
     }
 
     /* Par Défaut */
@@ -401,12 +423,12 @@
     .themeOption>div>div.fontElement>div>span {
       color: var(--dark-text);
       font-weight: 600;
-      font-size: 8px;
-      height: 10px;
+      font-size: 12px;
       transition: 300ms;
     }
 
-    .themeOption>div>div.fontElement>div>span:nth-child(1) {
+    .themeOption>div>div.fontElement>div:hover>span,
+    .themeOption>div>div.fontElement>div[selected]>span {
       color: var(--white);
     }
 
@@ -475,8 +497,7 @@
     .themeOption>div>div.borderElement>div>span {
       color: var(--dark-text);
       font-weight: 500;
-      font-size: 8px;
-      height: 10px;
+      font-size: 12px;
       transition: 300ms;
     }
 
@@ -533,8 +554,7 @@
     .themeOption>div>div.modeElement>div>span {
       color: var(--dark-text);
       font-weight: 500;
-      font-size: 8px;
-      height: 10px;
+      font-size: 12px;
       transition: 300ms;
     }
 
@@ -556,33 +576,37 @@
 <body>
   <header>
     <object data="../../icons/default/icon.svg"> </object>
-    <h1>CustomDirecte<br> pour EcoleDirecte</h1>
+    <h1>CustomDirecte</h1>
     <div>
-      <span version>Error</span>
+      <span version feature="debug">Error</span>
     </div>
   </header>
   <main>
     <section>
       <span></span>
       <h2>Fonctionnalités</h2>
-      <div class="button" button feature="averageCalculator" selected>
+      <div class="button" button feature="averageCalculator">
         <span>Calculateur de moyennes</span>
       </div>
-      <div class="button" button feature="newMenu" selected>
+      <div class="button" button feature="newMenu">
         <span>Nouveau design pour le menu</span>
+      </div>
+      <div class="button" button feature="newDesign">
+        <span>Activer la personnalisation de l'affichage</span>
+      </div>
+      <div class="button reload" feature="reload">
+        <span>Appliquer les changements</span>
       </div>
     </section>
     <section>
       <span></span>
       <h2>Personnalisations</h2>
-      <div class="button" button feature="newDesign">
-        <span>Activer la personnalisation de l'affichage</span>
-      </div>
-      <div class="themeOption hidden">
+
+      <div class="themeOption" feature="Personnalisations" desactivation>
         <div>
           <h3>Couleur principale</h3>
           <div class="colorElement">
-            <div button listOption="default" feature="newColor" selected>
+            <div button listOption="default" feature="newColor">
               <span>Par Défaut</span>
               <span>Bleu</span>
             </div>
@@ -607,28 +631,22 @@
         <div>
           <h3>Police d’écriture</h3>
           <div class="fontElement">
-            <div button listOption="tahoma" feature="newFont" selected>
-              <span>Lorem Ipsum</span>
+            <div button listOption="tahoma" feature="newFont">
               <span>Tahoma</span>
             </div>
             <div button listOption="poppin" feature="newFont">
-              <span>Lorem Ipsum</span>
               <span>Poppin</span>
             </div>
             <div button listOption="openSans" feature="newFont">
-              <span>Lorem Ipsum</span>
               <span>Open Sans</span>
             </div>
             <div button listOption="montserrat" feature="newFont">
-              <span>Lorem Ipsum</span>
               <span>Montserrat</span>
             </div>
             <div button listOption="roboto" feature="newFont">
-              <span>Lorem Ipsum</span>
               <span>Roboto</span>
             </div>
             <div button listOption="inter" feature="newFont">
-              <span>Lorem Ipsum</span>
               <span>Inter</span>
             </div>
           </div>
@@ -636,7 +654,7 @@
         <div>
           <h3>Degré d'angle</h3>
           <div class="borderElement">
-            <div button listOption="default" feature="newBorder" selected>
+            <div button listOption="default" feature="newBorder">
               <span>Par défaut</span>
             </div>
             <div button listOption="thin" feature="newBorder">
@@ -647,14 +665,25 @@
             </div>
           </div>
         </div>
-        <div class="themeMenu">
-          <h3>Mode</h3>
+        <div class="themeMenu" feature="menuThemeParent">
+          <h3>Mode du Menu</h3>
           <div class="modeElement">
-            <div button listOption="dark" feature="theme" selected>
+            <div button listOption="dark" feature="menuTheme">
               <span>Sombre</span>
             </div>
-            <div button listOption="light" feature="theme">
+            <div button listOption="light" feature="menuTheme">
               <span>Claire</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme" feature="themeParent">
+          <h3>Mode Sombre [Beta]</h3>
+          <div class="modeElement">
+            <div button listOption="dark" feature="theme">
+              <span>Activé</span>
+            </div>
+            <div button listOption="light" feature="theme">
+              <span>Désactivé</span>
             </div>
           </div>
         </div>
