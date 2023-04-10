@@ -75,14 +75,14 @@ table.newTable td.moyennegeneralelibelle {
 }
 
 #main-part.sidebarnothover {
-  margin-left: 58px !important;
-  width: calc(100vw - 58px) !important;
+  margin-left: 80px !important;
+  width: calc(100vw - 80px) !important;
   transition: var(--tran-05);
 }
 
 #main-part.sidebarhover {
-  margin-left: 220px !important;
-  width: calc(100vw - 220px) !important;
+  margin-left: 240px !important;
+  width: calc(100vw - 240px) !important;
   transition: var(--tran-05);
 }
 
