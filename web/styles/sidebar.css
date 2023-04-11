@@ -1,0 +1,319 @@
+/* ===== SideBar ===== */
+
+.new-menu ed-authenticated-layout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+[newDesign].new-menu:not([theme="dark"]) #menu-part {
+  background: linear-gradient(to bottom, var(--light-placeholder-color) 0%, var(--light-placeholder-color) 50%,white 50%,white 100%);
+  width: 88px;
+  height: 100vh;
+  transition: var(--tran-05);
+}
+
+html.new-menu:not([newDesign]):not([theme="dark"]) #menu-part {
+  background: linear-gradient(to bottom, var(--dark-primary-color) 0%, var(--dark-primary-color) 50%,white 50%,white 100%);
+  width: 88px;
+  height: 100vh;
+  transition: var(--tran-05);
+}
+
+[theme="dark"].new-menu #menu-part {
+  background: linear-gradient(to bottom, #1d2021 0%, #1d2021 50%,#181a1b 50%,#181a1b 100%);
+  width: 88px;
+  height: 100vh;
+  transition: var(--tran-05);
+}
+
+.new-menu #menu-part:hover {
+  width: 250px !important;
+  transition: var(--tran-05);
+}
+
+.new-menu #main-part {
+  margin-left: 0px !important;
+  width: 100% !important;
+  transition: var(--tran-05);
+}
+
+.new-menu #container-menu:hover {
+  width: 250px !important;
+  box-shadow: none !important;
+}
+
+.new-menu #container-menu:not(:hover) {
+  overflow-y: hidden !important;
+  transition: var(--tran-05) !important;
+}
+
+.new-menu #container-menu:hover {
+  overflow-y: overlay !important;
+  transition: var(--tran-05) !important;
+}
+
+.new-menu #container-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: fixed !important;
+  top: 0px !important;
+  left: 0px !important;
+  height: 100% !important;
+  width: 88px !important;
+  z-index: 100 !important;
+  background: var(--sidebar-color) !important;
+  overflow-x: hidden !important;
+  text-align: center !important;
+  transition: var(--tran-05) !important;
+  border-radius: 0px 10px 10px 0px !important;
+  padding: 10px 14px !important;
+}
+
+.new-menu .ed-menu {
+  margin: 0 !important;
+  min-height: 80px !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  transition: var(--tran-05) !important;
+  width: 100% !important;
+}
+
+.new-menu .ed-menu-list-wrapper {
+  margin: 10px 0px !important;
+}
+
+.new-menu .ed-menu-parent {
+  display: flex !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.new-menu #container-menu .ed-espace-title {
+  margin: 0px auto !important;
+  position: relative !important;
+  z-index: 99 !important;
+  display: block !important;
+  color: var(--text-color) !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  max-width: 120px !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  line-height: 18px !important;
+}
+
+
+.new-menu .ed-menu-list-wrapper li a:hover,
+.new-menu .menuMoreOptions a:hover {
+  background-color: var(--primary-color) !important;
+}
+
+.new-menu .ed-menu-list-wrapper li a.item-actif {
+  background-color: var(--primary-color-light) !important;
+  color: var(--body-color) !important;
+  margin-left: 0 !important;
+  border-radius: 6px !important;
+}
+
+.new-menu .ed-menu-list-wrapper li a,
+.new-menu .menuMoreOptions a {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  width: 100% !important;
+  list-style: none !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  transition: var(--tran-03) !important;
+  position: relative !important;
+  color: var(--body-color) !important;
+  font-size: 30px !important;
+  height: 40px !important;
+  font-size: 20px !important;
+}
+
+.new-menu .ed-menu-list-wrapper li a.item-actif i {
+  min-width: 62px !important;
+  width: 62px !important;
+  color: var(--body-color) !important;
+}
+
+.new-menu .ed-menu-list-wrapper li a i,
+.new-menu .menuMoreOptions a i {
+  min-width: 62px !important;
+  width: 62px !important;
+  text-align: center !important;
+  opacity: 1 !important;
+  transition: var(--tran-05) !important;
+}
+
+.new-menu .ed-menu-list-wrapper li {
+  padding: 0 !important;
+  height: 40px !important;
+  margin-bottom: 2px !important;
+}
+
+.new-menu .ed-menu-list-wrapper li a span.item-name,
+.new-menu .menuMoreOptions a span {
+  position: static !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  width: 0 !important;
+  transition: var(--tran-03) !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  opacity: 1 !important;
+}
+
+.new-menu .ed-menu-image-wrapper>div {
+  position: relative !important;
+  min-height: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  zoom: 1 !important;
+  border-radius: 6px !important;
+  margin: 0 !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  margin-left: 10px !important;
+  margin-top: 0px !important;
+}
+
+.new-menu .ed-menu-list-wrapper li a:hover:before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 0 !important;
+  background: none !important;
+}
+
+.new-menu .ed-menu.active>a {
+  background-color: var(--primary-color-light);
+}
+
+.new-menu .ed-menu-image-wrapper:hover {
+  background-color: var(--primary-color) !important;
+}
+
+.new-menu .ed-menu-badge {
+  position: absolute !important;
+  top: 4px !important;
+  left: 34px !important;
+  padding: 2px 5px !important;
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  transition: var(--tran-05) !important;
+}
+
+.new-menu .ed-menu-image-wrapper {
+  margin-top: 0px;
+  display: flex;
+  align-items: center !important;
+  width: 100% !important;
+  position: relative !important;
+  color: var(--body-color) !important;
+  height: 60px !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  transition: var(--tran-03) !important;
+}
+
+.new-menu .ed-menu-image-wrapper .overlay {
+  background: none !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+.new-menu .ed-menu-image-wrapper .overlay>p {
+  margin: 0 !important;
+  font-size: 18px;
+  font-weight: 600;
+  word-spacing: 100vw;
+  width: 162px;
+  text-align: left;
+  line-height: 22px;
+  margin-left: 54px !important;
+}
+
+.new-menu .ed-menu-parent .ed-menu:not(.active) .ed-menu-image-wrapper>div:after {
+  position: absolute !important;
+  border-radius: 6px !important;
+  content: "+" !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: var(--dark-primary-color) !important;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 28px;
+}
+
+.new-menu ed-menu>div.ed-menu-eleve-seul .ed-menu-image-wrapper div:before {
+  background: none !important;
+  content: var(--userName, "Prenom NOM") !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  word-spacing: 100vw !important;
+  width: 162px !important;
+  text-align: left !important;
+  line-height: 22px !important;
+  margin: 0px 0px 0px 54px !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+.new-menu ed-menu>div:not(.ed-menu-eleve-seul) .ed-menu .ed-menu-image-wrapper>div:before {
+  content: none !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+}
+
+.new-menu .menuMoreOptions {
+  margin-top: auto;
+  overflow: hidden;
+  display: table;
+}
+
+.new-menu .menuMoreOptions a {
+  margin-bottom: 4px;
+}
+
+.new-menu #container-menu::-webkit-scrollbar {
+  width: 7px;
+  position: absolute;
+  transition: var(--tran-05) !important;
+}
+
+.new-menu #container-menu::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.484);
+  border-radius: 0px 20px 20px 0px;
+  transition: var(--tran-05) !important;
+}
+
+.new-menu #container-menu::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, 0.484);
+  border-radius: 0px 20px 20px 0px;
+  transition: var(--tran-05) !important;
+}

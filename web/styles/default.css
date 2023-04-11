@@ -1,0 +1,183 @@
+/* ===== Default ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --borderRadius-default: 0;
+    --borderRadius-thin: 4px;
+    --borderRadius-wide: 8px;
+    --font-tahoma: Tahoma, sans-serif;
+    --font-poppin: Poppin, sans-serif;
+    --font-openSans: Open Sans, sans-serif;
+    --font-montserrat: Montserrat, sans-serif;
+    --font-roboto: Roboto, sans-serif;
+    --font-inter: Inter, sans-serif;
+    --body-color: var(--theme-body-color, #ffffff);
+    --sidebar-color: var(--theme-sidebar-color, #2e6ac8);
+    --primary-color: var(--light-primary-color);
+    --primary-color-light: var(--dark-primary-color);
+    --text-color: var(--theme-text-color, #ebebeb);
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+    --table-radius: 12px;
+}
+
+[newDesign] {
+    --ultralight-secondary-color: #f7e0e6 !important;
+    --light-secondary-color: #e46bad !important;
+    --secondary-color: #cd1478 !important;
+    --dark-secondary-color: #960b56 !important;
+    --light-placeholder-color: #f5f6f7 !important;
+    --smalldark-placeholder-color: #e4e7ea !important;
+    --dark-placeholder-color: #c3c3c3 !important;
+    --ultradark-placeholder-color: #887f7f !important;
+    --warning-primary-color: #ffc107 !important;
+    --warning-secondary-color: #8a6d3b !important;
+    --light-notice-color: #fffca0 !important;
+    --middle-notice-color: #fff575 !important;
+    --dark-notice-color: #f2ec9e !important;
+    --dark-has-succes-color: #3c763d !important;
+    --light-has-succes-color: #dff0d8 !important;
+    --travail-color: #6aaf11 !important;
+    --contenu-color: #0c91c6 !important;
+    --search-color: #a5a7ab !important;
+    --menu-hover-color: #f5f5f5 !important;
+    --bs-secondary-rgb: 205, 20, 120 !important;
+    --bs-danger-rgb: 205, 20, 120 !important;
+    --bs-border-color: var(--smalldark-placeholder-color) !important;
+    --bs-warning-rgb: 138, 109, 59 !important;
+}
+
+[newDesign] .text-primary {
+    color: var(--smalldark-primary-color)!important;
+}
+
+[newDesign] #header-commun,
+[newDesign] .navbar {
+    background: var(--light-placeholder-color) !important;
+}
+
+[newDesign] .container-fluid {
+    color: var(--ultradark-primary-color) !important;
+}
+
+/* NewColor */
+
+[newColor="default"] {
+    --footer-primary-color: #edf3fd !important;
+    --hover-primary-color: #aad8ea !important;
+    --light-primary-color: #0f8fd1 !important;
+    --smalldark-primary-color: #2e6ac8 !important;
+    --dark-primary-color: #0e3e85 !important;
+    --ultradark-primary-color: #092354 !important;
+    --bs-primary-rgb: 15, 143, 209 !important;
+    --bs-success-rgb: 15, 143, 209 !important;
+}
+
+[newColor="magenta"] {
+    --footer-primary-color: #FFB3C0 !important;
+    --hover-primary-color: #FE90A3 !important;
+    --light-primary-color: #C8194A !important;
+    --smalldark-primary-color: #A3133C !important;
+    --dark-primary-color: #7F0F2F !important;
+    --ultradark-primary-color: #5a0920 !important;
+    --bs-primary-rgb: 200, 25, 74 !important;
+    --bs-success-rgb: 200, 25, 74 !important;
+}
+
+[newColor="purple"] {
+    --footer-primary-color: #ecb3ff !important;
+    --hover-primary-color: #e290fe !important;
+    --light-primary-color: #9c19c8 !important;
+    --smalldark-primary-color: #8013a4 !important;
+    --dark-primary-color: #640f80 !important;
+    --ultradark-primary-color: #440958 !important;
+    --bs-primary-rgb: 156, 25, 200 !important;
+    --bs-success-rgb: 156, 25, 200 !important;
+}
+
+[newColor="turquoise"] {
+    --footer-primary-color: #b3ffec !important;
+    --hover-primary-color: #90fee2 !important;
+    --light-primary-color: #19c89c !important;
+    --smalldark-primary-color: #13a480 !important;
+    --dark-primary-color: #0f8064 !important;
+    --ultradark-primary-color: #095844 !important;
+    --bs-primary-rgb: 25, 200, 156 !important;
+    --bs-success-rgb: 25, 200, 156 !important;
+}
+
+[newColor="gold"] {
+    --footer-primary-color: #ffffb3 !important;
+    --hover-primary-color: #fefe90 !important;
+    --light-primary-color: #c8c819 !important;
+    --smalldark-primary-color: #a4a413 !important;
+    --dark-primary-color: #80800f !important;
+    --ultradark-primary-color: #585809 !important;
+    --bs-primary-rgb: 200, 200, 25 !important;
+    --bs-success-rgb: 200, 200, 25 !important;
+}
+
+/* newFont */
+
+.fa {
+    font-family: FontAwesome !important;
+}
+
+[newFont="tahoma"] * {
+    font-family: var(--font-tahoma);
+}
+
+[newFont="poppin"] * {
+    font-family: var(--font-poppin);
+}
+
+[newFont="openSans"] * {
+    font-family: var(--font-openSans);
+}
+
+[newFont="montserrat"] * {
+    font-family: var(--font-montserrat);
+}
+
+[newFont="roboto"] * {
+    font-family: var(--font-roboto);
+}
+
+[newFont="inter"] * {
+    font-family: var(--font-inter);
+}
+
+/* newBorder */
+
+[newBorder="default"] #main div {
+    border-radius: var(--borderRadius-default);
+}
+
+[newBorder="thin"] #main div {
+    border-radius: var(--borderRadius-thin);
+}
+
+[newBorder="wide"] #main div {
+    border-radius: var(--borderRadius-wide);
+}
+
+/* menuTheme */
+
+[menuTheme="light"] {
+    --theme-body-color: #fff !important;
+    --theme-sidebar-color: var(--smalldark-primary-color) !important;
+    --theme-text-color: #ebebeb !important;
+}
+
+[menuTheme="dark"] {
+    --theme-body-color: #fff !important;
+    --theme-sidebar-color: #1C2130 !important;
+    --theme-text-color: #ccc !important;
+}
