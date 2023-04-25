@@ -100,6 +100,15 @@ function Start(statue) {
 /* -------------- Options Fonctions -------------- */
 
 function averageCalculator() {
+  try {
+    const tippy = document.createElement("script");
+    tippy.src = chrome.runtime.getURL("/scripts/tippy.js");
+    document.head.appendChild(tippy);
+    tippyState = true;
+  } catch {
+    tippyState = false;
+  }
+
   // Setup Module internal log
   let logName = arguments.callee.name;
 
@@ -109,7 +118,7 @@ function averageCalculator() {
 
   // Fonction Arrondie
   function hundredthRound(x) {
-    return x.toFixed(2);
+    return parseFloat(x.toFixed(2)).toString().replace(".", ",");
   }
 
   // Detecte les changement du body et execute quand nécésaire 'Calculator()'
@@ -186,6 +195,8 @@ function averageCalculator() {
     log(" > Grade analysis and Average calculation -> [ Starting ]");
 
     TotalGradesAndCoef = [];
+
+    AllGradeAndAverage = [];
 
     // Recherche la configuration du tableau
     log(" > > Table configuration finding -> [ Starting ]");
@@ -282,6 +293,16 @@ function averageCalculator() {
       // Dans le cas des autres types
 
       log(` > > > New line Analysis -> [ Starting ]`);
+
+      LineAllGradeAndAverage = {
+        notes: [],
+        average: false,
+        averageSpan: averageSpan,
+        coef: LineCoef,
+        secondary: lineProperties["IsSecondary"],
+        master: lineProperties["IsMaster"],
+      };
+
       LineGradesAndCoef = [];
 
       // Pour chaque notes
@@ -326,6 +347,7 @@ function averageCalculator() {
 
         // Ajout des notes et coefs pour la ligne
         LineGradesAndCoef.push([note, coef]);
+        LineAllGradeAndAverage["notes"].push([note, coef, notes]);
       }
 
       if (!(LineGradesAndCoef.length > 0)) {
@@ -335,12 +357,14 @@ function averageCalculator() {
 
       // Calcule de la moyenne de la ligne
       LineAverage = moyennePondere(LineGradesAndCoef);
+      LineAllGradeAndAverage["average"] = LineAverage;
+      AllGradeAndAverage.push(LineAllGradeAndAverage);
 
       // Affiche la nouvelle moyenne de la ligne
       if (tableConfiguration["relevemoyenne"]) {
         if (debug.active && !lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid blue;");
         if (debug.active && lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid red;");
-        if (averageSpan) averageSpan.innerText = hundredthRound(LineAverage).toString().replace(".", ",");
+        if (averageSpan) averageSpan.innerText = hundredthRound(LineAverage);
       }
 
       if (lineProperties["IsSecondary"]) {
@@ -352,7 +376,16 @@ function averageCalculator() {
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
           masterLineAverage = moyennePondere(masterLineGradesAndCoef);
           TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
-          if (masterLineAverageSpan) masterLineAverageSpan.innerText = hundredthRound(masterLineAverage).toString().replace(".", ",");
+          if (masterLineAverageSpan) {
+            masterLineAverageSpan.innerText = hundredthRound(masterLineAverage);
+            AllGradeAndAverage.push({
+              average: masterLineAverage,
+              averageSpan: masterLineAverageSpan,
+              coef: masterLineCoef,
+              secondary: false,
+              master: true,
+            });
+          }
           log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
         }
       }
@@ -375,7 +408,46 @@ function averageCalculator() {
 
     // Affiche la moyenne
     log(` > Final Average : ${FinalAverage}`);
-    if (averageDiv) averageDiv.innerText = "MOYENNE GENERALE : " + hundredthRound(FinalAverage).toString().replace(".", ",");
+    if (averageDiv) averageDiv.innerText = "MOYENNE GENERALE : " + hundredthRound(FinalAverage);
+
+    // Si le module de tooltip fonctionne
+    if (!tippyState) return;
+
+    // Calcule la somme des coef des matières
+    AllGradeAndAverage_SommeCoef = AllGradeAndAverage.reduce((total, item) => (item.secondary ? total : total + item.coef), 0);
+    log(` > Total Coef {${AllGradeAndAverage_SommeCoef}} -> [ Defined ]`);
+
+    // Pour chaque ligne du tableau
+    log(` > List of All Grade And Average Analysis -> [ Starting ]`);
+    for (line of AllGradeAndAverage) {
+      log(` > > New Line Analysis -> [ Starting ]`);
+      // Si elle n'est pas secondaire
+      if (line.secondary) continue;
+      // Calcule sont influence
+      LineInfluence = (line.coef * (line.average - FinalAverage)) / (AllGradeAndAverage_SommeCoef - line.coef);
+      log(` > > > Line Influence {${LineInfluence}} -> [ Defined ]`);
+      // Si un span existe
+      if (line.averageSpan) {
+        // Parametrage de tippy
+        tippytheme = "verybad";
+        if (LineInfluence > -0.2) tippytheme = "bad";
+        if (LineInfluence > -0.07) tippytheme = "neutral";
+        if (LineInfluence > 0.07) tippytheme = "good";
+        if (LineInfluence > 0.2) tippytheme = "verygood";
+        line.averageSpan.parentNode.dataset.tippyTheme = tippytheme;
+        line.averageSpan.parentNode.dataset.tippyContent = `<center>Influence sur la moyenne générale : <br> <strong>${LineInfluence > 0 ? "+" : ""}${hundredthRound(LineInfluence)}</strong></center>`;
+        line.averageSpan.parentNode.classList.add("notesAdvancedInformation");
+        log(` > > > Line Average Span Tooltip -> [ Configured ]`);
+        line.averageSpan.classList.add(`influence-${tippytheme}`);
+        line.averageSpan.classList.add(`influence`);
+        log(` > > > Line Average Span Color -> [ Added ]`);
+      } else {
+        log(` > > > Line Average Span -> [ ⚠️ Non-existent or Untouchable ]`);
+      }
+    }
+
+    // Active tippy
+    window.postMessage("tippy-noteEvent", "*");
   }
 }
 
