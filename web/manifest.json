@@ -2,7 +2,7 @@
   "name": "CustomDirecte",
   "description": "Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...",
   "author": "Bastian NOEL",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "manifest_version": 3,
   "devtools_page": "/pages/popup/index.html",
   "permissions": ["storage"],
@@ -36,7 +36,7 @@
     "css": ["/styles/average.css", "/styles/sidebar.css", "/styles/options.css"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/styles/default.css", "/scripts/darkreader.js", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico", "/pages/popup/index.html"],
+    "resources": ["/styles/default.css", "/scripts/darkreader.js", "/scripts/tippy.js", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico", "/pages/popup/index.html"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {

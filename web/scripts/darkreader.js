@@ -5458,14 +5458,14 @@
 });
 //# sourceMappingURL=/sm/4377abaf3b88f52af0bf84c492d3b422908537e18a85eca05a6cb79c885a60b9.map
 
-window.onload = () => {
+addEventListener("load", () => {
   document.documentElement.getAttribute("theme") == "dark" ? DarkReader.enable() : DarkReader.disable();
 
-  window.onmessage = function (e) {
+  window.addEventListener("message", (e) => {
     if (e.data == "DarkReader-enable") {
       DarkReader.enable();
     } else if (e.data == "DarkReader-desable") {
       DarkReader.disable();
     }
-  };
-};
+  });
+});
