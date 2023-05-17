@@ -1,5 +1,5 @@
 <H1 align="center">
-CustomDirecte Dev [5.2.0 beta 2]
+CustomDirecte Dev [6.2.0 beta 1]
 </H1>
 <H4 align="center">
 Version en développement

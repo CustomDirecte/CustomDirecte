@@ -274,8 +274,8 @@ function averageCalculator() {
       }
 
       // Trouve l'affichage du coef
-      if ((coefColumn = tableConfiguration["coef"])) {
-        LineCoef = 1;
+      LineCoef = 1;
+      if ((coefColumn = tableConfiguration["coef"])) {     
         if ((coefSpan = line.cells[coefColumn].querySelector("span"))) {
           if (debug.active) coefSpan.setAttribute("style", "border: solid orange;");
           LineCoef = parseFloat(coefSpan.innerText);
