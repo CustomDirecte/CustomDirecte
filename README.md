@@ -9,8 +9,10 @@ Version en développement
 
 <H4>Voici la liste des ajouts et changements :</H4>
 
-★ Ajout d'un code pin
+★ Ajouts de notes customs 
 
-★ Optimisation du programme [Fait]
+★ Option pour laisser la sidebar ouverte en continue
 
-★ Syncronisation sur plusieurs appareils [Fait]
+★ Statistiques des notes (influence sur la moyenne) 
+
+★ Affichage de la colone moyenne pour ceux qui ne l'on pas
