@@ -2,7 +2,7 @@
 CustomDirecte
 </H1>
 <H4 align="center">
-Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...
+Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
 </H4>
 <p align="center">
 <a href=""><img alt="Version" src="https://img.shields.io/badge/release-v6.1.0-blue"/></a>
