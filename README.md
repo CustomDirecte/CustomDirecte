@@ -5,7 +5,7 @@ CustomDirecte
 Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
 </H4>
 <p align="center">
-<a href=""><img alt="Version" src="https://img.shields.io/badge/release-v6.1.0-blue"/></a>
+<a href=""><img alt="Version" src="https://img.shields.io/badge/release-v6.1.1-blue"/></a>
 <a href="https://bit.ly/new-interface-for-ed-chrome"><img alt="Chrome" src="https://img.shields.io/badge/Web%20Chrome%20Store-Published-green"/></a>
 <a href="https://bit.ly/new-interface-for-ed-firefox"><img alt="Firefox" src="https://img.shields.io/badge/Firefox%20ADD--ONS-Published-green"/></a> 
          
