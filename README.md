@@ -17,9 +17,9 @@ A Bastoon project made with ❤️</a>
 
 <H4>Voici la liste des fonctionnalités ajoutées :</H4>
 
-★ Un calculateur de moyen qui calcule en direct les moyens par matières ainsi que la moyenne générale[^1].
+★ Un calculateur de moyennes qui calcule en direct les moyennes par matières ainsi que la moyenne générale[^1].
 
-★ Une nouvelle bar latérale (ou menu) à la place de l'ancienne :
+★ Une nouvelle barre latérale (ou menu) à la place de l'ancienne :
 * Plus lisible
 * Prend moins de place
 * Regroupe plus de paramètres
@@ -33,7 +33,7 @@ A Bastoon project made with ❤️</a>
 ----
 
 ⚠ Important :
-- Cette extension ne récupérera aucune de donné personnel
-- Tous les changements apportés au site son visuel, en aucun cas le fonctionnement du site est changé.
-- Cette extension n'est pas affilié avec le site "ecoledirecte.com"
-[^1]: Les moyennes sont calculées grâce au notes déjà afficher à l'écran, elle ne donne aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
+- Cette extension ne récupérera aucune donnée personnelle
+- Tous les changements apportés au site sont visuels, en aucun cas le fonctionnement du site n'est changé.
+- Cette extension n'est pas affiliée avec le site "ecoledirecte.com"
+[^1]: Les moyennes sont calculées grâce aux notes déjà affichées à l'écran, elles ne donnent aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
