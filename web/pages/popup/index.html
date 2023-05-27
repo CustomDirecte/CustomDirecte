@@ -15,45 +15,22 @@
 
     /* ==== Colors ==== */
     :root {
-      --white: #ffffff;
+      --background: #E7E7E7;
+      --white: #fff;
+      --gray-light: #E6E6E6;
+      --gray: #515151;
+      --transparent: #00000000;
 
-      /* == background == */
-      --light-background: #2E3359;
-      --background: #262A49;
-      --dark-background: #212441;
-      --bar: #C8194A;
+      --background-light: #2E3359;
+      --background-medium: #262A49;
+      --background-dark: #212441;
 
-      /* == color == */
-      --default: #092354;
-      --ruby: #5a0920;
-      --amethyst: #440958;
-      --jade: #095844;
-      --gold: #585809;
-
-      --default-text: #0e3e85;
-      --ruby-text: #7F0F2F;
-      --amethyst-text: #640f80;
-      --jade-text: #0f8064;
-      --gold-text: #80800f;
-
-      --default-dark-text: #2e6ac8;
-      --ruby-dark-text: #A3133C;
-      --amethyst-dark-text: #8013a4;
-      --jade-dark-text: #13a480;
-      --gold-dark-text: #a4a413;
-
-      /* == Texte == */
-      --text: var(--white);
-      --dark-text: #7C81B7;
-      --selected-text: var(--white);
-      --dark-selected-text: var(--ruby);
-
-      /* == button == */
-      --selectedButton: #13a480;
-      --hoveredButton: #13a48040;
+      --primary-white-transparent: #faeaec;
+      --primary-white: #E4C5CA;
+      --primary-light: #C8194A;
+      --primary-medium: #A3133C;
+      --primary-dark: #7F0F2F;
     }
-
-
 
     /* ==== Design Popup ==== */
 
@@ -66,631 +43,179 @@
     body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-    }
-
-    /* == Header == */
-
-    header {
-      top: 0;
-      position: fixed;
-      display: flex;
-      align-items: center;
-      background: var(--light-background);
-      width: 100vw;
-      height: 48px;
-      overflow: hidden;
-      z-index: 999;
-      justify-content: space-between;
-    }
-
-    header>object {
-      width: 44px;
-      height: 44px;
-      margin-left: 20px;
-      margin-right: 64px;
-    }
-
-    header>h1 {
-      color: var(--white);
-      font-weight: 600;
-      font-size: 23px;
-      line-height: 18px;
-    }
-
-    header>div {
-      background-color: var(--dark-background);
-      border-radius: 5px;
-      width: 108px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      margin-right: 20px;
-    }
-
-    header>div>span {
-      color: var(--white);
-      font-weight: 300;
-      font-size: 15px;
-      height: 22px;
-    }
-
-    /* == Main == */
-
-    [desactivation] {
-      pointer-events: none;
-      user-select: none;
-      filter: brightness(0.7)
-    }
-
-    main {
-      margin-top: 48px;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
       background: var(--background);
-      width: 100vw;
-      height: 100vh;
-      padding-top: 10px;
-      overflow-y: overlay;
-      overflow-x: hidden;
-      flex-wrap: nowrap;
-    }
-
-    main:hover::-webkit-scrollbar {
-      display: block;
-    }
-
-    main::-webkit-scrollbar {
-      display: none;
-      width: 12px;
-    }
-
-    main::-webkit-scrollbar-thumb {
-      background: rgb(255, 255, 255, .1);
-      background-clip: content-box;
-      border: 3px solid #0000;
-      border-radius: 9px;
-    }
-
-    section {
-      width: 50vw;
-      margin: 0px 10px 10px 10px;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      align-items: flex-start;
-      background: var(--dark-background);
-      border-radius: 8px;
-    }
-
-    section>span {
-      position: relative;
-      left: 15px;
-      width: 80px;
-      height: 4px;
-      background: var(--bar);
       overflow: hidden;
-    }
-
-    section>h2 {
-      margin-top: 13px;
-      margin-bottom: 18px;
-      margin-left: 15px;
-      color: var(--white);
-      font-weight: 500;
-      font-size: 22px;
-    }
-
-    .button {
-      width: calc(100% - 30px);
-      background-color: var(--light-background);
-      border-radius: 5px;
-      height: 45px;
-      margin: 15px;
-      margin-top: 0px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 300ms;
-      cursor: pointer;
-    }
-
-    .reload {
-      background-color: var(--white) !important;
-    }
-
-    .reload span {
-      color: var(--dark-background) !important;
-    }
-
-    .reload:hover {
-      background-color: var(--white) !important;
-      color: var(--dark-background) !important;
-    }
-
-    .reload:hover span {
-      color: var(--dark-background) !important;
-    }
-
-    .button>span {
-      color: var(--dark-text);
-      font-weight: 500;
-      font-size: 16px;
-      height: 23px;
-      transition: 300ms;
-    }
-
-    .button:hover {
-      background-color: var(--hoveredButton);
-    }
-
-    .button[selected] {
-      background-color: var(--selectedButton);
-    }
-
-    .button:hover>span,
-    .button[selected]>span {
-      color: var(--selected-text);
-    }
-
-    .themeOption {
-      background-color: var(--background);
-      border-radius: 5px;
-      width: calc(100% - 30px);
-      margin: 15px;
-      margin-top: 0px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .themeOption>div {
-      margin: 2px 5px;
       text-align: center;
     }
 
-    .themeOption>div>h3 {
+    /* ===== Header ===== */
+
+    header {
+      bottom: 0;
+      margin: 10px 20px 10px 20px;
+      height: 50px;
+      width: calc(100vw - 40px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .name-div {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .icon {
+      height: 50px;
+      width: 50px;
+    }
+
+    #name {
+      margin: 0 15px;
+    }
+
+    #name>p {
+      color: var(--background-dark);
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+    .version-div {
+      height: 40px;
+      border-radius: 999px;
+      background: var(--background-dark);
+    }
+
+    #version {
       color: var(--white);
+      font-size: 22px;
       font-weight: 500;
-      font-size: 13px;
+      padding: 4px 14px;
     }
 
-    /* = Color Option = */
+    /* ===== Main ===== */
 
-    .themeOption>div>div.colorElement {
+    main {
+      bottom: 0;
+      margin: 0 20px 20px 20px;
+      height: calc(100vh - 90px);
+      width: calc(100vw - 40px);
+      border-radius: 18px;
+      background: var(--white);
       display: flex;
-      margin: 10px 0;
-    }
-
-    .themeOption>div>div.colorElement>div {
-      background-color: var(--light-background);
-      border-radius: 5px;
-      width: 80px;
-      height: 28px;
-      margin: 0 3px;
-      margin-top: 0px;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
       align-items: center;
-      transition: 300ms;
+      justify-content: center;
+    }
+
+    .separator {
+      border: 0;
+      border-radius: 999px;
+      background: var(--gray-light);
+    }
+
+    .separator.vertical {
+      width: 2px;
+      height: 90%;
+      margin: 0 20px;
+    }
+
+    .groups {
+      height: 90%;
+      width: 300px;
+    }
+
+    .group {
+      color: var(--primary-medium);
+      text-align: left;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 999px;
       cursor: pointer;
-    }
-
-    .themeOption>div>div.colorElement>div>span {
-      color: var(--dark-text);
-      font-weight: 600;
-      font-size: 12px;
-      height: 20px;
-      transition: 300ms;
-    }
-
-    .themeOption>div>div.colorElement>div>span:nth-child(2) {
-      margin-top: -6px;
-    }
-
-    /* Par Défaut */
-
-    .themeOption>div>div.colorElement>div:nth-child(1) {
-      background-color: var(--default);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(1):hover,
-    .themeOption>div>div.colorElement>div:nth-child(1)[selected] {
-      background-color: var(--default-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(1)>span {
-      color: var(--default-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(1)>span:nth-child(2) {
-      color: var(--default-text);
-    }
-
-    /* Rubis */
-
-    .themeOption>div>div.colorElement>div:nth-child(2) {
-      background-color: var(--ruby);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(2):hover,
-    .themeOption>div>div.colorElement>div:nth-child(2)[selected] {
-      background-color: var(--ruby-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(2)>span {
-      color: var(--ruby-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(2)>span:nth-child(2) {
-      color: var(--ruby-text);
-    }
-
-    /* Amétiste */
-
-    .themeOption>div>div.colorElement>div:nth-child(3) {
-      background-color: var(--amethyst);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(3):hover,
-    .themeOption>div>div.colorElement>div:nth-child(3)[selected] {
-      background-color: var(--amethyst-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(3)>span {
-      color: var(--amethyst-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(3)>span:nth-child(2) {
-      color: var(--amethyst-text);
-    }
-
-    /* Jade */
-
-    .themeOption>div>div.colorElement>div:nth-child(4) {
-      background-color: var(--jade);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(4):hover,
-    .themeOption>div>div.colorElement>div:nth-child(4)[selected] {
-      background-color: var(--jade-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(4)>span {
-      color: var(--jade-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(4)>span:nth-child(2) {
-      color: var(--jade-text);
-    }
-
-    /* Gold */
-
-    .themeOption>div>div.colorElement>div:nth-child(5) {
-      background-color: var(--gold);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(5):hover,
-    .themeOption>div>div.colorElement>div:nth-child(5)[selected] {
-      background-color: var(--gold-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(5)>span {
-      color: var(--gold-dark-text);
-    }
-
-    .themeOption>div>div.colorElement>div:nth-child(5)>span:nth-child(2) {
-      color: var(--gold-text);
-    }
-
-    .themeOption>div>div.colorElement>div:hover>span,
-    .themeOption>div>div.colorElement>div[selected]>span {
-      color: var(--white);
-    }
-
-    /* = Font Option = */
-
-    .themeOption>div>div.fontElement {
-      display: flex;
-      margin: 10px 0;
-      margin-top: 5px;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .themeOption>div>div.fontElement>div {
-      background-color: var(--light-background);
-      border-radius: 5px;
-      width: 86px;
-      height: 27px;
-      margin: 5px;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
-      align-items: center;
-      transition: 300ms;
-      cursor: pointer;
-    }
-
-    .themeOption>div>div.fontElement>div>span {
-      color: var(--dark-text);
-      font-weight: 600;
-      font-size: 12px;
-      transition: 300ms;
-    }
-
-    .themeOption>div>div.fontElement>div:hover>span,
-    .themeOption>div>div.fontElement>div[selected]>span {
-      color: var(--white);
-    }
-
-    .themeOption>div>div.fontElement>div:hover {
-      background-color: var(--hoveredButton);
-    }
-
-    .themeOption>div>div.fontElement>div[selected] {
-      background-color: var(--selectedButton);
-    }
-
-    .themeOption>div>div.fontElement>div:hover>span:nth-child(2),
-    .themeOption>div>div.fontElement>div[selected]>span:nth-child(2) {
-      color: var(--dark-selected-text);
-    }
-
-    .themeOption>div>div.fontElement>div:nth-child(1)>span {
-      font-family: 'Tahoma', sans-serif !important;
-    }
-
-    .themeOption>div>div.fontElement>div:nth-child(2)>span {
-      font-family: 'Poppin', sans-serif !important;
-    }
-
-    .themeOption>div>div.fontElement>div:nth-child(3)>span {
-      font-family: 'Open Sans', sans-serif !important;
-    }
-
-    .themeOption>div>div.fontElement>div:nth-child(4)>span {
-      font-family: 'Montserrat', sans-serif !important;
-    }
-
-    .themeOption>div>div.fontElement>div:nth-child(5)>span {
-      font-family: 'Roboto', sans-serif !important;
-    }
-
-    .themeOption>div>div.fontElement>div:nth-child(6)>span {
-      font-family: 'Inter', sans-serif !important;
-    }
-
-    /* = Border Option = */
-
-    .themeOption>div>div.borderElement {
-      display: flex;
-      margin: 10px 0;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .themeOption>div>div.borderElement>div {
-      background-color: var(--light-background);
-      border-radius: 5px;
-      width: 86px;
-      height: 27px;
-      margin: 0 5px;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
-      align-items: center;
-      transition: 300ms;
-      cursor: pointer;
-    }
-
-    .themeOption>div>div.borderElement>div>span {
-      color: var(--dark-text);
+      background:
+        radial-gradient(50% 100% at bottom, var(--primary-medium) 100%, var(--transparent)) center bottom no-repeat,
+        radial-gradient(50% 100% at bottom, var(--primary-white-transparent) 100%, var(--transparent)) center bottom no-repeat,
+        var(--gray);
+      background-clip: text, padding-box, text;
+      -webkit-background-clip: text, padding-box, text;
+      background-size: 0% 0%;
+      transition: 0.2s ease-in;
+      font-size: 24px;
       font-weight: 500;
-      font-size: 12px;
-      transition: 300ms;
+      padding: 10px 30px;
     }
 
-    .themeOption>div>div.borderElement>div:hover>span,
-    .themeOption>div>div.borderElement>div[selected]>span {
-      color: var(--white);
+    .group:hover {
+      background-size: 150% 150%;
     }
 
-    .themeOption>div>div.borderElement>div:hover {
-      background-color: var(--hoveredButton);
+    .group.clic {
+      color: var(--primary-medium);
+      background: var(--primary-white-transparent);
+      background-size: 0% 0%, auto;
+      animation: group 0.4s ease-in forwards;
     }
 
-    .themeOption>div>div.borderElement>div[selected] {
-      background-color: var(--selectedButton);
+    @keyframes group {
+      0% {
+        background: radial-gradient(50% 100% at bottom, var(--primary-white) 100%, var(--transparent)) center bottom no-repeat, var(--primary-white-transparent);
+        background-size: 0% 0%, auto;
+      }
+
+      100% {
+        background: radial-gradient(50% 100% at bottom, var(--primary-white) 100%, var(--transparent)) center bottom no-repeat, var(--primary-white-transparent);
+        background-size: 150% 150%, auto;
+        transition: 0.2s ease-in;
+      }
     }
 
-    .themeOption>div>div.borderElement>div:nth-child(1) {
-      border-radius: 0;
+    .group[selected] {
+      background: var(--primary-white);
+      color: var(--primary-medium);
     }
 
-    .themeOption>div>div.borderElement>div:nth-child(2) {
-      border-radius: 4px;
+    .group.close {
+      color: red;
     }
 
-    .themeOption>div>div.borderElement>div:nth-child(3) {
-      border-radius: 8px;
-    }
-
-    /* = Mode Option = */
-
-    .themeOption>div>div.modeElement {
-      display: flex;
-      margin: 10px 0;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .themeOption>div>div.modeElement>div {
-      background-color: var(--light-background);
-      border-radius: 5px;
-      width: 86px;
-      height: 27px;
-      margin: 0 5px;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
-      align-items: center;
-      transition: 300ms;
-      cursor: pointer;
-    }
-
-    .themeOption>div>div.modeElement>div>span {
-      color: var(--dark-text);
-      font-weight: 500;
-      font-size: 12px;
-      transition: 300ms;
-    }
-
-    .themeOption>div>div.modeElement>div:hover>span,
-    .themeOption>div>div.modeElement>div[selected]>span {
-      color: var(--white);
-    }
-
-    .themeOption>div>div.modeElement>div:hover {
-      background-color: var(--hoveredButton);
-    }
-
-    .themeOption>div>div.modeElement>div[selected] {
-      background-color: var(--selectedButton);
+    .options {
+      height: 90%;
+      width: calc(100% - (300px + 42px + 40px));
     }
   </style>
 </head>
 
 <body>
   <header>
-    <object data="../../icons/default/icon.svg"> </object>
-    <h1>CustomDirecte</h1>
-    <div>
-      <span version feature="debug">Error</span>
+    <div class="name-div">
+      <object class="icon" data="../../icons/default/icon.svg"></object>
+      <div id="name">
+        <p>CustomDirecte</p>
+      </div>
+    </div>
+    <div class="version-div">
+      <p id="version">Version 6.2.1</p>
     </div>
   </header>
   <main>
-    <section>
-      <span></span>
-      <h2>Fonctionnalités</h2>
-      <div class="button" button feature="averageCalculator">
-        <span>Calculateur de moyennes</span>
+    <div class="groups">
+      <div class="group" group="notesTable" selected>
+        Tableaux de notes
       </div>
-      <div class="button" button feature="newMenu">
-        <span>Nouveau design pour le menu</span>
+      <div class="group" group="sidebar">
+        Barre latérale
       </div>
-      <div class="button" button feature="newDesign">
-        <span>Activer la personnalisation de l'affichage</span>
+      <div class="group" group="personnalisations">
+        Personnalisation
       </div>
-      <div class="button reload" feature="reload">
-        <span>Appliquer les changements</span>
+      <div class="group close" group="close">
+        Fermer
       </div>
-    </section>
-    <section>
-      <span></span>
-      <h2>Personnalisations</h2>
-
-      <div class="themeOption" feature="Personnalisations" desactivation>
-        <div>
-          <h3>Couleur principale</h3>
-          <div class="colorElement">
-            <div button listOption="default" feature="newColor">
-              <span>Par Défaut</span>
-              <span>Bleu</span>
-            </div>
-            <div button listOption="magenta" feature="newColor">
-              <span>Rubis</span>
-              <span>Magenta</span>
-            </div>
-            <div button listOption="purple" feature="newColor">
-              <span>Améthyste</span>
-              <span>Violet</span>
-            </div>
-            <div button listOption="turquoise" feature="newColor">
-              <span>Jade</span>
-              <span>Turquoise</span>
-            </div>
-            <div button listOption="gold" feature="newColor">
-              <span>Or</span>
-              <span>Doré</span>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h3>Police d’écriture</h3>
-          <div class="fontElement">
-            <div button listOption="tahoma" feature="newFont">
-              <span>Tahoma</span>
-            </div>
-            <div button listOption="poppin" feature="newFont">
-              <span>Poppin</span>
-            </div>
-            <div button listOption="openSans" feature="newFont">
-              <span>Open Sans</span>
-            </div>
-            <div button listOption="montserrat" feature="newFont">
-              <span>Montserrat</span>
-            </div>
-            <div button listOption="roboto" feature="newFont">
-              <span>Roboto</span>
-            </div>
-            <div button listOption="inter" feature="newFont">
-              <span>Inter</span>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h3>Degré d'angle</h3>
-          <div class="borderElement">
-            <div button listOption="default" feature="newBorder">
-              <span>Par défaut</span>
-            </div>
-            <div button listOption="thin" feature="newBorder">
-              <span>Faible</span>
-            </div>
-            <div button listOption="wide" feature="newBorder">
-              <span>Moyen</span>
-            </div>
-          </div>
-        </div>
-        <div class="themeMenu" feature="menuThemeParent">
-          <h3>Mode du Menu</h3>
-          <div class="modeElement">
-            <div button listOption="dark" feature="menuTheme">
-              <span>Sombre</span>
-            </div>
-            <div button listOption="light" feature="menuTheme">
-              <span>Claire</span>
-            </div>
-          </div>
-        </div>
-        <div class="theme" feature="themeParent">
-          <h3>Mode Sombre [Beta]</h3>
-          <div class="modeElement">
-            <div button listOption="dark" feature="theme">
-              <span>Activé</span>
-            </div>
-            <div button listOption="light" feature="theme">
-              <span>Désactivé</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
+    <hr class="separator vertical" />
+    <div class="options"></div>
   </main>
-  <script src="script.js"></script>
+  <script src="script2.js"></script>
 </body>
 
 </html>
