@@ -1,5 +1,4 @@
-document.querySelectorAll("[group]").forEach((ele) => {
-  ele.onclick = () => {
-    ele.classList.toggle("clic");
-  };
-});
+document.querySelectorAll("[groupButton]").forEach((ele) => ele.addEventListener('click', () => {
+  document.querySelectorAll("[selected]").forEach((selectedEle) => selectedEle.removeAttribute('selected'));
+  ele.toggleAttribute("selected");
+}));
