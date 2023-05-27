@@ -185,6 +185,14 @@
       padding-top: 25px;
     }
 
+    .selectionOption {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding-top: 25px;
+    }
+
     .optionInfo {
       display: flex;
       justify-content: flex-start;
@@ -229,6 +237,19 @@
 
     .optionSwitch[active]::before {
       margin-right: 5px;
+    }
+
+    .optionSelection {
+      display: flex;
+      flex-direction: row;
+      margin-top: 15px;
+    }
+
+    .optionBox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 20px;
     }
   </style>
 </head>
@@ -283,12 +304,28 @@
         <div class="optionSwitch">
         </div>
       </div>
-      <div class="option" option="AveragesColorIndicator">
+      <div class="option selectionOption" option="AveragesColorIndicator">
         <div class="optionInfo">
-          <span class="optionTitle">Forcer l’affichage des moyennes par matières</span>
-          <span class="optionpSubtitle">Force l’affichage des moyennes par matières et les recalcules</span>
+          <span class="optionTitle">Indicateurs colorés sur les moyennes par matières</span>
+          <span class="optionpSubtitle">Indique à l’aide de couleurs si les moyennes baisses ou augmentes la moyenne générale</span>
         </div>
-        <div class="optionSwitch">
+        <div class="optionSelection">
+          <div class="optionBox">
+            <img src="svg/AveragesColorIndicator/1.svg" />
+            <span>Aucun</span>
+          </div>
+          <div class="optionBox">
+            <img src="svg/AveragesColorIndicator/2.svg" />
+            <span>Aucun</span>
+          </div>
+          <div class="optionBox">
+            <img src="svg/AveragesColorIndicator/3.svg" />
+            <span>Aucun</span>
+          </div>
+          <div class="optionBox">
+            <img src="svg/AveragesColorIndicator/4.svg" />
+            <span>Aucun</span>
+          </div>
         </div>
       </div>
     </div>
