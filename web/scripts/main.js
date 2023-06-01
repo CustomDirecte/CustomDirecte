@@ -514,8 +514,8 @@ function newMenu() {
       log(" > Options button -> [ Added ]");
       menuAddNewOptions("Account", "fa-user", "Mon Compte", () => document.getElementById("user-account-link").click());
       log(" > Account button -> [ Added ]");
-      menuAddNewOptions("Déconnection", "fa-sign-out", "Déconnection", () => document.querySelector(".logout").click());
-      log(" > Deconnection button -> [ Added ]");
+      menuAddNewOptions("Déconnexion", "fa-sign-out", "Déconnexion", () => document.querySelector(".logout").click());
+      log(" > Deconnexion button -> [ Added ]");
 
       // Cache la bare qui contiens le nom et la bouton de déconnexion
       if (document.querySelector(".navbar-nav")) document.querySelector(".navbar-nav").style.display = "none";
