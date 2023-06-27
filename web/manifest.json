@@ -9,10 +9,6 @@
   "host_permissions": [
     "*://*.ecoledirecte.com/*"
   ],
-  "options_ui": {
-    "page": "/pages/popup/index.html",
-    "open_in_tab": true
-  },
   "action": {
     "default_title": "CustomDirecte",
     "default_icon": {

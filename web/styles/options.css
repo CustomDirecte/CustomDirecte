@@ -20,7 +20,6 @@ html:not(.optionsPopupActif) .optionsPopupBlur {
   height: 80vh;
   margin-left: 10vw;
   margin-top: 10vh;
-  background-color: var(--primary-color);
   border-radius: var(--table-radius);
   animation-duration: 0.5s;
   animation-name: animate-pop;

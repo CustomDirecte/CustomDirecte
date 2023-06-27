@@ -1,0 +1,655 @@
+/*  ██████╗  ██╗       ██████╗  ██████╗   █████╗  ██╗      */
+/* ██╔════╝  ██║      ██╔═══██╗ ██╔══██╗ ██╔══██╗ ██║      */
+/* ██║  ███╗ ██║      ██║   ██║ ██████╔╝ ███████║ ██║      */
+/* ██║   ██║ ██║      ██║   ██║ ██╔══██╗ ██╔══██║ ██║      */
+/* ╚██████╔╝ ███████╗ ╚██████╔╝ ██████╔╝ ██║  ██║ ███████╗ */
+/*  ╚═════╝  ╚══════╝  ╚═════╝  ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ */
+
+/* █▀▀ █   █▀█ █▄▄ ▄▀█ █   */
+/* █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄ */
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  overflow: hidden;
+  text-align: center;
+}
+
+/* █▀▀ █▀█ █▄ █ ▀█▀ */
+/* █▀  █▄█ █ ▀█  █  */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
+@import url("https://fonts.cdnfonts.com/css/comic-sans");
+@import url("https://fonts.cdnfonts.com/css/open-dyslexic");
+
+/* █▀▀ █▀█ █   █▀█ █▀█ */
+/* █▄▄ █▄█ █▄▄ █▄█ █▀▄ */
+
+:root {
+  --background: #e7e7e7;
+  --white: #fff;
+  --gray-light: #e6e6e6;
+  --gray: #515151;
+  --gray-transparent: #51515120;
+  --transparent: #00000000;
+
+  --background-light: #2e3359;
+  --background-medium: #262a49;
+  --background-dark: #212441;
+
+  --primary-white-transparent: #faeaec;
+  --primary-white: #e4c5ca;
+  --primary-light: #c8194a;
+  --primary-medium: #a3133c;
+  --primary-dark: #7f0f2f;
+
+  --font-tahoma: Tahoma, sans-serif;
+  --font-poppin: Poppin, sans-serif;
+  --font-openSans: Open Sans, sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-inter: Inter, sans-serif;
+  --font-merriweather: Merriweather, serif;
+  --font-leckerliOne: Leckerli One, cursive;
+  --font-comicSans: comic sans;
+  --font-openDyslexic: open-dyslexic;
+}
+
+/* ███████╗  ██████╗   ██████╗  ███╗   ███╗ */
+/* ╚══███╔╝ ██╔═══██╗ ██╔═══██╗ ████╗ ████║ */
+/*   ███╔╝  ██║   ██║ ██║   ██║ ██╔████╔██║ */
+/*  ███╔╝   ██║   ██║ ██║   ██║ ██║╚██╔╝██║ */
+/* ███████╗ ╚██████╔╝ ╚██████╔╝ ██║ ╚═╝ ██║ */
+/* ╚══════╝  ╚═════╝   ╚═════╝  ╚═╝     ╚═╝ */
+
+/* ▀█ █▀█ █▀█ █▀▄▀█ */
+/* █▄ █▄█ █▄█ █ ▀ █ */
+
+* {
+  --zoom: 1;
+  --vh: calc(100vh * (1 / var(--zoom)));
+  --vw: calc(100vw * (1 / var(--zoom)));
+}
+
+html {
+  transform: scale(var(--zoom));
+  transform-origin: top left;
+  -moz-transform: scale(var(--zoom));
+  -moz-transform-origin: top left;
+}
+
+/* █▀ █ ▀█ █▀▀ */
+/* ▄█ █ █▄ ██▄ */
+
+@media (width <=800px) {
+  * {
+    --zoom: 0.5;
+  }
+}
+
+@media (800px < width <=950px) {
+  * {
+    --zoom: 0.6;
+  }
+}
+
+@media (950px < width <=1090px) {
+  * {
+    --zoom: 0.7;
+  }
+}
+
+@media (1090px < width <=1220px) {
+  * {
+    --zoom: 0.8;
+  }
+}
+
+@media (1220px < width <=1350px) {
+  * {
+    --zoom: 0.9;
+  }
+}
+
+/* ██╗  ██╗ ███████╗  █████╗  ██████╗  ███████╗ ██████╗       */
+/* ██║  ██║ ██╔════╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔══██╗      */
+/* ███████║ █████╗   ███████║ ██║  ██║ █████╗   ██████╔╝      */
+/* ██╔══██║ ██╔══╝   ██╔══██║ ██║  ██║ ██╔══╝   ██╔══██╗      */
+/* ██║  ██║ ███████╗ ██║  ██║ ██████╔╝ ███████╗ ██║  ██║      */
+/* ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝ ╚═════╝  ╚══════╝ ╚═╝  ╚═╝      */
+
+/* █ █ █▀▀ ▄▀█ █▀▄ █▀▀ █▀█   */
+/* █▀█ ██▄ █▀█ █▄▀ ██▄ █▀▄   */
+
+header {
+  bottom: 0;
+  margin: 10px 20px 10px 20px;
+  height: 50px;
+  width: calc(var(--vw) - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+div:has(#title) {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* █ █▀▀ █▀█ █▄ █ */
+/* █ █▄▄ █▄█ █ ▀█ */
+
+.icon {
+  height: 50px;
+  width: 50px;
+}
+
+/* ▀█▀ █ ▀█▀ █   █▀▀ */
+/*  █  █  █  █▄▄ ██▄ */
+
+#title {
+  margin: 0 15px;
+}
+
+#title > p {
+  color: var(--background-dark);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+/* █ █ █▀▀ █▀█ █▀ █ █▀█ █▄ █ */
+/* ▀▄▀ ██▄ █▀▄ ▄█ █ █▄█ █ ▀█ */
+
+.version-div {
+  height: 40px;
+  border-radius: 999px;
+  background: var(--background-dark);
+}
+
+#version {
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 500;
+  padding: 4px 14px;
+}
+
+/* ███╗   ███╗  █████╗  ██╗ ███╗   ██╗ */
+/* ████╗ ████║ ██╔══██╗ ██║ ████╗  ██║ */
+/* ██╔████╔██║ ███████║ ██║ ██╔██╗ ██║ */
+/* ██║╚██╔╝██║ ██╔══██║ ██║ ██║╚██╗██║ */
+/* ██║ ╚═╝ ██║ ██║  ██║ ██║ ██║ ╚████║ */
+/* ╚═╝     ╚═╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝  ╚═══╝ */
+
+/* █▀▄▀█ ▄▀█ █ █▄ █ */
+/* █ ▀ █ █▀█ █ █ ▀█ */
+
+main {
+  bottom: 0;
+  margin: 0 20px 20px 20px;
+  height: calc(var(--vh) - 90px);
+  width: calc(var(--vw) - 40px);
+  border-radius: 18px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* █▀ █▀▀ █▀█ ▄▀█ █▀█ ▄▀█ ▀█▀ █▀█ █▀█ */
+/* ▄█ ██▄ █▀▀ █▀█ █▀▄ █▀█  █  █▄█ █▀▄ */
+
+.separator {
+  border: 0;
+  border-radius: 999px;
+  background: var(--gray-light);
+  width: 100%;
+  height: 2px;
+}
+
+.separator.vertical {
+  width: 2px;
+  height: 90%;
+  margin: 0 20px;
+}
+
+/* █▀▀ █▀█ █▀█ █ █ █▀█ █▀ */
+/* █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ */
+
+.groups {
+  height: 90%;
+  width: 300px;
+}
+
+/* █▀▀ █▀█ █▀█ █ █ █▀█ */
+/* █▄█ █▀▄ █▄█ █▄█ █▀▀ */
+
+.group {
+  color: var(--gray);
+  text-align: left;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.2s ease-in;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 10px 30px;
+}
+
+.group:hover {
+  background: var(--primary-white-transparent);
+}
+
+.group[selected] {
+  background: var(--primary-white);
+  color: var(--primary-medium);
+}
+
+.group.close {
+  color: red;
+}
+
+/* █▀▀ █▀█ █▀█ █ █ █▀█   ▀   █ █▄ █ █▀▀ █▀█ */
+/* █▄█ █▀▄ █▄█ █▄█ █▀▀   ▄   █ █ ▀█ █▀  █▄█ */
+
+.groupInfo {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 25px;
+}
+
+.groupTitle {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--background-dark);
+}
+
+.groupSubtitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--gray);
+}
+
+/*  ██████╗  ██████╗  ████████╗ ██╗  ██████╗  ███╗   ██╗ ███████╗ */
+/* ██╔═══██╗ ██╔══██╗ ╚══██╔══╝ ██║ ██╔═══██╗ ████╗  ██║ ██╔════╝ */
+/* ██║   ██║ ██████╔╝    ██║    ██║ ██║   ██║ ██╔██╗ ██║ ███████╗ */
+/* ██║   ██║ ██╔═══╝     ██║    ██║ ██║   ██║ ██║╚██╗██║ ╚════██║ */
+/* ╚██████╔╝ ██║         ██║    ██║ ╚██████╔╝ ██║ ╚████║ ███████║ */
+/*  ╚═════╝  ╚═╝         ╚═╝    ╚═╝  ╚═════╝  ╚═╝  ╚═══╝ ╚══════╝ */
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █ █▀ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█ ▄█ */
+
+.options {
+  display: block;
+  overflow-y: scroll;
+  visibility: visible;
+  opacity: 1;
+  height: 90%;
+  width: calc(100% - (300px + 42px + 40px + 20px));
+  padding-right: 20px;
+  transition: visibility 0s, opacity 0.8s;
+}
+
+.options[hide] {
+  visibility: hidden;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █ █▀   ▀   █▀ █▀▀ █▀█ █▀█ █   █   █▄▄ ▄▀█ █▀█ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█ ▄█   ▄   ▄█ █▄▄ █▀▄ █▄█ █▄▄ █▄▄ █▄█ █▀█ █▀▄ */
+
+.options::-webkit-scrollbar {
+  width: 12px;
+}
+
+.options::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: var(--gray-light);
+}
+
+.options::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--background-dark);
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█ */
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  padding: 6px 0;
+  margin: 12px 0;
+}
+
+.option:has(.optionSelection) {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █   ▀   █▀▄ █ █▀ ▄▀█ █▄▄ █   █▀▀ █▀▄ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█   ▄   █▄▀ █ ▄█ █▀█ █▄█ █▄▄ ██▄ █▄▀ */
+
+.option[disabled] {
+  border: 3px solid var(--gray);
+  background: var(--gray-transparent);
+  border-radius: 18px;
+}
+
+.option[disabled] > .optionInfo {
+  margin-left: 20px;
+}
+
+.option[disabled] > .optionSelection {
+  margin-left: 20px;
+}
+
+.option[disabled] > .optionSwitch {
+  margin-right: 10px;
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █   ▀   █ █▄ █ █▀▀ █▀█   */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█   ▄   █ █ ▀█ █▀  █▄█   */
+
+.optionInfo {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.optionTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--background-dark);
+}
+
+.optionTitle[reloadingRequired]::before {
+  content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path style="fill: rgb(50,50,50);" d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"/></svg>');
+  padding-right: 6px;
+}
+
+.optionpSubtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--gray);
+}
+
+/* ████████╗ ██╗   ██╗ ██████╗  ███████╗ */
+/* ╚══██╔══╝ ╚██╗ ██╔╝ ██╔══██╗ ██╔════╝ */
+/*    ██║     ╚████╔╝  ██████╔╝ █████╗   */
+/*    ██║      ╚██╔╝   ██╔═══╝  ██╔══╝   */
+/*    ██║       ██║    ██║      ███████╗ */
+/*    ╚═╝       ╚═╝    ╚═╝      ╚══════╝ */
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀ █ █ █ █ ▀█▀ █▀▀ █ █ */
+/*  █   █  █▀▀ ██▄   ▄   ▄█ ▀▄▀▄▀ █  █  █▄▄ █▀█ */
+
+.optionSwitch {
+  background: var(--primary-dark);
+  width: 86px;
+  height: 45px;
+  border-radius: 999px;
+  position: relative;
+  margin-top: 6.5px;
+}
+
+.optionSwitch::before {
+  content: "";
+  position: absolute;
+  background: var(--white);
+  margin: 3.5px;
+  margin-left: -38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  transition: 1s;
+}
+
+.optionSwitch[active] {
+  background: var(--primary-light);
+}
+
+.optionSwitch[active]::before {
+  margin-left: 1px;
+}
+
+.option[disabled] > .optionSwitch {
+  background: var(--gray);
+}
+
+.option[disabled] > .optionSwitch::before {
+  background: var(--gray-light);
+}
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀ █▀▀ █   █▀▀ █▀▀ ▀█▀ █ █▀█ █▄ █ */
+/*  █   █  █▀▀ ██▄   ▄   ▄█ ██▄ █▄▄ ██▄ █▄▄  █  █ █▄█ █ ▀█ */
+
+.optionSelection {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.optionBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 24px;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+
+.optionBox[active] > img,
+.optionBox[active] > div {
+  border: 3px solid var(--primary-light);
+  border-radius: 18px;
+}
+
+.optionBox[active]::after {
+  position: absolute;
+  content: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' viewBox='0 0 20 20'><path stroke='%23fff' stroke-width='2' d='m4.707 9.293 5 5m-1.414 0 7-7'/></svg>");
+  background: var(--primary-light);
+  border-radius: 999px;
+  margin-right: var(--Xplacement);
+  margin-top: -3px;
+  width: 20px;
+  height: 20px;
+}
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █▀ █▀▀ █   █▀▀ █▀▀ ▀█▀ █ █▀█ █▄ █ */
+/*  █   █  █▀▀ ██▄   ▄   █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ ▄█ ██▄ █▄▄ ██▄ █▄▄  █  █ █▄█ █ ▀█ */
+
+/* fontDemo */
+
+.fontDemo {
+  height: 50px;
+  width: 170px;
+  background-color: #f9f9f9;
+  border: solid 1px var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* cornerDemo */
+
+.cornerDemo {
+  height: 50px;
+  width: 170px;
+  background-color: #f9f9f9;
+  border-radius: 18px;
+  border: solid 1px var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/*  
+▀█▀ █▄█ █▀█ █▀▀   ▀   █▀▀ █▀█ █   █▀█ █▀█
+ █   █  █▀▀ ██▄   ▄   █▄▄ █▄█ █▄▄ █▄█ █▀▄
+*/
+
+.colorSlider {
+  appearance: none;
+  width: 400px;
+  height: 25px;
+  background: linear-gradient(
+    90deg,
+    hsl(0, 90%, 50%),
+    hsl(20, 90%, 50%),
+    hsl(40, 90%, 50%),
+    hsl(60, 90%, 50%),
+    hsl(80, 90%, 50%),
+    hsl(100, 90%, 50%),
+    hsl(120, 90%, 50%),
+    hsl(140, 90%, 50%),
+    hsl(160, 90%, 50%),
+    hsl(180, 90%, 50%),
+    hsl(200, 90%, 50%),
+    hsl(220, 90%, 50%),
+    hsl(240, 90%, 50%),
+    hsl(260, 90%, 50%),
+    hsl(280, 90%, 50%),
+    hsl(300, 90%, 50%),
+    hsl(320, 90%, 50%),
+    hsl(340, 90%, 50%),
+    hsl(360, 90%, 50%)
+  );
+  outline: none;
+  border-radius: 20px;
+}
+
+.colorSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 40px;
+  background: var(--gray);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.colorSimulation {
+  --colorSimulation-1: hsl(var(--color), 100%, 85%);
+  --colorSimulation-2: hsl(var(--color), 98%, 78%);
+  --colorSimulation-3: hsl(var(--color), 78%, 44%);
+  --colorSimulation-4: hsl(var(--color), 79%, 36%);
+  --colorSimulation-5: hsl(var(--color), 79%, 28%);
+  --colorSimulation-6: hsl(var(--color), 82%, 19%);
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  margin-left: 10px;
+}
+
+/*  
+█▀▀ █▀█ █   █▀█ █▀█   █▀▀ █▀█ █▀▄ █▀▀
+█▄▄ █▄█ █▄▄ █▄█ █▀▄   █▄▄ █▄█ █▄▀ ██▄
+*/
+
+[color="0"] > div {
+  --color: 0;
+}
+
+[color="20"] > div {
+  --color: 20;
+}
+
+[color="40"] > div {
+  --color: 40;
+}
+
+[color="60"] > div {
+  --color: 60;
+}
+
+[color="80"] > div {
+  --color: 80;
+}
+
+[color="100"] > div {
+  --color: 100;
+}
+
+[color="120"] > div {
+  --color: 120;
+}
+
+[color="140"] > div {
+  --color: 140;
+}
+
+[color="160"] > div {
+  --color: 160;
+}
+
+[color="180"] > div {
+  --color: 180;
+}
+
+[color="200"] > div {
+  --color: 200;
+}
+
+[color="220"] > div {
+  --color: 220;
+}
+
+[color="240"] > div {
+  --color: 240;
+}
+
+[color="260"] > div {
+  --color: 260;
+}
+
+[color="280"] > div {
+  --color: 280;
+}
+
+[color="300"] > div {
+  --color: 300;
+}
+
+[color="320"] > div {
+  --color: 320;
+}
+
+[color="340"] > div {
+  --color: 340;
+}
+
+[color="360"] > div {
+  --color: 360;
+}

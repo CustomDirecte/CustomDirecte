@@ -1,10 +1,14 @@
 /* ===== Default ===== */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
+@import url('https://fonts.cdnfonts.com/css/comic-sans');
+@import url('https://fonts.cdnfonts.com/css/open-dyslexic');
 
 :root {
     --borderRadius-default: 0;
@@ -16,8 +20,12 @@
     --font-montserrat: Montserrat, sans-serif;
     --font-roboto: Roboto, sans-serif;
     --font-inter: Inter, sans-serif;
+    --font-merriweather: Merriweather, serif;
+    --font-leckerliOne: Leckerli One, cursive;
+    --font-comicSans: comic sans;
+    --font-openDyslexic: open-dyslexic;
     --body-color: var(--theme-body-color, #ffffff);
-    --sidebar-color: var(--theme-sidebar-color, #2e6ac8);
+    --sidebar-color: var(--theme-sidebar-color, rgb(46, 106, 200));
     --primary-color: var(--light-primary-color);
     --primary-color-light: var(--dark-primary-color);
     --text-color: var(--theme-text-color, #ebebeb);
@@ -48,14 +56,22 @@
     --contenu-color: #0c91c6 !important;
     --search-color: #a5a7ab !important;
     --menu-hover-color: #f5f5f5 !important;
+    --bs-primary-rgb: 15, 143, 209 !important;
+    --bs-success-rgb: 15, 143, 209 !important;
     --bs-secondary-rgb: 205, 20, 120 !important;
     --bs-danger-rgb: 205, 20, 120 !important;
     --bs-border-color: var(--smalldark-placeholder-color) !important;
     --bs-warning-rgb: 138, 109, 59 !important;
+    --footer-primary-color: var(--var-footer-primary-color, rgb(237, 243, 253)) !important;
+    --hover-primary-color: var(--var-hover-primary-color, rgb(170, 216, 234)) !important;
+    --light-primary-color: var(--var-light-primary-color, rgb(15, 143, 209)) !important;
+    --smalldark-primary-color: var(--var-smalldark-primary-color, rgb(46, 106, 200)) !important;
+    --dark-primary-color: var(--var-dark-primary-color, rgb(14, 62, 133)) !important;
+    --ultradark-primary-color: var(--var-ultradark-primary-color, rgb(9, 35, 84)) !important;
 }
 
 [newDesign] .text-primary {
-    color: var(--smalldark-primary-color)!important;
+    color: var(--smalldark-primary-color) !important;
 }
 
 [newDesign] #header-commun,
@@ -69,60 +85,91 @@
 
 /* NewColor */
 
-[newColor="default"] {
-    --footer-primary-color: #edf3fd !important;
-    --hover-primary-color: #aad8ea !important;
-    --light-primary-color: #0f8fd1 !important;
-    --smalldark-primary-color: #2e6ac8 !important;
-    --dark-primary-color: #0e3e85 !important;
-    --ultradark-primary-color: #092354 !important;
-    --bs-primary-rgb: 15, 143, 209 !important;
-    --bs-success-rgb: 15, 143, 209 !important;
+[newColor]:not([newColor="default"]) {
+    --var-footer-primary-color: hsl(var(--colorbase), 100%, 85%);
+    --var-hover-primary-color: hsl(var(--colorbase), 98%, 78%);
+    --var-light-primary-color: hsl(var(--colorbase), 78%, 44%);
+    --var-smalldark-primary-color: hsl(var(--colorbase), 79%, 36%);
+    --var-dark-primary-color: hsl(var(--colorbase), 79%, 28%);
+    --var-ultradark-primary-color: hsl(var(--colorbase), 82%, 19%);
 }
 
-[newColor="magenta"] {
-    --footer-primary-color: #FFB3C0 !important;
-    --hover-primary-color: #FE90A3 !important;
-    --light-primary-color: #C8194A !important;
-    --smalldark-primary-color: #A3133C !important;
-    --dark-primary-color: #7F0F2F !important;
-    --ultradark-primary-color: #5a0920 !important;
-    --bs-primary-rgb: 200, 25, 74 !important;
-    --bs-success-rgb: 200, 25, 74 !important;
+[newColor="0"] {
+    --colorbase: 0;
 }
 
-[newColor="purple"] {
-    --footer-primary-color: #ecb3ff !important;
-    --hover-primary-color: #e290fe !important;
-    --light-primary-color: #9c19c8 !important;
-    --smalldark-primary-color: #8013a4 !important;
-    --dark-primary-color: #640f80 !important;
-    --ultradark-primary-color: #440958 !important;
-    --bs-primary-rgb: 156, 25, 200 !important;
-    --bs-success-rgb: 156, 25, 200 !important;
+[newColor="20"] {
+    --colorbase: 20;
 }
 
-[newColor="turquoise"] {
-    --footer-primary-color: #b3ffec !important;
-    --hover-primary-color: #90fee2 !important;
-    --light-primary-color: #19c89c !important;
-    --smalldark-primary-color: #13a480 !important;
-    --dark-primary-color: #0f8064 !important;
-    --ultradark-primary-color: #095844 !important;
-    --bs-primary-rgb: 25, 200, 156 !important;
-    --bs-success-rgb: 25, 200, 156 !important;
+[newColor="40"] {
+    --colorbase: 40;
 }
 
-[newColor="gold"] {
-    --footer-primary-color: #ffffb3 !important;
-    --hover-primary-color: #fefe90 !important;
-    --light-primary-color: #c8c819 !important;
-    --smalldark-primary-color: #a4a413 !important;
-    --dark-primary-color: #80800f !important;
-    --ultradark-primary-color: #585809 !important;
-    --bs-primary-rgb: 200, 200, 25 !important;
-    --bs-success-rgb: 200, 200, 25 !important;
+[newColor="60"] {
+    --colorbase: 60;
 }
+
+[newColor="80"] {
+    --colorbase: 80;
+}
+
+[newColor="100"] {
+    --colorbase: 100;
+}
+
+[newColor="120"] {
+    --colorbase: 120;
+}
+
+[newColor="140"] {
+    --colorbase: 140;
+}
+
+[newColor="160"] {
+    --colorbase: 160;
+}
+
+[newColor="180"] {
+    --colorbase: 180;
+}
+
+[newColor="200"] {
+    --colorbase: 200;
+}
+
+[newColor="220"] {
+    --colorbase: 220;
+}
+
+[newColor="240"] {
+    --colorbase: 240;
+}
+
+[newColor="260"] {
+    --colorbase: 260;
+}
+
+[newColor="280"] {
+    --colorbase: 280;
+}
+
+[newColor="300"] {
+    --colorbase: 300;
+}
+
+[newColor="320"] {
+    --colorbase: 320;
+}
+
+[newColor="340"] {
+    --colorbase: 340;
+}
+
+[newColor="360"] {
+    --colorbase: 360;
+}
+
 
 /* newFont */
 
