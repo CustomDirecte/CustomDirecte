@@ -4,7 +4,7 @@
   "author": "Bastian NOEL",
   "version": "6.2.0",
   "manifest_version": 3,
-  "devtools_page": "/pages/popup/index.html",
+  "devtools_page": "/pages/popup/interface.html",
   "permissions": ["storage"],
   "host_permissions": [
     "*://*.ecoledirecte.com/*"
@@ -32,7 +32,7 @@
     "css": ["/styles/average.css", "/styles/sidebar.css", "/styles/options.css"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/styles/default.css", "/scripts/darkreader.js", "/scripts/tippy.js", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico", "/pages/popup/index.html"],
+    "resources": ["/styles/default.css", "/scripts/darkreader.js", "/scripts/tippy.js", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico", "/pages/popup/interface.html"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {

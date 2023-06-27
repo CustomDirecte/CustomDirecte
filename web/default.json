@@ -19,6 +19,7 @@
   "options": [{
     "Group": "notesTable",
     "Type": "Switch",
+    "Value": null,
     "Default": true,
     "option": "noteTableAnalysis",
     "Title": "Activer l’analyse du tableau de note",
@@ -28,6 +29,7 @@
   }, {
     "Group": "notesTable",
     "Type": "Switch",
+    "Value": null,
     "Default": true,
     "option": "generalAverageDisplay",
     "Title": "Forcer l’affichage de la moyenne générale",
@@ -37,6 +39,7 @@
   }, {
     "Group": "notesTable",
     "Type": "Switch",
+    "Value": null,
     "Default": false,
     "option": "AveragesPerSubjectDisplay",
     "Title": "Forcer l’affichage des moyennes par matières",
@@ -64,6 +67,7 @@
       "Selection": "outline",
       "Img": "svg/AveragesColorIndicator/4.svg"
     }],
+    "Value": null,
     "Default": "none",
     "option": "AveragesColorIndicator",
     "Title": "Forcer l’affichage de la moyenne générale",
@@ -87,6 +91,7 @@
       "Selection": "textAndValue",
       "Img": "svg/AveragesInfluenceTooltips/3.svg"
     }],
+    "Value": null,
     "Default": "none",
     "option": "AveragesInfluenceTooltips",
     "Title": "Info-bulles indiquent l’influence des moyennes par matières",
@@ -96,6 +101,7 @@
   }, {
     "Group": "sidebar",
     "Type": "Switch",
+    "Value": null,
     "Default": false,
     "option": "newSidebar",
     "Title": "Nouveau design pour la barre latérale",
@@ -105,6 +111,7 @@
   }, {
     "Group": "sidebar",
     "Type": "Switch",
+    "Value": null,
     "Default": false,
     "option": "sidebarDarkmode",
     "Title": "Mode sombre pour la barre latérale",
@@ -114,6 +121,7 @@
   }, {
     "Group": "sidebar",
     "Type": "Switch",
+    "Value": null,
     "Default": false,
     "option": "pinnedSidebar",
     "Title": "Laisser la barre latérale ouverte en continue",
@@ -123,6 +131,7 @@
   }, {
     "Group": "sidebar",
     "Type": "Switch",
+    "Value": null,
     "Default": false,
     "option": "hideCustomizationButton",
     "Title": "Cacher le bouton de personnalisation",
@@ -154,6 +163,7 @@
         "Img": "svg/AveragesColorIndicator/4.svg"
       }]
     ],
+    "Value": null,
     "Default": ["iconAndText", "ile"],
     "option": "customizationButton",
     "Title": "Style du bouton de personnalisation",
@@ -163,6 +173,7 @@
   }, {
     "Group": "customizations",
     "Type": "Switch",
+    "Value": null,
     "Default": true,
     "option": "customization",
     "Title": "Activer l’analyse du tableau de note",
@@ -172,6 +183,7 @@
   }, {
     "Group": "customizations",
     "Type": "Switch",
+    "Value": null,
     "Default": false,
     "option": "darkmode",
     "Title": "Activer le mode sombre",
@@ -190,6 +202,7 @@
       "<div class='colorSimulation' style='background-color: var(--colorSimulation-2);'></div>",
       "<div class='colorSimulation' style='background-color: var(--colorSimulation-1);'></div>"
     ],
+    "Value": null,
     "Default": false,
     "option": "colorCustomization",
     "Title": "Couleur",
@@ -214,6 +227,7 @@
       "Selection": "wide",
       "CSS": "border-radius: 20px;"
     }],
+    "Value": null,
     "Default": "none",
     "option": "cornerCustomization",
     "Title": "Angles des coins",
@@ -266,6 +280,7 @@
       "Selection": "comicSans",
       "CSS": "font-family: var(--font-comicSans);"
     }],
+    "Value": null,
     "Default": "tahoma",
     "option": "fontCustomization",
     "Title": "Police d'écriture",

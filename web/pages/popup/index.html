@@ -1,31 +1,254 @@
 <!DOCTYPE html>
 <html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CustomDirecte</title>
+    <link rel="stylesheet" href="interface.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CustomDirecte</title>
-  <link rel="stylesheet" href="index.css">
-</head>
-
-<body>
-  <header>
-    <div class="name-div">
-      <object class="icon" data="../../icons/default/icon.svg"></object>
-      <div id="name">
-        <p>CustomDirecte</p>
+  <body>
+    <header>
+      <div>
+        <object class="icon" data="../../icons/default/icon.svg"></object>
+        <div id="title">
+          <p>CustomDirecte</p>
+        </div>
       </div>
-    </div>
-    <div class="version-div">
-      <p id="version">Version 6.2.1</p>
-    </div>
-  </header>
-  <main>
-    <div class="groups">
-    </div>
-    <hr class="separator vertical" />
-  </main>
-  <script src="script2.js"></script>
-</body>
-
+      <div class="version-div">
+        <p id="version">Version 6.2.1</p>
+      </div>
+    </header>
+    <main>
+      <div class="groups">
+        <div class="group" groupButton="notesTable" selected>Tableaux de notes</div>
+        <div class="group" groupButton="sidebar">Barre latérale</div>
+        <div class="group" groupButton="customizations">Personnalisation</div>
+        <div class="group close" groupButton="close">Fermer</div>
+      </div>
+      <hr class="separator vertical" />
+      <div class="options" group="notesTable">
+        <div class="groupInfo">
+          <span class="groupTitle">Tableaux de notes</span>
+          <span class="groupSubtitle">Ajoute des fonctionnalité visuel et pratique à votre tableau de notes</span>
+        </div>
+        <hr class="separator" />
+        <div class="option" option="noteTableAnalysis">
+          <div class="optionInfo">
+            <span class="optionTitle" reloadingRequired>Activer l’analyse du tableau de note</span>
+            <span class="optionpSubtitle">Permet le fonctionnement des focntionnalitées ci-dessous</span>
+          </div>
+          <div class="optionSwitch" active></div>
+        </div>
+        <div class="option" option="generalAverageDisplay" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle" reloadingRequired>Forcer l’affichage de la moyenne générale</span>
+            <span class="optionpSubtitle">Forcer l’affichage des moyennes par matières</span>
+          </div>
+          <div class="optionSwitch" active></div>
+        </div>
+        <div class="option" option="AveragesPerSubjectDisplay" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle" reloadingRequired>Forcer l’affichage des moyennes par matières</span>
+            <span class="optionpSubtitle">Force l’affichage des moyennes par matières et les recalcules</span>
+          </div>
+          <div class="optionSwitch"></div>
+        </div>
+        <div class="option selectionOption" option="AveragesColorIndicator" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Indicateurs colorés sur les moyennes par matières</span>
+            <span class="optionpSubtitle">Indique à l’aide de couleurs si les moyennes baisses ou augmentes la moyenne générale</span>
+          </div>
+          <div class="optionSelection">
+            <div class="optionBox" style="--Xplacement: -170px" selection="none" active>
+              <img src="svg/AveragesColorIndicator/1.svg" />
+              <span>Aucun</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -170px" selection="round">
+              <img src="svg/AveragesColorIndicator/2.svg" />
+              <span>Ronds</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -170px" selection="background">
+              <img src="svg/AveragesColorIndicator/3.svg" />
+              <span>Fonds</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -170px" selection="outline">
+              <img src="svg/AveragesColorIndicator/4.svg" />
+              <span>Contours</span>
+            </div>
+          </div>
+        </div>
+        <div class="option selectionOption" option="AveragesInfluenceTooltips" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Info-bulles indiquent l’influence des moyennes par matières</span>
+            <span class="optionpSubtitle">Info-bulles qui affiche combien de point cette moyenne fait perdre/gagner à la moyenne générale</span>
+          </div>
+          <div class="optionSelection">
+            <div class="optionBox" style="--Xplacement: -232px" selection="none" active>
+              <img src="svg/AveragesInfluenceTooltips/1.svg" />
+              <span>Aucun</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -232px" selection="value">
+              <img src="svg/AveragesInfluenceTooltips/2.svg" />
+              <span>Valeur</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -232px" selection="textAndValue">
+              <img src="svg/AveragesInfluenceTooltips/3.svg" />
+              <span>Texte & Valeur</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="options" group="sidebar" hide>
+        <div class="groupInfo">
+          <span class="groupTitle">Barre latérale</span>
+          <span class="groupSubtitle">Une nouvelle barre, de nouvelles fonctionnalités</span>
+        </div>
+        <hr class="separator" />
+        <div class="option" option="newSidebar">
+          <div class="optionInfo">
+            <span class="optionTitle" reloadingRequired>Nouveau design pour la barre latérale</span>
+            <span class="optionpSubtitle">Donne une allure moderne à la barre permettant l’ajout d’options</span>
+          </div>
+          <div class="optionSwitch"></div>
+        </div>
+        <div class="option" option="sidebarDarkmode">
+          <div class="optionInfo">
+            <span class="optionTitle">Mode sombre pour la barre latérale</span>
+            <span class="optionpSubtitle">Rend les couleurs de fond de la barre latéral plus sombre, pour une meilleur lisibilité</span>
+          </div>
+          <div class="optionSwitch" active></div>
+        </div>
+        <div class="option" option="pinnedSidebar">
+          <div class="optionInfo">
+            <span class="optionTitle">Laisser la barre latérale ouverte en continue</span>
+            <span class="optionpSubtitle">Permet que la barre latérale ne ce minimise pas quand elle n’est plus survolé par la souris</span>
+          </div>
+          <div class="optionSwitch"></div>
+        </div>
+        <div class="option" option="hideCustomizationButton" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Cacher le bouton de personnalisation</span>
+            <span class="optionpSubtitle">Si cette option est activé vous devez uiliser le bouton de la barre latérale pour accéder à ce menu</span>
+          </div>
+          <div class="optionSwitch" active></div>
+        </div>
+        <div class="option selectionOption" option="customizationButton">
+          <div class="optionInfo">
+            <span class="optionTitle">Style du bouton de personnalisation</span>
+            <span class="optionpSubtitle">Changer le style du bouton de personnalisation pour vous correspondre au mieux</span>
+          </div>
+          <div class="optionSelection">
+            <div class="optionBox" style="--Xplacement: -300px" selection="icon" active>
+              <img src="svg/customizationButton/1.svg" />
+              <span>Icon</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -300px" selection="iconAndText">
+              <img src="svg/customizationButton/2.svg" />
+              <span>Icon & Texte</span>
+            </div>
+          </div>
+          <div class="optionSelection">
+            <div class="optionBox" style="--Xplacement: -300px" selection="border" active>
+              <img src="svg/customizationButton/3.svg" />
+              <span>Bordure</span>
+            </div>
+            <div class="optionBox" style="--Xplacement: -300px" selection="ile">
+              <img src="svg/customizationButton/4.svg" />
+              <span>Ile</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="options" group="customizations" hide>
+        <div class="groupInfo">
+          <span class="groupTitle">Personnalisation</span>
+          <span class="groupSubtitle">Permet de personnaliser un grand nombre d'éléments du site</span>
+        </div>
+        <hr class="separator" />
+        <div class="option" option="customization">
+          <div class="optionInfo">
+            <span class="optionTitle" reloadingRequired>Activer les options de personnalisations</span>
+            <span class="optionpSubtitle">Permet à l'extension de préparer le site au option de personnalisation</span>
+          </div>
+          <div class="optionSwitch" active></div>
+        </div>
+        <div class="option" option="darkmode" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Activer le mode sombre</span>
+            <span class="optionpSubtitle">L'ensemble du site sera sombre, utile la nuit !</span>
+          </div>
+          <div class="optionSwitch" active></div>
+        </div>
+        <div class="option selectionOption" option="colorCustomization" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Couleur</span>
+          </div>
+          <div class="optionSelection" color="20">
+            <input type="range" value="0" class="colorSlider" />
+            <div class="colorSimulation" style="background-color: var(--colorSimulation-6)"></div>
+            <div class="colorSimulation" style="background-color: var(--colorSimulation-5)"></div>
+            <div class="colorSimulation" style="background-color: var(--colorSimulation-4)"></div>
+            <div class="colorSimulation" style="background-color: var(--colorSimulation-3)"></div>
+            <div class="colorSimulation" style="background-color: var(--colorSimulation-2)"></div>
+            <div class="colorSimulation" style="background-color: var(--colorSimulation-1)"></div>
+          </div>
+        </div>
+        <div class="option selectionOption" option="cornerCustomization" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Angles des coins</span>
+          </div>
+          <div class="optionSelection">
+            <div class="optionBox" style="--Xplacement: -165px" selection="none" active>
+              <div class="cornerDemo" style="border-radius: 0px">Aucun</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="thin">
+              <div class="cornerDemo" style="border-radius: 10px">Faible</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="wide">
+              <div class="cornerDemo" style="border-radius: 20px">Moyen</div>
+            </div>
+          </div>
+        </div>
+        <div class="option selectionOption" option="fontCustomization" disabled>
+          <div class="optionInfo">
+            <span class="optionTitle">Police d'écriture</span>
+          </div>
+          <div class="optionSelection">
+            <div class="optionBox" style="--Xplacement: -165px" selection="tahoma" active>
+              <div class="fontDemo" style="font-family: var(--font-tahoma)">tahoma</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="roboto">
+              <div class="fontDemo" style="font-family: var(--font-roboto)">roboto</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="poppin">
+              <div class="fontDemo" style="font-family: var(--font-poppin)">poppin</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="openSans">
+              <div class="fontDemo" style="font-family: var(--font-openSans)">openSans</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="openDyslexic">
+              <div class="fontDemo" style="font-family: var(--font-openDyslexic)">openDyslexic</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="montserrat">
+              <div class="fontDemo" style="font-family: var(--font-montserrat)">montserrat</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="merriweather">
+              <div class="fontDemo" style="font-family: var(--font-merriweather)">merriweather</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="leckerliOne">
+              <div class="fontDemo" style="font-family: var(--font-leckerliOne)">leckerliOne</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="inter">
+              <div class="fontDemo" style="font-family: var(--font-inter)">inter</div>
+            </div>
+            <div class="optionBox" style="--Xplacement: -165px" selection="comicSans">
+              <div class="fontDemo" style="font-family: var(--font-comicSans)">comicSans</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="script2.js"></script>
+  </body>
 </html>

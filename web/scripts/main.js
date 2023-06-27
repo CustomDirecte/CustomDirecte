@@ -275,7 +275,7 @@ function averageCalculator() {
 
       // Trouve l'affichage du coef
       LineCoef = 1;
-      if ((coefColumn = tableConfiguration["coef"])) {     
+      if ((coefColumn = tableConfiguration["coef"])) {
         if ((coefSpan = line.cells[coefColumn].querySelector("span"))) {
           if (debug.active) coefSpan.setAttribute("style", "border: solid orange;");
           LineCoef = parseFloat(coefSpan.innerText);
@@ -567,7 +567,7 @@ function options(logName) {
   optionsPopup = document.createElement("iframe");
   optionsPopup.classList.add("optionsPopup");
   document.body.prepend(optionsPopup);
-  optionsPopup.src = chrome.runtime.getURL("../pages/popup/index.html");
+  optionsPopup.src = chrome.runtime.getURL("/pages/popup/interface.html");
 
   function closeOptionsPopup() {
     document.querySelector("html").classList.remove("optionsPopupActif");
