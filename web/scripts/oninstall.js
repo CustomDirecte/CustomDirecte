@@ -84,8 +84,8 @@ defaultOptions = {
       Value: null,
       Default: "none",
       option: "AveragesColorIndicator",
-      Title: "Forcer l’affichage de la moyenne générale",
-      Subtitle: "Forcer l’affichage des moyennes par matières",
+      Title: "Indicateurs colorés sur les moyennes par matières",
+      Subtitle: "Indique à l’aide de couleurs si les moyennes baisses ou augmentes la moyenne générale",
       reloadingRequired: false,
       lock: "noteTableAnalysis",
     },
@@ -172,24 +172,24 @@ defaultOptions = {
           {
             Title: "Icon",
             Selection: "icon",
-            Img: "svg/AveragesColorIndicator/1.svg",
+            Img: "svg/customizationButton/1.svg",
           },
           {
             Title: "Icon & Texte",
             Selection: "iconAndText",
-            Img: "svg/AveragesColorIndicator/2.svg",
+            Img: "svg/customizationButton/2.svg",
           },
         ],
         [
           {
             Title: "Bordure",
             Selection: "border",
-            Img: "svg/AveragesColorIndicator/3.svg",
+            Img: "svg/customizationButton/3.svg",
           },
           {
             Title: "Ile",
             Selection: "ile",
-            Img: "svg/AveragesColorIndicator/4.svg",
+            Img: "svg/customizationButton/4.svg",
           },
         ],
       ],
@@ -227,7 +227,7 @@ defaultOptions = {
       Group: "customizations",
       Type: "Color",
       ColorHTML: [
-        "<input type='range' value='0' class='colorSlider'>",
+        "<input type='range' value='0' class='colorSlider' min='0' max='360' step='20'>",
         "<div class='colorSimulation' style='background-color: var(--colorSimulation-6);'></div>",
         "<div class='colorSimulation' style='background-color: var(--colorSimulation-5);'></div>",
         "<div class='colorSimulation' style='background-color: var(--colorSimulation-4);'></div>",
@@ -236,7 +236,7 @@ defaultOptions = {
         "<div class='colorSimulation' style='background-color: var(--colorSimulation-1);'></div>",
       ],
       Value: null,
-      Default: false,
+      Default: 340,
       option: "colorCustomization",
       Title: "Couleur",
       Subtitle: false,
@@ -345,42 +345,31 @@ chrome.runtime.onInstalled.addListener((reason) => {
   if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.storage.sync.set(defaultOptions);
   } else {
-    chrome.storage.sync.get(function (data) {
-      newOptions = {};
-      newOptions.groups = defaultOptions.groups;
-      newOptions.options = defaultOptions.options;
-
-      for (let option of newOptions.options) {
-        optionFound = data.options.find((o) => o.option == option.option);
-
-        if (optionFound != undefined && optionFound.Value != null) {
-          // option registered
-          if (optionFound.Options != undefined && option.Options != undefined) {
-            // option type Selection
-
-            if (option.Options.map((x) => x.Selection).includes(optionFound.Value)) {
-              option.Value = optionFound.Value;
+    // Check all values on update
+    chrome.storage.sync.get((data) => {
+      const newOptions = {
+        // Reset storage with Defaults Options or New Defaults Options
+        groups: defaultOptions.groups,
+        // Keep same value if possible
+        options: defaultOptions.options.map((option) => {
+          // Get value of same id old option [optionFound]
+          const optionFound = data.options.find((o) => o.option === option.option);
+          // If old option exist with value =>
+          if (optionFound && optionFound.Value !== null) {
+            // If the option have property "Options" { CustomSelection } =>
+            if (optionFound.Options && option.Options !== undefined) {
+              if (option.Options.some((x) => x.Selection === optionFound.Value)) option.Value = optionFound.Value;
             }
-          } else if (optionFound.MultiOptions != undefined && option.MultiOptions != undefined) {
-            // option type MultiSelection
-
-            option.Value = [...option.Default];
-
-            for (let i = 0; i < option.Default.length; i++) {
-              if (option.MultiOptions[i].map((x) => x.Selection).includes(optionFound.Value[i])) {
-                option.Value[i] = optionFound.Value[i];
-              }
+            // If the option have property "MultiOptions" { MultiSelection } =>
+            else if (optionFound.MultiOptions && option.MultiOptions !== undefined) {
+              option.Value = option.Default.map((value, i) => (optionFound.Value[i] && option.MultiOptions[i].some((x) => x.Selection === optionFound.Value[i]) ? optionFound.Value[i] : value));
             }
-          } else {
-            //  option type Switch
-
-            if ((option.Default == true || option.Default == false) && (optionFound.Value == true || optionFound.Value == false)) {
-              option.Value = optionFound.Value;
-            }
+            // If the option have bool value { Switch } =>
+            else if (typeof option.Default === "boolean" && typeof optionFound.Value === "boolean") option.Value = optionFound.Value;
           }
-        }
-      }
-
+          return option;
+        }),
+      };
       chrome.storage.sync.set(newOptions);
     });
   }
