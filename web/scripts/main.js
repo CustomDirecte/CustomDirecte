@@ -201,35 +201,65 @@ function averageCalculator() {
     // Recherche la configuration du tableau
     log(" > > Table configuration finding -> [ Starting ]");
     tableConfiguration = {
-      coef: false,
-      relevemoyenne: false,
-      notes: false,
+      discipline: [false, undefined],
+      coef: [false, undefined],
+      relevemoyenne: [false, undefined],
+      notes: [false, undefined],
     };
 
     // Cherche l'index de chaque colones
-    [...gradeTable.tHead.rows[0].cells].forEach((cell, index) => {
-      if (cell.classList.contains("coef")) {
-        log(" > > > Column {coef} -> [ Found ]");
-        tableConfiguration["coef"] = index;
-      }
-      if (cell.classList.contains("relevemoyenne")) {
-        log(" > > > Column {relevemoyenne} -> [ Found ]");
-        tableConfiguration["relevemoyenne"] = index;
-      }
-      if (cell.classList.contains("notes")) {
-        log(" > > > Column {notes} -> [ Found ]");
-        tableConfiguration["notes"] = index;
-      }
-    });
+    function tableGetIndex() {
+      [...gradeTable.tHead.rows[0].cells].forEach((cell, index) => {
+        if (cell.classList.contains("discipline")) {
+          log(" > > > Column {discipline} -> [ Found ]");
+          tableConfiguration["discipline"][0] = index;
+          if (tableConfiguration["discipline"][1] == undefined) tableConfiguration["discipline"][1] = true;
+        }
+        if (cell.classList.contains("coef")) {
+          log(" > > > Column {coef} -> [ Found ]");
+          tableConfiguration["coef"][0] = index;
+          if (tableConfiguration["coef"][1] == undefined) tableConfiguration["coef"][1] = true;
+        }
+        if (cell.classList.contains("relevemoyenne")) {
+          log(" > > > Column {relevemoyenne} -> [ Found ]");
+          tableConfiguration["relevemoyenne"][0] = index;
+          if (tableConfiguration["relevemoyenne"][1] == undefined) tableConfiguration["relevemoyenne"][1] = true;
+        }
+        if (cell.classList.contains("notes")) {
+          log(" > > > Column {notes} -> [ Found ]");
+          tableConfiguration["notes"][0] = index;
+          if (tableConfiguration["notes"][1] == undefined) tableConfiguration["notes"][1] = true;
+        }
+      });
+    }
+    tableGetIndex();
+
+    if (tableConfiguration["coef"][1] == undefined) {
+      log(" > > > Column {coef} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
+      coefTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["discipline"][0] + 1);
+      coefTitleRow.outerHTML = `<th class="coef ng-star-inserted">Coef.</th>`;
+      averageDiv.colSpan += 1;
+      tableConfiguration["coef"][1] = false;
+      tableGetIndex();
+    }
+
+    if (tableConfiguration["relevemoyenne"][1] == undefined) {
+      log(" > > > Column {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
+      relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
+      relevemoyenneTitleRow.outerHTML = `<th class="relevemoyenne ng-star-inserted">Moyennes</th>`;
+      averageDiv.colSpan += 1;
+      tableConfiguration["relevemoyenne"][1] = false;
+      tableGetIndex();
+    }
 
     // Vérifi la presence de chaque index
     log(" > > Table configuration Analysis -> [ Starting ]");
     for (item in tableConfiguration) {
-      log(` > > > Column {${item}} -> [ ${tableConfiguration[item] ? "Here" : "⚠️ Not Here"} ]`);
+      log(` > > > Column {${item}} -> [ ${tableConfiguration[item][1] === true ? "Here" : "⚠️ Not Here"} ]`);
     }
 
     // Verifie la pressence de la colonne des notes
-    if (!tableConfiguration["notes"]) {
+    if (!tableConfiguration["notes"][0]) {
       averageDiv.innerText = "Colonne des notes introuvables";
       log(" > > Column Note -> [ 🛑 Non-existent ]");
       return;
@@ -241,10 +271,22 @@ function averageCalculator() {
     // Pour chaque ligne
     log(" > > Line by Line analysis -> [ Starting ]");
     for (line of gradeTable.tBodies[0].rows) {
-      // Si il y au moins une note ou si la matiere contient des sous-matiere
+      if (tableConfiguration["coef"][1] == false) {
+        log(" > > > Line Element {coef} -> [ ⚠️ Non-existent ] -> [ Genere ]");
+        coefTitleCell = line.insertCell(tableConfiguration["coef"][0]);
+        coefTitleCell.innerHTML = `<span class="ng-star-inserted">1</span>`;
+        coefTitleCell.classList.add("coef", "ng-star-inserted");
+      }
 
+      if (tableConfiguration["relevemoyenne"][1] == false) {
+        log(" > > > Line Element {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ]");
+        relevemoyenneTitleCell = line.insertCell(tableConfiguration["relevemoyenne"][0]);
+        relevemoyenneTitleCell.classList.add("relevemoyenne", "ng-star-inserted");
+      }
+
+      // Si il y au moins une note ou si la matiere contient des sous-matiere
       lineProperties = {
-        Length: line.cells[tableConfiguration["notes"]].childNodes.length > 1,
+        Length: line.cells[tableConfiguration["notes"][0]].childNodes.length > 1,
         IsMaster: line.classList.contains("master"),
         IsSecondary: line.classList.contains("secondary"),
         IsSecondaryButNotlast: line.classList.contains("secondarynotlast"),
@@ -256,7 +298,7 @@ function averageCalculator() {
       }
 
       // Defini la zone d'afficharge de la moyenne de la ligne
-      if ((averageColumn = tableConfiguration["relevemoyenne"])) {
+      if ((averageColumn = tableConfiguration["relevemoyenne"][0])) {
         // Si il n'y a pas de span pour afficher la moyenne
         if (!(averageSpan = line.cells[averageColumn].querySelector("span"))) {
           log(` > > > Element for average display -> [ ⚠️ Non-existent ]`);
@@ -266,16 +308,32 @@ function averageCalculator() {
           log(` > > > Element for average display -> [ Added ]`);
         }
         if (debug.active) averageSpan.setAttribute("style", "border: solid darkblue;");
-        averageSpan.innerText = "...";
+        averageSpan.innerText = "";
         log(` > > > Element for average display -> [ Defined ]`);
       } else {
         averageSpan = false;
         log(` > > > Element for average display -> [ ⚠️ Undefined ] <- because Column relevemoyenne Non-existent`);
       }
 
+      // Defini la zone d'afficharge de la moyenne de la ligne
+      if ((averageColumn = tableConfiguration["relevemoyenne"][0])) {
+      }
+
+      // Si il n'y a pas de span pour afficher la moyenne
+      if (!(averageSpan = line.cells[averageColumn].querySelector("span"))) {
+        log(` > > > Element for average display -> [ ⚠️ Non-existent ]`);
+        averageSpan = document.createElement("span");
+        averageSpan.classList.add("ng-star-inserted");
+        line.cells[averageColumn].appendChild(averageSpan);
+        log(` > > > Element for average display -> [ Added ]`);
+      }
+      if (debug.active) averageSpan.setAttribute("style", "border: solid darkblue;");
+      averageSpan.innerText = "";
+      log(` > > > Element for average display -> [ Defined ]`);
+
       // Trouve l'affichage du coef
       LineCoef = 1;
-      if ((coefColumn = tableConfiguration["coef"])) {     
+      if ((coefColumn = tableConfiguration["coef"][0])) {
         if ((coefSpan = line.cells[coefColumn].querySelector("span"))) {
           if (debug.active) coefSpan.setAttribute("style", "border: solid orange;");
           LineCoef = parseFloat(coefSpan.innerText);
@@ -306,7 +364,7 @@ function averageCalculator() {
       LineGradesAndCoef = [];
 
       // Pour chaque notes
-      for (notes of line.cells[tableConfiguration["notes"]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
+      for (notes of line.cells[tableConfiguration["notes"][0]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
         // Récuperation de la note
         try {
           note = parseFloat(notes.childNodes[0].nodeValue.replace(",", "."));
@@ -361,7 +419,7 @@ function averageCalculator() {
       AllGradeAndAverage.push(LineAllGradeAndAverage);
 
       // Affiche la nouvelle moyenne de la ligne
-      if (tableConfiguration["relevemoyenne"]) {
+      if (tableConfiguration["relevemoyenne"][0]) {
         if (debug.active && !lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid blue;");
         if (debug.active && lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid red;");
         if (averageSpan) averageSpan.innerText = hundredthRound(LineAverage);
@@ -466,6 +524,12 @@ function newMenu() {
   // Detecte les changement du body et execute quand nécésaire le code pour changer le menu
   log("BodyObserver -> [ Starting ]");
   const observer = new MutationObserver(() => {
+    let loadingScreen = document.querySelector("ed-custom-busy");
+    if (loadingScreen && loadingScreen.dataset.newLoadingScreenLoad != "true") {
+      loadingScreen.dataset.newLoadingScreenLoad = true;
+      loadingScreen.innerHTML = '<div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+    }
+
     let menuElem = document.getElementById("container-menu");
     let usernameElem = document.getElementById("user-account-link");
     // execute le code si le menu actuellement affiché n'a pas déjà été modifié
@@ -477,8 +541,7 @@ function newMenu() {
 
       // Ajoute le nom de l'utilisateur dans un element de style et sous forme de variable css root
       rootName = document.createElement("style");
-      rootName.id = "rootName";
-      rootName.innerHTML = `:root { --userName: "${usernameElem.innerText}" }`;
+      rootName.innerHTML = `:root { --userName: "${usernameElem.innerText.trim().replace(/ /, "\\A")}" }`;
       document.head.appendChild(rootName);
       log(" > UserName in CSS Root -> [ Added ]");
 
