@@ -410,6 +410,22 @@ function averageCalculator() {
 
       if (!(LineGradesAndCoef.length > 0)) {
         log(` > > > > No note in this line -> [⚠️]`);
+        if (!lineProperties["IsSecondaryButNotlast"]) {
+          // Si c'est la derniere ligne secondaire, calcule la somme de la principale
+          masterLineAverage = moyennePondere(masterLineGradesAndCoef);
+          TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
+          if (masterLineAverageSpan) {
+            masterLineAverageSpan.innerText = hundredthRound(masterLineAverage);
+            AllGradeAndAverage.push({
+              average: masterLineAverage,
+              averageSpan: masterLineAverageSpan,
+              coef: masterLineCoef,
+              secondary: false,
+              master: true,
+            });
+          }
+          log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
+        }
         continue;
       }
 
