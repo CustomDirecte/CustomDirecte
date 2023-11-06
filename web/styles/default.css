@@ -1,230 +1,232 @@
-/* ===== Default ===== */
+/* ██████╗  ███████╗ ███████╗  █████╗  ██╗   ██╗ ██╗      ████████╗ */
+/* ██╔══██╗ ██╔════╝ ██╔════╝ ██╔══██╗ ██║   ██║ ██║      ╚══██╔══╝ */
+/* ██║  ██║ █████╗   █████╗   ███████║ ██║   ██║ ██║         ██║    */
+/* ██║  ██║ ██╔══╝   ██╔══╝   ██╔══██║ ██║   ██║ ██║         ██║    */
+/* ██████╔╝ ███████╗ ██║      ██║  ██║ ╚██████╔╝ ███████╗    ██║    */
+/* ╚═════╝  ╚══════╝ ╚═╝      ╚═╝  ╚═╝  ╚═════╝  ╚══════╝    ╚═╝    */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap');
-@import url('https://fonts.cdnfonts.com/css/comic-sans');
-@import url('https://fonts.cdnfonts.com/css/open-dyslexic');
+/* █ █▀▄▀█ █▀█ █▀█ █▀█ ▀█▀ ▄▀█ ▀█▀ █ █▀█ █▄ █   █▀█ █▀▀   █▀▀ █▀█ █▄ █ ▀█▀ █▀ */
+/* █ █ ▀ █ █▀▀ █▄█ █▀▄  █  █▀█  █  █ █▄█ █ ▀█   █▄█ █▀    █▀  █▄█ █ ▀█  █  ▄█ */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
+@import url("https://fonts.cdnfonts.com/css/comic-sans");
+@import url("https://fonts.cdnfonts.com/css/open-dyslexic");
+
+/* █▀█ █▀█ █▀█ ▀█▀ */
+/* █▀▄ █▄█ █▄█  █  */
 
 :root {
-    --borderRadius-default: 0;
-    --borderRadius-thin: 4px;
-    --borderRadius-wide: 8px;
-    --font-tahoma: Tahoma, sans-serif;
-    --font-poppin: Poppin, sans-serif;
-    --font-openSans: Open Sans, sans-serif;
-    --font-montserrat: Montserrat, sans-serif;
-    --font-roboto: Roboto, sans-serif;
-    --font-inter: Inter, sans-serif;
-    --font-merriweather: Merriweather, serif;
-    --font-leckerliOne: Leckerli One, cursive;
-    --font-comicSans: comic sans;
-    --font-openDyslexic: open-dyslexic;
-    --body-color: var(--theme-body-color, #ffffff);
-    --sidebar-color: var(--theme-sidebar-color, rgb(46, 106, 200));
-    --primary-color: var(--light-primary-color);
-    --primary-color-light: var(--dark-primary-color);
-    --text-color: var(--theme-text-color, #ebebeb);
-    --tran-03: all 0.2s ease;
-    --tran-03: all 0.3s ease;
-    --tran-04: all 0.3s ease;
-    --tran-05: all 0.3s ease;
-    --table-radius: 12px;
+  --borderRadius-default: 0;
+  --borderRadius-thin: 4px;
+  --borderRadius-wide: 8px;
+  --font-tahoma: Tahoma, sans-serif;
+  --font-poppin: Poppin, sans-serif;
+  --font-openSans: Open Sans, sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-inter: Inter, sans-serif;
+  --font-merriweather: Merriweather, serif;
+  --font-leckerliOne: Leckerli One, cursive;
+  --font-comicSans: comic sans;
+  --font-openDyslexic: open-dyslexic;
+  --body-color: var(--theme-body-color, #ffffff);
+  --sidebar-color: var(--theme-sidebar-color, rgb(46, 106, 200));
+  --primary-color: var(--light-primary-color);
+  --primary-color-light: var(--dark-primary-color);
+  --text-color: var(--theme-text-color, #ebebeb);
+  --tran-03: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
+  --table-radius: 12px;
 }
 
+/* █▄ █ █▀▀ █ █ █ █▀▄ █▀▀ █▀ █ █▀▀ █▄ █ */
+/* █ ▀█ ██▄ ▀▄▀▄▀ █▄▀ ██▄ ▄█ █ █▄█ █ ▀█ */
+
 [newDesign] {
-    --ultralight-secondary-color: #f7e0e6 !important;
-    --light-secondary-color: #e46bad !important;
-    --secondary-color: #cd1478 !important;
-    --dark-secondary-color: #960b56 !important;
-    --light-placeholder-color: #f5f6f7 !important;
-    --smalldark-placeholder-color: #e4e7ea !important;
-    --dark-placeholder-color: #c3c3c3 !important;
-    --ultradark-placeholder-color: #887f7f !important;
-    --warning-primary-color: #ffc107 !important;
-    --warning-secondary-color: #8a6d3b !important;
-    --light-notice-color: #fffca0 !important;
-    --middle-notice-color: #fff575 !important;
-    --dark-notice-color: #f2ec9e !important;
-    --dark-has-succes-color: #3c763d !important;
-    --light-has-succes-color: #dff0d8 !important;
-    --travail-color: #6aaf11 !important;
-    --contenu-color: #0c91c6 !important;
-    --search-color: #a5a7ab !important;
-    --menu-hover-color: #f5f5f5 !important;
-    --bs-primary-rgb: 15, 143, 209 !important;
-    --bs-success-rgb: 15, 143, 209 !important;
-    --bs-secondary-rgb: 205, 20, 120 !important;
-    --bs-danger-rgb: 205, 20, 120 !important;
-    --bs-border-color: var(--smalldark-placeholder-color) !important;
-    --bs-warning-rgb: 138, 109, 59 !important;
-    --footer-primary-color: var(--var-footer-primary-color, rgb(237, 243, 253)) !important;
-    --hover-primary-color: var(--var-hover-primary-color, rgb(170, 216, 234)) !important;
-    --light-primary-color: var(--var-light-primary-color, rgb(15, 143, 209)) !important;
-    --smalldark-primary-color: var(--var-smalldark-primary-color, rgb(46, 106, 200)) !important;
-    --dark-primary-color: var(--var-dark-primary-color, rgb(14, 62, 133)) !important;
-    --ultradark-primary-color: var(--var-ultradark-primary-color, rgb(9, 35, 84)) !important;
+  --ultralight-secondary-color: #f7e0e6 !important;
+  --light-secondary-color: #e46bad !important;
+  --secondary-color: #cd1478 !important;
+  --dark-secondary-color: #960b56 !important;
+  --light-placeholder-color: #f5f6f7 !important;
+  --smalldark-placeholder-color: #e4e7ea !important;
+  --dark-placeholder-color: #c3c3c3 !important;
+  --ultradark-placeholder-color: #887f7f !important;
+  --warning-primary-color: #ffc107 !important;
+  --warning-secondary-color: #8a6d3b !important;
+  --light-notice-color: #fffca0 !important;
+  --middle-notice-color: #fff575 !important;
+  --dark-notice-color: #f2ec9e !important;
+  --dark-has-succes-color: #3c763d !important;
+  --light-has-succes-color: #dff0d8 !important;
+  --travail-color: #6aaf11 !important;
+  --contenu-color: #0c91c6 !important;
+  --search-color: #a5a7ab !important;
+  --menu-hover-color: #f5f5f5 !important;
+  --bs-primary-rgb: 15, 143, 209 !important;
+  --bs-success-rgb: 15, 143, 209 !important;
+  --bs-secondary-rgb: 205, 20, 120 !important;
+  --bs-danger-rgb: 205, 20, 120 !important;
+  --bs-border-color: var(--smalldark-placeholder-color) !important;
+  --bs-warning-rgb: 138, 109, 59 !important;
+  --footer-primary-color: var(--var-footer-primary-color, rgb(237, 243, 253)) !important;
+  --hover-primary-color: var(--var-hover-primary-color, rgb(170, 216, 234)) !important;
+  --light-primary-color: var(--var-light-primary-color, rgb(15, 143, 209)) !important;
+  --smalldark-primary-color: var(--var-smalldark-primary-color, rgb(46, 106, 200)) !important;
+  --dark-primary-color: var(--var-dark-primary-color, rgb(14, 62, 133)) !important;
+  --ultradark-primary-color: var(--var-ultradark-primary-color, rgb(9, 35, 84)) !important;
 }
 
 [newDesign] .text-primary {
-    color: var(--smalldark-primary-color) !important;
+  color: var(--smalldark-primary-color) !important;
 }
 
 [newDesign] #header-commun,
 [newDesign] .navbar {
-    background: var(--light-placeholder-color) !important;
+  background: var(--light-placeholder-color) !important;
 }
 
 [newDesign] .container-fluid {
-    color: var(--ultradark-primary-color) !important;
+  color: var(--ultradark-primary-color) !important;
 }
 
-/* NewColor */
+/* █▄ █ █▀▀ █ █ █ █▀▀ █▀█ █   █▀█ █▀█ */
+/* █ ▀█ ██▄ ▀▄▀▄▀ █▄▄ █▄█ █▄▄ █▄█ █▀▄ */
 
 [newColor]:not([newColor="default"]) {
-    --var-footer-primary-color: hsl(var(--colorbase), 100%, 85%);
-    --var-hover-primary-color: hsl(var(--colorbase), 98%, 78%);
-    --var-light-primary-color: hsl(var(--colorbase), 78%, 44%);
-    --var-smalldark-primary-color: hsl(var(--colorbase), 79%, 36%);
-    --var-dark-primary-color: hsl(var(--colorbase), 79%, 28%);
-    --var-ultradark-primary-color: hsl(var(--colorbase), 82%, 19%);
+  --var-footer-primary-color: hsl(var(--colorbase), 100%, 85%);
+  --var-hover-primary-color: hsl(var(--colorbase), 98%, 78%);
+  --var-light-primary-color: hsl(var(--colorbase), 78%, 44%);
+  --var-smalldark-primary-color: hsl(var(--colorbase), 79%, 36%);
+  --var-dark-primary-color: hsl(var(--colorbase), 79%, 28%);
+  --var-ultradark-primary-color: hsl(var(--colorbase), 82%, 19%);
 }
 
 [newColor="0"] {
-    --colorbase: 0;
+  --colorbase: 0;
 }
 
 [newColor="20"] {
-    --colorbase: 20;
+  --colorbase: 20;
 }
 
 [newColor="40"] {
-    --colorbase: 40;
+  --colorbase: 40;
 }
 
 [newColor="60"] {
-    --colorbase: 60;
+  --colorbase: 60;
 }
 
 [newColor="80"] {
-    --colorbase: 80;
+  --colorbase: 80;
 }
 
 [newColor="100"] {
-    --colorbase: 100;
+  --colorbase: 100;
 }
 
 [newColor="120"] {
-    --colorbase: 120;
+  --colorbase: 120;
 }
 
 [newColor="140"] {
-    --colorbase: 140;
+  --colorbase: 140;
 }
 
 [newColor="160"] {
-    --colorbase: 160;
+  --colorbase: 160;
 }
 
 [newColor="180"] {
-    --colorbase: 180;
+  --colorbase: 180;
 }
 
 [newColor="200"] {
-    --colorbase: 200;
+  --colorbase: 200;
 }
 
 [newColor="220"] {
-    --colorbase: 220;
+  --colorbase: 220;
 }
 
 [newColor="240"] {
-    --colorbase: 240;
+  --colorbase: 240;
 }
 
 [newColor="260"] {
-    --colorbase: 260;
+  --colorbase: 260;
 }
 
 [newColor="280"] {
-    --colorbase: 280;
+  --colorbase: 280;
 }
 
 [newColor="300"] {
-    --colorbase: 300;
+  --colorbase: 300;
 }
 
 [newColor="320"] {
-    --colorbase: 320;
+  --colorbase: 320;
 }
 
 [newColor="340"] {
-    --colorbase: 340;
+  --colorbase: 340;
 }
 
 [newColor="360"] {
-    --colorbase: 360;
+  --colorbase: 360;
 }
 
-
-/* newFont */
+/* █▄ █ █▀▀ █ █ █ █▀▀ █▀█ █▄ █ ▀█▀ */
+/* █ ▀█ ██▄ ▀▄▀▄▀ █▀  █▄█ █ ▀█  █  */
 
 .fa {
-    font-family: FontAwesome !important;
+  font-family: FontAwesome !important;
 }
 
 [newFont="tahoma"] * {
-    font-family: var(--font-tahoma);
+  font-family: var(--font-tahoma);
 }
 
 [newFont="poppin"] * {
-    font-family: var(--font-poppin);
+  font-family: var(--font-poppin);
 }
 
 [newFont="openSans"] * {
-    font-family: var(--font-openSans);
+  font-family: var(--font-openSans);
 }
 
 [newFont="montserrat"] * {
-    font-family: var(--font-montserrat);
+  font-family: var(--font-montserrat);
 }
 
 [newFont="roboto"] * {
-    font-family: var(--font-roboto);
+  font-family: var(--font-roboto);
 }
 
 [newFont="inter"] * {
-    font-family: var(--font-inter);
+  font-family: var(--font-inter);
 }
 
-/* newBorder */
+/* █▄ █ █▀▀ █ █ █ █▄▄ █▀█ █▀█ █▀▄ █▀▀ █▀█ */
+/* █ ▀█ ██▄ ▀▄▀▄▀ █▄█ █▄█ █▀▄ █▄▀ ██▄ █▀▄ */
 
 [newBorder="default"] #main div {
-    border-radius: var(--borderRadius-default);
+  border-radius: var(--borderRadius-default);
 }
 
 [newBorder="thin"] #main div {
-    border-radius: var(--borderRadius-thin);
+  border-radius: var(--borderRadius-thin);
 }
 
 [newBorder="wide"] #main div {
-    border-radius: var(--borderRadius-wide);
-}
-
-/* menuTheme */
-
-[menuTheme="light"] {
-    --theme-body-color: #fff !important;
-    --theme-sidebar-color: var(--smalldark-primary-color) !important;
-    --theme-text-color: #ebebeb !important;
-}
-
-[menuTheme="dark"] {
-    --theme-body-color: #fff !important;
-    --theme-sidebar-color: #1C2130 !important;
-    --theme-text-color: #ccc !important;
+  border-radius: var(--borderRadius-wide);
 }

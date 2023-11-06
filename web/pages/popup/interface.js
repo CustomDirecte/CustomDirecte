@@ -133,7 +133,7 @@ genere = () => {
         optionElement.addEventListener("click", () => {
           const lock = document.querySelector("[option=" + option.lock + "]");
           if (lock && !getOptionValue(option.lock)) {
-            lock.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+            lock.scrollIntoViewIfNeeded();
             lock.classList.remove("showMe");
             lock.offsetWidth;
             lock.classList.add("showMe");
@@ -208,9 +208,7 @@ genere = () => {
 
               optionSelectionElement.appendChild(optionBoxElement);
 
-              optionBoxElement.addEventListener("click", () =>
-                (option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, false, selectionOption.Selection, isMultiSelection ? i : false) : null
-              );
+              optionBoxElement.addEventListener("click", () => ((option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, false, selectionOption.Selection, isMultiSelection ? i : false) : null));
             }
           }
 

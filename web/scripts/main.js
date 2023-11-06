@@ -1,16 +1,5 @@
 /* ------------------- Infos ------------------- */
-/*
---> A Bastoon Creation
-
-  Liste des paramettres :
-    : averageCalculator True/False
-    : newMenu True/False
-    : newDesign True/False
-    : newColor [default,magenta,purple,turquoise,gold]
-    : newFont [tahoma,poppin,openSans,montserrat,roboto,inter]
-    : newBorder [default,thin,wide]
-    : theme [light,dark]
-*/
+// --> A Bastoon Creation
 /* --------------------------------------------- */
 
 /* ----------------- Console Log ----------------- */
@@ -26,19 +15,38 @@ const logStyle = {
 console.log("%cCustomDirecte", logStyle.title);
 /* ----------------------------------------------- */
 
-/* ------------ Options Recuperateur ------------- */
-let statue = false;
-chrome.storage.sync.get(["averageCalculator", "newMenu", "newDesign", "newColor", "newFont", "newBorder", "menuTheme", "theme", "debug"], function (data) {
-  statue = data;
-  Start(data);
-});
+/* ------------ Check If Is Login Page ----------- */
+// Teste si la page de connextion est afficher
+function isLoginPage() {
+  return /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) ? true : false;
+}
+/* ----------------------------------------------- */
+
+/* -------------- Options To Statue -------------- */
+// Prend un object d'option et le transforme en objet statue
+function statue(inputOptions) {
+  inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
+  let option = {};
+  let secondaryOption = [];
+  inputOptions.forEach((item) => {
+    if (item.lock === false) {
+      option[item.option] = { value: item.Value === null ? item.Default : item.Value, secondary: {} };
+    } else {
+      secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: item.lock });
+    }
+  });
+  secondaryOption.forEach((item) => {
+    option[item.secondary].secondary[item.option] = item.value;
+  });
+
+  return option;
+}
 /* ----------------------------------------------- */
 
 /* ----------------- Console Log ----------------- */
 const debug = new (class Debug {
   constructor() {
     this.active = false;
-    this.modules = [];
   }
 
   start() {
@@ -55,51 +63,86 @@ const debug = new (class Debug {
     }
   }
 
-  startModule(module) {
-    try {
-      module(module.name);
-      console.log(`%c${module.name} [Enabled]`, logStyle.optionTrue);
-      this.log(module.name + " >>> Successful execution");
-    } catch (error) {
-      console.error(error);
-      console.log(`%c${module.name} [Enabled but Error]`, logStyle.optionError);
-      this.log(module.name + " >>> Error on execution");
-    }
+  startOptionLog(module, state) {
+    state ? console.log(`%c${module} [Enabled]`, logStyle.optionTrue) : console.log(`%c${module} [Disabled]`, logStyle.optionFalse);
   }
 })();
 /* ----------------------------------------------- */
 
-/* ------------------ Login Page ----------------- */
-// Teste si la page de connextion est afficher
-function isLoginPage() {
-  return /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) ? true : false;
+/* ----------- Get option changements ------------ */
+chrome.storage.sync.onChanged.addListener((changes) => {
+  let [key, { oldValue, newValue }] = Object.entries(changes)[0];
+
+  if (key !== "options") return;
+
+  function convert(inputOptions) {
+    inputOptions;
+    let option = {};
+    inputOptions.forEach((item) => {
+      option[item.option] = item.Value === null ? item.Default : item.Value;
+    });
+    return option;
+  }
+
+  const differences = [];
+
+  for (const key in convert(oldValue)) {
+    if (Array.isArray(convert(oldValue)[key]) && Array.isArray(convert(newValue)[key])) {
+      if (JSON.stringify(convert(oldValue)[key]) !== JSON.stringify(convert(newValue)[key])) differences.push([key, convert(newValue)[key]]);
+    } else if (convert(oldValue)[key] !== convert(newValue)[key]) differences.push([key, convert(newValue)[key]]);
+  }
+
+  if (differences != []) {
+    const optionEvent = new CustomEvent("optionEvent", { detail: differences });
+    document.dispatchEvent(optionEvent);
+  }
+});
+/* ----------------------------------------------- */
+
+/* ------------------ Register ------------------- */
+registedOptions = {};
+
+function register(func) {
+  registedOptions[func.name] = func;
 }
 /* ----------------------------------------------- */
 
-/* ----------- Options Initialisateur ------------ */
+/* --------- Options Initialitialisator ---------- */
 function Start(statue) {
   // Active le mode de debugage si activé
-  if (statue.debug) debug.start();
-
-  // Modules de l'extension et statue d'activation
-  Modules = [
-    [averageCalculator, statue.averageCalculator],
-    [newMenu, statue.newMenu],
-    [newDesign, statue.newDesign],
-    [options, true],
-  ];
+  // if (statue.debug) debug.start();
 
   // Change le logo si l'une des options est activé
-  if (Modules.slice(0, -1).some((e) => e[1] == true)) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL(`/icons/EcoleDirecte/magenta.ico`);
+  if (Object.values(statue).some((obj) => obj.value === true)) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL(`/icons/EcoleDirecte/magenta.ico`);
 
   // Execusion des modules avec message dans la console
-  for ([module, statue] of Modules) statue ? debug.startModule(module) : console.log(`%c${module.name} [Disabled]`, logStyle.optionFalse);
+  for (ele in statue) {
+    let func = registedOptions[ele];
+    let value = statue[ele].value;
+    if (!value) {
+      debug.startOptionLog(func.name, false);
+      continue;
+    }
+    try {
+      func(statue[ele].secondary);
+      debug.startOptionLog(func.name, true);
+      debug.log(func.name + " >>> Successful execution");
+    } catch (error) {
+      console.error(error);
+      debug.startOptionLog(`%c${func.name} [Error]`, true);
+      debug.log(func.name + " >>> Error on execution");
+    }
+  }
 }
+
+chrome.storage.sync.get((syncOptions) => {
+  Start(statue(syncOptions));
+});
 /* ----------------------------------------------- */
 
 /* -------------- Options Fonctions -------------- */
 
-function averageCalculator() {
+function noteTableAnalysis(options) {
   try {
     const tippy = document.createElement("script");
     tippy.src = chrome.runtime.getURL("/scripts/tippy.js");
@@ -201,35 +244,65 @@ function averageCalculator() {
     // Recherche la configuration du tableau
     log(" > > Table configuration finding -> [ Starting ]");
     tableConfiguration = {
-      coef: false,
-      relevemoyenne: false,
-      notes: false,
+      discipline: [false, undefined],
+      coef: [false, undefined],
+      relevemoyenne: [false, undefined],
+      notes: [false, undefined],
     };
 
     // Cherche l'index de chaque colones
-    [...gradeTable.tHead.rows[0].cells].forEach((cell, index) => {
-      if (cell.classList.contains("coef")) {
-        log(" > > > Column {coef} -> [ Found ]");
-        tableConfiguration["coef"] = index;
-      }
-      if (cell.classList.contains("relevemoyenne")) {
-        log(" > > > Column {relevemoyenne} -> [ Found ]");
-        tableConfiguration["relevemoyenne"] = index;
-      }
-      if (cell.classList.contains("notes")) {
-        log(" > > > Column {notes} -> [ Found ]");
-        tableConfiguration["notes"] = index;
-      }
-    });
+    function tableGetIndex() {
+      [...gradeTable.tHead.rows[0].cells].forEach((cell, index) => {
+        if (cell.classList.contains("discipline")) {
+          log(" > > > Column {discipline} -> [ Found ]");
+          tableConfiguration["discipline"][0] = index;
+          if (tableConfiguration["discipline"][1] == undefined) tableConfiguration["discipline"][1] = true;
+        }
+        if (cell.classList.contains("coef")) {
+          log(" > > > Column {coef} -> [ Found ]");
+          tableConfiguration["coef"][0] = index;
+          if (tableConfiguration["coef"][1] == undefined) tableConfiguration["coef"][1] = true;
+        }
+        if (cell.classList.contains("relevemoyenne")) {
+          log(" > > > Column {relevemoyenne} -> [ Found ]");
+          tableConfiguration["relevemoyenne"][0] = index;
+          if (tableConfiguration["relevemoyenne"][1] == undefined) tableConfiguration["relevemoyenne"][1] = true;
+        }
+        if (cell.classList.contains("notes")) {
+          log(" > > > Column {notes} -> [ Found ]");
+          tableConfiguration["notes"][0] = index;
+          if (tableConfiguration["notes"][1] == undefined) tableConfiguration["notes"][1] = true;
+        }
+      });
+    }
+    tableGetIndex();
+
+    if (tableConfiguration["coef"][1] == undefined) {
+      log(" > > > Column {coef} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
+      coefTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["discipline"][0] + 1);
+      coefTitleRow.outerHTML = `<th class="coef ng-star-inserted">Coef.</th>`;
+      averageDiv.colSpan += 1;
+      tableConfiguration["coef"][1] = false;
+      tableGetIndex();
+    }
+
+    if (tableConfiguration["relevemoyenne"][1] == undefined) {
+      log(" > > > Column {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
+      relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
+      relevemoyenneTitleRow.outerHTML = `<th class="relevemoyenne ng-star-inserted">Moyennes</th>`;
+      averageDiv.colSpan += 1;
+      tableConfiguration["relevemoyenne"][1] = false;
+      tableGetIndex();
+    }
 
     // Vérifi la presence de chaque index
     log(" > > Table configuration Analysis -> [ Starting ]");
     for (item in tableConfiguration) {
-      log(` > > > Column {${item}} -> [ ${tableConfiguration[item] ? "Here" : "⚠️ Not Here"} ]`);
+      log(` > > > Column {${item}} -> [ ${tableConfiguration[item][1] === true ? "Here" : "⚠️ Not Here"} ]`);
     }
 
     // Verifie la pressence de la colonne des notes
-    if (!tableConfiguration["notes"]) {
+    if (!tableConfiguration["notes"][0]) {
       averageDiv.innerText = "Colonne des notes introuvables";
       log(" > > Column Note -> [ 🛑 Non-existent ]");
       return;
@@ -241,10 +314,22 @@ function averageCalculator() {
     // Pour chaque ligne
     log(" > > Line by Line analysis -> [ Starting ]");
     for (line of gradeTable.tBodies[0].rows) {
-      // Si il y au moins une note ou si la matiere contient des sous-matiere
+      if (tableConfiguration["coef"][1] == false) {
+        log(" > > > Line Element {coef} -> [ ⚠️ Non-existent ] -> [ Genere ]");
+        coefTitleCell = line.insertCell(tableConfiguration["coef"][0]);
+        coefTitleCell.innerHTML = `<span class="ng-star-inserted">1</span>`;
+        coefTitleCell.classList.add("coef", "ng-star-inserted");
+      }
 
+      if (tableConfiguration["relevemoyenne"][1] == false) {
+        log(" > > > Line Element {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ]");
+        relevemoyenneTitleCell = line.insertCell(tableConfiguration["relevemoyenne"][0]);
+        relevemoyenneTitleCell.classList.add("relevemoyenne", "ng-star-inserted");
+      }
+
+      // Si il y au moins une note ou si la matiere contient des sous-matiere
       lineProperties = {
-        Length: line.cells[tableConfiguration["notes"]].childNodes.length > 1,
+        Length: line.cells[tableConfiguration["notes"][0]].childNodes.length > 1,
         IsMaster: line.classList.contains("master"),
         IsSecondary: line.classList.contains("secondary"),
         IsSecondaryButNotlast: line.classList.contains("secondarynotlast"),
@@ -256,7 +341,7 @@ function averageCalculator() {
       }
 
       // Defini la zone d'afficharge de la moyenne de la ligne
-      if ((averageColumn = tableConfiguration["relevemoyenne"])) {
+      if ((averageColumn = tableConfiguration["relevemoyenne"][0])) {
         // Si il n'y a pas de span pour afficher la moyenne
         if (!(averageSpan = line.cells[averageColumn].querySelector("span"))) {
           log(` > > > Element for average display -> [ ⚠️ Non-existent ]`);
@@ -266,16 +351,32 @@ function averageCalculator() {
           log(` > > > Element for average display -> [ Added ]`);
         }
         if (debug.active) averageSpan.setAttribute("style", "border: solid darkblue;");
-        averageSpan.innerText = "...";
+        averageSpan.innerText = "";
         log(` > > > Element for average display -> [ Defined ]`);
       } else {
         averageSpan = false;
         log(` > > > Element for average display -> [ ⚠️ Undefined ] <- because Column relevemoyenne Non-existent`);
       }
 
+      // Defini la zone d'afficharge de la moyenne de la ligne
+      if ((averageColumn = tableConfiguration["relevemoyenne"][0])) {
+      }
+
+      // Si il n'y a pas de span pour afficher la moyenne
+      if (!(averageSpan = line.cells[averageColumn].querySelector("span"))) {
+        log(` > > > Element for average display -> [ ⚠️ Non-existent ]`);
+        averageSpan = document.createElement("span");
+        averageSpan.classList.add("ng-star-inserted");
+        line.cells[averageColumn].appendChild(averageSpan);
+        log(` > > > Element for average display -> [ Added ]`);
+      }
+      if (debug.active) averageSpan.setAttribute("style", "border: solid darkblue;");
+      averageSpan.innerText = "";
+      log(` > > > Element for average display -> [ Defined ]`);
+
       // Trouve l'affichage du coef
       LineCoef = 1;
-      if ((coefColumn = tableConfiguration["coef"])) {
+      if ((coefColumn = tableConfiguration["coef"][0])) {
         if ((coefSpan = line.cells[coefColumn].querySelector("span"))) {
           if (debug.active) coefSpan.setAttribute("style", "border: solid orange;");
           LineCoef = parseFloat(coefSpan.innerText);
@@ -306,7 +407,7 @@ function averageCalculator() {
       LineGradesAndCoef = [];
 
       // Pour chaque notes
-      for (notes of line.cells[tableConfiguration["notes"]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
+      for (notes of line.cells[tableConfiguration["notes"][0]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
         // Récuperation de la note
         try {
           note = parseFloat(notes.childNodes[0].nodeValue.replace(",", "."));
@@ -352,6 +453,22 @@ function averageCalculator() {
 
       if (!(LineGradesAndCoef.length > 0)) {
         log(` > > > > No note in this line -> [⚠️]`);
+        if (!lineProperties["IsSecondaryButNotlast"]) {
+          // Si c'est la derniere ligne secondaire, calcule la somme de la principale
+          masterLineAverage = moyennePondere(masterLineGradesAndCoef);
+          TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
+          if (masterLineAverageSpan) {
+            masterLineAverageSpan.innerText = hundredthRound(masterLineAverage);
+            AllGradeAndAverage.push({
+              average: masterLineAverage,
+              averageSpan: masterLineAverageSpan,
+              coef: masterLineCoef,
+              secondary: false,
+              master: true,
+            });
+          }
+          log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
+        }
         continue;
       }
 
@@ -361,7 +478,7 @@ function averageCalculator() {
       AllGradeAndAverage.push(LineAllGradeAndAverage);
 
       // Affiche la nouvelle moyenne de la ligne
-      if (tableConfiguration["relevemoyenne"]) {
+      if (tableConfiguration["relevemoyenne"][0]) {
         if (debug.active && !lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid blue;");
         if (debug.active && lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid red;");
         if (averageSpan) averageSpan.innerText = hundredthRound(LineAverage);
@@ -450,14 +567,34 @@ function averageCalculator() {
     window.postMessage("tippy-noteEvent", "*");
   }
 }
+register(noteTableAnalysis);
 
-function newMenu() {
+function newSidebar(options) {
   // Setup Module internal log
   let logName = arguments.callee.name;
 
   function log(str) {
     debug.log(logName, str);
   }
+
+  function setOption() {
+    for (option of Object.entries(options)) {
+      document.documentElement.setAttribute(option[0], option[1]);
+    }
+  }
+
+  setOption();
+
+  document.addEventListener(
+    "optionEvent",
+    (e) => {
+      for (option of e.detail) {
+        if (options[option[0]] != undefined) options[option[0]] = option[1];
+      }
+      setOption();
+    },
+    false
+  );
 
   // Ajoute la class "new-menu" au l'element HTML (pour la detection par le css)
   document.querySelector("html").classList.add("new-menu");
@@ -466,6 +603,12 @@ function newMenu() {
   // Detecte les changement du body et execute quand nécésaire le code pour changer le menu
   log("BodyObserver -> [ Starting ]");
   const observer = new MutationObserver(() => {
+    let loadingScreen = document.querySelector("ed-custom-busy");
+    if (loadingScreen && loadingScreen.dataset.newLoadingScreenLoad != "true") {
+      loadingScreen.dataset.newLoadingScreenLoad = true;
+      loadingScreen.innerHTML = '<div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+    }
+
     let menuElem = document.getElementById("container-menu");
     let usernameElem = document.getElementById("user-account-link");
     // execute le code si le menu actuellement affiché n'a pas déjà été modifié
@@ -477,8 +620,7 @@ function newMenu() {
 
       // Ajoute le nom de l'utilisateur dans un element de style et sous forme de variable css root
       rootName = document.createElement("style");
-      rootName.id = "rootName";
-      rootName.innerHTML = `:root { --userName: "${usernameElem.innerText}" }`;
+      rootName.innerHTML = `:root { --userName: "${usernameElem.innerText.trim().replace(/ /, "\\A")}" }`;
       document.head.appendChild(rootName);
       log(" > UserName in CSS Root -> [ Added ]");
 
@@ -514,8 +656,8 @@ function newMenu() {
       log(" > Options button -> [ Added ]");
       menuAddNewOptions("Account", "fa-user", "Mon Compte", () => document.getElementById("user-account-link").click());
       log(" > Account button -> [ Added ]");
-      menuAddNewOptions("Déconnection", "fa-sign-out", "Déconnection", () => document.querySelector(".logout").click());
-      log(" > Deconnection button -> [ Added ]");
+      menuAddNewOptions("Déconnexion", "fa-sign-out", "Déconnexion", () => document.querySelector(".logout").click());
+      log(" > Deconnexion button -> [ Added ]");
 
       // Cache la bare qui contiens le nom et la bouton de déconnexion
       if (document.querySelector(".navbar-nav")) document.querySelector(".navbar-nav").style.display = "none";
@@ -527,9 +669,31 @@ function newMenu() {
     childList: true,
   });
 }
+register(newSidebar);
 
-function newDesign(logName) {
+function customization(options) {
   document.documentElement.toggleAttribute("newDesign", true);
+
+  function setOption() {
+    for (option of Object.entries(options)) {
+      document.documentElement.setAttribute(option[0], option[1]);
+    }
+  }
+
+  setOption();
+
+  document.addEventListener(
+    "optionEvent",
+    (e) => {
+      for (option of e.detail) {
+        if (options[option[0]] != undefined) options[option[0]] = option[1];
+      }
+      setOption();
+    },
+    false
+  );
+
+  
   document.addEventListener(
     "newMessage",
     (e) => {
@@ -543,8 +707,9 @@ function newDesign(logName) {
   darkreader.src = chrome.runtime.getURL("/scripts/darkreader.js");
   document.head.appendChild(darkreader);
 }
+register(customization);
 
-function options(logName) {
+function customizationButton(options) {
   // Bouton de personnalisation
   optionsButtonDiv = document.createElement("div");
   optionsButtonDiv.classList.add("optionsButton");
@@ -603,5 +768,6 @@ function options(logName) {
     }
   };
 }
+register(customizationButton);
 
 /* ----------------------------------------------- */

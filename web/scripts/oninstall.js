@@ -207,7 +207,7 @@ defaultOptions = {
       Value: null,
       Default: true,
       option: "customization",
-      Title: "Activer l’analyse du tableau de note",
+      Title: "Activer les options de personnalisation",
       Subtitle: "Permet à l'extension de préparer le site au option de personnalisation",
       reloadingRequired: true,
       lock: false,
@@ -341,36 +341,47 @@ defaultOptions = {
   ],
 };
 
+function optionsCorrector(inputOptions = false) {
+  // Use the base "defaultOptions" and apply the actual options if they are correct
+  function fixedOptions(inputOptions) {
+    return {
+      // Reset storage with Defaults Options or New Defaults Options
+      groups: defaultOptions.groups,
+      // Keep same value if possible
+      options: defaultOptions.options.map((option) => {
+        // Get value of same id old option [optionFound]
+        const optionFound = inputOptions.options.find((o) => o.option === option.option);
+        // If old option exist with value =>
+        if (optionFound && optionFound.Value !== null) {
+          // If the option have property "Options" { CustomSelection } =>
+          if (optionFound.Options && option.Options !== undefined) {
+            if (option.Options.some((x) => x.Selection === optionFound.Value)) option.Value = optionFound.Value;
+          }
+          // If the option have property "MultiOptions" { MultiSelection } =>
+          else if (optionFound.MultiOptions && option.MultiOptions !== undefined) {
+            option.Value = option.Default.map((value, i) => (optionFound.Value[i] && option.MultiOptions[i].some((x) => x.Selection === optionFound.Value[i]) ? optionFound.Value[i] : value));
+          }
+          // If the option have bool value { Switch } =>
+          else if (typeof option.Default === "boolean" && typeof optionFound.Value === "boolean") option.Value = optionFound.Value;
+        }
+        return option;
+      }),
+    };
+  }
+
+  if (inputOptions) return fixedOptions(inputOptions);
+
+  chrome.storage.sync.get((syncOptions) => {
+    chrome.storage.sync.set(fixedOptions(syncOptions));
+  });
+}
+
 chrome.runtime.onInstalled.addListener((reason) => {
   if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    // Initiate sync values with default
     chrome.storage.sync.set(defaultOptions);
   } else {
-    // Check all values on update
-    chrome.storage.sync.get((data) => {
-      const newOptions = {
-        // Reset storage with Defaults Options or New Defaults Options
-        groups: defaultOptions.groups,
-        // Keep same value if possible
-        options: defaultOptions.options.map((option) => {
-          // Get value of same id old option [optionFound]
-          const optionFound = data.options.find((o) => o.option === option.option);
-          // If old option exist with value =>
-          if (optionFound && optionFound.Value !== null) {
-            // If the option have property "Options" { CustomSelection } =>
-            if (optionFound.Options && option.Options !== undefined) {
-              if (option.Options.some((x) => x.Selection === optionFound.Value)) option.Value = optionFound.Value;
-            }
-            // If the option have property "MultiOptions" { MultiSelection } =>
-            else if (optionFound.MultiOptions && option.MultiOptions !== undefined) {
-              option.Value = option.Default.map((value, i) => (optionFound.Value[i] && option.MultiOptions[i].some((x) => x.Selection === optionFound.Value[i]) ? optionFound.Value[i] : value));
-            }
-            // If the option have bool value { Switch } =>
-            else if (typeof option.Default === "boolean" && typeof optionFound.Value === "boolean") option.Value = optionFound.Value;
-          }
-          return option;
-        }),
-      };
-      chrome.storage.sync.set(newOptions);
-    });
+    // Check all sync values on update
+    optionsCorrector();
   }
 });

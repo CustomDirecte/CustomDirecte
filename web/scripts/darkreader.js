@@ -6,11 +6,7 @@
  */
 
 !(function (e, t) {
-  "object" == typeof exports && "undefined" != typeof module
-    ? t(exports)
-    : "function" == typeof define && define.amd
-    ? define(["exports"], t)
-    : t(((e = "undefined" != typeof globalThis ? globalThis : e || self).DarkReader = {}));
+  "object" == typeof exports && "undefined" != typeof module ? t(exports) : "function" == typeof define && define.amd ? define(["exports"], t) : t(((e = "undefined" != typeof globalThis ? globalThis : e || self).DarkReader = {}));
 })(this, function (e) {
   "use strict";
   var t,
@@ -347,21 +343,7 @@
   var C = function (e) {
       return n(void 0, void 0, void 0, function () {
         return a(this, function (t) {
-          return [
-            2,
-            Promise.reject(
-              new Error(
-                [
-                  "Embedded Dark Reader cannot access a cross-origin resource",
-                  e,
-                  "Overview your URLs and CORS policies or use",
-                  "`DarkReader.setFetchMethod(fetch: (url) => Promise<Response>))`.",
-                  "See if using `DarkReader.setFetchMethod(window.fetch)`",
-                  "before `DarkReader.enable()` works.",
-                ].join(" ")
-              )
-            ),
-          ];
+          return [2, Promise.reject(new Error(["Embedded Dark Reader cannot access a cross-origin resource", e, "Overview your URLs and CORS policies or use", "`DarkReader.setFetchMethod(fetch: (url) => Promise<Response>))`.", "See if using `DarkReader.setFetchMethod(window.fetch)`", "before `DarkReader.enable()` works."].join(" ")))];
         });
       });
     },
@@ -418,7 +400,7 @@
           case 7:
             return (
               (s = a.sent()),
-              console.error(s),
+              console.warn(s),
               A.forEach(function (e) {
                 return e({
                   type: t.BG_FETCH_RESPONSE,
@@ -1438,14 +1420,7 @@
 
   function Ge(e) {
     var t = He.identity();
-    return (
-      0 !== e.sepia && (t = We(t, He.sepia(e.sepia / 100))),
-      0 !== e.grayscale && (t = We(t, He.grayscale(e.grayscale / 100))),
-      100 !== e.contrast && (t = We(t, He.contrast(e.contrast / 100))),
-      100 !== e.brightness && (t = We(t, He.brightness(e.brightness / 100))),
-      1 === e.mode && (t = We(t, He.invertNHue())),
-      t
-    );
+    return 0 !== e.sepia && (t = We(t, He.sepia(e.sepia / 100))), 0 !== e.grayscale && (t = We(t, He.grayscale(e.grayscale / 100))), 100 !== e.contrast && (t = We(t, He.contrast(e.contrast / 100))), 100 !== e.brightness && (t = We(t, He.brightness(e.brightness / 100))), 1 === e.mode && (t = We(t, He.invertNHue())), t;
   }
   var He = {
     identity: function () {
@@ -1775,14 +1750,7 @@
 
   function dt(e) {
     var t = [];
-    return (
-      e.mode === nt.dark && t.push("invert(100%) hue-rotate(180deg)"),
-      100 !== e.brightness && t.push("brightness(".concat(e.brightness, "%)")),
-      100 !== e.contrast && t.push("contrast(".concat(e.contrast, "%)")),
-      0 !== e.grayscale && t.push("grayscale(".concat(e.grayscale, "%)")),
-      0 !== e.sepia && t.push("sepia(".concat(e.sepia, "%)")),
-      0 === t.length ? null : t.join(" ")
-    );
+    return e.mode === nt.dark && t.push("invert(100%) hue-rotate(180deg)"), 100 !== e.brightness && t.push("brightness(".concat(e.brightness, "%)")), 100 !== e.contrast && t.push("contrast(".concat(e.contrast, "%)")), 0 !== e.grayscale && t.push("grayscale(".concat(e.grayscale, "%)")), 0 !== e.sepia && t.push("sepia(".concat(e.sepia, "%)")), 0 === t.length ? null : t.join(" ");
   }
   !(function (e) {
     (e[(e.light = 0)] = "light"), (e[(e.dark = 1)] = "dark");
@@ -1914,8 +1882,7 @@
                                 S = 0,
                                 _ = 0,
                                 k = 0;
-                              for (d = 0; d < c; d++)
-                                for (l = 0; l < u; l++) (f = m[(s = 4 * (d * u + l)) + 0]), (h = m[s + 1]), (p = m[s + 2]), m[s + 3] / 255 < g ? S++ : ((v = Be(f, h, p)) < b && _++, v > y && k++);
+                              for (d = 0; d < c; d++) for (l = 0; l < u; l++) (f = m[(s = 4 * (d * u + l)) + 0]), (h = m[s + 1]), (p = m[s + 2]), m[s + 3] / 255 < g ? S++ : ((v = Be(f, h, p)) < b && _++, v > y && k++);
                               var w = u * c,
                                 E = w - S;
                               return {
@@ -2067,10 +2034,7 @@
           var n = Ee(t);
           if (!n) return null;
           if (e.includes("background"))
-            return (r.style.webkitMaskImage && "none" !== r.style.webkitMaskImage) ||
-              (r.style.webkitMask && !r.style.webkitMask.startsWith("none")) ||
-              (r.style.mask && "none" !== r.style.mask) ||
-              (r.style.getPropertyValue("mask-image") && "none" !== r.style.getPropertyValue("mask-image"))
+            return (r.style.webkitMaskImage && "none" !== r.style.webkitMaskImage) || (r.style.webkitMask && !r.style.webkitMask.startsWith("none")) || (r.style.mask && "none" !== r.style.mask) || (r.style.getPropertyValue("mask-image") && "none" !== r.style.getPropertyValue("mask-image"))
               ? function (e) {
                   return ut(n, e);
                 }
@@ -2478,12 +2442,7 @@
                 var a;
                 if (
                   ([At, Vt, Tt].find(function (t) {
-                    if (r - t.length >= 0 && e.substring(r - t.length, r) === t)
-                      return "repeating" === e.slice(r - t.length - 10, r - t.length - 1)
-                        ? ((a = "repeating-".concat(t, "gradient")), !0)
-                        : "-webkit" === e.slice(r - t.length - 8, r - t.length - 1)
-                        ? ((a = "-webkit-".concat(t, "gradient")), !0)
-                        : ((a = "".concat(t, "gradient")), !0);
+                    if (r - t.length >= 0 && e.substring(r - t.length, r) === t) return "repeating" === e.slice(r - t.length - 10, r - t.length - 1) ? ((a = "repeating-".concat(t, "gradient")), !0) : "-webkit" === e.slice(r - t.length - 8, r - t.length - 1) ? ((a = "-webkit-".concat(t, "gradient")), !0) : ((a = "".concat(t, "gradient")), !0);
                   }),
                   !a)
                 )
@@ -2826,31 +2785,11 @@
   }
   var Wt = new ((function () {
     function e() {
-      (this.varTypes = new Map()),
-        (this.rulesQueue = []),
-        (this.definedVars = new Set()),
-        (this.varRefs = new Map()),
-        (this.unknownColorVars = new Set()),
-        (this.unknownBgVars = new Set()),
-        (this.undefinedVars = new Set()),
-        (this.initialVarTypes = new Map()),
-        (this.changedTypeVars = new Set()),
-        (this.typeChangeSubscriptions = new Map()),
-        (this.unstableVarValues = new Map());
+      (this.varTypes = new Map()), (this.rulesQueue = []), (this.definedVars = new Set()), (this.varRefs = new Map()), (this.unknownColorVars = new Set()), (this.unknownBgVars = new Set()), (this.undefinedVars = new Set()), (this.initialVarTypes = new Map()), (this.changedTypeVars = new Set()), (this.typeChangeSubscriptions = new Map()), (this.unstableVarValues = new Map());
     }
     return (
       (e.prototype.clear = function () {
-        this.varTypes.clear(),
-          this.rulesQueue.splice(0),
-          this.definedVars.clear(),
-          this.varRefs.clear(),
-          this.unknownColorVars.clear(),
-          this.unknownBgVars.clear(),
-          this.undefinedVars.clear(),
-          this.initialVarTypes.clear(),
-          this.changedTypeVars.clear(),
-          this.typeChangeSubscriptions.clear(),
-          this.unstableVarValues.clear();
+        this.varTypes.clear(), this.rulesQueue.splice(0), this.definedVars.clear(), this.varRefs.clear(), this.unknownColorVars.clear(), this.unknownBgVars.clear(), this.undefinedVars.clear(), this.initialVarTypes.clear(), this.changedTypeVars.clear(), this.typeChangeSubscriptions.clear(), this.unstableVarValues.clear();
       }),
       (e.prototype.isVarType = function (e, t) {
         return this.varTypes.has(e) && (this.varTypes.get(e) & t) > 0;
@@ -3077,8 +3016,7 @@
         });
       }),
       (e.prototype.inspectVariable = function (e, t) {
-        (this.unstableVarValues.set(e, t), Jt(t) && er(t) && (this.unknownColorVars.add(e), this.definedVars.add(e)), this.definedVars.has(e)) ||
-          (this.definedVars.add(e), Ee(t) ? this.unknownColorVars.add(e) : (t.includes("url(") || t.includes("linear-gradient(") || t.includes("radial-gradient(")) && this.resolveVariableType(e, 8));
+        (this.unstableVarValues.set(e, t), Jt(t) && er(t) && (this.unknownColorVars.add(e), this.definedVars.add(e)), this.definedVars.has(e)) || (this.definedVars.add(e), Ee(t) ? this.unknownColorVars.add(e) : (t.includes("url(") || t.includes("linear-gradient(") || t.includes("radial-gradient(")) && this.resolveVariableType(e, 8));
       }),
       (e.prototype.resolveVariableType = function (e, t) {
         var r = this.initialVarTypes.get(e) || 0,
@@ -3177,11 +3115,7 @@
         u.cssRules.length > 0 && u.deleteRule(0);
         var c = new Map();
         le(document.documentElement.style, function (e, r) {
-          Zt(e) &&
-            (a.isVarType(e, 1) && c.set(Qt(e), ar(r, t)),
-            a.isVarType(e, 2) && c.set(Kt(e), or(r, t)),
-            a.isVarType(e, 4) && c.set(Yt(e), ir(r, t)),
-            a.subscribeForVarTypeChange(e, a.onRootVariableDefined));
+          Zt(e) && (a.isVarType(e, 1) && c.set(Qt(e), ar(r, t)), a.isVarType(e, 2) && c.set(Kt(e), or(r, t)), a.isVarType(e, 4) && c.set(Yt(e), ir(r, t)), a.subscribeForVarTypeChange(e, a.onRootVariableDefined));
         });
         var s = [];
         s.push(":root {");
@@ -4075,9 +4009,7 @@
     }
 
     function w() {
-      l
-        ? (e.nextSibling !== l && e.parentNode.insertBefore(l, e.nextSibling), l.nextSibling !== d && e.parentNode.insertBefore(d, l.nextSibling))
-        : e.nextSibling !== d && e.parentNode.insertBefore(d, e.nextSibling);
+      l ? (e.nextSibling !== l && e.parentNode.insertBefore(l, e.nextSibling), l.nextSibling !== d && e.parentNode.insertBefore(d, l.nextSibling)) : e.nextSibling !== d && e.parentNode.insertBefore(d, e.nextSibling);
     }
     var E = !1,
       C = !1,
@@ -4119,16 +4051,7 @@
                 (l = (function (e, t) {
                   if (!t) return null;
                   var r = document.createElement("style");
-                  return (
-                    r.classList.add("darkreader"),
-                    r.classList.add("darkreader--cors"),
-                    (r.media = "screen"),
-                    (r.textContent = t),
-                    e.parentNode.insertBefore(r, e.nextSibling),
-                    (r.sheet.disabled = !0),
-                    Lr.add(r),
-                    r
-                  );
+                  return r.classList.add("darkreader"), r.classList.add("darkreader--cors"), (r.media = "screen"), (r.textContent = t), e.parentNode.insertBefore(r, e.nextSibling), (r.sheet.disabled = !0), Lr.add(r), r;
                 })(e, c)),
                 [3, 12]
               );
@@ -4225,12 +4148,7 @@
 
         function o() {
           return (
-            d ||
-              ((d = e instanceof SVGStyleElement ? document.createElementNS("http://www.w3.org/2000/svg", "style") : document.createElement("style")).classList.add("darkreader"),
-              d.classList.add("darkreader--sync"),
-              (d.media = "screen"),
-              e.title && (d.title = e.title),
-              Mr.add(d)),
+            d || ((d = e instanceof SVGStyleElement ? document.createElementNS("http://www.w3.org/2000/svg", "style") : document.createElement("style")).classList.add("darkreader"), d.classList.add("darkreader--sync"), (d.media = "screen"), e.title && (d.title = e.title), Mr.add(d)),
             h && h.stop(),
             w(),
             null == d.sheet && (d.textContent = ""),
@@ -4699,9 +4617,7 @@
       n = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "deleteRule"),
       a = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "removeRule"),
       o = e ? Object.getOwnPropertyDescriptor(Document.prototype, "styleSheets") : null,
-      c = ["baidu.com", "baike.baidu.com", "ditu.baidu.com", "map.baidu.com", "maps.baidu.com", "haokan.baidu.com", "pan.baidu.com", "passport.baidu.com", "tieba.baidu.com", "www.baidu.com"].includes(
-        location.hostname
-      ),
+      c = ["baidu.com", "baike.baidu.com", "ditu.baidu.com", "map.baidu.com", "maps.baidu.com", "haokan.baidu.com", "pan.baidu.com", "passport.baidu.com", "tieba.baidu.com", "www.baidu.com"].includes(location.hostname),
       s = c ? Object.getOwnPropertyDescriptor(Element.prototype, "getElementsByTagName") : null,
       l = function () {
         Object.defineProperty(CSSStyleSheet.prototype, "addRule", t),
@@ -4903,14 +4819,7 @@
       g = 0 === v ? p : f;
     (m = rt(Ee(m), nn)),
       (g = ut(Ee(g), nn)),
-      (s.textContent = [
-        ":root {",
-        "   --darkreader-neutral-background: ".concat(m, ";"),
-        "   --darkreader-neutral-text: ".concat(g, ";"),
-        "   --darkreader-selection-background: ".concat(l.backgroundColorSelection, ";"),
-        "   --darkreader-selection-text: ".concat(l.foregroundColorSelection, ";"),
-        "}",
-      ].join("\n")),
+      (s.textContent = [":root {", "   --darkreader-neutral-background: ".concat(m, ";"), "   --darkreader-neutral-text: ".concat(g, ";"), "   --darkreader-selection-background: ".concat(l.backgroundColorSelection, ";"), "   --darkreader-selection-text: ".concat(l.foregroundColorSelection, ";"), "}"].join("\n")),
       document.head.insertBefore(s, u.nextSibling),
       dn(s, "variables");
     var b = sn("darkreader--root-vars");
@@ -5118,10 +5027,7 @@
           }
         ),
         (e = function (e) {
-          Sr(e, nn, cn, un),
-            e === document.documentElement &&
-              (e.getAttribute("style") || "").includes("--") &&
-              (Wt.matchVariablesAndDependants(), Wt.putRootVars(document.head.querySelector(".darkreader--root-vars"), nn));
+          Sr(e, nn, cn, un), e === document.documentElement && (e.getAttribute("style") || "").includes("--") && (Wt.matchVariablesAndDependants(), Wt.putRootVars(document.head.querySelector(".darkreader--root-vars"), nn));
         }),
         (t = function (e) {
           pn(e);
