@@ -37,6 +37,6 @@
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {
-    "service_worker": "/scripts/oninstall.js"
+    "service_worker": "/scripts/background.js"
   }
 }

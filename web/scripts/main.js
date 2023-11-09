@@ -148,23 +148,28 @@ function Start(statue) {
   }
 }
 
-chrome.storage.sync.get((inputOptions) => {
-  inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
-  let option = {};
-  let secondaryOption = [];
-  inputOptions.forEach((item) => {
-    if (item.lock === false) {
-      option[item.option] = { value: item.Value === null ? item.Default : item.Value, secondary: {} };
-    } else {
-      secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: item.lock });
-    }
-  });
-  secondaryOption.forEach((item) => {
-    option[item.secondary].secondary[item.option] = item.value;
-  });
+function Run() {
+  chrome.storage.sync.get((inputOptions) => {
+    if (!inputOptions.options) console.log(inputOptions);
+    if (!inputOptions.options) return;
+    inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
+    let option = {};
+    let secondaryOption = [];
+    inputOptions.forEach((item) => {
+      if (item.lock === false) {
+        option[item.option] = { value: item.Value === null ? item.Default : item.Value, secondary: {} };
+      } else {
+        secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: item.lock });
+      }
+    });
+    secondaryOption.forEach((item) => {
+      option[item.secondary].secondary[item.option] = item.value;
+    });
 
-  Start(option);
-});
+    Start(option);
+  });
+}
+Run();
 /* ----------------------------------------------- */
 
 /* -------------- Options Fonctions -------------- */
