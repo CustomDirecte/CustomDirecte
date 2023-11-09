@@ -3,11 +3,7 @@
  */
 
 !(function (e, t) {
-  "object" == typeof exports && "undefined" != typeof module
-    ? t(exports)
-    : "function" == typeof define && define.amd
-    ? define(["exports"], t)
-    : t(((e = "undefined" != typeof globalThis ? globalThis : e || self).Popper = {}));
+  "object" == typeof exports && "undefined" != typeof module ? t(exports) : "function" == typeof define && define.amd ? define(["exports"], t) : t(((e = "undefined" != typeof globalThis ? globalThis : e || self).Popper = {}));
 })(this, function (e) {
   "use strict";
   function t(e) {
@@ -97,12 +93,7 @@
       y = p(e, c, o),
       g = { scrollLeft: 0, scrollTop: 0 },
       b = { x: 0, y: 0 };
-    return (
-      (f || (!f && !o)) &&
-        (("body" !== l(n) || v(m)) && (g = (i = n) !== t(i) && r(i) ? { scrollLeft: (a = i).scrollLeft, scrollTop: a.scrollTop } : u(i)),
-        r(n) ? (((b = p(n, !0)).x += n.clientLeft), (b.y += n.clientTop)) : m && (b.x = h(m))),
-      { x: y.left + g.scrollLeft - b.x, y: y.top + g.scrollTop - b.y, width: y.width, height: y.height }
-    );
+    return (f || (!f && !o)) && (("body" !== l(n) || v(m)) && (g = (i = n) !== t(i) && r(i) ? { scrollLeft: (a = i).scrollLeft, scrollTop: a.scrollTop } : u(i)), r(n) ? (((b = p(n, !0)).x += n.clientLeft), (b.y += n.clientTop)) : m && (b.x = h(m))), { x: y.left + g.scrollLeft - b.x, y: y.top + g.scrollTop - b.y, width: y.width, height: y.height };
   }
   function g(e) {
     var t = p(e),
@@ -143,15 +134,7 @@
             var n = b(e);
             for (o(n) && (n = n.host); r(n) && ["html", "body"].indexOf(l(n)) < 0; ) {
               var i = m(n);
-              if (
-                "none" !== i.transform ||
-                "none" !== i.perspective ||
-                "paint" === i.contain ||
-                -1 !== ["transform", "perspective"].indexOf(i.willChange) ||
-                (t && "filter" === i.willChange) ||
-                (t && i.filter && "none" !== i.filter)
-              )
-                return n;
+              if ("none" !== i.transform || "none" !== i.perspective || "paint" === i.contain || -1 !== ["transform", "perspective"].indexOf(i.willChange) || (t && "filter" === i.willChange) || (t && i.filter && "none" !== i.filter)) return n;
               n = n.parentNode;
             }
             return null;
@@ -239,17 +222,7 @@
       : n(r)
       ? (function (e, t) {
           var n = p(e, !1, "fixed" === t);
-          return (
-            (n.top = n.top + e.clientTop),
-            (n.left = n.left + e.clientLeft),
-            (n.bottom = n.top + e.clientHeight),
-            (n.right = n.left + e.clientWidth),
-            (n.width = e.clientWidth),
-            (n.height = e.clientHeight),
-            (n.x = n.left),
-            (n.y = n.top),
-            n
-          );
+          return (n.top = n.top + e.clientTop), (n.left = n.left + e.clientLeft), (n.bottom = n.top + e.clientHeight), (n.right = n.left + e.clientWidth), (n.width = e.clientWidth), (n.height = e.clientHeight), (n.x = n.left), (n.y = n.top), n;
         })(r, o)
       : I(
           (function (e) {
@@ -573,8 +546,7 @@
       var W = E(r),
         H = "clientHeight",
         T = "clientWidth";
-      if ((W === t(r) && "static" !== m((W = d(r))).position && "absolute" === c && ((H = "scrollHeight"), (T = "scrollWidth")), (W = W), i === D || ((i === P || i === L) && a === B)))
-        (M = A), (b -= (h && W === k && k.visualViewport ? k.visualViewport.height : W[H]) - o.height), (b *= p ? 1 : -1);
+      if ((W === t(r) && "static" !== m((W = d(r))).position && "absolute" === c && ((H = "scrollHeight"), (T = "scrollWidth")), (W = W), i === D || ((i === P || i === L) && a === B))) (M = A), (b -= (h && W === k && k.visualViewport ? k.visualViewport.height : W[H]) - o.height), (b *= p ? 1 : -1);
       if (i === P || ((i === D || i === A) && a === B)) (j = L), (y -= (h && W === k && k.visualViewport ? k.visualViewport.width : W[T]) - o.width), (y *= p ? 1 : -1);
     }
     var R,
@@ -588,20 +560,7 @@
               return { x: s(n * o) / o || 0, y: s(r * o) / o || 0 };
             })({ x: y, y: b }, t(r))
           : { x: y, y: b };
-    return (
-      (y = V.x),
-      (b = V.y),
-      p
-        ? Object.assign(
-            {},
-            S,
-            (((R = {})[M] = O ? "0" : ""),
-            (R[j] = w ? "0" : ""),
-            (R.transform = (k.devicePixelRatio || 1) <= 1 ? "translate(" + y + "px, " + b + "px)" : "translate3d(" + y + "px, " + b + "px, 0)"),
-            R)
-          )
-        : Object.assign({}, S, (((n = {})[M] = O ? b + "px" : ""), (n[j] = w ? y + "px" : ""), (n.transform = ""), n))
-    );
+    return (y = V.x), (b = V.y), p ? Object.assign({}, S, (((R = {})[M] = O ? "0" : ""), (R[j] = w ? "0" : ""), (R.transform = (k.devicePixelRatio || 1) <= 1 ? "translate(" + y + "px, " + b + "px)" : "translate3d(" + y + "px, " + b + "px, 0)"), R)) : Object.assign({}, S, (((n = {})[M] = O ? b + "px" : ""), (n[j] = w ? y + "px" : ""), (n.transform = ""), n));
   }
   var oe = {
     name: "computeStyles",
@@ -617,10 +576,8 @@
         s = n.roundOffsets,
         f = void 0 === s || s,
         c = { placement: C(t.placement), variation: U(t.placement), popper: t.elements.popper, popperRect: t.rects.popper, gpuAcceleration: o, isFixed: "fixed" === t.options.strategy };
-      null != t.modifiersData.popperOffsets &&
-        (t.styles.popper = Object.assign({}, t.styles.popper, re(Object.assign({}, c, { offsets: t.modifiersData.popperOffsets, position: t.options.strategy, adaptive: a, roundOffsets: f })))),
-        null != t.modifiersData.arrow &&
-          (t.styles.arrow = Object.assign({}, t.styles.arrow, re(Object.assign({}, c, { offsets: t.modifiersData.arrow, position: "absolute", adaptive: !1, roundOffsets: f })))),
+      null != t.modifiersData.popperOffsets && (t.styles.popper = Object.assign({}, t.styles.popper, re(Object.assign({}, c, { offsets: t.modifiersData.popperOffsets, position: t.options.strategy, adaptive: a, roundOffsets: f })))),
+        null != t.modifiersData.arrow && (t.styles.arrow = Object.assign({}, t.styles.arrow, re(Object.assign({}, c, { offsets: t.modifiersData.arrow, position: "absolute", adaptive: !1, roundOffsets: f })))),
         (t.attributes.popper = Object.assign({}, t.attributes.popper, { "data-popper-placement": t.placement }));
     },
     data: {},
@@ -989,37 +946,17 @@
           c = ve(s, o, i),
           p = ye(f),
           u = ye(c);
-        (t.modifiersData[n] = { referenceClippingOffsets: f, popperEscapeOffsets: c, isReferenceHidden: p, hasPopperEscaped: u }),
-          (t.attributes.popper = Object.assign({}, t.attributes.popper, { "data-popper-reference-hidden": p, "data-popper-escaped": u }));
+        (t.modifiersData[n] = { referenceClippingOffsets: f, popperEscapeOffsets: c, isReferenceHidden: p, hasPopperEscaped: u }), (t.attributes.popper = Object.assign({}, t.attributes.popper, { "data-popper-reference-hidden": p, "data-popper-escaped": u }));
       },
     },
     be = Z({ defaultModifiers: [ee, te, oe, ie] }),
     xe = [ee, te, oe, ie, ae, le, he, me, ge],
     we = Z({ defaultModifiers: xe });
-  (e.applyStyles = ie),
-    (e.arrow = me),
-    (e.computeStyles = oe),
-    (e.createPopper = we),
-    (e.createPopperLite = be),
-    (e.defaultModifiers = xe),
-    (e.detectOverflow = J),
-    (e.eventListeners = ee),
-    (e.flip = le),
-    (e.hide = ge),
-    (e.offset = ae),
-    (e.popperGenerator = Z),
-    (e.popperOffsets = te),
-    (e.preventOverflow = he),
-    Object.defineProperty(e, "__esModule", { value: !0 });
+  (e.applyStyles = ie), (e.arrow = me), (e.computeStyles = oe), (e.createPopper = we), (e.createPopperLite = be), (e.defaultModifiers = xe), (e.detectOverflow = J), (e.eventListeners = ee), (e.flip = le), (e.hide = ge), (e.offset = ae), (e.popperGenerator = Z), (e.popperOffsets = te), (e.preventOverflow = he), Object.defineProperty(e, "__esModule", { value: !0 });
 });
 //# sourceMappingURL=popper.min.js.map
-
 !(function (t, e) {
-  "object" == typeof exports && "undefined" != typeof module
-    ? (module.exports = e(require("@popperjs/core")))
-    : "function" == typeof define && define.amd
-    ? define(["@popperjs/core"], e)
-    : ((t = t || self).tippy = e(t.Popper));
+  "object" == typeof exports && "undefined" != typeof module ? (module.exports = e(require("@popperjs/core"))) : "function" == typeof define && define.amd ? define(["@popperjs/core"], e) : ((t = t || self).tippy = e(t.Popper));
 })(this, function (t) {
   "use strict";
   var e = "undefined" != typeof window && "undefined" != typeof document,
@@ -1220,11 +1157,7 @@
             }, {});
           })(t, e.plugins)
     );
-    return (
-      (n.aria = Object.assign({}, R.aria, n.aria)),
-      (n.aria = { expanded: "auto" === n.aria.expanded ? e.interactive : n.aria.expanded, content: "auto" === n.aria.content ? (e.interactive ? null : "describedby") : n.aria.content }),
-      n
-    );
+    return (n.aria = Object.assign({}, R.aria, n.aria)), (n.aria = { expanded: "auto" === n.aria.expanded ? e.interactive : n.aria.expanded, content: "auto" === n.aria.content ? (e.interactive ? null : "describedby") : n.aria.content }), n;
   }
   function V(t, e) {
     t.innerHTML = e;
@@ -1691,9 +1624,7 @@
             },
           },
         ];
-      tt() && u && c.push({ name: "arrow", options: { element: u, padding: 3 } }),
-        c.push.apply(c, (null == r ? void 0 : r.modifiers) || []),
-        (Y.popperInstance = t.createPopper(p, $, Object.assign({}, r, { placement: o, onFirstUpdate: L, modifiers: c })));
+      tt() && u && c.push({ name: "arrow", options: { element: u, padding: 3 } }), c.push.apply(c, (null == r ? void 0 : r.modifiers) || []), (Y.popperInstance = t.createPopper(p, $, Object.assign({}, r, { placement: o, onFirstUpdate: L, modifiers: c })));
     }
     function Tt() {
       Y.popperInstance && (Y.popperInstance.destroy(), (Y.popperInstance = null));
@@ -2110,14 +2041,7 @@
             };
           },
         },
-        y = F(
-          m(),
-          Object.assign({}, p(e, ["overrides"]), {
-            plugins: [b].concat(e.plugins || []),
-            triggerTarget: a,
-            popperOptions: Object.assign({}, e.popperOptions, { modifiers: [].concat((null == (n = e.popperOptions) ? void 0 : n.modifiers) || [], [W]) }),
-          })
-        ),
+        y = F(m(), Object.assign({}, p(e, ["overrides"]), { plugins: [b].concat(e.plugins || []), triggerTarget: a, popperOptions: Object.assign({}, e.popperOptions, { modifiers: [].concat((null == (n = e.popperOptions) ? void 0 : n.modifiers) || [], [W]) }) })),
         w = y.show;
       (y.show = function (t) {
         if ((w(), !r && null == t)) return h(y, i[0]);
@@ -2244,21 +2168,36 @@
         }
       });
     }),
-    (F.roundArrow =
-      '<svg width="16" height="6" xmlns="http://www.w3.org/2000/svg"><path d="M0 6s1.796-.013 4.67-3.615C5.851.9 6.93.006 8 0c1.07-.006 2.148.887 3.343 2.385C14.233 6.005 16 6 16 6H0z"></svg>'),
+    (F.roundArrow = '<svg width="16" height="6" xmlns="http://www.w3.org/2000/svg"><path d="M0 6s1.796-.013 4.67-3.615C5.851.9 6.93.006 8 0c1.07-.006 2.148.887 3.343 2.385C14.233 6.005 16 6 16 6H0z"></svg>'),
     F
   );
 });
 //# sourceMappingURL=tippy-bundle.umd.min.js.map
 
+function remove() {
+  [...document.querySelectorAll(".notesAdvancedInformation")].forEach((node) => {
+    if (node._tippy) {
+      node._tippy.destroy();
+    }
+  });
+}
+
+function add() {
+  tippy(".notesAdvancedInformation", {
+    allowHTML: true,
+    placement: "left",
+    theme: "tomato",
+  });
+}
+
 addEventListener("load", () => {
   window.addEventListener("message", (e) => {
-    if (e.data == "tippy-noteEvent") {
-      tippy(".notesAdvancedInformation", {
-        allowHTML: true,
-        placement: "left",
-        theme: "tomato",
-      });
+    if (e.data == "tippy-noteEvent-disable") {
+      remove();
+    }
+    if (e.data == "tippy-noteEvent-enable") {
+      remove();
+      add();
     }
   });
 });

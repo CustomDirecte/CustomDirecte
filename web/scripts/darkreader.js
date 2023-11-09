@@ -400,7 +400,7 @@
           case 7:
             return (
               (s = a.sent()),
-              console.warn(s),
+              (s) => {},
               A.forEach(function (e) {
                 return e({
                   type: t.BG_FETCH_RESPONSE,
@@ -1850,7 +1850,14 @@
                               height: u.naturalHeight,
                             },
                             (function (e) {
-                              St || ((t = kt), (r = kt), ((St = document.createElement("canvas")).width = t), (St.height = r), ((_t = St.getContext("2d")).imageSmoothingEnabled = !1));
+                              St ||
+                                ((t = kt),
+                                (r = kt),
+                                ((St = document.createElement("canvas")).width = t),
+                                (St.height = r),
+                                ((_t = St.getContext("2d", {
+                                  willReadFrequently: true,
+                                })).imageSmoothingEnabled = !1));
                               var t, r;
                               var n = e.naturalWidth,
                                 a = e.naturalHeight;
@@ -5302,7 +5309,7 @@
       try {
         return window.self !== window.top;
       } catch (e) {
-        return console.warn(e), !0;
+        return (e) => {}, !0;
       }
     })();
 
@@ -5365,7 +5372,7 @@
 //# sourceMappingURL=/sm/4377abaf3b88f52af0bf84c492d3b422908537e18a85eca05a6cb79c885a60b9.map
 
 addEventListener("load", () => {
-  document.documentElement.getAttribute("theme") == "dark" ? DarkReader.enable() : DarkReader.disable();
+  if (document.documentElement.getAttribute("darkmode") == "true") DarkReader.enable();
 
   window.addEventListener("message", (e) => {
     if (e.data == "DarkReader-enable") {

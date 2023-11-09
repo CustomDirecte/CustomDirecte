@@ -6,7 +6,13 @@
 /*  ╚═════╝  ╚══════╝ ╚═╝  ╚═══╝ ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═╝    ╚═╝    ╚═╝  ╚═════╝  ╚═╝  ╚═══╝ */
 
 close = () => {
-  window.top.postMessage("closeOptionsPopup", "*");
+  urlParams.has("reload") ? window.top.postMessage("reloadOptionsPopup", "*") : window.top.postMessage("closeOptionsPopup", "*");
+};
+
+window.onmessage = function (e) {
+  if (e.data == "close") {
+    close();
+  }
 };
 
 var urlParams = new URLSearchParams(window.location.search);
@@ -20,6 +26,7 @@ const updateValue = (optionId, isSwitch, Value = false, i = false) => {
     } else option.Value = isSwitch ? !(option.Value == null ? option.Default : option.Value) : Value;
     chrome.storage.sync.set(data, () => {
       urlParams.set("scoll", document.querySelector("[group]:not([hide])").scrollTop);
+      if (isSwitch && option.reloadingRequired) urlParams.has("reload", option.option) ? urlParams.delete("reload", option.option) : urlParams.append("reload", option.option);
       genere();
     });
   });
@@ -50,7 +57,7 @@ genere = () => {
       groups.appendChild(groupSelection);
 
       groupSelection.classList.add(...(isClose ? ["group", "close"] : ["group"]));
-      groupSelection.textContent = Title;
+      groupSelection.textContent = isClose ? (urlParams.has("reload") ? Title.reload : Title.close) : Title;
       groupSelection.setAttribute("groupButton", ID);
       groupSelection.toggleAttribute("selected", urlParams.has("groupSelection") ? (urlParams.get("groupSelection") == ID ? true : false) : isSelected);
       !urlParams.has("groupSelection") && isSelected ? urlParams.set("groupSelection", ID) : null;
@@ -216,6 +223,13 @@ genere = () => {
       }
     }
     urlParams.has("scoll") ? document.querySelector("[group]:not([hide])").scroll(0, urlParams.get("scoll")) : null;
+
+    document.body.addEventListener("keyup", (e) => {
+      if (e.key == "Escape") close();
+    });
+
+    var version = document.getElementById("version");
+    version.innerText = `Version ${chrome.runtime.getManifest().version_name}`;
   });
 };
 

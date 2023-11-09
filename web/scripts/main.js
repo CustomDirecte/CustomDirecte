@@ -22,27 +22,6 @@ function isLoginPage() {
 }
 /* ----------------------------------------------- */
 
-/* -------------- Options To Statue -------------- */
-// Prend un object d'option et le transforme en objet statue
-function statue(inputOptions) {
-  inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
-  let option = {};
-  let secondaryOption = [];
-  inputOptions.forEach((item) => {
-    if (item.lock === false) {
-      option[item.option] = { value: item.Value === null ? item.Default : item.Value, secondary: {} };
-    } else {
-      secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: item.lock });
-    }
-  });
-  secondaryOption.forEach((item) => {
-    option[item.secondary].secondary[item.option] = item.value;
-  });
-
-  return option;
-}
-/* ----------------------------------------------- */
-
 /* ----------------- Console Log ----------------- */
 const debug = new (class Debug {
   constructor() {
@@ -70,6 +49,8 @@ const debug = new (class Debug {
 /* ----------------------------------------------- */
 
 /* ----------- Get option changements ------------ */
+const target = new EventTarget();
+
 chrome.storage.sync.onChanged.addListener((changes) => {
   let [key, { oldValue, newValue }] = Object.entries(changes)[0];
 
@@ -93,8 +74,7 @@ chrome.storage.sync.onChanged.addListener((changes) => {
   }
 
   if (differences != []) {
-    const optionEvent = new CustomEvent("optionEvent", { detail: differences });
-    document.dispatchEvent(optionEvent);
+    target.dispatchEvent(new CustomEvent("optionEvent", { detail: differences }));
   }
 });
 /* ----------------------------------------------- */
@@ -104,6 +84,39 @@ registedOptions = {};
 
 function register(func) {
   registedOptions[func.name] = func;
+}
+/* ----------------------------------------------- */
+
+/* --------------- optionsConfig ----------------- */
+function optionsConfig(options, setOption, params, toparam) {
+  if (options == false) {
+    funcName = optionsConfig.caller.name;
+    for (param of Object.entries(toparam(params))) {
+      setOption(param);
+    }
+    target.addEventListener("optionEvent", (e) => {
+      for (param of e.detail) {
+        if (param[0] == funcName) {
+          console.log(param);
+          for (ele of Object.entries(toparam(param[1]))) {
+            setOption(ele);
+          }
+        }
+      }
+    });
+    return;
+  }
+  for (option of Object.entries(options)) {
+    setOption(option);
+  }
+  target.addEventListener("optionEvent", (e) => {
+    for (option of e.detail) {
+      if (options[option[0]] != undefined) {
+        options[option[0]] = option[1];
+        setOption(option);
+      }
+    }
+  });
 }
 /* ----------------------------------------------- */
 
@@ -124,7 +137,7 @@ function Start(statue) {
       continue;
     }
     try {
-      func(statue[ele].secondary);
+      func(statue[ele].secondary, value);
       debug.startOptionLog(func.name, true);
       debug.log(func.name + " >>> Successful execution");
     } catch (error) {
@@ -135,14 +148,50 @@ function Start(statue) {
   }
 }
 
-chrome.storage.sync.get((syncOptions) => {
-  Start(statue(syncOptions));
+chrome.storage.sync.get((inputOptions) => {
+  inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
+  let option = {};
+  let secondaryOption = [];
+  inputOptions.forEach((item) => {
+    if (item.lock === false) {
+      option[item.option] = { value: item.Value === null ? item.Default : item.Value, secondary: {} };
+    } else {
+      secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: item.lock });
+    }
+  });
+  secondaryOption.forEach((item) => {
+    option[item.secondary].secondary[item.option] = item.value;
+  });
+
+  Start(option);
 });
 /* ----------------------------------------------- */
 
 /* -------------- Options Fonctions -------------- */
 
 function noteTableAnalysis(options) {
+  // Setup Module internal log
+  let logName = arguments.callee.name;
+
+  function log(str) {
+    debug.log(logName, str);
+  }
+
+  optionsConfig(options, (option) => {
+    document.documentElement.setAttribute(option[0], option[1]);
+    if (option[0] == "AveragesInfluenceTooltips") {
+      switch (option[1]) {
+        case "textAndValue":
+        case "value":
+          window.postMessage("tippy-noteEvent-enable", "*");
+          break;
+        case "none":
+          window.postMessage("tippy-noteEvent-disable", "*");
+          break;
+      }
+    }
+  });
+
   try {
     const tippy = document.createElement("script");
     tippy.src = chrome.runtime.getURL("/scripts/tippy.js");
@@ -150,13 +199,6 @@ function noteTableAnalysis(options) {
     tippyState = true;
   } catch {
     tippyState = false;
-  }
-
-  // Setup Module internal log
-  let logName = arguments.callee.name;
-
-  function log(str) {
-    debug.log(logName, str);
   }
 
   // Fonction Arrondie
@@ -203,36 +245,38 @@ function noteTableAnalysis(options) {
       log(" > Message with last calculation date -> [ ⚠️ Non-existent or Untouchable ]");
     }
 
-    try {
-      // Supprime l'ancienne ligne contenant la moyenne si il y en a une
-      OldAverageLine = document.querySelector("table").querySelector("tr > td.moyennegenerale-valeur").parentNode;
-      OldAverageLine.parentNode.removeChild(OldAverageLine);
-      log(" > Old Average line -> [ Remove ]");
-    } catch {
-      log(" > Old Average line -> [ Non-existent or Untouchable ]");
+    if (options["generalAverageDisplay"]) {
+      try {
+        // Supprime l'ancienne ligne contenant la moyenne si il y en a une
+        OldAverageLine = document.querySelector("table").querySelector("tr > td.moyennegenerale-valeur").parentNode;
+        OldAverageLine.parentNode.removeChild(OldAverageLine);
+        log(" > Old Average line -> [ Remove ]");
+      } catch {
+        log(" > Old Average line -> [ Non-existent or Untouchable ]");
+      }
+
+      try {
+        // Supprime l'ancienne ligne contenant la moyenne si il y en a une
+        oldAverageDiv = document.getElementById("averageDiv").parentNode;
+        oldAverageDiv.parentNode.removeChild(oldAverageDiv);
+        log(" > Old Average Display Div -> [ Remove ]");
+      } catch {
+        log(" > Old Average Display Div -> [ Non-existent or Untouchable ]");
+      }
+
+      // Ajoute une colone en pied du tableau
+      gradeTableFooterRow = gradeTable.createTFoot().insertRow(0);
+      gradeTableFooterRow.classList.add("ng-star-inserted");
+      log(" > Table Footer -> [ Added ]");
+
+      // Ajoute une div dans laquelle afficher la moyenne
+      averageDiv = gradeTableFooterRow.insertCell(0);
+      averageDiv.colSpan = gradeTable.tHead.rows[0].cells.length;
+      averageDiv.classList.add("moyennegenerale-valeur", "averageDisplay");
+      averageDiv.id = "averageDiv";
+      averageDiv.innerText = "Erreur";
+      log(" > Average Display Div -> [ Added ]");
     }
-
-    try {
-      // Supprime l'ancienne ligne contenant la moyenne si il y en a une
-      oldAverageDiv = document.getElementById("averageDiv").parentNode;
-      oldAverageDiv.parentNode.removeChild(oldAverageDiv);
-      log(" > Old Average Display Div -> [ Remove ]");
-    } catch {
-      log(" > Old Average Display Div -> [ Non-existent or Untouchable ]");
-    }
-
-    // Ajoute une colone en pied du tableau
-    gradeTableFooterRow = gradeTable.createTFoot().insertRow(0);
-    gradeTableFooterRow.classList.add("ng-star-inserted");
-    log(" > Table Footer -> [ Added ]");
-
-    // Ajoute une div dans laquelle afficher la moyenne
-    averageDiv = gradeTableFooterRow.insertCell(0);
-    averageDiv.colSpan = gradeTable.tHead.rows[0].cells.length;
-    averageDiv.classList.add("moyennegenerale-valeur", "averageDisplay");
-    averageDiv.id = "averageDiv";
-    averageDiv.innerText = "Erreur";
-    log(" > Average Display Div -> [ Added ]");
 
     // ### Analyse des notes et calcules des moyennes ###
     log(" > Grade analysis and Average calculation -> [ Starting ]");
@@ -277,20 +321,20 @@ function noteTableAnalysis(options) {
     }
     tableGetIndex();
 
-    if (tableConfiguration["coef"][1] == undefined) {
+    if (tableConfiguration["coef"][1] == undefined && options["AveragesPerSubjectDisplay"]) {
       log(" > > > Column {coef} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
       coefTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["discipline"][0] + 1);
       coefTitleRow.outerHTML = `<th class="coef ng-star-inserted">Coef.</th>`;
-      averageDiv.colSpan += 1;
+      if (options["generalAverageDisplay"]) averageDiv.colSpan += 1;
       tableConfiguration["coef"][1] = false;
       tableGetIndex();
     }
 
-    if (tableConfiguration["relevemoyenne"][1] == undefined) {
+    if (tableConfiguration["relevemoyenne"][1] == undefined && options["AveragesPerSubjectDisplay"]) {
       log(" > > > Column {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
       relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
       relevemoyenneTitleRow.outerHTML = `<th class="relevemoyenne ng-star-inserted">Moyennes</th>`;
-      averageDiv.colSpan += 1;
+      if (options["generalAverageDisplay"]) averageDiv.colSpan += 1;
       tableConfiguration["relevemoyenne"][1] = false;
       tableGetIndex();
     }
@@ -299,11 +343,12 @@ function noteTableAnalysis(options) {
     log(" > > Table configuration Analysis -> [ Starting ]");
     for (item in tableConfiguration) {
       log(` > > > Column {${item}} -> [ ${tableConfiguration[item][1] === true ? "Here" : "⚠️ Not Here"} ]`);
+      tableConfiguration[item][0] ? undefined : (tableConfiguration[item] = false);
     }
 
     // Verifie la pressence de la colonne des notes
     if (!tableConfiguration["notes"][0]) {
-      averageDiv.innerText = "Colonne des notes introuvables";
+      if (options["generalAverageDisplay"]) averageDiv.innerText = "Colonne des notes introuvables";
       log(" > > Column Note -> [ 🛑 Non-existent ]");
       return;
     }
@@ -314,14 +359,18 @@ function noteTableAnalysis(options) {
     // Pour chaque ligne
     log(" > > Line by Line analysis -> [ Starting ]");
     for (line of gradeTable.tBodies[0].rows) {
-      if (tableConfiguration["coef"][1] == false) {
+      if (line.querySelector("td.moyennegenerale-valeur") != null) {
+        continue;
+      }
+
+      if (tableConfiguration["coef"][1] == false && options["AveragesPerSubjectDisplay"]) {
         log(" > > > Line Element {coef} -> [ ⚠️ Non-existent ] -> [ Genere ]");
         coefTitleCell = line.insertCell(tableConfiguration["coef"][0]);
         coefTitleCell.innerHTML = `<span class="ng-star-inserted">1</span>`;
         coefTitleCell.classList.add("coef", "ng-star-inserted");
       }
 
-      if (tableConfiguration["relevemoyenne"][1] == false) {
+      if (tableConfiguration["relevemoyenne"][1] == false && options["AveragesPerSubjectDisplay"]) {
         log(" > > > Line Element {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ]");
         relevemoyenneTitleCell = line.insertCell(tableConfiguration["relevemoyenne"][0]);
         relevemoyenneTitleCell.classList.add("relevemoyenne", "ng-star-inserted");
@@ -341,7 +390,7 @@ function noteTableAnalysis(options) {
       }
 
       // Defini la zone d'afficharge de la moyenne de la ligne
-      if ((averageColumn = tableConfiguration["relevemoyenne"][0])) {
+      if (tableConfiguration["relevemoyenne"] && (averageColumn = tableConfiguration["relevemoyenne"][0])) {
         // Si il n'y a pas de span pour afficher la moyenne
         if (!(averageSpan = line.cells[averageColumn].querySelector("span"))) {
           log(` > > > Element for average display -> [ ⚠️ Non-existent ]`);
@@ -359,24 +408,27 @@ function noteTableAnalysis(options) {
       }
 
       // Defini la zone d'afficharge de la moyenne de la ligne
-      if ((averageColumn = tableConfiguration["relevemoyenne"][0])) {
+      if (tableConfiguration["relevemoyenne"] && (averageColumn = tableConfiguration["relevemoyenne"][0])) {
       }
 
       // Si il n'y a pas de span pour afficher la moyenne
-      if (!(averageSpan = line.cells[averageColumn].querySelector("span"))) {
+      if (tableConfiguration["relevemoyenne"] && !(averageSpan = line.cells[averageColumn].querySelector("span"))) {
         log(` > > > Element for average display -> [ ⚠️ Non-existent ]`);
         averageSpan = document.createElement("span");
         averageSpan.classList.add("ng-star-inserted");
         line.cells[averageColumn].appendChild(averageSpan);
         log(` > > > Element for average display -> [ Added ]`);
       }
-      if (debug.active) averageSpan.setAttribute("style", "border: solid darkblue;");
-      averageSpan.innerText = "";
-      log(` > > > Element for average display -> [ Defined ]`);
+
+      if (tableConfiguration["relevemoyenne"]) {
+        if (debug.active) averageSpan.setAttribute("style", "border: solid darkblue;");
+        averageSpan.innerText = "";
+        log(` > > > Element for average display -> [ Defined ]`);
+      }
 
       // Trouve l'affichage du coef
       LineCoef = 1;
-      if ((coefColumn = tableConfiguration["coef"][0])) {
+      if (tableConfiguration["coef"] && (coefColumn = tableConfiguration["coef"][0])) {
         if ((coefSpan = line.cells[coefColumn].querySelector("span"))) {
           if (debug.active) coefSpan.setAttribute("style", "border: solid orange;");
           LineCoef = parseFloat(coefSpan.innerText);
@@ -519,13 +571,13 @@ function noteTableAnalysis(options) {
 
     if (isNaN(FinalAverage)) {
       log(`Moyenne générale non valide -> [🛑]`);
-      if (averageDiv) averageDiv.innerText = "Notes Introuvables";
+      if (options["generalAverageDisplay"]) if (averageDiv) averageDiv.innerText = "Notes Introuvables";
       return;
     }
 
     // Affiche la moyenne
     log(` > Final Average : ${FinalAverage}`);
-    if (averageDiv) averageDiv.innerText = "MOYENNE GENERALE : " + hundredthRound(FinalAverage);
+    if (options["generalAverageDisplay"]) if (averageDiv) averageDiv.innerText = "MOYENNE GENERALE : " + hundredthRound(FinalAverage);
 
     // Si le module de tooltip fonctionne
     if (!tippyState) return;
@@ -552,7 +604,7 @@ function noteTableAnalysis(options) {
         if (LineInfluence > 0.07) tippytheme = "good";
         if (LineInfluence > 0.2) tippytheme = "verygood";
         line.averageSpan.parentNode.dataset.tippyTheme = tippytheme;
-        line.averageSpan.parentNode.dataset.tippyContent = `<center>Influence sur la moyenne générale : <br> <strong>${LineInfluence > 0 ? "+" : ""}${hundredthRound(LineInfluence)}</strong></center>`;
+        line.averageSpan.parentNode.dataset.tippyContent = `<center><span class="tippyText" >Influence sur la moyenne générale : <br> </span><strong>${LineInfluence > 0 ? "+" : ""}${hundredthRound(LineInfluence)}</strong></center>`;
         line.averageSpan.parentNode.classList.add("notesAdvancedInformation");
         log(` > > > Line Average Span Tooltip -> [ Configured ]`);
         line.averageSpan.classList.add(`influence-${tippytheme}`);
@@ -564,7 +616,7 @@ function noteTableAnalysis(options) {
     }
 
     // Active tippy
-    window.postMessage("tippy-noteEvent", "*");
+    window.postMessage(options["AveragesInfluenceTooltips"] == "none" ? "tippy-noteEvent-disable" : "tippy-noteEvent-enable", "*");
   }
 }
 register(noteTableAnalysis);
@@ -577,24 +629,9 @@ function newSidebar(options) {
     debug.log(logName, str);
   }
 
-  function setOption() {
-    for (option of Object.entries(options)) {
-      document.documentElement.setAttribute(option[0], option[1]);
-    }
-  }
-
-  setOption();
-
-  document.addEventListener(
-    "optionEvent",
-    (e) => {
-      for (option of e.detail) {
-        if (options[option[0]] != undefined) options[option[0]] = option[1];
-      }
-      setOption();
-    },
-    false
-  );
+  optionsConfig(options, (option) => {
+    document.documentElement.setAttribute(option[0], option[1]);
+  });
 
   // Ajoute la class "new-menu" au l'element HTML (pour la detection par le css)
   document.querySelector("html").classList.add("new-menu");
@@ -672,36 +709,21 @@ function newSidebar(options) {
 register(newSidebar);
 
 function customization(options) {
-  document.documentElement.toggleAttribute("newDesign", true);
+  document.documentElement.toggleAttribute("customization", true);
 
-  function setOption() {
-    for (option of Object.entries(options)) {
-      document.documentElement.setAttribute(option[0], option[1]);
-    }
-  }
-
-  setOption();
-
-  document.addEventListener(
-    "optionEvent",
-    (e) => {
-      for (option of e.detail) {
-        if (options[option[0]] != undefined) options[option[0]] = option[1];
+  optionsConfig(options, (option) => {
+    document.documentElement.setAttribute(option[0], option[1]);
+    if (option[0] == "darkmode") {
+      switch (option[1]) {
+        case true:
+          window.postMessage("DarkReader-enable", "*");
+          break;
+        case false:
+          window.postMessage("DarkReader-desable", "*");
+          break;
       }
-      setOption();
-    },
-    false
-  );
-
-  
-  document.addEventListener(
-    "newMessage",
-    (e) => {
-      if (["newColor", "newFont", "newBorder", "menuTheme", "theme"].includes(e.detail[1])) document.documentElement.setAttribute(e.detail[1], e.detail[2]);
-      e.detail[1] == "theme" && e.detail[2] == "dark" ? window.postMessage("DarkReader-enable", "*") : window.postMessage("DarkReader-desable", "*");
-    },
-    false
-  );
+    }
+  });
 
   const darkreader = document.createElement("script");
   darkreader.src = chrome.runtime.getURL("/scripts/darkreader.js");
@@ -709,7 +731,20 @@ function customization(options) {
 }
 register(customization);
 
-function customizationButton(options) {
+function customizationButton(options, value) {
+  optionsConfig(
+    false, // config pour value et pas option
+    (option) => {
+      // exec / value
+      document.documentElement.setAttribute(option[0], option[1]);
+    },
+    value, // value
+    (value) => {
+      // Transformeur de value
+      return { customizationButton0: value[0], customizationButton1: value[1] };
+    }
+  );
+
   // Bouton de personnalisation
   optionsButtonDiv = document.createElement("div");
   optionsButtonDiv.classList.add("optionsButton");
@@ -735,14 +770,14 @@ function customizationButton(options) {
   optionsPopup.src = chrome.runtime.getURL("/pages/popup/interface.html");
 
   function closeOptionsPopup() {
-    document.querySelector("html").classList.remove("optionsPopupActif");
+    optionsPopup.contentWindow.postMessage("close", "*");
   }
 
   document.body.addEventListener("keyup", (e) => {
     if (e.key == "Escape") closeOptionsPopup();
   });
 
-  optionsPopupBlur.onclick = () => {
+  optionsPopupBlur.onclick = async () => {
     closeOptionsPopup();
   };
 
@@ -756,15 +791,10 @@ function customizationButton(options) {
 
   window.onmessage = function (e) {
     if (e.data == "closeOptionsPopup") {
-      closeOptionsPopup();
-    } else if (e.data == "reload") {
+      document.querySelector("html").classList.remove("optionsPopupActif");
+    }
+    if (e.data == "reloadOptionsPopup") {
       location.reload();
-    } else if (e.data.startsWith("optionChanged")) {
-      document.dispatchEvent(
-        new CustomEvent("newMessage", {
-          detail: e.data.split(";"),
-        })
-      );
     }
   };
 }
