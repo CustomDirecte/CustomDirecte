@@ -510,7 +510,7 @@ function noteTableAnalysis(options) {
 
       if (!(LineGradesAndCoef.length > 0)) {
         log(` > > > > No note in this line -> [⚠️]`);
-        if (!lineProperties["IsSecondaryButNotlast"]) {
+        if (!lineProperties["IsSecondaryButNotlast"] && lineProperties["IsSecondary"]) {
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
           masterLineAverage = moyennePondere(masterLineGradesAndCoef);
           TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);

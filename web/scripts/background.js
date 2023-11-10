@@ -380,7 +380,6 @@ function optionsCorrector(inputOptions = false) {
 }
 
 chrome.runtime.onInstalled.addListener((reason) => {
-  console.log("onInstalled");
   if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     // Initiate sync values with default
     chrome.storage.sync.set(defaultOptions);
