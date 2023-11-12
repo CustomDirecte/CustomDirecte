@@ -730,6 +730,14 @@ function customization(options) {
     }
   });
 
+  customizationscss = document.createElement("style");
+  fetch(chrome.runtime.getURL("/styles/customizations.css"))
+    .then((response) => response.text())
+    .then((data) => {
+      customizationscss.innerHTML = data;
+    });
+  document.head.appendChild(customizationscss);
+
   const darkreader = document.createElement("script");
   darkreader.src = chrome.runtime.getURL("/scripts/darkreader.js");
   document.head.appendChild(darkreader);

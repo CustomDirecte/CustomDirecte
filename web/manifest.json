@@ -30,10 +30,10 @@
     "run_at": "document_start",
     "all_frames": true,
     "js": ["/scripts/main.js"],
-    "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizations.css", "/styles/customizationButton.css"]
+    "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/pages/popup/interface.html",  "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico"],
+    "resources": ["/styles/customizations.css", "/pages/popup/interface.html",  "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {

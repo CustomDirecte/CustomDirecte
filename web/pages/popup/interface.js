@@ -154,6 +154,8 @@ genere = () => {
           optionSwitchElement.classList.add("optionSwitch");
           if (getOptionValue(option.option)) optionSwitchElement.setAttribute("active", "");
 
+          document.documentElement.setAttribute(option.option, getOptionValue(option.option));
+
           optionElement.appendChild(optionSwitchElement);
 
           optionElement.addEventListener("click", () => ((option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, true) : null));
@@ -171,8 +173,11 @@ genere = () => {
           }
 
           document.querySelector(".colorSlider").value = getOptionValue(option.option);
-          document.querySelector(".colorSlider").addEventListener("input", (event) => {
+          document.querySelector(".colorSlider").addEventListener("mouseup", (event) => {
             (option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, false, event.target.value) : null;
+          });
+          document.querySelector(".colorSlider").addEventListener("input", (event) => {
+            (option.lock && getOptionValue(option.lock)) || !option.lock ? optionSelectionElement.setAttribute("color", event.target.value) : null;
           });
           break;
         case "MultiSelection":

@@ -113,7 +113,7 @@
   border-radius: var(--borderRadius-wide);
 }
 
-/* █▀▀ █▀█ █   █▀█ █▀█ █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █ ▀█  ▄▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █▀▀ █▀█ █   █▀█ █▀█ █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █ ▀█ ▄▀█ ▀█▀ █ █▀█ █▄ █ */
 /* █▄▄ █▄█ █▄▄ █▄█ █▀▄ █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ █ █▄ █▀█  █  █ █▄█ █ ▀█ */
 
 [colorcustomization]:not([colorcustomization="default"]) {
@@ -123,6 +123,27 @@
   --var-smalldark-primary-color: hsl(var(--colorbase), 79%, 36%);
   --var-dark-primary-color: hsl(var(--colorbase), 79%, 28%);
   --var-ultradark-primary-color: hsl(var(--colorbase), 82%, 19%);
+
+  --darkreader-text--var-footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%));
+  --darkreader-text--var-hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%));
+  --darkreader-text--var-light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%));
+  --darkreader-text--var-smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%));
+  --darkreader-text--var-dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%));
+  --darkreader-text--var-ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%));
+
+  --darkreader-bg--var-footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%));
+  --darkreader-bg--var-hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%));
+  --darkreader-bg--var-light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%));
+  --darkreader-bg--var-smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%));
+  --darkreader-bg--var-dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%));
+  --darkreader-bg--var-ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%));
+
+  --darkreader-border--var-footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%));
+  --darkreader-border--var-hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%));
+  --darkreader-border--var-light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%));
+  --darkreader-border--var-smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%));
+  --darkreader-border--var-dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%));
+  --darkreader-border--var-ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%));
 }
 [colorcustomization="0"] {
   --colorbase: 0;

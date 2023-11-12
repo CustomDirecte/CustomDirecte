@@ -40,8 +40,22 @@ body {
 /* █▄▄ █▄█ █▄▄ █▄█ █▀▄ */
 
 :root {
+  --font-tahoma: Tahoma, sans-serif;
+  --font-poppin: Poppin, sans-serif;
+  --font-openSans: Open Sans, sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-inter: Inter, sans-serif;
+  --font-merriweather: Merriweather, serif;
+  --font-leckerliOne: Leckerli One, cursive;
+  --font-comicSans: comic sans;
+  --font-openDyslexic: open-dyslexic;
+}
+
+:root {
   --background: #e7e7e7;
   --white: #fff;
+  --black: #000;
   --gray-light: #e6e6e6;
   --gray: #515151;
   --gray-transparent: #51515144;
@@ -56,17 +70,26 @@ body {
   --primary-light: #c8194a;
   --primary-medium: #a3133c;
   --primary-dark: #7f0f2f;
+}
 
-  --font-tahoma: Tahoma, sans-serif;
-  --font-poppin: Poppin, sans-serif;
-  --font-openSans: Open Sans, sans-serif;
-  --font-montserrat: Montserrat, sans-serif;
-  --font-roboto: Roboto, sans-serif;
-  --font-inter: Inter, sans-serif;
-  --font-merriweather: Merriweather, serif;
-  --font-leckerliOne: Leckerli One, cursive;
-  --font-comicSans: comic sans;
-  --font-openDyslexic: open-dyslexic;
+[darkmode="true"]:root {
+  --background: rgb(24 26 27);
+  --white: #1d2021;
+  --black: #000;
+  --gray-light: #232728;
+  --gray: #b5b5b5;
+  --gray-transparent: #51515144;
+  --transparent: #00000000;
+
+  --background-light: #2e3359;
+  --background-medium: #262a49;
+  --background-dark: #ffffff;
+
+  --primary-white-transparent: #faeaec;
+  --primary-white: #e4c5ca;
+  --primary-light: #c8194a;
+  --primary-medium: #a3133c;
+  --primary-dark: #7f0f2f;
 }
 
 /* ███████╗  ██████╗   ██████╗  ███╗   ███╗ */
@@ -86,6 +109,7 @@ body {
 }
 
 html {
+  color: var(--background-dark);
   transform: scale(var(--zoom));
   transform-origin: top left;
   -moz-transform: scale(var(--zoom));
@@ -567,6 +591,8 @@ main {
 /* fontDemo */
 
 .fontDemo {
+  border-radius: 12px;
+  color: var(--black);
   height: 50px;
   width: 170px;
   background-color: #f9f9f9;
@@ -582,6 +608,7 @@ main {
 /* cornerDemo */
 
 .cornerDemo {
+  color: var(--black);
   height: 50px;
   width: 170px;
   background-color: #f9f9f9;
