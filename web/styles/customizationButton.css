@@ -1,0 +1,117 @@
+/* ██████╗   ██████╗  ██████╗  ██╗   ██╗ ██████╗  */
+/* ██╔══██╗ ██╔═══██╗ ██╔══██╗ ██║   ██║ ██╔══██╗ */
+/* ██████╔╝ ██║   ██║ ██████╔╝ ██║   ██║ ██████╔╝ */
+/* ██╔═══╝  ██║   ██║ ██╔═══╝  ██║   ██║ ██╔═══╝  */
+/* ██║      ╚██████╔╝ ██║      ╚██████╔╝ ██║      */
+/* ╚═╝       ╚═════╝  ╚═╝       ╚═════╝  ╚═╝      */
+
+[customizationbutton0="icon"] .optionsButton > span {
+  display: none !important;
+}
+
+[customizationbutton0="icon"] .optionsButton {
+  width: 60px !important;
+}
+
+[customizationbutton0="iconAndText"] .optionsButton > span {
+  display: block;
+}
+
+[customizationbutton0="iconAndText"] .optionsButton {
+  width: 230px;
+}
+
+[customizationbutton1="border"] .optionsButton {
+  border-radius: 999px 0 0 999px !important;
+  right: 0px !important;
+}
+
+[customizationbutton1="ile"] .optionsButton {
+  border-radius: 999px;
+  right: 16px;
+}
+
+/* █ █ █ █ █▄ █ █▀▄ █▀█ █ █ █ */
+/* ▀▄▀▄▀ █ █ ▀█ █▄▀ █▄█ ▀▄▀▄▀ */
+
+.optionsPopupActif .optionsPopupBlur {
+  z-index: 9998;
+  position: fixed;
+  backdrop-filter: blur(4px);
+  width: 100vw;
+  height: 100vh;
+  transition: var(--tran-05);
+}
+
+html:not(.optionsPopupActif) .optionsPopupBlur {
+  display: none;
+}
+
+.optionsPopupActif .optionsPopup {
+  z-index: 9999;
+  position: fixed;
+  width: 80vw;
+  height: 80vh;
+  margin-left: 10vw;
+  margin-top: 10vh;
+  border-radius: var(--table-radius);
+  animation-duration: 0.5s;
+  animation-name: animate-pop;
+  animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
+  transition: var(--tran-05);
+}
+
+html:not(.optionsPopupActif) .optionsPopup {
+  display: none;
+}
+
+.optionsFrame {
+  background-color: black;
+  width: 350px;
+  height: 600px;
+}
+
+/* █▄▄ █ █ ▀█▀ ▀█▀ █▀█ █▄ █ */
+/* █▄█ █▄█  █   █  █▄█ █ ▀█ */
+
+.optionsButton {
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.23);
+  background-color: var(--primary-color-light);
+  color: var(--footer-primary-color);
+  border-radius: 999px;
+  z-index: 9999;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: block;
+  width: 230px;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.optionsButton:hover {
+  background-color: var(--primary-color);
+}
+
+.optionsButton > i {
+  font-size: 15px;
+  padding-right: 8px;
+}
+
+@keyframes animate-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
