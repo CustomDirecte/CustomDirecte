@@ -27,14 +27,14 @@ A Bastoon project made with ❤️</a>
 
 ★ Des options de personnalisations de l'affichage :
 * Choix de la couleur principale
-* Choix de la police d'écriture
-* Choix de l'angle des bordures arrondie
+* Choix de la police de caractère
+* Choix de l'angle des bordures arrondies
 * Choix d'un mode sombre ou claire
 
 ----
 
 ⚠ Important :
 - Cette extension ne récupérera aucune donnée personnelle
-- Tous les changements apportés au site sont visuels, en aucun cas le fonctionnement du site n'est changé.
+- Tous les changements apportés au site sont visuelles, en aucun cas le fonctionnement du site n'est changé.
 - Cette extension n'est pas affiliée avec le site "ecoledirecte.com"
 [^1]: Les moyennes sont calculées grâce aux notes déjà affichées à l'écran, elles ne donnent aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
