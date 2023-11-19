@@ -2,18 +2,14 @@
   "name": "CustomDirecte",
   "description": "Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...",
   "author": "Bastian NOEL",
-  "version": "6.2.0",
-  "version_name": "Beta 6.2.0",
+  "version": "20.0.1",
+  "version_name": "2.0",
   "manifest_version": 3,
-  "devtools_page": "/pages/popup/index.html",
+  "devtools_page": "/pages/popup/interface.html",
   "permissions": ["storage"],
   "host_permissions": [
     "*://*.ecoledirecte.com/*"
   ],
-  "options_ui": {
-    "page": "/pages/popup/index.html",
-    "open_in_tab": true
-  },
   "action": {
     "default_title": "CustomDirecte",
     "default_icon": {
@@ -34,13 +30,13 @@
     "run_at": "document_start",
     "all_frames": true,
     "js": ["/scripts/main.js"],
-    "css": ["/styles/average.css", "/styles/sidebar.css", "/styles/options.css"]
+    "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/styles/default.css", "/scripts/darkreader.js", "/scripts/tippy.js", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico", "/pages/popup/index.html"],
+    "resources": ["/styles/customizations.css", "/pages/popup/interface.html",  "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {
-    "service_worker": "/scripts/oninstall.js"
+    "service_worker": "/scripts/background.js"
   }
 }
