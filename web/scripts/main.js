@@ -511,6 +511,7 @@ function noteTableAnalysis(options) {
       if (!(LineGradesAndCoef.length > 0)) {
         log(` > > > > No note in this line -> [⚠️]`);
         if (!lineProperties["IsSecondaryButNotlast"] && lineProperties["IsSecondary"]) {
+          if (!masterLineGradesAndCoef.length) continue;
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
           masterLineAverage = moyennePondere(masterLineGradesAndCoef);
           TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
@@ -524,7 +525,7 @@ function noteTableAnalysis(options) {
               master: true,
             });
           }
-          log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
+          log(` > > > > Master line average {${masterLineAverage}} with coef {${masterLineCoef}}`);
         }
         continue;
       }
@@ -547,6 +548,7 @@ function noteTableAnalysis(options) {
         log(` > > > > Secondary line average {${LineAverage}} with coef {${LineCoef}}`);
 
         if (!lineProperties["IsSecondaryButNotlast"]) {
+          if (!masterLineGradesAndCoef.length) continue;
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
           masterLineAverage = moyennePondere(masterLineGradesAndCoef);
           TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
@@ -560,7 +562,7 @@ function noteTableAnalysis(options) {
               master: true,
             });
           }
-          log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
+          log(` > > > > Master line average {${masterLineAverage}} with coef {${masterLineCoef}}`);
         }
       }
 
