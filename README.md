@@ -16,6 +16,11 @@ Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale
 A Bastoon project made with ❤️</a>
 </p>
 
+<p align="center">
+Discord d'infos, d'aide et de suggestions : <br>
+https://discord.gg/vQYhP3q8eR
+</p>
+
 <H4>Voici la liste des fonctionnalités ajoutées :</H4>
 
 ★ Un calculateur de moyennes qui calcule en direct les moyennes par matières ainsi que la moyenne générale[^1].
