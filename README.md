@@ -1,7 +1,7 @@
 ![CustomDirecte](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
 
 <p align="center">
-  Un projet de @ !
+  Un projet de @Bastian-Noel !
 </p>
 
 ---
@@ -12,7 +12,7 @@
   <a href="https://customdirecte.github.io/">
     <img src="https://img.shields.io/badge/Website%20%26%20Doc-Open?style=for-the-badge&color=purple" />
   </a>
-  <a href="[#](https://discord.gg/vQYhP3q8eR)">
+  <a href="https://discord.gg/vQYhP3q8eR">
     <img src="https://img.shields.io/badge/Suggestions,%20Aide%20&%20Bugs-Open?style=for-the-badge&color=darkblue&logo=discord&logoColor=fff" />
   </a>
   <a href="#">
