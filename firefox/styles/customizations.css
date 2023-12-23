@@ -1,0 +1,1272 @@
+/*  ██████╗ ██╗   ██╗ ███████╗ ████████╗  ██████╗  ███╗   ███╗ ██╗ ███████╗  █████╗  ████████╗ ██╗  ██████╗  ███╗   ██╗ ███████╗ */
+/* ██╔════╝ ██║   ██║ ██╔════╝ ╚══██╔══╝ ██╔═══██╗ ████╗ ████║ ██║ ╚══███╔╝ ██╔══██╗ ╚══██╔══╝ ██║ ██╔═══██╗ ████╗  ██║ ██╔════╝ */
+/* ██║      ██║   ██║ ███████╗    ██║    ██║   ██║ ██╔████╔██║ ██║   ███╔╝  ███████║    ██║    ██║ ██║   ██║ ██╔██╗ ██║ ███████╗ */
+/* ██║      ██║   ██║ ╚════██║    ██║    ██║   ██║ ██║╚██╔╝██║ ██║  ███╔╝   ██╔══██║    ██║    ██║ ██║   ██║ ██║╚██╗██║ ╚════██║ */
+/* ╚██████╗ ╚██████╔╝ ███████║    ██║    ╚██████╔╝ ██║ ╚═╝ ██║ ██║ ███████╗ ██║  ██║    ██║    ██║ ╚██████╔╝ ██║ ╚████║ ███████║ */
+/*  ╚═════╝  ╚═════╝  ╚══════╝    ╚═╝     ╚═════╝  ╚═╝     ╚═╝ ╚═╝ ╚══════╝ ╚═╝  ╚═╝    ╚═╝    ╚═╝  ╚═════╝  ╚═╝  ╚═══╝ ╚══════╝ */
+
+/* █▄ █ █▀▀ █ █ █ █▀▄ █▀▀ █▀ █ █▀▀ █▄ █ */
+/* █ ▀█ ██▄ ▀▄▀▄▀ █▄▀ ██▄ ▄█ █ █▄█ █ ▀█ */
+
+[customization] {
+  --light-secondary-color: #e46bad !important;
+  --ultradark-placeholder-color: #887f7f !important;
+  --warning-secondary-color: #8a6d3b !important;
+  --middle-notice-color: #fff575 !important;
+  --dark-notice-color: #f2ec9e !important;
+  --dark-has-succes-color: #3c763d !important;
+  --travail-color: #6aaf11 !important;
+  --contenu-color: #0c91c6 !important;
+  --search-color: #a5a7ab !important;
+}
+
+[customization]:not([darkmode="true"]) {
+  --ultralight-secondary-color: #f7e0e6 !important;
+  --secondary-color: #cd1478 !important;
+  --dark-secondary-color: #960b56 !important;
+  --light-placeholder-color: #f5f6f7 !important;
+  --smalldark-placeholder-color: #e4e7ea !important;
+  --dark-placeholder-color: #c3c3c3 !important;
+  --warning-primary-color: #ffc107 !important;
+  --light-notice-color: #fffca0 !important;
+  --light-has-succes-color: #dff0d8 !important;
+
+  --menu-hover-color: #f5f5f5 !important;
+  --bs-primary-rgb: 15, 143, 209 !important;
+  --bs-success-rgb: 15, 143, 209 !important;
+  --bs-secondary-rgb: 205, 20, 120 !important;
+  --bs-danger-rgb: 205, 20, 120 !important;
+  --bs-border-color: var(--smalldark-placeholder-color) !important;
+  --bs-warning-rgb: 138, 109, 59 !important;
+
+  --footer-primary-color: rgb(237, 243, 253);
+  --hover-primary-color: rgb(170, 216, 234);
+  --light-primary-color: rgb(15, 143, 209);
+  --smalldark-primary-color: rgb(46, 106, 200);
+  --dark-primary-color: rgb(14, 62, 133);
+  --ultradark-primary-color: rgb(9, 35, 84);
+}
+
+[customization][darkmode="true"] {
+  --ultralight-secondary-color: #3b0f1b !important;
+  --secondary-color: #a41060 !important;
+  --dark-secondary-color: #780945 !important;
+  --light-placeholder-color: #1d2021 !important;
+  --smalldark-placeholder-color: #26292a !important;
+  --dark-placeholder-color: #3a3f41 !important;
+  --warning-primary-color: #967000 !important;
+  --light-notice-color: #514e00 !important;
+  --light-has-succes-color: #293c17 !important;
+
+  --menu-hover-color: #1e2021 !important;
+  --bs-primary-rgb: 12, 114, 167 !important;
+  --bs-success-rgb: 12, 114, 167 !important;
+  --bs-secondary-rgb: 164, 16, 96 !important;
+  --bs-danger-rgb: 164, 16, 96 !important;
+  --bs-border-color: var(--smalldark-placeholder-color) !important;
+  --bs-warning-rgb: 110, 87, 47 !important;
+
+  --footer-primary-color: #1e2021;
+  --hover-primary-color: #aad8ea;
+  --light-primary-color: #0c72a7;
+  --smalldark-primary-color: #2555a0;
+  --dark-primary-color: #0b326a;
+  --ultradark-primary-color: #071c43;
+}
+
+[customization]:not([darkmode="true"])[colorcustomization]:not([colorcustomization="default"]) {
+  --footer-primary-color: hsl(var(--colorbase), 100%, 85%) !important;
+  --hover-primary-color: hsl(var(--colorbase), 98%, 78%) !important;
+  --light-primary-color: hsl(var(--colorbase), 78%, 44%) !important;
+  --smalldark-primary-color: hsl(var(--colorbase), 79%, 36%) !important;
+  --dark-primary-color: hsl(var(--colorbase), 79%, 28%) !important;
+  --ultradark-primary-color: hsl(var(--colorbase), 82%, 19%) !important;
+}
+
+[customization][darkmode="true"][colorcustomization]:not([colorcustomization="default"]) {
+  --footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%)) !important;
+  --hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%)) !important;
+  --light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%)) !important;
+  --smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%)) !important;
+  --dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%)) !important;
+  --ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%)) !important;
+
+  --darkreader-text--footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%)) !important;
+  --darkreader-text--hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%)) !important;
+  --darkreader-text--light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%)) !important;
+  --darkreader-text--smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%)) !important;
+  --darkreader-text--dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%)) !important;
+  --darkreader-text--ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%)) !important;
+
+  --darkreader-bg--footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%)) !important;
+  --darkreader-bg--hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%)) !important;
+  --darkreader-bg--light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%)) !important;
+  --darkreader-bg--smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%)) !important;
+  --darkreader-bg--dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%)) !important;
+  --darkreader-bg--ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%)) !important;
+
+  --darkreader-border--footer-primary-color: hsl(var(--colorbase), 100%, calc(100% - 85%)) !important;
+  --darkreader-border--hover-primary-color: hsl(var(--colorbase), 98%, calc(100% - 78%)) !important;
+  --darkreader-border--light-primary-color: hsl(var(--colorbase), 78%, calc(100% - 44%)) !important;
+  --darkreader-border--smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%)) !important;
+  --darkreader-border--dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%)) !important;
+  --darkreader-border--ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%)) !important;
+}
+
+[customization] .text-primary {
+  color: var(--smalldark-primary-color) !important;
+}
+
+[customization] #header-commun,
+[customization] .navbar {
+  background: var(--light-placeholder-color) !important;
+}
+
+[customization] .container-fluid {
+  color: var(--ultradark-primary-color) !important;
+}
+
+/* █▀▀ █▀█ █▄ █ ▀█▀ █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █ ▀█ ▄▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █▀  █▄█ █ ▀█  █  █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ █ █▄ █▀█  █  █ █▄█ █ ▀█ */
+
+.fa {
+  font-family: FontAwesome !important;
+}
+
+[fontCustomization="tahoma"] * {
+  font-family: var(--font-tahoma);
+}
+
+[fontCustomization="poppin"] * {
+  font-family: var(--font-poppin);
+}
+
+[fontCustomization="openSans"] * {
+  font-family: var(--font-openSans);
+}
+
+[fontCustomization="montserrat"] * {
+  font-family: var(--font-montserrat);
+}
+
+[fontCustomization="roboto"] * {
+  font-family: var(--font-roboto);
+}
+
+[fontCustomization="inter"] * {
+  font-family: var(--font-inter);
+}
+
+[fontCustomization="openDyslexic"] * {
+  font-family: var(--font-openDyslexic);
+}
+
+[fontCustomization="merriweather"] * {
+  font-family: var(--font-merriweather);
+}
+
+[fontCustomization="leckerliOne"] * {
+  font-family: var(--font-leckerliOne);
+}
+
+[fontCustomization="comicSans"] * {
+  font-family: var(--font-comicSans);
+}
+
+/* █▀▀ █▀█ █▀█ █▄ █ █▀▀ █▀█ █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █ ▀█  ▄▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █▄▄ █▄█ █▀▄ █ ▀█ ██▄ █▀▄ █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ █ █▄ █▀█  █  █ █▄█ █ ▀█ */
+
+[cornerCustomization="thin"] #main div {
+  border-radius: var(--borderRadius-thin);
+}
+
+[cornerCustomization="wide"] #main div {
+  border-radius: var(--borderRadius-wide);
+}
+
+/* █▀▀ █▀█ █   █▀█ █▀█ █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █ ▀█ ▄▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █▄▄ █▄█ █▄▄ █▄█ █▀▄ █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ █ █▄ █▀█  █  █ █▄█ █ ▀█ */
+
+[colorcustomization="0"] {
+  --colorbase: 0;
+}
+[colorcustomization="1"] {
+  --colorbase: 1;
+}
+[colorcustomization="2"] {
+  --colorbase: 2;
+}
+[colorcustomization="3"] {
+  --colorbase: 3;
+}
+[colorcustomization="4"] {
+  --colorbase: 4;
+}
+[colorcustomization="5"] {
+  --colorbase: 5;
+}
+[colorcustomization="6"] {
+  --colorbase: 6;
+}
+[colorcustomization="7"] {
+  --colorbase: 7;
+}
+[colorcustomization="8"] {
+  --colorbase: 8;
+}
+[colorcustomization="9"] {
+  --colorbase: 9;
+}
+[colorcustomization="10"] {
+  --colorbase: 10;
+}
+[colorcustomization="11"] {
+  --colorbase: 11;
+}
+[colorcustomization="12"] {
+  --colorbase: 12;
+}
+[colorcustomization="13"] {
+  --colorbase: 13;
+}
+[colorcustomization="14"] {
+  --colorbase: 14;
+}
+[colorcustomization="15"] {
+  --colorbase: 15;
+}
+[colorcustomization="16"] {
+  --colorbase: 16;
+}
+[colorcustomization="17"] {
+  --colorbase: 17;
+}
+[colorcustomization="18"] {
+  --colorbase: 18;
+}
+[colorcustomization="19"] {
+  --colorbase: 19;
+}
+[colorcustomization="20"] {
+  --colorbase: 20;
+}
+[colorcustomization="21"] {
+  --colorbase: 21;
+}
+[colorcustomization="22"] {
+  --colorbase: 22;
+}
+[colorcustomization="23"] {
+  --colorbase: 23;
+}
+[colorcustomization="24"] {
+  --colorbase: 24;
+}
+[colorcustomization="25"] {
+  --colorbase: 25;
+}
+[colorcustomization="26"] {
+  --colorbase: 26;
+}
+[colorcustomization="27"] {
+  --colorbase: 27;
+}
+[colorcustomization="28"] {
+  --colorbase: 28;
+}
+[colorcustomization="29"] {
+  --colorbase: 29;
+}
+[colorcustomization="30"] {
+  --colorbase: 30;
+}
+[colorcustomization="31"] {
+  --colorbase: 31;
+}
+[colorcustomization="32"] {
+  --colorbase: 32;
+}
+[colorcustomization="33"] {
+  --colorbase: 33;
+}
+[colorcustomization="34"] {
+  --colorbase: 34;
+}
+[colorcustomization="35"] {
+  --colorbase: 35;
+}
+[colorcustomization="36"] {
+  --colorbase: 36;
+}
+[colorcustomization="37"] {
+  --colorbase: 37;
+}
+[colorcustomization="38"] {
+  --colorbase: 38;
+}
+[colorcustomization="39"] {
+  --colorbase: 39;
+}
+[colorcustomization="40"] {
+  --colorbase: 40;
+}
+[colorcustomization="41"] {
+  --colorbase: 41;
+}
+[colorcustomization="42"] {
+  --colorbase: 42;
+}
+[colorcustomization="43"] {
+  --colorbase: 43;
+}
+[colorcustomization="44"] {
+  --colorbase: 44;
+}
+[colorcustomization="45"] {
+  --colorbase: 45;
+}
+[colorcustomization="46"] {
+  --colorbase: 46;
+}
+[colorcustomization="47"] {
+  --colorbase: 47;
+}
+[colorcustomization="48"] {
+  --colorbase: 48;
+}
+[colorcustomization="49"] {
+  --colorbase: 49;
+}
+[colorcustomization="50"] {
+  --colorbase: 50;
+}
+[colorcustomization="51"] {
+  --colorbase: 51;
+}
+[colorcustomization="52"] {
+  --colorbase: 52;
+}
+[colorcustomization="53"] {
+  --colorbase: 53;
+}
+[colorcustomization="54"] {
+  --colorbase: 54;
+}
+[colorcustomization="55"] {
+  --colorbase: 55;
+}
+[colorcustomization="56"] {
+  --colorbase: 56;
+}
+[colorcustomization="57"] {
+  --colorbase: 57;
+}
+[colorcustomization="58"] {
+  --colorbase: 58;
+}
+[colorcustomization="59"] {
+  --colorbase: 59;
+}
+[colorcustomization="60"] {
+  --colorbase: 60;
+}
+[colorcustomization="61"] {
+  --colorbase: 61;
+}
+[colorcustomization="62"] {
+  --colorbase: 62;
+}
+[colorcustomization="63"] {
+  --colorbase: 63;
+}
+[colorcustomization="64"] {
+  --colorbase: 64;
+}
+[colorcustomization="65"] {
+  --colorbase: 65;
+}
+[colorcustomization="66"] {
+  --colorbase: 66;
+}
+[colorcustomization="67"] {
+  --colorbase: 67;
+}
+[colorcustomization="68"] {
+  --colorbase: 68;
+}
+[colorcustomization="69"] {
+  --colorbase: 69;
+}
+[colorcustomization="70"] {
+  --colorbase: 70;
+}
+[colorcustomization="71"] {
+  --colorbase: 71;
+}
+[colorcustomization="72"] {
+  --colorbase: 72;
+}
+[colorcustomization="73"] {
+  --colorbase: 73;
+}
+[colorcustomization="74"] {
+  --colorbase: 74;
+}
+[colorcustomization="75"] {
+  --colorbase: 75;
+}
+[colorcustomization="76"] {
+  --colorbase: 76;
+}
+[colorcustomization="77"] {
+  --colorbase: 77;
+}
+[colorcustomization="78"] {
+  --colorbase: 78;
+}
+[colorcustomization="79"] {
+  --colorbase: 79;
+}
+[colorcustomization="80"] {
+  --colorbase: 80;
+}
+[colorcustomization="81"] {
+  --colorbase: 81;
+}
+[colorcustomization="82"] {
+  --colorbase: 82;
+}
+[colorcustomization="83"] {
+  --colorbase: 83;
+}
+[colorcustomization="84"] {
+  --colorbase: 84;
+}
+[colorcustomization="85"] {
+  --colorbase: 85;
+}
+[colorcustomization="86"] {
+  --colorbase: 86;
+}
+[colorcustomization="87"] {
+  --colorbase: 87;
+}
+[colorcustomization="88"] {
+  --colorbase: 88;
+}
+[colorcustomization="89"] {
+  --colorbase: 89;
+}
+[colorcustomization="90"] {
+  --colorbase: 90;
+}
+[colorcustomization="91"] {
+  --colorbase: 91;
+}
+[colorcustomization="92"] {
+  --colorbase: 92;
+}
+[colorcustomization="93"] {
+  --colorbase: 93;
+}
+[colorcustomization="94"] {
+  --colorbase: 94;
+}
+[colorcustomization="95"] {
+  --colorbase: 95;
+}
+[colorcustomization="96"] {
+  --colorbase: 96;
+}
+[colorcustomization="97"] {
+  --colorbase: 97;
+}
+[colorcustomization="98"] {
+  --colorbase: 98;
+}
+[colorcustomization="99"] {
+  --colorbase: 99;
+}
+[colorcustomization="100"] {
+  --colorbase: 100;
+}
+[colorcustomization="101"] {
+  --colorbase: 101;
+}
+[colorcustomization="102"] {
+  --colorbase: 102;
+}
+[colorcustomization="103"] {
+  --colorbase: 103;
+}
+[colorcustomization="104"] {
+  --colorbase: 104;
+}
+[colorcustomization="105"] {
+  --colorbase: 105;
+}
+[colorcustomization="106"] {
+  --colorbase: 106;
+}
+[colorcustomization="107"] {
+  --colorbase: 107;
+}
+[colorcustomization="108"] {
+  --colorbase: 108;
+}
+[colorcustomization="109"] {
+  --colorbase: 109;
+}
+[colorcustomization="110"] {
+  --colorbase: 110;
+}
+[colorcustomization="111"] {
+  --colorbase: 111;
+}
+[colorcustomization="112"] {
+  --colorbase: 112;
+}
+[colorcustomization="113"] {
+  --colorbase: 113;
+}
+[colorcustomization="114"] {
+  --colorbase: 114;
+}
+[colorcustomization="115"] {
+  --colorbase: 115;
+}
+[colorcustomization="116"] {
+  --colorbase: 116;
+}
+[colorcustomization="117"] {
+  --colorbase: 117;
+}
+[colorcustomization="118"] {
+  --colorbase: 118;
+}
+[colorcustomization="119"] {
+  --colorbase: 119;
+}
+[colorcustomization="120"] {
+  --colorbase: 120;
+}
+[colorcustomization="121"] {
+  --colorbase: 121;
+}
+[colorcustomization="122"] {
+  --colorbase: 122;
+}
+[colorcustomization="123"] {
+  --colorbase: 123;
+}
+[colorcustomization="124"] {
+  --colorbase: 124;
+}
+[colorcustomization="125"] {
+  --colorbase: 125;
+}
+[colorcustomization="126"] {
+  --colorbase: 126;
+}
+[colorcustomization="127"] {
+  --colorbase: 127;
+}
+[colorcustomization="128"] {
+  --colorbase: 128;
+}
+[colorcustomization="129"] {
+  --colorbase: 129;
+}
+[colorcustomization="130"] {
+  --colorbase: 130;
+}
+[colorcustomization="131"] {
+  --colorbase: 131;
+}
+[colorcustomization="132"] {
+  --colorbase: 132;
+}
+[colorcustomization="133"] {
+  --colorbase: 133;
+}
+[colorcustomization="134"] {
+  --colorbase: 134;
+}
+[colorcustomization="135"] {
+  --colorbase: 135;
+}
+[colorcustomization="136"] {
+  --colorbase: 136;
+}
+[colorcustomization="137"] {
+  --colorbase: 137;
+}
+[colorcustomization="138"] {
+  --colorbase: 138;
+}
+[colorcustomization="139"] {
+  --colorbase: 139;
+}
+[colorcustomization="140"] {
+  --colorbase: 140;
+}
+[colorcustomization="141"] {
+  --colorbase: 141;
+}
+[colorcustomization="142"] {
+  --colorbase: 142;
+}
+[colorcustomization="143"] {
+  --colorbase: 143;
+}
+[colorcustomization="144"] {
+  --colorbase: 144;
+}
+[colorcustomization="145"] {
+  --colorbase: 145;
+}
+[colorcustomization="146"] {
+  --colorbase: 146;
+}
+[colorcustomization="147"] {
+  --colorbase: 147;
+}
+[colorcustomization="148"] {
+  --colorbase: 148;
+}
+[colorcustomization="149"] {
+  --colorbase: 149;
+}
+[colorcustomization="150"] {
+  --colorbase: 150;
+}
+[colorcustomization="151"] {
+  --colorbase: 151;
+}
+[colorcustomization="152"] {
+  --colorbase: 152;
+}
+[colorcustomization="153"] {
+  --colorbase: 153;
+}
+[colorcustomization="154"] {
+  --colorbase: 154;
+}
+[colorcustomization="155"] {
+  --colorbase: 155;
+}
+[colorcustomization="156"] {
+  --colorbase: 156;
+}
+[colorcustomization="157"] {
+  --colorbase: 157;
+}
+[colorcustomization="158"] {
+  --colorbase: 158;
+}
+[colorcustomization="159"] {
+  --colorbase: 159;
+}
+[colorcustomization="160"] {
+  --colorbase: 160;
+}
+[colorcustomization="161"] {
+  --colorbase: 161;
+}
+[colorcustomization="162"] {
+  --colorbase: 162;
+}
+[colorcustomization="163"] {
+  --colorbase: 163;
+}
+[colorcustomization="164"] {
+  --colorbase: 164;
+}
+[colorcustomization="165"] {
+  --colorbase: 165;
+}
+[colorcustomization="166"] {
+  --colorbase: 166;
+}
+[colorcustomization="167"] {
+  --colorbase: 167;
+}
+[colorcustomization="168"] {
+  --colorbase: 168;
+}
+[colorcustomization="169"] {
+  --colorbase: 169;
+}
+[colorcustomization="170"] {
+  --colorbase: 170;
+}
+[colorcustomization="171"] {
+  --colorbase: 171;
+}
+[colorcustomization="172"] {
+  --colorbase: 172;
+}
+[colorcustomization="173"] {
+  --colorbase: 173;
+}
+[colorcustomization="174"] {
+  --colorbase: 174;
+}
+[colorcustomization="175"] {
+  --colorbase: 175;
+}
+[colorcustomization="176"] {
+  --colorbase: 176;
+}
+[colorcustomization="177"] {
+  --colorbase: 177;
+}
+[colorcustomization="178"] {
+  --colorbase: 178;
+}
+[colorcustomization="179"] {
+  --colorbase: 179;
+}
+[colorcustomization="180"] {
+  --colorbase: 180;
+}
+[colorcustomization="181"] {
+  --colorbase: 181;
+}
+[colorcustomization="182"] {
+  --colorbase: 182;
+}
+[colorcustomization="183"] {
+  --colorbase: 183;
+}
+[colorcustomization="184"] {
+  --colorbase: 184;
+}
+[colorcustomization="185"] {
+  --colorbase: 185;
+}
+[colorcustomization="186"] {
+  --colorbase: 186;
+}
+[colorcustomization="187"] {
+  --colorbase: 187;
+}
+[colorcustomization="188"] {
+  --colorbase: 188;
+}
+[colorcustomization="189"] {
+  --colorbase: 189;
+}
+[colorcustomization="190"] {
+  --colorbase: 190;
+}
+[colorcustomization="191"] {
+  --colorbase: 191;
+}
+[colorcustomization="192"] {
+  --colorbase: 192;
+}
+[colorcustomization="193"] {
+  --colorbase: 193;
+}
+[colorcustomization="194"] {
+  --colorbase: 194;
+}
+[colorcustomization="195"] {
+  --colorbase: 195;
+}
+[colorcustomization="196"] {
+  --colorbase: 196;
+}
+[colorcustomization="197"] {
+  --colorbase: 197;
+}
+[colorcustomization="198"] {
+  --colorbase: 198;
+}
+[colorcustomization="199"] {
+  --colorbase: 199;
+}
+[colorcustomization="200"] {
+  --colorbase: 200;
+}
+[colorcustomization="201"] {
+  --colorbase: 201;
+}
+[colorcustomization="202"] {
+  --colorbase: 202;
+}
+[colorcustomization="203"] {
+  --colorbase: 203;
+}
+[colorcustomization="204"] {
+  --colorbase: 204;
+}
+[colorcustomization="205"] {
+  --colorbase: 205;
+}
+[colorcustomization="206"] {
+  --colorbase: 206;
+}
+[colorcustomization="207"] {
+  --colorbase: 207;
+}
+[colorcustomization="208"] {
+  --colorbase: 208;
+}
+[colorcustomization="209"] {
+  --colorbase: 209;
+}
+[colorcustomization="210"] {
+  --colorbase: 210;
+}
+[colorcustomization="211"] {
+  --colorbase: 211;
+}
+[colorcustomization="212"] {
+  --colorbase: 212;
+}
+[colorcustomization="213"] {
+  --colorbase: 213;
+}
+[colorcustomization="214"] {
+  --colorbase: 214;
+}
+[colorcustomization="215"] {
+  --colorbase: 215;
+}
+[colorcustomization="216"] {
+  --colorbase: 216;
+}
+[colorcustomization="217"] {
+  --colorbase: 217;
+}
+[colorcustomization="218"] {
+  --colorbase: 218;
+}
+[colorcustomization="219"] {
+  --colorbase: 219;
+}
+[colorcustomization="220"] {
+  --colorbase: 220;
+}
+[colorcustomization="221"] {
+  --colorbase: 221;
+}
+[colorcustomization="222"] {
+  --colorbase: 222;
+}
+[colorcustomization="223"] {
+  --colorbase: 223;
+}
+[colorcustomization="224"] {
+  --colorbase: 224;
+}
+[colorcustomization="225"] {
+  --colorbase: 225;
+}
+[colorcustomization="226"] {
+  --colorbase: 226;
+}
+[colorcustomization="227"] {
+  --colorbase: 227;
+}
+[colorcustomization="228"] {
+  --colorbase: 228;
+}
+[colorcustomization="229"] {
+  --colorbase: 229;
+}
+[colorcustomization="230"] {
+  --colorbase: 230;
+}
+[colorcustomization="231"] {
+  --colorbase: 231;
+}
+[colorcustomization="232"] {
+  --colorbase: 232;
+}
+[colorcustomization="233"] {
+  --colorbase: 233;
+}
+[colorcustomization="234"] {
+  --colorbase: 234;
+}
+[colorcustomization="235"] {
+  --colorbase: 235;
+}
+[colorcustomization="236"] {
+  --colorbase: 236;
+}
+[colorcustomization="237"] {
+  --colorbase: 237;
+}
+[colorcustomization="238"] {
+  --colorbase: 238;
+}
+[colorcustomization="239"] {
+  --colorbase: 239;
+}
+[colorcustomization="240"] {
+  --colorbase: 240;
+}
+[colorcustomization="241"] {
+  --colorbase: 241;
+}
+[colorcustomization="242"] {
+  --colorbase: 242;
+}
+[colorcustomization="243"] {
+  --colorbase: 243;
+}
+[colorcustomization="244"] {
+  --colorbase: 244;
+}
+[colorcustomization="245"] {
+  --colorbase: 245;
+}
+[colorcustomization="246"] {
+  --colorbase: 246;
+}
+[colorcustomization="247"] {
+  --colorbase: 247;
+}
+[colorcustomization="248"] {
+  --colorbase: 248;
+}
+[colorcustomization="249"] {
+  --colorbase: 249;
+}
+[colorcustomization="250"] {
+  --colorbase: 250;
+}
+[colorcustomization="251"] {
+  --colorbase: 251;
+}
+[colorcustomization="252"] {
+  --colorbase: 252;
+}
+[colorcustomization="253"] {
+  --colorbase: 253;
+}
+[colorcustomization="254"] {
+  --colorbase: 254;
+}
+[colorcustomization="255"] {
+  --colorbase: 255;
+}
+[colorcustomization="256"] {
+  --colorbase: 256;
+}
+[colorcustomization="257"] {
+  --colorbase: 257;
+}
+[colorcustomization="258"] {
+  --colorbase: 258;
+}
+[colorcustomization="259"] {
+  --colorbase: 259;
+}
+[colorcustomization="260"] {
+  --colorbase: 260;
+}
+[colorcustomization="261"] {
+  --colorbase: 261;
+}
+[colorcustomization="262"] {
+  --colorbase: 262;
+}
+[colorcustomization="263"] {
+  --colorbase: 263;
+}
+[colorcustomization="264"] {
+  --colorbase: 264;
+}
+[colorcustomization="265"] {
+  --colorbase: 265;
+}
+[colorcustomization="266"] {
+  --colorbase: 266;
+}
+[colorcustomization="267"] {
+  --colorbase: 267;
+}
+[colorcustomization="268"] {
+  --colorbase: 268;
+}
+[colorcustomization="269"] {
+  --colorbase: 269;
+}
+[colorcustomization="270"] {
+  --colorbase: 270;
+}
+[colorcustomization="271"] {
+  --colorbase: 271;
+}
+[colorcustomization="272"] {
+  --colorbase: 272;
+}
+[colorcustomization="273"] {
+  --colorbase: 273;
+}
+[colorcustomization="274"] {
+  --colorbase: 274;
+}
+[colorcustomization="275"] {
+  --colorbase: 275;
+}
+[colorcustomization="276"] {
+  --colorbase: 276;
+}
+[colorcustomization="277"] {
+  --colorbase: 277;
+}
+[colorcustomization="278"] {
+  --colorbase: 278;
+}
+[colorcustomization="279"] {
+  --colorbase: 279;
+}
+[colorcustomization="280"] {
+  --colorbase: 280;
+}
+[colorcustomization="281"] {
+  --colorbase: 281;
+}
+[colorcustomization="282"] {
+  --colorbase: 282;
+}
+[colorcustomization="283"] {
+  --colorbase: 283;
+}
+[colorcustomization="284"] {
+  --colorbase: 284;
+}
+[colorcustomization="285"] {
+  --colorbase: 285;
+}
+[colorcustomization="286"] {
+  --colorbase: 286;
+}
+[colorcustomization="287"] {
+  --colorbase: 287;
+}
+[colorcustomization="288"] {
+  --colorbase: 288;
+}
+[colorcustomization="289"] {
+  --colorbase: 289;
+}
+[colorcustomization="290"] {
+  --colorbase: 290;
+}
+[colorcustomization="291"] {
+  --colorbase: 291;
+}
+[colorcustomization="292"] {
+  --colorbase: 292;
+}
+[colorcustomization="293"] {
+  --colorbase: 293;
+}
+[colorcustomization="294"] {
+  --colorbase: 294;
+}
+[colorcustomization="295"] {
+  --colorbase: 295;
+}
+[colorcustomization="296"] {
+  --colorbase: 296;
+}
+[colorcustomization="297"] {
+  --colorbase: 297;
+}
+[colorcustomization="298"] {
+  --colorbase: 298;
+}
+[colorcustomization="299"] {
+  --colorbase: 299;
+}
+[colorcustomization="300"] {
+  --colorbase: 300;
+}
+[colorcustomization="301"] {
+  --colorbase: 301;
+}
+[colorcustomization="302"] {
+  --colorbase: 302;
+}
+[colorcustomization="303"] {
+  --colorbase: 303;
+}
+[colorcustomization="304"] {
+  --colorbase: 304;
+}
+[colorcustomization="305"] {
+  --colorbase: 305;
+}
+[colorcustomization="306"] {
+  --colorbase: 306;
+}
+[colorcustomization="307"] {
+  --colorbase: 307;
+}
+[colorcustomization="308"] {
+  --colorbase: 308;
+}
+[colorcustomization="309"] {
+  --colorbase: 309;
+}
+[colorcustomization="310"] {
+  --colorbase: 310;
+}
+[colorcustomization="311"] {
+  --colorbase: 311;
+}
+[colorcustomization="312"] {
+  --colorbase: 312;
+}
+[colorcustomization="313"] {
+  --colorbase: 313;
+}
+[colorcustomization="314"] {
+  --colorbase: 314;
+}
+[colorcustomization="315"] {
+  --colorbase: 315;
+}
+[colorcustomization="316"] {
+  --colorbase: 316;
+}
+[colorcustomization="317"] {
+  --colorbase: 317;
+}
+[colorcustomization="318"] {
+  --colorbase: 318;
+}
+[colorcustomization="319"] {
+  --colorbase: 319;
+}
+[colorcustomization="320"] {
+  --colorbase: 320;
+}
+[colorcustomization="321"] {
+  --colorbase: 321;
+}
+[colorcustomization="322"] {
+  --colorbase: 322;
+}
+[colorcustomization="323"] {
+  --colorbase: 323;
+}
+[colorcustomization="324"] {
+  --colorbase: 324;
+}
+[colorcustomization="325"] {
+  --colorbase: 325;
+}
+[colorcustomization="326"] {
+  --colorbase: 326;
+}
+[colorcustomization="327"] {
+  --colorbase: 327;
+}
+[colorcustomization="328"] {
+  --colorbase: 328;
+}
+[colorcustomization="329"] {
+  --colorbase: 329;
+}
+[colorcustomization="330"] {
+  --colorbase: 330;
+}
+[colorcustomization="331"] {
+  --colorbase: 331;
+}
+[colorcustomization="332"] {
+  --colorbase: 332;
+}
+[colorcustomization="333"] {
+  --colorbase: 333;
+}
+[colorcustomization="334"] {
+  --colorbase: 334;
+}
+[colorcustomization="335"] {
+  --colorbase: 335;
+}
+[colorcustomization="336"] {
+  --colorbase: 336;
+}
+[colorcustomization="337"] {
+  --colorbase: 337;
+}
+[colorcustomization="338"] {
+  --colorbase: 338;
+}
+[colorcustomization="339"] {
+  --colorbase: 339;
+}
+[colorcustomization="340"] {
+  --colorbase: 340;
+}
+[colorcustomization="341"] {
+  --colorbase: 341;
+}
+[colorcustomization="342"] {
+  --colorbase: 342;
+}
+[colorcustomization="343"] {
+  --colorbase: 343;
+}
+[colorcustomization="344"] {
+  --colorbase: 344;
+}
+[colorcustomization="345"] {
+  --colorbase: 345;
+}
+[colorcustomization="346"] {
+  --colorbase: 346;
+}
+[colorcustomization="347"] {
+  --colorbase: 347;
+}
+[colorcustomization="348"] {
+  --colorbase: 348;
+}
+[colorcustomization="349"] {
+  --colorbase: 349;
+}
+[colorcustomization="350"] {
+  --colorbase: 350;
+}
+[colorcustomization="351"] {
+  --colorbase: 351;
+}
+[colorcustomization="352"] {
+  --colorbase: 352;
+}
+[colorcustomization="353"] {
+  --colorbase: 353;
+}
+[colorcustomization="354"] {
+  --colorbase: 354;
+}
+[colorcustomization="355"] {
+  --colorbase: 355;
+}
+[colorcustomization="356"] {
+  --colorbase: 356;
+}
+[colorcustomization="357"] {
+  --colorbase: 357;
+}
+[colorcustomization="358"] {
+  --colorbase: 358;
+}
+[colorcustomization="359"] {
+  --colorbase: 359;
+}
+[colorcustomization="360"] {
+  --colorbase: 360;
+}
