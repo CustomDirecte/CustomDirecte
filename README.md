@@ -1,26 +1,41 @@
-<H1 align="center">
-CustomDirecte Dev [2.0 - Release Candidate]
-</H1>
-<H4 align="center">
-Version en développement
-</H4>
+![CustomDirecte](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte%20Dev&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
 
-[Retouner à la version officiel](https://github.com/Bastian-Noel/CustomDirecte)
+<p align="center">
+  Un projet de @Bastian-Noel !
+</p>
 
-<H4>Voici la liste des dernier ajouts et changements :</H4>
+---
 
-★ Option pour laisser la sidebar ouverte en continue
+<p align='center'>
+  Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
+  <br><br>
+  <a href="https://customdirecte.github.io/">
+    <img src="https://img.shields.io/badge/Website%20%26%20Doc-Open?style=for-the-badge&color=purple" />
+  </a>
+  <a href="https://discord.gg/vQYhP3q8eR">
+    <img src="https://img.shields.io/badge/Suggestions,%20Aide%20&%20Bugs-Open?style=for-the-badge&color=darkblue&logo=discord&logoColor=fff" />
+  </a>
+</p>
 
-★ Statistiques des notes (influence sur la moyenne)
 
-★ Affichage de la colone moyenne pour ceux qui ne l'on pas
+## ✨  Voici la liste des suggestions :
 
-<H4>Futur Ajout :</H4>
+★ Approuvé
+- Personnalisation
+  - Presets couleurs
+- Tableau de notes
+  - Ajouts du convertissage de notes /20 { Taps }
+  - Ajouts de coefs customs/factices
+  - Ajouts de notes customs/factices
 
-Ajouts de notes customs
+★ Options de personnalisation avancées pour l'affichage :
+- Autologin 
 
-Ajouts du convertissage de la note /20 
+> [!NOTE]
+> Les moyennes sont calculées en utilisant les notes actuellement affichées à l'écran, sans aucun accès restreint pour les élèves ou les parents, ce qui permet de prendre en compte les dernières notes instantanément, sans attendre le traitement du site.
 
-<H4>Ajout en réflexion :</H4>
+> [!CAUTION]
+> + Cette extension ne collecte aucune donnée personnelle.
+> + Toutes les modifications apportées au site sont purement visuelles ; en aucun cas, le fonctionnement du site n'est altéré.
+> + Cette extension n'est pas affiliée avec le site [EcoleDirecte](https://www.ecoledirecte.com)
 
-Autologin 
