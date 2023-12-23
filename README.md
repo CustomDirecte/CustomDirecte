@@ -33,8 +33,11 @@
   </a>
 </p>
 
+---
 
 ![Contribution guidelines for this project](assets/CustomDirectePromo01.png)
+
+---
 
 ## ✨  Voici la liste des fonctionnalités ajoutées :
 
