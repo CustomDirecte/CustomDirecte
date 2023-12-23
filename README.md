@@ -33,20 +33,48 @@
   </a>
 </p>
 
+---
+
+![Contribution guidelines for this project](assets/CustomDirectePromo01.png)
+
+---
+
 ## ✨  Voici la liste des fonctionnalités ajoutées :
 
 ★ Un calculateur de moyennes qui évalue instantanément les moyennes par matières ainsi que la moyenne générale.
+
+<details>
+
+  <summary><i>Voir en image</i></summary>
+
+  ![Contribution guidelines for this project](assets/CustomDirectePromo02.png)
+</details>
 
 ★ Une barre latérale (ou menu) repensée pour une meilleure lisibilité :
 * Format plus compact
 * Occupant moins d'espace
 * Agrégeant davantage de paramètres
 
+<details>
+
+  <summary><i>Voir en image</i></summary>
+
+  ![Contribution guidelines for this project](assets/CustomDirectePromo04.png)
+</details>
+
 ★ Options de personnalisation avancées pour l'affichage :
 * Sélection de la couleur principale
 * Choix de la police de caractère
 * Paramétrage de l'angle des bordures arrondies
 * Possibilité de basculer entre un mode sombre et un mode clair
+
+<details>
+
+  <summary><i>Voir en image</i></summary>
+
+  ![Contribution guidelines for this project](assets/CustomDirectePromo03.png)
+  ![Contribution guidelines for this project](assets/CustomDirectePromo05.png)
+</details>
 
 > [!NOTE]
 > Les moyennes sont calculées en utilisant les notes actuellement affichées à l'écran, sans aucun accès restreint pour les élèves ou les parents, ce qui permet de prendre en compte les dernières notes instantanément, sans attendre le traitement du site.
