@@ -31,9 +31,6 @@
 ★ Options de personnalisation avancées pour l'affichage :
 - Autologin 
 
-> [!NOTE]
-> Les moyennes sont calculées en utilisant les notes actuellement affichées à l'écran, sans aucun accès restreint pour les élèves ou les parents, ce qui permet de prendre en compte les dernières notes instantanément, sans attendre le traitement du site.
-
 > [!CAUTION]
 > + Cette extension ne collecte aucune donnée personnelle.
 > + Toutes les modifications apportées au site sont purement visuelles ; en aucun cas, le fonctionnement du site n'est altéré.
