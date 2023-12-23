@@ -1,7 +1,7 @@
 ![CustomDirecte](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
 
 <p align="center">
-  Un projet de @ !
+  Un projet de @Bastian-Noel !
 </p>
 
 ---
