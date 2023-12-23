@@ -39,22 +39,24 @@ https://discord.gg/vQYhP3q8eR
 
 <H4>Voici la liste des fonctionnalités ajoutées :</H4>
 
-★ Un calculateur de moyennes qui calcule en direct les moyennes par matières ainsi que la moyenne générale[^1].
+★ Un calculateur de moyennes qui évalue instantanément les moyennes par matières ainsi que la moyenne générale.
 
-★ Une nouvelle barre latérale (ou menu) à la place de l'ancienne :
-* Plus lisible
-* Prend moins de place
-* Regroupe plus de paramètres
+★ Une barre latérale (ou menu) repensée pour une meilleure lisibilité :
+* Format plus compact
+* Occupant moins d'espace
+* Agrégeant davantage de paramètres
 
-★ Des options de personnalisations de l'affichage :
-* Choix de la couleur principale
+★ Options de personnalisation avancées pour l'affichage :
+* Sélection de la couleur principale
 * Choix de la police de caractère
-* Choix de l'angle des bordures arrondies
-* Choix d'un mode sombre ou claire
+* Paramétrage de l'angle des bordures arrondies
+* Possibilité de basculer entre un mode sombre et un mode clair
 
+> [!NOTE]
+> Les moyennes sont calculées en utilisant les notes actuellement affichées à l'écran, sans aucun accès restreint pour les élèves ou les parents, ce qui permet de prendre en compte les dernières notes instantanément, sans attendre le traitement du site.
 
 > [!CAUTION]
-> - Cette extension ne récupérera aucune donnée personnelle
-> - Tous les changements apportés au site sont visuelles, en aucun cas le  fonctionnement du site n'est changé.
-> - Cette extension n'est pas affiliée avec le site "ecoledirecte.com"
-> [^1]: Les moyennes sont calculées grâce aux notes déjà affichées à l'écran, elles ne donnent aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
+> + Cette extension ne collecte aucune donnée personnelle.
+> + Toutes les modifications apportées au site sont purement visuelles ; en aucun cas, le fonctionnement du site n'est altéré.
+> + Cette extension n'est pas affiliée avec le site [EcoleDirecte](https://www.ecoledirecte.com)
+
