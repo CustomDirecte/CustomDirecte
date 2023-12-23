@@ -1,15 +1,12 @@
-<style>
-  .desc {
-    margin-top: -40px;
-    font-size: 20px;
-  }
-</style>
-
-![venom](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=venom&height=180&text=CustomDirecte&animation=fadeIn&fontSize=100&fontColor=0000&stroke=fff&strokeWidth=2.8&color=0:7f0f2f,45:c8194a">
+  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=venom&height=180&text=CustomDirecte&animation=fadeIn&fontSize=100&fontColor=0000&stroke=000000&strokeWidth=4&color=0:7f0f2f,45:c8194a">
+  <img src="https://capsule-render.vercel.app/api?type=venom&height=180&text=CustomDirecte&animation=fadeIn&fontSize=100&fontColor=0000&stroke=fff&strokeWidth=2.8&color=0:7f0f2f,45:c8194a">
+</picture>
 
 <p align='center' class="desc">
   <a href="https://customdirecte.github.io/">
-    <img src="https://img.shields.io/github/license/customdirecte/customdirecte?style=for-the-badge&labelColor=blue&color=skyblue" />
+    <img src="https://img.shields.io/badge/Website%20%26%20Doc-Open?style=for-the-badge&color=purple" />
   </a>
   <a href="#">
     <img src="https://img.shields.io/github/license/customdirecte/customdirecte?style=for-the-badge&labelColor=blue&color=skyblue" />
@@ -17,7 +14,7 @@
   <a href="#">
     <img src="https://img.shields.io/github/stars/CustomDirecte/CustomDirecte?style=for-the-badge&labelColor=FFD700&color=F0E68C" />
   </a>
-  <br>
+  <br><br>
   <a href="https://bit.ly/CustomDirecteChrome">
     <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=web%2Fmanifest.json&style=for-the-badge&logo=googlechrome&logoColor=fff&label=Chrome%20Web%20Store&labelColor=7f0f2f&color=c8194a" />
     <img src="https://img.shields.io/chrome-web-store/users/ngibpoegkheookihjcnjihkfhfnglfei?style=for-the-badge&logo=googlechrome&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
@@ -32,12 +29,6 @@
 <H4 align="center">
   Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
 </H4>
-
-<p align="center">
-  <a href=""><img alt="Version" src="https://img.shields.io/badge/release%20v6.1.1-20B2AA?style=for-the-badge" /></a>
-  <a href="https://bit.ly/CustomDirecteChrome"><img alt="Chrome" src="https://img.shields.io/badge/Web%20Chrome%20Store-Published-green" /></a>
-  <a href="https://bit.ly/CustomDirecteFirefox"><img alt="Firefox" src="https://img.shields.io/badge/Firefox%20ADD--ONS-Published-green" /></a>
-  <a href="https://customdirecte.github.io/"><img alt="WebSite" src="https://img.shields.io/badge/Website%20&%20Doc-Open%20🔗-purple" /></a>
 
 </p>
 
