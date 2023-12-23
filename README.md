@@ -1,8 +1,4 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=venom&height=180&text=CustomDirecte&animation=fadeIn&fontSize=100&fontColor=0000&stroke=fff&strokeWidth=2.8&color=0:7f0f2f,45:c8194a">
-  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=venom&height=180&text=CustomDirecte&animation=fadeIn&fontSize=100&fontColor=0000&stroke=000000&strokeWidth=4&color=0:7f0f2f,45:c8194a">
-  <img src="https://capsule-render.vercel.app/api?type=venom&height=180&text=CustomDirecte&animation=fadeIn&fontSize=100&fontColor=0000&stroke=fff&strokeWidth=2.8&color=0:7f0f2f,45:c8194a">
-</picture>
+![venom](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
 
 <p align='center' class="desc">
   <a href="https://customdirecte.github.io/">
@@ -56,10 +52,9 @@ https://discord.gg/vQYhP3q8eR
 * Choix de l'angle des bordures arrondies
 * Choix d'un mode sombre ou claire
 
-----
 
-⚠ Important :
-- Cette extension ne récupérera aucune donnée personnelle
-- Tous les changements apportés au site sont visuelles, en aucun cas le fonctionnement du site n'est changé.
-- Cette extension n'est pas affiliée avec le site "ecoledirecte.com"
-[^1]: Les moyennes sont calculées grâce aux notes déjà affichées à l'écran, elles ne donnent aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
+> [!CAUTION]
+> - Cette extension ne récupérera aucune donnée personnelle
+> - Tous les changements apportés au site sont visuelles, en aucun cas le  fonctionnement du site n'est changé.
+> - Cette extension n'est pas affiliée avec le site "ecoledirecte.com"
+> [^1]: Les moyennes sont calculées grâce aux notes déjà affichées à l'écran, elles ne donnent aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
