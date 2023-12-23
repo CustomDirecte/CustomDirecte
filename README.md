@@ -16,12 +16,12 @@
   </a>
   <br><br>
   <a href="https://bit.ly/CustomDirecteChrome">
-    <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=web%2Fmanifest.json&style=for-the-badge&logo=googlechrome&logoColor=fff&label=Chrome%20Web%20Store&labelColor=7f0f2f&color=c8194a" />
+    <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=chrome%2Fmanifest.json&style=for-the-badge&logo=googlechrome&logoColor=fff&label=Chrome%20Web%20Store&labelColor=7f0f2f&color=c8194a" />
     <img src="https://img.shields.io/chrome-web-store/users/ngibpoegkheookihjcnjihkfhfnglfei?style=for-the-badge&logo=googlechrome&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
   </a>
   <br>
   <a href="https://bit.ly/CustomDirecteFirefox">
-    <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=web%2Fmanifest.json&style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=Firefox%20ADD-ONS&labelColor=7f0f2f&color=c8194a" />
+    <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=firefox%2Fmanifest.json&style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=Firefox%20ADD-ONS&labelColor=7f0f2f&color=c8194a" />
     <img src="https://img.shields.io/amo/users/customdirecte?style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
   </a>
 </p>
