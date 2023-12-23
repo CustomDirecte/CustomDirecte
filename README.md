@@ -1,8 +1,19 @@
-![venom](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
+![CustomDirecte](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
 
-<p align='center' class="desc">
+<p align="center">
+  Un projet de @ !
+</p>
+
+---
+
+<p align='center'>
+  Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
+  <br><br>
   <a href="https://customdirecte.github.io/">
     <img src="https://img.shields.io/badge/Website%20%26%20Doc-Open?style=for-the-badge&color=purple" />
+  </a>
+  <a href="[#](https://discord.gg/vQYhP3q8eR)">
+    <img src="https://img.shields.io/badge/Suggestions,%20Aide%20&%20Bugs-Open?style=for-the-badge&color=darkblue&logo=discord&logoColor=fff" />
   </a>
   <a href="#">
     <img src="https://img.shields.io/github/license/customdirecte/customdirecte?style=for-the-badge&labelColor=blue&color=skyblue" />
@@ -15,29 +26,14 @@
     <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=chrome%2Fmanifest.json&style=for-the-badge&logo=googlechrome&logoColor=fff&label=Chrome%20Web%20Store&labelColor=7f0f2f&color=c8194a" />
     <img src="https://img.shields.io/chrome-web-store/users/ngibpoegkheookihjcnjihkfhfnglfei?style=for-the-badge&logo=googlechrome&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
   </a>
-  <br>
+  <br><br>
   <a href="https://bit.ly/CustomDirecteFirefox">
     <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=firefox%2Fmanifest.json&style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=Firefox%20ADD-ONS&labelColor=7f0f2f&color=c8194a" />
     <img src="https://img.shields.io/amo/users/customdirecte?style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
   </a>
 </p>
 
-<H4 align="center">
-  Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
-</H4>
-
-</p>
-
-<p align="center">
-  A Bastoon project made with ❤️</a>
-</p>
-
-<p align="center">
-Discord d'infos, d'aide et de suggestions : <br>
-https://discord.gg/vQYhP3q8eR
-</p>
-
-<H4>Voici la liste des fonctionnalités ajoutées :</H4>
+## ✨  Voici la liste des fonctionnalités ajoutées :
 
 ★ Un calculateur de moyennes qui évalue instantanément les moyennes par matières ainsi que la moyenne générale.
 
