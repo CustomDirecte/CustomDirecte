@@ -2,7 +2,7 @@
   "name": "CustomDirecte",
   "description": "Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...",
   "author": "Bastian NOEL",
-  "version": "20.0.2",
+  "version": "20.0.3",
   "version_name": "2.0",
   "manifest_version": 3,
   "devtools_page": "/pages/popup/interface.html",

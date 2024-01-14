@@ -111,6 +111,11 @@
   --darkreader-border--smalldark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 36%)) !important;
   --darkreader-border--dark-primary-color: hsl(var(--colorbase), 79%, calc(100% - 28%)) !important;
   --darkreader-border--ultradark-primary-color: hsl(var(--colorbase), 82%, calc(100% - 19%)) !important;
+  --darkreader-border--ultralight-secondary-color: #807769 !important;
+}
+
+[customization][darkmode="true"] .btn-close {
+  filter: contrast(0%) brightness(200%);
 }
 
 [customization] .text-primary {

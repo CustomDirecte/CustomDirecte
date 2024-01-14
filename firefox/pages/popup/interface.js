@@ -1,3 +1,13 @@
+/* IMPORT FIREFOX LIB */
+browser = browser;
+browserStorage = browser.storage.local;
+browserVersion = browser.runtime.getManifest().version;
+browserStorageOnChanged = browser.storage.onChanged;
+scrollIntoView = (ele) => {
+  ele.scrollIntoView({ behavior: "smooth" });
+};
+/* ----------------- */
+
 /*  ██████╗  ███████╗ ███╗   ██╗ ███████╗ ██████╗   █████╗  ████████╗ ██╗  ██████╗  ███╗   ██╗ */
 /* ██╔════╝  ██╔════╝ ████╗  ██║ ██╔════╝ ██╔══██╗ ██╔══██╗ ╚══██╔══╝ ██║ ██╔═══██╗ ████╗  ██║ */
 /* ██║  ███╗ █████╗   ██╔██╗ ██║ █████╗   ██████╔╝ ███████║    ██║    ██║ ██║   ██║ ██╔██╗ ██║ */
@@ -18,13 +28,13 @@ window.onmessage = function (e) {
 var urlParams = new URLSearchParams(window.location.search);
 
 const updateValue = (optionId, isSwitch, Value = false, i = false) => {
-  browser.storage.local.get((data) => {
+  browserStorage.get((data) => {
     let option = data.options.find((el) => el.option == optionId);
     if (i !== false) {
       if (option.Value == null) option.Value = option.Default;
       option.Value[i] = Value;
     } else option.Value = isSwitch ? !(option.Value == null ? option.Default : option.Value) : Value;
-    browser.storage.local.set(data, () => {
+    browserStorage.set(data, () => {
       urlParams.set("scoll", document.querySelector("[group]:not([hide])").scrollTop);
       if (isSwitch && option.reloadingRequired) urlParams.has("reload", option.option) ? urlParams.delete("reload", option.option) : urlParams.append("reload", option.option);
       genere();
@@ -33,7 +43,7 @@ const updateValue = (optionId, isSwitch, Value = false, i = false) => {
 };
 
 genere = () => {
-  browser.storage.local.get((data) => {
+  browserStorage.get((data) => {
     const main = document.querySelector("main");
     main.innerHTML = "";
     const groups = document.createElement("div");
@@ -140,7 +150,7 @@ genere = () => {
         optionElement.addEventListener("click", () => {
           const lock = document.querySelector("[option=" + option.lock + "]");
           if (lock && !getOptionValue(option.lock)) {
-            lock.scrollIntoViewIfNeeded();
+            scrollIntoView(lock);
             lock.classList.remove("showMe");
             lock.offsetWidth;
             lock.classList.add("showMe");
@@ -159,6 +169,16 @@ genere = () => {
           optionElement.appendChild(optionSwitchElement);
 
           optionElement.addEventListener("click", () => ((option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, true) : null));
+
+          break;
+        case "Button":
+          const optionButtonElement = document.createElement("div");
+          optionButtonElement.classList.add("optionButton");
+          if (option.Content == "download") optionButtonElement.classList.add("content-download");
+
+          optionElement.appendChild(optionButtonElement);
+
+          optionElement.addEventListener("click", () => ((option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, false, true) : null));
 
           break;
         case "Color":
@@ -236,7 +256,7 @@ genere = () => {
     });
 
     var version = document.getElementById("version");
-    version.innerText = `Version ${browser.runtime.getManifest().version}`;
+    version.innerText = `Version ${browserVersion}`;
   });
 };
 

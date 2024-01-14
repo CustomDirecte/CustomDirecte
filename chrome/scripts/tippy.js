@@ -954,7 +954,6 @@
     we = Z({ defaultModifiers: xe });
   (e.applyStyles = ie), (e.arrow = me), (e.computeStyles = oe), (e.createPopper = we), (e.createPopperLite = be), (e.defaultModifiers = xe), (e.detectOverflow = J), (e.eventListeners = ee), (e.flip = le), (e.hide = ge), (e.offset = ae), (e.popperGenerator = Z), (e.popperOffsets = te), (e.preventOverflow = he), Object.defineProperty(e, "__esModule", { value: !0 });
 });
-//# sourceMappingURL=popper.min.js.map
 !(function (t, e) {
   "object" == typeof exports && "undefined" != typeof module ? (module.exports = e(require("@popperjs/core"))) : "function" == typeof define && define.amd ? define(["@popperjs/core"], e) : ((t = t || self).tippy = e(t.Popper));
 })(this, function (t) {
@@ -2172,7 +2171,6 @@
     F
   );
 });
-//# sourceMappingURL=tippy-bundle.umd.min.js.map
 
 function remove() {
   [...document.querySelectorAll(".notesAdvancedInformation")].forEach((node) => {

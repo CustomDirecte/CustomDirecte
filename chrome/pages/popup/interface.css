@@ -14,9 +14,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Leckerli+One:ital,wght@0,400&display=swap");
 @import url("https://fonts.cdnfonts.com/css/comic-sans");
-@import url("https://fonts.cdnfonts.com/css/open-dyslexic");
+@import url("https://fonts.cdnfonts.com/css/opendyslexic");
 
 /* █▀▀ █   █▀█ █▄▄ ▄▀█ █   */
 /* █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄ */
@@ -49,7 +49,7 @@ body {
   --font-merriweather: Merriweather, serif;
   --font-leckerliOne: Leckerli One, cursive;
   --font-comicSans: comic sans;
-  --font-openDyslexic: open-dyslexic;
+  --font-openDyslexic: "OpenDyslexic", sans-serif;
 }
 
 :root {
@@ -169,7 +169,7 @@ header {
   justify-content: space-between;
 }
 
-div:has(#title) {
+#titleparent {
   display: flex;
   align-items: center;
   height: 100%;
@@ -370,7 +370,7 @@ main {
   margin: 12px 0;
 }
 
-.option:has(.optionSelection) {
+.optionSelectionParent {
   flex-direction: column;
   justify-content: flex-start;
 }
@@ -546,6 +546,52 @@ main {
 
 .option[disabled] > .optionSwitch::before {
   background: var(--gray-light);
+}
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▄▄ █ █ ▀█▀ ▀█▀ █▀█ █▄ █ */
+/*  █   █  █▀▀ ██▄   ▄   █▄█ █▄█  █   █  █▄█ █ ▀█ */
+
+.optionButton {
+  background: var(--primary-dark);
+  width: 164px;
+  height: 45px;
+  border-radius: 999px;
+  position: relative;
+  margin-top: 6.5px;
+  transition: 0.1s;
+}
+
+.optionButton.content-download::before {
+  content: "Télécharger";
+}
+
+.optionButton::before {
+  padding: 5px 0;
+  color: var(--primary-dark);
+  font-size: 20px;
+  font-weight: 800;
+  content: "Cliquez";
+  position: absolute;
+  background: var(--white);
+  margin: 3.5px;
+  margin-left: calc(-50% + 3px);
+  width: calc(100% - 6px);
+  height: calc(100% - 17px);
+  border-radius: 999px;
+  transition: 0.1s;
+}
+
+.optionButton:hover {
+  background: var(--primary-light);
+}
+
+.optionButton:hover::before {
+  padding: 3.5px 0;
+  color: var(--primary-light);
+  margin: 5.5px;
+  margin-left: calc(-50% + 6px);
+  width: calc(100% - 12px);
+  height: calc(100% - 18px);
 }
 
 /* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀ █▀▀ █   █▀▀ █▀▀ ▀█▀ █ █▀█ █▄ █ */

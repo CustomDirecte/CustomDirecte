@@ -1,3 +1,10 @@
+/* IMPORT CHROME LIB */
+browser = chrome;
+browserStorage = browser.storage.sync;
+browserVersion = browser.runtime.getManifest().version_name;
+browserStorageOnChanged = browser.storage.sync.onChanged;
+/* ----------------- */
+
 defaultOptions = {
   groups: [
     {
@@ -14,6 +21,11 @@ defaultOptions = {
       ID: "customizations",
       Title: "Personnalisation",
       Subtitle: "Permet de personnaliser un grand nombre d'éléments du site",
+    },
+    {
+      ID: "development",
+      Title: "Développeur",
+      Subtitle: "Options conçues pour les développeurs",
     },
     {
       ID: "close",
@@ -338,6 +350,40 @@ defaultOptions = {
       reloadingRequired: false,
       lock: "customization",
     },
+    {
+      Group: "development",
+      Type: "Switch",
+      Value: null,
+      Default: false,
+      option: "dev",
+      Title: "Activer les options de développement",
+      Subtitle: "Permet l'activation des options de développement",
+      reloadingRequired: true,
+      lock: false,
+    },
+    {
+      Group: "development",
+      Type: "Switch",
+      Value: null,
+      Default: false,
+      option: "log",
+      Title: "Activer les logs (journaux d'événements)",
+      Subtitle: "Affiche tous les événements du programme dans la console",
+      reloadingRequired: false,
+      lock: "dev",
+    },
+    {
+      Group: "development",
+      Type: "Button",
+      Value: null,
+      Default: false,
+      option: "downloadlog",
+      Content: "download",
+      Title: "Télécharger les logs",
+      Subtitle: false,
+      reloadingRequired: false,
+      lock: "dev",
+    },
   ],
 };
 
@@ -363,6 +409,8 @@ function optionsCorrector(inputOptions = false) {
           }
           // If the option have bool value { Switch } =>
           else if (typeof option.Default === "boolean" && typeof optionFound.Value === "boolean") option.Value = optionFound.Value;
+          // If the option have number value { Color } =>
+          else if (typeof option.Default === "number" && !isNaN(Number(optionFound.Value))) option.Value = optionFound.Value;
         }
         return option;
       }),
@@ -371,18 +419,18 @@ function optionsCorrector(inputOptions = false) {
 
   if (inputOptions) return fixedOptions(inputOptions);
 
-  chrome.storage.sync.get((syncOptions) => {
+  browserStorage.get((syncOptions) => {
     if (syncOptions.options) {
-      chrome.storage.sync.clear();
-      chrome.storage.sync.set(fixedOptions(syncOptions));
-    } else chrome.storage.sync.set(defaultOptions);
+      browserStorage.clear();
+      browserStorage.set(fixedOptions(syncOptions));
+    } else browserStorage.set(defaultOptions);
   });
 }
 
-chrome.runtime.onInstalled.addListener((reason) => {
-  if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+browser.runtime.onInstalled.addListener((reason) => {
+  if (reason.reason === browser.runtime.OnInstalledReason.INSTALL) {
     // Initiate sync values with default
-    chrome.storage.sync.set(defaultOptions);
+    browserStorage.set(defaultOptions);
   } else {
     // Check all sync values on update
     optionsCorrector();

@@ -1,3 +1,10 @@
+/* IMPORT FIREFOX LIB */
+browser = browser;
+browserStorage = browser.storage.local;
+browserVersion = browser.runtime.getManifest().version;
+browserStorageOnChanged = browser.storage.onChanged;
+/* ----------------- */
+
 defaultOptions = {
   groups: [
     {
@@ -14,6 +21,11 @@ defaultOptions = {
       ID: "customizations",
       Title: "Personnalisation",
       Subtitle: "Permet de personnaliser un grand nombre d'éléments du site",
+    },
+    {
+      ID: "development",
+      Title: "Développeur",
+      Subtitle: "Options conçues pour les développeurs",
     },
     {
       ID: "close",
@@ -218,7 +230,7 @@ defaultOptions = {
       Value: null,
       Default: false,
       option: "darkmode",
-      Title: "Activer le mode sombre {Beta} [Attention risque de latence]",
+      Title: "Activer le mode sombre",
       Subtitle: "L'ensemble du site sera sombre, utile la nuit !",
       reloadingRequired: false,
       lock: "customization",
@@ -300,6 +312,11 @@ defaultOptions = {
           CSS: "font-family: var(--font-openSans);",
         },
         {
+          Title: "openDyslexic",
+          Selection: "openDyslexic",
+          CSS: "font-family: var(--font-openDyslexic);",
+        },
+        {
           Title: "montserrat",
           Selection: "montserrat",
           CSS: "font-family: var(--font-montserrat);",
@@ -308,6 +325,11 @@ defaultOptions = {
           Title: "merriweather",
           Selection: "merriweather",
           CSS: "font-family: var(--font-merriweather);",
+        },
+        {
+          Title: "leckerliOne",
+          Selection: "leckerliOne",
+          CSS: "font-family: var(--font-leckerliOne);",
         },
         {
           Title: "inter",
@@ -327,6 +349,40 @@ defaultOptions = {
       Subtitle: false,
       reloadingRequired: false,
       lock: "customization",
+    },
+    {
+      Group: "development",
+      Type: "Switch",
+      Value: null,
+      Default: false,
+      option: "dev",
+      Title: "Activer les options de développement",
+      Subtitle: "Permet l'activation des options de développement",
+      reloadingRequired: true,
+      lock: false,
+    },
+    {
+      Group: "development",
+      Type: "Switch",
+      Value: null,
+      Default: false,
+      option: "log",
+      Title: "Activer les logs (journaux d'événements)",
+      Subtitle: "Affiche tous les événements du programme dans la console",
+      reloadingRequired: false,
+      lock: "dev",
+    },
+    {
+      Group: "development",
+      Type: "Button",
+      Value: null,
+      Default: false,
+      option: "downloadlog",
+      Content: "download",
+      Title: "Télécharger les logs",
+      Subtitle: false,
+      reloadingRequired: false,
+      lock: "dev",
     },
   ],
 };
@@ -353,6 +409,8 @@ function optionsCorrector(inputOptions = false) {
           }
           // If the option have bool value { Switch } =>
           else if (typeof option.Default === "boolean" && typeof optionFound.Value === "boolean") option.Value = optionFound.Value;
+          // If the option have number value { Color } =>
+          else if (typeof option.Default === "number" && !isNaN(Number(optionFound.Value))) option.Value = optionFound.Value;
         }
         return option;
       }),
@@ -361,18 +419,18 @@ function optionsCorrector(inputOptions = false) {
 
   if (inputOptions) return fixedOptions(inputOptions);
 
-  browser.storage.local.get((syncOptions) => {
+  browserStorage.get((syncOptions) => {
     if (syncOptions.options) {
-      browser.storage.local.clear();
-      browser.storage.local.set(fixedOptions(syncOptions));
-    } else browser.storage.local.set(defaultOptions);
+      browserStorage.clear();
+      browserStorage.set(fixedOptions(syncOptions));
+    } else browserStorage.set(defaultOptions);
   });
 }
 
 browser.runtime.onInstalled.addListener((reason) => {
   if (reason.reason === browser.runtime.OnInstalledReason.INSTALL) {
     // Initiate sync values with default
-    browser.storage.local.set(defaultOptions);
+    browserStorage.set(defaultOptions);
   } else {
     // Check all sync values on update
     optionsCorrector();

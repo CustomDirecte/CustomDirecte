@@ -20,6 +20,12 @@
   --theme-text-color: #ccc !important;
 }
 
+[sidebardarkmode="false"][darkmode="true"] {
+  --theme-body-color: #fff !important;
+  --theme-sidebar-color: var(--darkreader-bg--light-primary-color) !important;
+  --theme-text-color: #ccc !important;
+}
+
 [sidebardarkmode="true"][darkmode="true"] {
   --theme-body-color: #fff !important;
   --theme-sidebar-color: #1d2021 !important;

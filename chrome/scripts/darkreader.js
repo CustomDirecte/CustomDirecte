@@ -1,830 +1,1122 @@
 /**
- * Minified by jsDelivr using Terser v5.15.0.
- * Original file: /npm/darkreader@4.9.58/darkreader.js
- *
- * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
+ * Dark Reader v4.9.67
+ * https://darkreader.org/
  */
 
-!(function (e, t) {
-  "object" == typeof exports && "undefined" != typeof module ? t(exports) : "function" == typeof define && define.amd ? define(["exports"], t) : t(((e = "undefined" != typeof globalThis ? globalThis : e || self).DarkReader = {}));
-})(this, function (e) {
+(function (global, factory) {
+  typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : ((global = typeof globalThis !== "undefined" ? globalThis : global || self), factory((global.DarkReader = {})));
+})(this, function (exports) {
   "use strict";
-  var t,
-    r = function () {
-      return (
-        (r =
-          Object.assign ||
-          function (e) {
-            for (var t, r = 1, n = arguments.length; r < n; r++) for (var a in (t = arguments[r])) Object.prototype.hasOwnProperty.call(t, a) && (e[a] = t[a]);
-            return e;
-          }),
-        r.apply(this, arguments)
-      );
-    };
 
-  function n(e, t, r, n) {
-    return new (r || (r = Promise))(function (a, o) {
-      function i(e) {
+  /******************************************************************************
+  Copyright (c) Microsoft Corporation.
+
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
+  ***************************************************************************** */
+  /* global Reflect, Promise, SuppressedError, Symbol */
+
+  var __assign = function () {
+    __assign =
+      Object.assign ||
+      function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+          s = arguments[i];
+          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+      };
+    return __assign.apply(this, arguments);
+  };
+
+  function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P
+        ? value
+        : new P(function (resolve) {
+            resolve(value);
+          });
+    }
+    return new (P || (P = Promise))(function (resolve, reject) {
+      function fulfilled(value) {
         try {
-          c(n.next(e));
+          step(generator.next(value));
         } catch (e) {
-          o(e);
+          reject(e);
         }
       }
-
-      function u(e) {
+      function rejected(value) {
         try {
-          c(n.throw(e));
+          step(generator["throw"](value));
         } catch (e) {
-          o(e);
+          reject(e);
         }
       }
-
-      function c(e) {
-        var t;
-        e.done
-          ? a(e.value)
-          : ((t = e.value),
-            t instanceof r
-              ? t
-              : new r(function (e) {
-                  e(t);
-                })).then(i, u);
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
       }
-      c((n = n.apply(e, t || [])).next());
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   }
 
-  function a(e, t) {
-    var r,
-      n,
-      a,
-      o,
-      i = {
+  function __generator(thisArg, body) {
+    var _ = {
         label: 0,
         sent: function () {
-          if (1 & a[0]) throw a[1];
-          return a[1];
+          if (t[0] & 1) throw t[1];
+          return t[1];
         },
         trys: [],
         ops: [],
-      };
+      },
+      f,
+      y,
+      t,
+      g;
     return (
-      (o = {
-        next: u(0),
-        throw: u(1),
-        return: u(2),
-      }),
-      "function" == typeof Symbol &&
-        (o[Symbol.iterator] = function () {
+      (g = { next: verb(0), throw: verb(1), return: verb(2) }),
+      typeof Symbol === "function" &&
+        (g[Symbol.iterator] = function () {
           return this;
         }),
-      o
+      g
     );
-
-    function u(o) {
-      return function (u) {
-        return (function (o) {
-          if (r) throw new TypeError("Generator is already executing.");
-          for (; i; )
-            try {
-              if (((r = 1), n && (a = 2 & o[0] ? n.return : o[0] ? n.throw || ((a = n.return) && a.call(n), 0) : n.next) && !(a = a.call(n, o[1])).done)) return a;
-              switch (((n = 0), a && (o = [2 & o[0], a.value]), o[0])) {
-                case 0:
-                case 1:
-                  a = o;
-                  break;
-                case 4:
-                  return (
-                    i.label++,
-                    {
-                      value: o[1],
-                      done: !1,
-                    }
-                  );
-                case 5:
-                  i.label++, (n = o[1]), (o = [0]);
-                  continue;
-                case 7:
-                  (o = i.ops.pop()), i.trys.pop();
-                  continue;
-                default:
-                  if (!((a = i.trys), (a = a.length > 0 && a[a.length - 1]) || (6 !== o[0] && 2 !== o[0]))) {
-                    i = 0;
-                    continue;
-                  }
-                  if (3 === o[0] && (!a || (o[1] > a[0] && o[1] < a[3]))) {
-                    i.label = o[1];
-                    break;
-                  }
-                  if (6 === o[0] && i.label < a[1]) {
-                    (i.label = a[1]), (a = o);
-                    break;
-                  }
-                  if (a && i.label < a[2]) {
-                    (i.label = a[2]), i.ops.push(o);
-                    break;
-                  }
-                  a[2] && i.ops.pop(), i.trys.pop();
-                  continue;
-              }
-              o = t.call(e, i);
-            } catch (e) {
-              (o = [6, e]), (n = 0);
-            } finally {
-              r = a = 0;
-            }
-          if (5 & o[0]) throw o[1];
-          return {
-            value: o[0] ? o[1] : void 0,
-            done: !0,
-          };
-        })([o, u]);
+    function verb(n) {
+      return function (v) {
+        return step([n, v]);
       };
+    }
+    function step(op) {
+      if (f) throw new TypeError("Generator is already executing.");
+      while ((g && ((g = 0), op[0] && (_ = 0)), _))
+        try {
+          if (((f = 1), y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done)) return t;
+          if (((y = 0), t)) op = [op[0] & 2, t.value];
+          switch (op[0]) {
+            case 0:
+            case 1:
+              t = op;
+              break;
+            case 4:
+              _.label++;
+              return { value: op[1], done: false };
+            case 5:
+              _.label++;
+              y = op[1];
+              op = [0];
+              continue;
+            case 7:
+              op = _.ops.pop();
+              _.trys.pop();
+              continue;
+            default:
+              if (!((t = _.trys), (t = t.length > 0 && t[t.length - 1])) && (op[0] === 6 || op[0] === 2)) {
+                _ = 0;
+                continue;
+              }
+              if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
+                _.label = op[1];
+                break;
+              }
+              if (op[0] === 6 && _.label < t[1]) {
+                _.label = t[1];
+                t = op;
+                break;
+              }
+              if (t && _.label < t[2]) {
+                _.label = t[2];
+                _.ops.push(op);
+                break;
+              }
+              if (t[2]) _.ops.pop();
+              _.trys.pop();
+              continue;
+          }
+          op = body.call(thisArg, _);
+        } catch (e) {
+          op = [6, e];
+          y = 0;
+        } finally {
+          f = t = 0;
+        }
+      if (op[0] & 5) throw op[1];
+      return { value: op[0] ? op[1] : void 0, done: true };
     }
   }
 
-  function o(e) {
-    var t = "function" == typeof Symbol && Symbol.iterator,
-      r = t && e[t],
-      n = 0;
-    if (r) return r.call(e);
-    if (e && "number" == typeof e.length)
+  function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator,
+      m = s && o[s],
+      i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number")
       return {
         next: function () {
-          return (
-            e && n >= e.length && (e = void 0),
-            {
-              value: e && e[n++],
-              done: !e,
-            }
-          );
+          if (o && i >= o.length) o = void 0;
+          return { value: o && o[i++], done: !o };
         },
       };
-    throw new TypeError(t ? "Object is not iterable." : "Symbol.iterator is not defined.");
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
   }
 
-  function i(e, t) {
-    var r = "function" == typeof Symbol && e[Symbol.iterator];
-    if (!r) return e;
-    var n,
-      a,
-      o = r.call(e),
-      i = [];
+  function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o),
+      r,
+      ar = [],
+      e;
     try {
-      for (; (void 0 === t || t-- > 0) && !(n = o.next()).done; ) i.push(n.value);
-    } catch (e) {
-      a = {
-        error: e,
-      };
+      while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    } catch (error) {
+      e = { error: error };
     } finally {
       try {
-        n && !n.done && (r = o.return) && r.call(o);
+        if (r && !r.done && (m = i["return"])) m.call(i);
       } finally {
-        if (a) throw a.error;
+        if (e) throw e.error;
       }
     }
-    return i;
+    return ar;
   }
 
-  function u(e, t, r) {
-    if (r || 2 === arguments.length) for (var n, a = 0, o = t.length; a < o; a++) (!n && a in t) || (n || (n = Array.prototype.slice.call(t, 0, a)), (n[a] = t[a]));
-    return e.concat(n || Array.prototype.slice.call(t));
-  }
-  !(function (e) {
-    (e.UI_GET_DATA = "ui-get-data"),
-      (e.UI_SUBSCRIBE_TO_CHANGES = "ui-subscribe-to-changes"),
-      (e.UI_UNSUBSCRIBE_FROM_CHANGES = "ui-unsubscribe-from-changes"),
-      (e.UI_CHANGE_SETTINGS = "ui-change-settings"),
-      (e.UI_SET_THEME = "ui-set-theme"),
-      (e.UI_SET_SHORTCUT = "ui-set-shortcut"),
-      (e.UI_TOGGLE_ACTIVE_TAB = "ui-toggle-active-tab"),
-      (e.UI_MARK_NEWS_AS_READ = "ui-mark-news-as-read"),
-      (e.UI_MARK_NEWS_AS_DISPLAYED = "ui-mark-news-as-displayed"),
-      (e.UI_LOAD_CONFIG = "ui-load-config"),
-      (e.UI_APPLY_DEV_DYNAMIC_THEME_FIXES = "ui-apply-dev-dynamic-theme-fixes"),
-      (e.UI_RESET_DEV_DYNAMIC_THEME_FIXES = "ui-reset-dev-dynamic-theme-fixes"),
-      (e.UI_APPLY_DEV_INVERSION_FIXES = "ui-apply-dev-inversion-fixes"),
-      (e.UI_RESET_DEV_INVERSION_FIXES = "ui-reset-dev-inversion-fixes"),
-      (e.UI_APPLY_DEV_STATIC_THEMES = "ui-apply-dev-static-themes"),
-      (e.UI_RESET_DEV_STATIC_THEMES = "ui-reset-dev-static-themes"),
-      (e.UI_SAVE_FILE = "ui-save-file"),
-      (e.UI_REQUEST_EXPORT_CSS = "ui-request-export-css"),
-      (e.UI_COLOR_SCHEME_CHANGE = "ui-color-scheme-change"),
-      (e.BG_CHANGES = "bg-changes"),
-      (e.BG_ADD_CSS_FILTER = "bg-add-css-filter"),
-      (e.BG_ADD_STATIC_THEME = "bg-add-static-theme"),
-      (e.BG_ADD_SVG_FILTER = "bg-add-svg-filter"),
-      (e.BG_ADD_DYNAMIC_THEME = "bg-add-dynamic-theme"),
-      (e.BG_EXPORT_CSS = "bg-export-css"),
-      (e.BG_UNSUPPORTED_SENDER = "bg-unsupported-sender"),
-      (e.BG_CLEAN_UP = "bg-clean-up"),
-      (e.BG_RELOAD = "bg-reload"),
-      (e.BG_FETCH_RESPONSE = "bg-fetch-response"),
-      (e.BG_UI_UPDATE = "bg-ui-update"),
-      (e.BG_CSS_UPDATE = "bg-css-update"),
-      (e.CS_COLOR_SCHEME_CHANGE = "cs-color-scheme-change"),
-      (e.CS_FRAME_CONNECT = "cs-frame-connect"),
-      (e.CS_FRAME_FORGET = "cs-frame-forget"),
-      (e.CS_FRAME_FREEZE = "cs-frame-freeze"),
-      (e.CS_FRAME_RESUME = "cs-frame-resume"),
-      (e.CS_EXPORT_CSS_RESPONSE = "cs-export-css-response"),
-      (e.CS_FETCH = "cs-fetch"),
-      (e.CS_DARK_THEME_DETECTED = "cs-dark-theme-detected"),
-      (e.CS_DARK_THEME_NOT_DETECTED = "cs-dark-theme-not-detected"),
-      (e.CS_LOG = "cs-log");
-  })(t || (t = {}));
-  var c = "undefined" != typeof navigator,
-    s = c
-      ? navigator.userAgentData && Array.isArray(navigator.userAgentData.brands)
-        ? navigator.userAgentData.brands
-            .map(function (e) {
-              return "".concat(e.brand.toLowerCase(), " ").concat(e.version);
-            })
-            .join(" ")
-        : navigator.userAgent.toLowerCase()
-      : "some useragent",
-    l = c ? (navigator.userAgentData && "string" == typeof navigator.userAgentData.platform ? navigator.userAgentData.platform.toLowerCase() : navigator.platform.toLowerCase()) : "some platform",
-    d = s.includes("chrome") || s.includes("chromium"),
-    f = s.includes("thunderbird"),
-    h = s.includes("firefox") || s.includes("librewolf") || f;
-  s.includes("vivaldi"), s.includes("yabrowser"), s.includes("opr") || s.includes("opera"), s.includes("edg");
-  var p = s.includes("safari") && !d,
-    v = l.startsWith("win"),
-    m = l.startsWith("mac");
-  c && navigator.userAgentData ? navigator.userAgentData.mobile : s.includes("mobile");
-  var g,
-    b = "function" == typeof ShadowRoot,
-    y = "function" == typeof MediaQueryList && "function" == typeof MediaQueryList.prototype.addEventListener;
-  (g = s.match(/chrom(?:e|ium)(?:\/| )([^ ]+)/)) && g[1] && g[1],
-    (function () {
-      var e = s.match(/(?:firefox|librewolf)(?:\/| )([^ ]+)/);
-      e && e[1] && e[1];
-    })();
-  var S = (function () {
-      try {
-        return document.querySelector(":defined"), !0;
-      } catch (e) {
-        return !1;
+  function __spreadArray(to, from, pack) {
+    if (pack || arguments.length === 2)
+      for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+          if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+          ar[i] = from[i];
+        }
       }
-    })(),
-    _ = (function () {
-      if ("undefined" == typeof document) return !1;
-      var e = document.createElement("div");
-      return e.setAttribute("style", "color-scheme: dark"), e.style && "dark" === e.style.colorScheme;
-    })();
+    return to.concat(ar || Array.prototype.slice.call(from));
+  }
 
-  function k(e, t, r) {
-    return n(this, void 0, void 0, function () {
-      var n;
-      return a(this, function (a) {
-        switch (a.label) {
+  typeof SuppressedError === "function"
+    ? SuppressedError
+    : function (error, suppressed, message) {
+        var e = new Error(message);
+        return (e.name = "SuppressedError"), (e.error = error), (e.suppressed = suppressed), e;
+      };
+
+  var MessageTypeUItoBG;
+  (function (MessageTypeUItoBG) {
+    MessageTypeUItoBG["GET_DATA"] = "ui-bg-get-data";
+    MessageTypeUItoBG["GET_DEVTOOLS_DATA"] = "ui-bg-get-devtools-data";
+    MessageTypeUItoBG["SUBSCRIBE_TO_CHANGES"] = "ui-bg-subscribe-to-changes";
+    MessageTypeUItoBG["UNSUBSCRIBE_FROM_CHANGES"] = "ui-bg-unsubscribe-from-changes";
+    MessageTypeUItoBG["CHANGE_SETTINGS"] = "ui-bg-change-settings";
+    MessageTypeUItoBG["SET_THEME"] = "ui-bg-set-theme";
+    MessageTypeUItoBG["TOGGLE_ACTIVE_TAB"] = "ui-bg-toggle-active-tab";
+    MessageTypeUItoBG["MARK_NEWS_AS_READ"] = "ui-bg-mark-news-as-read";
+    MessageTypeUItoBG["MARK_NEWS_AS_DISPLAYED"] = "ui-bg-mark-news-as-displayed";
+    MessageTypeUItoBG["LOAD_CONFIG"] = "ui-bg-load-config";
+    MessageTypeUItoBG["APPLY_DEV_DYNAMIC_THEME_FIXES"] = "ui-bg-apply-dev-dynamic-theme-fixes";
+    MessageTypeUItoBG["RESET_DEV_DYNAMIC_THEME_FIXES"] = "ui-bg-reset-dev-dynamic-theme-fixes";
+    MessageTypeUItoBG["APPLY_DEV_INVERSION_FIXES"] = "ui-bg-apply-dev-inversion-fixes";
+    MessageTypeUItoBG["RESET_DEV_INVERSION_FIXES"] = "ui-bg-reset-dev-inversion-fixes";
+    MessageTypeUItoBG["APPLY_DEV_STATIC_THEMES"] = "ui-bg-apply-dev-static-themes";
+    MessageTypeUItoBG["RESET_DEV_STATIC_THEMES"] = "ui-bg-reset-dev-static-themes";
+    MessageTypeUItoBG["COLOR_SCHEME_CHANGE"] = "ui-bg-color-scheme-change";
+    MessageTypeUItoBG["HIDE_HIGHLIGHTS"] = "ui-bg-hide-highlights";
+  })(MessageTypeUItoBG || (MessageTypeUItoBG = {}));
+  var MessageTypeBGtoUI;
+  (function (MessageTypeBGtoUI) {
+    MessageTypeBGtoUI["CHANGES"] = "bg-ui-changes";
+  })(MessageTypeBGtoUI || (MessageTypeBGtoUI = {}));
+  var DebugMessageTypeBGtoUI;
+  (function (DebugMessageTypeBGtoUI) {
+    DebugMessageTypeBGtoUI["CSS_UPDATE"] = "debug-bg-ui-css-update";
+    DebugMessageTypeBGtoUI["UPDATE"] = "debug-bg-ui-update";
+  })(DebugMessageTypeBGtoUI || (DebugMessageTypeBGtoUI = {}));
+  var MessageTypeBGtoCS;
+  (function (MessageTypeBGtoCS) {
+    MessageTypeBGtoCS["ADD_CSS_FILTER"] = "bg-cs-add-css-filter";
+    MessageTypeBGtoCS["ADD_DYNAMIC_THEME"] = "bg-cs-add-dynamic-theme";
+    MessageTypeBGtoCS["ADD_STATIC_THEME"] = "bg-cs-add-static-theme";
+    MessageTypeBGtoCS["ADD_SVG_FILTER"] = "bg-cs-add-svg-filter";
+    MessageTypeBGtoCS["CLEAN_UP"] = "bg-cs-clean-up";
+    MessageTypeBGtoCS["FETCH_RESPONSE"] = "bg-cs-fetch-response";
+    MessageTypeBGtoCS["UNSUPPORTED_SENDER"] = "bg-cs-unsupported-sender";
+  })(MessageTypeBGtoCS || (MessageTypeBGtoCS = {}));
+  var DebugMessageTypeBGtoCS;
+  (function (DebugMessageTypeBGtoCS) {
+    DebugMessageTypeBGtoCS["RELOAD"] = "debug-bg-cs-reload";
+  })(DebugMessageTypeBGtoCS || (DebugMessageTypeBGtoCS = {}));
+  var MessageTypeCStoBG;
+  (function (MessageTypeCStoBG) {
+    MessageTypeCStoBG["COLOR_SCHEME_CHANGE"] = "cs-bg-color-scheme-change";
+    MessageTypeCStoBG["DARK_THEME_DETECTED"] = "cs-bg-dark-theme-detected";
+    MessageTypeCStoBG["DARK_THEME_NOT_DETECTED"] = "cs-bg-dark-theme-not-detected";
+    MessageTypeCStoBG["FETCH"] = "cs-bg-fetch";
+    MessageTypeCStoBG["DOCUMENT_CONNECT"] = "cs-bg-document-connect";
+    MessageTypeCStoBG["DOCUMENT_FORGET"] = "cs-bg-document-forget";
+    MessageTypeCStoBG["DOCUMENT_FREEZE"] = "cs-bg-document-freeze";
+    MessageTypeCStoBG["DOCUMENT_RESUME"] = "cs-bg-document-resume";
+  })(MessageTypeCStoBG || (MessageTypeCStoBG = {}));
+  var DebugMessageTypeCStoBG;
+  (function (DebugMessageTypeCStoBG) {
+    DebugMessageTypeCStoBG["LOG"] = "debug-cs-bg-log";
+  })(DebugMessageTypeCStoBG || (DebugMessageTypeCStoBG = {}));
+  var MessageTypeCStoUI;
+  (function (MessageTypeCStoUI) {
+    MessageTypeCStoUI["EXPORT_CSS_RESPONSE"] = "cs-ui-export-css-response";
+  })(MessageTypeCStoUI || (MessageTypeCStoUI = {}));
+  var MessageTypeUItoCS;
+  (function (MessageTypeUItoCS) {
+    MessageTypeUItoCS["EXPORT_CSS"] = "ui-cs-export-css";
+  })(MessageTypeUItoCS || (MessageTypeUItoCS = {}));
+
+  var isNavigatorDefined = typeof navigator !== "undefined";
+  var userAgent = isNavigatorDefined
+    ? navigator.userAgentData && Array.isArray(navigator.userAgentData.brands)
+      ? navigator.userAgentData.brands
+          .map(function (brand) {
+            return "".concat(brand.brand.toLowerCase(), " ").concat(brand.version);
+          })
+          .join(" ")
+      : navigator.userAgent.toLowerCase()
+    : "some useragent";
+  var platform = isNavigatorDefined ? (navigator.userAgentData && typeof navigator.userAgentData.platform === "string" ? navigator.userAgentData.platform.toLowerCase() : navigator.platform.toLowerCase()) : "some platform";
+  var isChromium = userAgent.includes("chrome") || userAgent.includes("chromium");
+  var isFirefox = userAgent.includes("firefox") || userAgent.includes("thunderbird") || userAgent.includes("librewolf");
+  var isSafari = userAgent.includes("safari") && !isChromium;
+  var isWindows = platform.startsWith("win");
+  var isMacOS = platform.startsWith("mac");
+  isNavigatorDefined && navigator.userAgentData ? navigator.userAgentData.mobile : userAgent.includes("mobile");
+  var isShadowDomSupported = typeof ShadowRoot === "function";
+  var isMatchMediaChangeEventListenerSupported = typeof MediaQueryList === "function" && typeof MediaQueryList.prototype.addEventListener === "function";
+  (function () {
+    var m = userAgent.match(/chrom(?:e|ium)(?:\/| )([^ ]+)/);
+    if (m && m[1]) {
+      return m[1];
+    }
+    return "";
+  })();
+  (function () {
+    var m = userAgent.match(/(?:firefox|librewolf)(?:\/| )([^ ]+)/);
+    if (m && m[1]) {
+      return m[1];
+    }
+    return "";
+  })();
+  var isDefinedSelectorSupported = (function () {
+    try {
+      document.querySelector(":defined");
+      return true;
+    } catch (err) {
+      return false;
+    }
+  })();
+  var isCSSColorSchemePropSupported = (function () {
+    try {
+      if (typeof document === "undefined") {
+        return false;
+      }
+      var el = document.createElement("div");
+      if (!el || typeof el.style !== "object") {
+        return false;
+      }
+      if (typeof el.style.colorScheme === "string") {
+        return true;
+      }
+      el.setAttribute("style", "color-scheme: dark");
+      return el.style.colorScheme === "dark";
+    } catch (e) {
+      return false;
+    }
+  })();
+
+  function getOKResponse(url, mimeType, origin) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
             return [
               4,
-              fetch(e, {
+              fetch(url, {
                 cache: "force-cache",
                 credentials: "omit",
-                referrer: r,
+                referrer: origin,
               }),
             ];
           case 1:
-            if (((n = a.sent()), h && "text/css" === t && e.startsWith("moz-extension://") && e.endsWith(".css"))) return [2, n];
-            if (t && !n.headers.get("Content-Type").startsWith(t)) throw new Error("Mime type mismatch when loading ".concat(e));
-            if (!n.ok) throw new Error("Unable to load ".concat(e, " ").concat(n.status, " ").concat(n.statusText));
-            return [2, n];
+            response = _a.sent();
+            if (isFirefox && mimeType === "text/css" && url.startsWith("moz-extension://") && url.endsWith(".css")) {
+              return [2, response];
+            }
+            if (mimeType && !response.headers.get("Content-Type").startsWith(mimeType)) {
+              throw new Error("Mime type mismatch when loading ".concat(url));
+            }
+            if (!response.ok) {
+              throw new Error("Unable to load ".concat(url, " ").concat(response.status, " ").concat(response.statusText));
+            }
+            return [2, response];
         }
       });
     });
   }
-
-  function w(e, t) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (r) {
-        switch (r.label) {
+  function loadAsDataURL(url, mimeType) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
-            return [4, k(e, t)];
+            return [4, getOKResponse(url, mimeType)];
           case 1:
-            return [4, E(r.sent())];
+            response = _a.sent();
+            return [4, readResponseAsDataURL(response)];
           case 2:
-            return [2, r.sent()];
+            return [2, _a.sent()];
         }
       });
     });
   }
-
-  function E(e) {
-    return n(this, void 0, void 0, function () {
-      var t;
-      return a(this, function (r) {
-        switch (r.label) {
+  function readResponseAsDataURL(response) {
+    return __awaiter(this, void 0, void 0, function () {
+      var blob, dataURL;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
-            return [4, e.blob()];
+            return [4, response.blob()];
           case 1:
-            return (
-              (t = r.sent()),
-              [
-                4,
-                new Promise(function (e) {
-                  var r = new FileReader();
-                  (r.onloadend = function () {
-                    return e(r.result);
-                  }),
-                    r.readAsDataURL(t);
-                }),
-              ]
-            );
+            blob = _a.sent();
+            return [
+              4,
+              new Promise(function (resolve) {
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                  return resolve(reader.result);
+                };
+                reader.readAsDataURL(blob);
+              }),
+            ];
           case 2:
-            return [2, r.sent()];
+            dataURL = _a.sent();
+            return [2, dataURL];
         }
       });
     });
   }
-  var C = function (e) {
-      return n(void 0, void 0, void 0, function () {
-        return a(this, function (t) {
-          return [2, Promise.reject(new Error(["Embedded Dark Reader cannot access a cross-origin resource", e, "Overview your URLs and CORS policies or use", "`DarkReader.setFetchMethod(fetch: (url) => Promise<Response>))`.", "See if using `DarkReader.setFetchMethod(window.fetch)`", "before `DarkReader.enable()` works."].join(" ")))];
-        });
-      });
-    },
-    x = C;
 
-  function T(e) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (t) {
-        switch (t.label) {
+  var throwCORSError = function (url) {
+    return __awaiter(void 0, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        return [2, Promise.reject(new Error(["Embedded Dark Reader cannot access a cross-origin resource", url, "Overview your URLs and CORS policies or use", "`DarkReader.setFetchMethod(fetch: (url) => Promise<Response>))`.", "See if using `DarkReader.setFetchMethod(window.fetch)`", "before `DarkReader.enable()` works."].join(" ")))];
+      });
+    });
+  };
+  var fetcher = throwCORSError;
+  function setFetchMethod$1(fetch) {
+    if (fetch) {
+      fetcher = fetch;
+    } else {
+      fetcher = throwCORSError;
+    }
+  }
+  function callFetchMethod(url) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
-            return [4, x(e)];
+            return [4, fetcher(url)];
           case 1:
-            return [2, t.sent()];
+            return [2, _a.sent()];
         }
       });
     });
   }
-  window.chrome || (window.chrome = {}), chrome.runtime || (chrome.runtime = {});
-  var R,
-    V,
-    A = new Set();
 
-  function M() {
-    for (var e = [], r = 0; r < arguments.length; r++) e[r] = arguments[r];
-    return n(this, void 0, void 0, function () {
-      var r, n, o, i, u, c, s;
-      return a(this, function (a) {
-        switch (a.label) {
+  if (!window.chrome) {
+    window.chrome = {};
+  }
+  if (!chrome.runtime) {
+    chrome.runtime = {};
+  }
+  var messageListeners = new Set();
+  function sendMessage() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+    return __awaiter(this, void 0, void 0, function () {
+      var id_1, _a, url, responseType, response, text_1, error_1;
+      return __generator(this, function (_b) {
+        switch (_b.label) {
           case 0:
-            if (!e[0] || e[0].type !== t.CS_FETCH) return [3, 8];
-            (r = e[0].id), (a.label = 1);
+            if (!(args[0] && args[0].type === MessageTypeCStoBG.FETCH)) return [3, 8];
+            id_1 = args[0].id;
+            _b.label = 1;
           case 1:
-            return a.trys.push([1, 7, , 8]), (n = e[0].data), (o = n.url), (i = n.responseType), [4, T(o)];
+            _b.trys.push([1, 7, , 8]);
+            (_a = args[0].data), (url = _a.url), (responseType = _a.responseType);
+            return [4, callFetchMethod(url)];
           case 2:
-            return (u = a.sent()), "data-url" !== i ? [3, 4] : [4, E(u)];
+            response = _b.sent();
+            if (!(responseType === "data-url")) return [3, 4];
+            return [4, readResponseAsDataURL(response)];
           case 3:
-            return (c = a.sent()), [3, 6];
+            text_1 = _b.sent();
+            return [3, 6];
           case 4:
-            return [4, u.text()];
+            return [4, response.text()];
           case 5:
-            (c = a.sent()), (a.label = 6);
+            text_1 = _b.sent();
+            _b.label = 6;
           case 6:
-            return (
-              A.forEach(function (e) {
-                return e({
-                  type: t.BG_FETCH_RESPONSE,
-                  data: c,
-                  error: null,
-                  id: r,
-                });
-              }),
-              [3, 8]
-            );
+            messageListeners.forEach(function (cb) {
+              return cb({
+                type: MessageTypeBGtoCS.FETCH_RESPONSE,
+                data: text_1,
+                error: null,
+                id: id_1,
+              });
+            });
+            return [3, 8];
           case 7:
-            return (
-              (s = a.sent()),
-              (s) => {},
-              A.forEach(function (e) {
-                return e({
-                  type: t.BG_FETCH_RESPONSE,
-                  data: null,
-                  error: s,
-                  id: r,
-                });
-              }),
-              [3, 8]
-            );
+            error_1 = _b.sent();
+            messageListeners.forEach(function (cb) {
+              return cb({
+                type: MessageTypeBGtoCS.FETCH_RESPONSE,
+                data: null,
+                error: error_1,
+                id: id_1,
+              });
+            });
+            return [3, 8];
           case 8:
             return [2];
         }
       });
     });
   }
-
-  function L(e) {
-    A.add(e);
+  function addMessageListener(callback) {
+    messageListeners.add(callback);
   }
-  if ("function" == typeof chrome.runtime.sendMessage) {
-    var O = chrome.runtime.sendMessage;
+  if (typeof chrome.runtime.sendMessage === "function") {
+    var nativeSendMessage_1 = chrome.runtime.sendMessage;
     chrome.runtime.sendMessage = function () {
-      for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
-      M.apply(void 0, u([], i(e), !1)), O.apply(chrome.runtime, e);
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      sendMessage.apply(void 0, __spreadArray([], __read(args), false));
+      nativeSendMessage_1.apply(chrome.runtime, args);
     };
-  } else chrome.runtime.sendMessage = M;
-  if ((chrome.runtime.onMessage || (chrome.runtime.onMessage = {}), "function" == typeof chrome.runtime.onMessage.addListener)) {
-    var D = chrome.runtime.onMessage.addListener;
+  } else {
+    chrome.runtime.sendMessage = sendMessage;
+  }
+  if (!chrome.runtime.onMessage) {
+    chrome.runtime.onMessage = {};
+  }
+  if (typeof chrome.runtime.onMessage.addListener === "function") {
+    var nativeAddListener_1 = chrome.runtime.onMessage.addListener;
     chrome.runtime.onMessage.addListener = function () {
-      for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
-      L(e[0]), D.apply(chrome.runtime.onMessage, e);
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      addMessageListener(args[0]);
+      nativeAddListener_1.apply(chrome.runtime.onMessage, args);
     };
-  } else
+  } else {
     chrome.runtime.onMessage.addListener = function () {
-      for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
-      return L(e[0]);
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      return addMessageListener(args[0]);
     };
-  !(function (e) {
-    (e.cssFilter = "cssFilter"), (e.svgFilter = "svgFilter"), (e.staticTheme = "staticTheme"), (e.dynamicTheme = "dynamicTheme");
-  })(R || (R = {})),
-    (function (e) {
-      (e.NONE = ""), (e.TIME = "time"), (e.SYSTEM = "system"), (e.LOCATION = "location");
-    })(V || (V = {}));
-  var P = {
+  }
+
+  var ThemeEngine;
+  (function (ThemeEngine) {
+    ThemeEngine["cssFilter"] = "cssFilter";
+    ThemeEngine["svgFilter"] = "svgFilter";
+    ThemeEngine["staticTheme"] = "staticTheme";
+    ThemeEngine["dynamicTheme"] = "dynamicTheme";
+  })(ThemeEngine || (ThemeEngine = {}));
+
+  var AutomationMode;
+  (function (AutomationMode) {
+    AutomationMode["NONE"] = "";
+    AutomationMode["TIME"] = "time";
+    AutomationMode["SYSTEM"] = "system";
+    AutomationMode["LOCATION"] = "location";
+  })(AutomationMode || (AutomationMode = {}));
+
+  var DEFAULT_COLORS = {
+    darkScheme: {
       background: "#181a1b",
       text: "#e8e6e3",
     },
-    I = {
+    lightScheme: {
       background: "#dcdad7",
       text: "#181a1b",
     },
-    N = {
-      mode: 1,
-      brightness: 100,
-      contrast: 100,
-      grayscale: 0,
-      sepia: 0,
-      useFont: !1,
-      fontFamily: m ? "Helvetica Neue" : v ? "Segoe UI" : "Open Sans",
-      textStroke: 0,
-      engine: R.dynamicTheme,
-      stylesheet: "",
-      darkSchemeBackgroundColor: P.background,
-      darkSchemeTextColor: P.text,
-      lightSchemeBackgroundColor: I.background,
-      lightSchemeTextColor: I.text,
-      scrollbarColor: m ? "" : "auto",
-      selectionColor: "auto",
-      styleSystemControls: !_,
-      lightColorScheme: "Default",
-      darkColorScheme: "Default",
-      immediateModify: !1,
-    };
+  };
+  var DEFAULT_THEME = {
+    mode: 1,
+    brightness: 100,
+    contrast: 100,
+    grayscale: 0,
+    sepia: 0,
+    useFont: false,
+    fontFamily: isMacOS ? "Helvetica Neue" : isWindows ? "Segoe UI" : "Open Sans",
+    textStroke: 0,
+    engine: ThemeEngine.dynamicTheme,
+    stylesheet: "",
+    darkSchemeBackgroundColor: DEFAULT_COLORS.darkScheme.background,
+    darkSchemeTextColor: DEFAULT_COLORS.darkScheme.text,
+    lightSchemeBackgroundColor: DEFAULT_COLORS.lightScheme.background,
+    lightSchemeTextColor: DEFAULT_COLORS.lightScheme.text,
+    scrollbarColor: isMacOS ? "" : "auto",
+    selectionColor: "auto",
+    styleSystemControls: !isCSSColorSchemePropSupported,
+    lightColorScheme: "Default",
+    darkColorScheme: "Default",
+    immediateModify: false,
+  };
+  ({
+    enabled: true,
+    fetchNews: true,
+    theme: DEFAULT_THEME,
+    presets: [],
+    customThemes: [],
+    siteList: [],
+    siteListEnabled: [],
+    applyToListedOnly: false,
+    changeBrowserTheme: false,
+    syncSettings: true,
+    syncSitesFixes: false,
+    automation: {
+      enabled: false,
+      mode: AutomationMode.NONE,
+      behavior: "OnOff",
+    },
+    time: {
+      activation: "18:00",
+      deactivation: "9:00",
+    },
+    location: {
+      latitude: null,
+      longitude: null,
+    },
+    previewNewDesign: false,
+    enableForPDF: true,
+    enableForProtectedPages: false,
+    enableContextMenus: false,
+    detectDarkTheme: false,
+  });
 
-  function F(e, t) {
-    var r, n;
-    if (
-      (function (e) {
-        return null != e.length;
-      })(e)
-    )
-      for (var a = 0, i = e.length; a < i; a++) t(e[a]);
-    else
+  function isArrayLike(items) {
+    return items.length != null;
+  }
+  function forEach(items, iterator) {
+    var e_1, _a;
+    if (isArrayLike(items)) {
+      for (var i = 0, len = items.length; i < len; i++) {
+        iterator(items[i]);
+      }
+    } else {
       try {
-        for (var u = o(e), c = u.next(); !c.done; c = u.next()) {
-          t(c.value);
+        for (var items_1 = __values(items), items_1_1 = items_1.next(); !items_1_1.done; items_1_1 = items_1.next()) {
+          var item = items_1_1.value;
+          iterator(item);
         }
-      } catch (e) {
-        r = {
-          error: e,
-        };
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
       } finally {
         try {
-          c && !c.done && (n = u.return) && n.call(u);
+          if (items_1_1 && !items_1_1.done && (_a = items_1.return)) _a.call(items_1);
         } finally {
-          if (r) throw r.error;
+          if (e_1) throw e_1.error;
         }
       }
+    }
   }
-
-  function j(e, t) {
-    F(t, function (t) {
-      return e.push(t);
+  function push(array, addition) {
+    forEach(addition, function (a) {
+      return array.push(a);
     });
   }
+  function toArray(items) {
+    var results = [];
+    for (var i = 0, len = items.length; i < len; i++) {
+      results.push(items[i]);
+    }
+    return results;
+  }
 
-  function B(e) {
-    var t,
-      r = !1,
-      n = null;
-    return Object.assign(
-      function () {
-        for (var a = [], o = 0; o < arguments.length; o++) a[o] = arguments[o];
-        (t = a),
-          n
-            ? (r = !0)
-            : (e.apply(void 0, u([], i(t), !1)),
-              (n = requestAnimationFrame(function () {
-                (n = null), r && (e.apply(void 0, u([], i(t), !1)), (r = !1));
-              })));
-      },
-      {
-        cancel: function () {
-          cancelAnimationFrame(n), (r = !1), (n = null);
-        },
+  function logInfo() {}
+  function logWarn() {}
+
+  function throttle(callback) {
+    var pending = false;
+    var frameId = null;
+    var lastArgs;
+    var throttled = function () {
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
       }
-    );
-  }
-
-  function q(e) {
-    var t = 0;
-    return e.seconds && (t += 1e3 * e.seconds), e.minutes && (t += 60 * e.minutes * 1e3), e.hours && (t += 60 * e.hours * 60 * 1e3), e.days && (t += 24 * e.days * 60 * 60 * 1e3), t;
-  }
-
-  function U(e) {
-    e && e.parentNode && e.parentNode.removeChild(e);
-  }
-
-  function W(e, t, r) {
-    void 0 === r && (r = Function.prototype);
-    var n = q({
-        seconds: 2,
-      }),
-      a = q({
-        seconds: 10,
-      }),
-      o = e.previousSibling,
-      i = e.parentNode;
-    if (!i) throw new Error("Unable to watch for node position: parent element not found");
-    if ("prev-sibling" === t && !o) throw new Error("Unable to watch for node position: there is no previous sibling");
-    var u = 0,
-      c = null,
-      s = null,
-      l = B(function () {
-        if (!s) {
-          u++;
-          var f = Date.now();
-          if (null == c) c = f;
-          else if (u >= 10) {
-            if (f - c < a)
-              return void (s = setTimeout(function () {
-                (c = null), (u = 0), (s = null), l();
-              }, n));
-            (c = f), (u = 1);
+      lastArgs = args;
+      if (frameId) {
+        pending = true;
+      } else {
+        callback.apply(void 0, __spreadArray([], __read(lastArgs), false));
+        frameId = requestAnimationFrame(function () {
+          frameId = null;
+          if (pending) {
+            callback.apply(void 0, __spreadArray([], __read(lastArgs), false));
+            pending = false;
           }
-          if ("parent" === t && o && o.parentNode !== i) h();
-          else {
-            if ("prev-sibling" === t) {
-              if (null == o.parentNode) return void h();
-              o.parentNode !== i && p(o.parentNode);
-            }
-            i.insertBefore(e, o ? o.nextSibling : i.firstChild), d.takeRecords(), r && r();
-          }
-        }
-      }),
-      d = new MutationObserver(function () {
-        (("parent" === t && e.parentNode !== i) || ("prev-sibling" === t && e.previousSibling !== o)) && l();
-      }),
-      f = function () {
-        d.observe(i, {
-          childList: !0,
         });
-      },
-      h = function () {
-        clearTimeout(s), d.disconnect(), l.cancel();
-      },
-      p = function (e) {
-        (i = e), h(), f();
-      };
-    return (
-      f(),
-      {
-        run: f,
-        stop: h,
-        skip: function () {
-          d.takeRecords();
-        },
       }
-    );
-  }
-
-  function G(e, t) {
-    if (null != e)
-      for (
-        var r = document.createTreeWalker(e, NodeFilter.SHOW_ELEMENT, {
-            acceptNode: function (e) {
-              return null == e.shadowRoot ? NodeFilter.FILTER_SKIP : NodeFilter.FILTER_ACCEPT;
-            },
-          }),
-          n = e.shadowRoot ? r.currentNode : r.nextNode();
-        null != n;
-        n = r.nextNode()
-      )
-        n.classList.contains("surfingkeys_hints_host") || (t(n), G(n.shadowRoot, t));
-  }
-  V.NONE;
-  var H = function () {
-    return "complete" === document.readyState || "interactive" === document.readyState;
-  };
-  var $ = new Set();
-
-  function z(e) {
-    H() ? e() : $.add(e);
-  }
-
-  function Q(e) {
-    $.delete(e);
-  }
-
-  function K() {
-    return "complete" === document.readyState;
-  }
-  var Y = new Set();
-
-  function X(e) {
-    K() ? e() : Y.add(e);
-  }
-  if (!H()) {
-    var Z = function () {
-      H() &&
-        ($.forEach(function (e) {
-          return e();
-        }),
-        $.clear(),
-        K() &&
-          (document.removeEventListener("readystatechange", Z),
-          Y.forEach(function (e) {
-            return e();
-          }),
-          Y.clear()));
     };
-    document.addEventListener("readystatechange", Z);
+    var cancel = function () {
+      cancelAnimationFrame(frameId);
+      pending = false;
+      frameId = null;
+    };
+    return Object.assign(throttled, { cancel: cancel });
   }
-  var J,
-    ee = new Map(),
-    te = new WeakMap();
-
-  function re(e, t) {
-    var r, n, a;
-    if (ee.has(e)) (r = ee.get(e)), (n = te.get(r));
-    else {
-      var o = !1,
-        i = !1;
-      (r = new MutationObserver(function (t) {
-        if (
-          (function (e) {
-            if (e.length > 1e3) return !0;
-            for (var t = 0, r = 0; r < e.length; r++) if ((t += e[r].addedNodes.length) > 1e3) return !0;
-            return !1;
-          })(t)
-        )
-          !o || H()
-            ? n.forEach(function (t) {
-                return (0, t.onHugeMutations)(e);
-              })
-            : i ||
-              (z(
-                (a = function () {
-                  return n.forEach(function (t) {
-                    return (0, t.onHugeMutations)(e);
-                  });
-                })
-              ),
-              (i = !0)),
-            (o = !0);
-        else {
-          var r = (function (e) {
-            var t = new Set(),
-              r = new Set(),
-              n = new Set();
-            e.forEach(function (e) {
-              F(e.addedNodes, function (e) {
-                e instanceof Element && e.isConnected && t.add(e);
-              }),
-                F(e.removedNodes, function (e) {
-                  e instanceof Element && (e.isConnected ? (n.add(e), t.delete(e)) : r.add(e));
-                });
-            });
-            var a = [],
-              o = [];
-            return (
-              t.forEach(function (e) {
-                t.has(e.parentElement) && a.push(e);
-              }),
-              r.forEach(function (e) {
-                r.has(e.parentElement) && o.push(e);
-              }),
-              a.forEach(function (e) {
-                return t.delete(e);
-              }),
-              o.forEach(function (e) {
-                return r.delete(e);
-              }),
-              {
-                additions: t,
-                moves: n,
-                deletions: r,
-              }
-            );
-          })(t);
-          n.forEach(function (e) {
-            return (0, e.onMinorMutations)(r);
-          });
-        }
-      })),
-        r.observe(e, {
-          childList: !0,
-          subtree: !0,
-        }),
-        ee.set(e, r),
-        (n = new Set()),
-        te.set(r, n);
-    }
-    return (
-      n.add(t),
-      {
-        disconnect: function () {
-          n.delete(t), a && Q(a), 0 === n.size && (r.disconnect(), te.delete(r), ee.delete(e));
-        },
+  function createAsyncTasksQueue() {
+    var tasks = [];
+    var frameId = null;
+    function runTasks() {
+      var task;
+      while ((task = tasks.shift())) {
+        task();
       }
-    );
-  }
-  var ne = new Map();
-
-  function ae(e) {
-    return J || (J = document.createElement("a")), (J.href = e), J.href;
-  }
-
-  function oe(e, t) {
-    void 0 === t && (t = null);
-    var r = "".concat(e).concat(t ? ";".concat(t) : "");
-    if (ne.has(r)) return ne.get(r);
-    if (t) {
-      var n = new URL(e, ae(t));
-      return ne.set(r, n), n;
+      frameId = null;
     }
-    var a = new URL(ae(e));
-    return ne.set(e, a), a;
+    function add(task) {
+      tasks.push(task);
+      if (!frameId) {
+        frameId = requestAnimationFrame(runTasks);
+      }
+    }
+    function cancel() {
+      tasks.splice(0);
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+    return { add: add, cancel: cancel };
   }
 
-  function ie(e, t) {
-    if (t.match(/^data\\?\:/)) return t;
-    if (/^\/\//.test(t)) return "".concat(location.protocol).concat(t);
-    var r = oe(e);
-    return oe(t, r.href).href;
+  function getDuration(time) {
+    var duration = 0;
+    if (time.seconds) {
+      duration += time.seconds * 1000;
+    }
+    if (time.minutes) {
+      duration += time.minutes * 60 * 1000;
+    }
+    if (time.hours) {
+      duration += time.hours * 60 * 60 * 1000;
+    }
+    if (time.days) {
+      duration += time.days * 24 * 60 * 60 * 1000;
+    }
+    return duration;
   }
 
-  function ue(e, t, r) {
-    F(e, function (e) {
-      if (e.selectorText) t(e);
-      else if (e.href)
-        try {
-          ue(e.styleSheet.cssRules, t, r);
-        } catch (e) {
-          r && r();
+  function removeNode(node) {
+    node && node.parentNode && node.parentNode.removeChild(node);
+  }
+  function watchForNodePosition(node, mode, onRestore) {
+    if (onRestore === void 0) {
+      onRestore = Function.prototype;
+    }
+    var MAX_ATTEMPTS_COUNT = 10;
+    var RETRY_TIMEOUT = getDuration({ seconds: 2 });
+    var ATTEMPTS_INTERVAL = getDuration({ seconds: 10 });
+    var prevSibling = node.previousSibling;
+    var parent = node.parentNode;
+    if (!parent) {
+      throw new Error("Unable to watch for node position: parent element not found");
+    }
+    if (mode === "prev-sibling" && !prevSibling) {
+      throw new Error("Unable to watch for node position: there is no previous sibling");
+    }
+    var attempts = 0;
+    var start = null;
+    var timeoutId = null;
+    var restore = throttle(function () {
+      if (timeoutId) {
+        return;
+      }
+      attempts++;
+      var now = Date.now();
+      if (start == null) {
+        start = now;
+      } else if (attempts >= MAX_ATTEMPTS_COUNT) {
+        if (now - start < ATTEMPTS_INTERVAL) {
+          timeoutId = setTimeout(function () {
+            start = null;
+            attempts = 0;
+            timeoutId = null;
+            restore();
+          }, RETRY_TIMEOUT);
+          return;
         }
-      else if (e.media) {
-        var n = Array.from(e.media),
-          a = n.some(function (e) {
-            return e.startsWith("screen") || e.startsWith("all") || e.startsWith("(");
-          }),
-          o = n.some(function (e) {
-            return e.startsWith("print") || e.startsWith("speech");
+        start = now;
+        attempts = 1;
+      }
+      if (mode === "head") {
+        if (prevSibling && prevSibling.parentNode !== parent) {
+          stop();
+          return;
+        }
+      }
+      if (mode === "prev-sibling") {
+        if (prevSibling.parentNode == null) {
+          stop();
+          return;
+        }
+        if (prevSibling.parentNode !== parent) {
+          updateParent(prevSibling.parentNode);
+        }
+      }
+      if (mode === "head" && !parent.isConnected) {
+        parent = document.head;
+      }
+      parent.insertBefore(node, prevSibling && prevSibling.isConnected ? prevSibling.nextSibling : parent.firstChild);
+      observer.takeRecords();
+      onRestore && onRestore();
+    });
+    var observer = new MutationObserver(function () {
+      if ((mode === "head" && (node.parentNode !== parent || !node.parentNode.isConnected)) || (mode === "prev-sibling" && node.previousSibling !== prevSibling)) {
+        restore();
+      }
+    });
+    var run = function () {
+      observer.observe(parent, { childList: true });
+    };
+    var stop = function () {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+      restore.cancel();
+    };
+    var skip = function () {
+      observer.takeRecords();
+    };
+    var updateParent = function (parentNode) {
+      parent = parentNode;
+      stop();
+      run();
+    };
+    run();
+    return { run: run, stop: stop, skip: skip };
+  }
+  function iterateShadowHosts(root, iterator) {
+    if (root == null) {
+      return;
+    }
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
+      acceptNode: function (node) {
+        return node.shadowRoot == null ? NodeFilter.FILTER_SKIP : NodeFilter.FILTER_ACCEPT;
+      },
+    });
+    for (var node = root.shadowRoot ? walker.currentNode : walker.nextNode(); node != null; node = walker.nextNode()) {
+      if (node.classList.contains("surfingkeys_hints_host")) {
+        continue;
+      }
+      iterator(node);
+      iterateShadowHosts(node.shadowRoot, iterator);
+    }
+  }
+  var isDOMReady = function () {
+    return document.readyState === "complete" || document.readyState === "interactive";
+  };
+  function setIsDOMReady(newFunc) {
+    isDOMReady = newFunc;
+  }
+  var readyStateListeners = new Set();
+  function addDOMReadyListener(listener) {
+    isDOMReady() ? listener() : readyStateListeners.add(listener);
+  }
+  function removeDOMReadyListener(listener) {
+    readyStateListeners.delete(listener);
+  }
+  function isReadyStateComplete() {
+    return document.readyState === "complete";
+  }
+  var readyStateCompleteListeners = new Set();
+  function addReadyStateCompleteListener(listener) {
+    isReadyStateComplete() ? listener() : readyStateCompleteListeners.add(listener);
+  }
+  function cleanReadyStateCompleteListeners() {
+    readyStateCompleteListeners.clear();
+  }
+  if (!isDOMReady()) {
+    var onReadyStateChange_1 = function () {
+      if (isDOMReady()) {
+        readyStateListeners.forEach(function (listener) {
+          return listener();
+        });
+        readyStateListeners.clear();
+        if (isReadyStateComplete()) {
+          document.removeEventListener("readystatechange", onReadyStateChange_1);
+          readyStateCompleteListeners.forEach(function (listener) {
+            return listener();
           });
-        (!a && o) || ue(e.cssRules, t, r);
-      } else e.conditionText && CSS.supports(e.conditionText) && ue(e.cssRules, t, r);
+          readyStateCompleteListeners.clear();
+        }
+      }
+    };
+    document.addEventListener("readystatechange", onReadyStateChange_1);
+  }
+  var HUGE_MUTATIONS_COUNT = 1000;
+  function isHugeMutation(mutations) {
+    if (mutations.length > HUGE_MUTATIONS_COUNT) {
+      return true;
+    }
+    var addedNodesCount = 0;
+    for (var i = 0; i < mutations.length; i++) {
+      addedNodesCount += mutations[i].addedNodes.length;
+      if (addedNodesCount > HUGE_MUTATIONS_COUNT) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function getElementsTreeOperations(mutations) {
+    var additions = new Set();
+    var deletions = new Set();
+    var moves = new Set();
+    mutations.forEach(function (m) {
+      forEach(m.addedNodes, function (n) {
+        if (n instanceof Element && n.isConnected) {
+          additions.add(n);
+        }
+      });
+      forEach(m.removedNodes, function (n) {
+        if (n instanceof Element) {
+          if (n.isConnected) {
+            moves.add(n);
+            additions.delete(n);
+          } else {
+            deletions.add(n);
+          }
+        }
+      });
+    });
+    var duplicateAdditions = [];
+    var duplicateDeletions = [];
+    additions.forEach(function (node) {
+      if (additions.has(node.parentElement)) {
+        duplicateAdditions.push(node);
+      }
+    });
+    deletions.forEach(function (node) {
+      if (deletions.has(node.parentElement)) {
+        duplicateDeletions.push(node);
+      }
+    });
+    duplicateAdditions.forEach(function (node) {
+      return additions.delete(node);
+    });
+    duplicateDeletions.forEach(function (node) {
+      return deletions.delete(node);
+    });
+    return { additions: additions, moves: moves, deletions: deletions };
+  }
+  var optimizedTreeObservers = new Map();
+  var optimizedTreeCallbacks = new WeakMap();
+  function createOptimizedTreeObserver(root, callbacks) {
+    var observer;
+    var observerCallbacks;
+    var domReadyListener;
+    if (optimizedTreeObservers.has(root)) {
+      observer = optimizedTreeObservers.get(root);
+      observerCallbacks = optimizedTreeCallbacks.get(observer);
+    } else {
+      var hadHugeMutationsBefore_1 = false;
+      var subscribedForReadyState_1 = false;
+      observer = new MutationObserver(function (mutations) {
+        if (isHugeMutation(mutations)) {
+          if (!hadHugeMutationsBefore_1 || isDOMReady()) {
+            observerCallbacks.forEach(function (_a) {
+              var onHugeMutations = _a.onHugeMutations;
+              return onHugeMutations(root);
+            });
+          } else if (!subscribedForReadyState_1) {
+            domReadyListener = function () {
+              return observerCallbacks.forEach(function (_a) {
+                var onHugeMutations = _a.onHugeMutations;
+                return onHugeMutations(root);
+              });
+            };
+            addDOMReadyListener(domReadyListener);
+            subscribedForReadyState_1 = true;
+          }
+          hadHugeMutationsBefore_1 = true;
+        } else {
+          var elementsOperations_1 = getElementsTreeOperations(mutations);
+          observerCallbacks.forEach(function (_a) {
+            var onMinorMutations = _a.onMinorMutations;
+            return onMinorMutations(elementsOperations_1);
+          });
+        }
+      });
+      observer.observe(root, { childList: true, subtree: true });
+      optimizedTreeObservers.set(root, observer);
+      observerCallbacks = new Set();
+      optimizedTreeCallbacks.set(observer, observerCallbacks);
+    }
+    observerCallbacks.add(callbacks);
+    return {
+      disconnect: function () {
+        observerCallbacks.delete(callbacks);
+        if (domReadyListener) {
+          removeDOMReadyListener(domReadyListener);
+        }
+        if (observerCallbacks.size === 0) {
+          observer.disconnect();
+          optimizedTreeCallbacks.delete(observer);
+          optimizedTreeObservers.delete(root);
+        }
+      },
+    };
+  }
+
+  var anchor;
+  var parsedURLCache = new Map();
+  function fixBaseURL($url) {
+    if (!anchor) {
+      anchor = document.createElement("a");
+    }
+    anchor.href = $url;
+    return anchor.href;
+  }
+  function parseURL($url, $base) {
+    if ($base === void 0) {
+      $base = null;
+    }
+    var key = "".concat($url).concat($base ? ";".concat($base) : "");
+    if (parsedURLCache.has(key)) {
+      return parsedURLCache.get(key);
+    }
+    if ($base) {
+      var parsedURL_1 = new URL($url, fixBaseURL($base));
+      parsedURLCache.set(key, parsedURL_1);
+      return parsedURL_1;
+    }
+    var parsedURL = new URL(fixBaseURL($url));
+    parsedURLCache.set($url, parsedURL);
+    return parsedURL;
+  }
+  function getAbsoluteURL($base, $relative) {
+    if ($relative.match(/^data\\?\:/)) {
+      return $relative;
+    }
+    if (/^\/\//.test($relative)) {
+      return "".concat(location.protocol).concat($relative);
+    }
+    var b = parseURL($base);
+    var a = parseURL($relative, b.href);
+    return a.href;
+  }
+  function isRelativeHrefOnAbsolutePath(href) {
+    if (href.startsWith("data:")) {
+      return true;
+    }
+    var url = parseURL(href);
+    if (url.protocol !== location.protocol) {
+      return false;
+    }
+    if (url.hostname !== location.hostname) {
+      return false;
+    }
+    if (url.port !== location.port) {
+      return false;
+    }
+    return url.pathname === location.pathname;
+  }
+
+  function iterateCSSRules(rules, iterate, onMediaRuleError) {
+    forEach(rules, function (rule) {
+      if (rule.selectorText) {
+        iterate(rule);
+      } else if (rule.href) {
+        try {
+          iterateCSSRules(rule.styleSheet.cssRules, iterate, onMediaRuleError);
+        } catch (err) {
+          logInfo("Found a non-loaded link.");
+          onMediaRuleError && onMediaRuleError();
+        }
+      } else if (rule.media) {
+        var media = Array.from(rule.media);
+        var isScreenOrAllOrQuery = media.some(function (m) {
+          return m.startsWith("screen") || m.startsWith("all") || m.startsWith("(");
+        });
+        var isPrintOrSpeech = media.some(function (m) {
+          return m.startsWith("print") || m.startsWith("speech");
+        });
+        if (isScreenOrAllOrQuery || !isPrintOrSpeech) {
+          iterateCSSRules(rule.cssRules, iterate, onMediaRuleError);
+        }
+      } else if (rule.conditionText) {
+        if (CSS.supports(rule.conditionText)) {
+          iterateCSSRules(rule.cssRules, iterate, onMediaRuleError);
+        }
+      } else {
+        logWarn("CSSRule type not supported", rule);
+      }
     });
   }
-  var ce = ["background", "border", "border-color", "border-bottom", "border-left", "border-right", "border-top", "outline", "outline-color"],
-    se = p
-      ? ce.map(function (e) {
-          return [e, new RegExp("".concat(e, ":\\s*(.*?)\\s*;"))];
-        })
-      : null;
-
-  function le(e, t) {
-    F(e, function (r) {
-      var n = e.getPropertyValue(r).trim();
-      n && t(r, n);
+  var shorthandVarDependantProperties = ["background", "border", "border-color", "border-bottom", "border-left", "border-right", "border-top", "outline", "outline-color"];
+  var shorthandVarDepPropRegexps = isSafari
+    ? shorthandVarDependantProperties.map(function (prop) {
+        var regexp = new RegExp("".concat(prop, ":\\s*(.*?)\\s*;"));
+        return [prop, regexp];
+      })
+    : null;
+  function iterateCSSDeclarations(style, iterate) {
+    forEach(style, function (property) {
+      var value = style.getPropertyValue(property).trim();
+      if (!value) {
+        return;
+      }
+      iterate(property, value);
     });
-    var r = e.cssText;
-    r.includes("var(") &&
-      (p
-        ? se.forEach(function (e) {
-            var n = i(e, 2),
-              a = n[0],
-              o = n[1],
-              u = r.match(o);
-            if (u && u[1]) {
-              var c = u[1].trim();
-              t(a, c);
-            }
-          })
-        : ce.forEach(function (r) {
-            var n = e.getPropertyValue(r);
-            n && n.includes("var(") && t(r, n);
-          }));
+    var cssText = style.cssText;
+    if (cssText.includes("var(")) {
+      if (isSafari) {
+        shorthandVarDepPropRegexps.forEach(function (_a) {
+          var _b = __read(_a, 2),
+            prop = _b[0],
+            regexp = _b[1];
+          var match = cssText.match(regexp);
+          if (match && match[1]) {
+            var val = match[1].trim();
+            iterate(prop, val);
+          }
+        });
+      } else {
+        shorthandVarDependantProperties.forEach(function (prop) {
+          var val = style.getPropertyValue(prop);
+          if (val && val.includes("var(")) {
+            iterate(prop, val);
+          }
+        });
+      }
+    }
   }
-  var de = /url\((('.*?')|(".*?")|([^\)]*?))\)/g,
-    fe = /@import\s*(url\()?(('.+?')|(".+?")|([^\)]*?))\)? ?(screen)?;?/gi;
-
-  function he(e) {
-    return e
+  var cssURLRegex = /url\((('.*?')|(".*?")|([^\)]*?))\)/g;
+  var cssImportRegex = /@import\s*(url\()?(('.+?')|(".+?")|([^\)]*?))\)? ?(screen)?;?/gi;
+  function getCSSURLValue(cssURL) {
+    return cssURL
       .trim()
       .replace(/[\n\r\\]+/g, "")
       .replace(/^url\((.*)\)$/, "$1")
@@ -833,596 +1125,755 @@
       .replace(/^'(.*)'$/, "$1")
       .replace(/(?:\\(.))/g, "$1");
   }
-
-  function pe(e) {
-    var t = oe(e);
-    return "".concat(t.origin).concat(t.pathname.replace(/\?.*$/, "").replace(/(\/)([^\/]+)$/i, "$1"));
+  function getCSSBaseBath(url) {
+    var cssURL = parseURL(url);
+    return "".concat(cssURL.origin).concat(cssURL.pathname.replace(/\?.*$/, "").replace(/(\/)([^\/]+)$/i, "$1"));
   }
-  var ve = /\/\*[\s\S]*?\*\//g;
-  var me = /@font-face\s*{[^}]*}/g;
+  function replaceCSSRelativeURLsWithAbsolute($css, cssBasePath) {
+    return $css.replace(cssURLRegex, function (match) {
+      var pathValue = getCSSURLValue(match);
+      try {
+        return "url('".concat(getAbsoluteURL(cssBasePath, pathValue), "')");
+      } catch (err) {
+        return match;
+      }
+    });
+  }
+  var cssCommentsRegex = /\/\*[\s\S]*?\*\//g;
+  function removeCSSComments($css) {
+    return $css.replace(cssCommentsRegex, "");
+  }
+  var fontFaceRegex = /@font-face\s*{[^}]*}/g;
+  function replaceCSSFontFace($css) {
+    return $css.replace(fontFaceRegex, "");
+  }
 
-  function ge(e) {
-    for (var t, r = [], n = [], a = 0, o = e.length; a < o; a++) {
-      var c = e[a];
-      if (c && " " !== c) {
-        if (ye.has(c)) {
-          for (var s = ye.get(c); n.length; ) {
-            var l = ye.get(n[0]);
-            if (!l) break;
-            if (!s.lessOrEqualThan(l)) break;
-            r.push(n.shift());
+  function evalMath(expression) {
+    var rpnStack = [];
+    var workingStack = [];
+    var lastToken;
+    for (var i = 0, len = expression.length; i < len; i++) {
+      var token = expression[i];
+      if (!token || token === " ") {
+        continue;
+      }
+      if (operators.has(token)) {
+        var op = operators.get(token);
+        while (workingStack.length) {
+          var currentOp = operators.get(workingStack[0]);
+          if (!currentOp) {
+            break;
           }
-          n.unshift(c);
-        } else !t || ye.has(t) ? r.push(c) : (r[r.length - 1] += c);
-        t = c;
-      }
-    }
-    r.push.apply(r, u([], i(n), !1));
-    var d = [];
-    for (a = 0, o = r.length; a < o; a++) {
-      if ((s = ye.get(r[a]))) {
-        var f = d.splice(0, 2);
-        d.push(s.exec(f[1], f[0]));
-      } else d.unshift(parseFloat(r[a]));
-    }
-    return d[0];
-  }
-  var be = (function () {
-      function e(e, t) {
-        (this.precendce = e), (this.execMethod = t);
-      }
-      return (
-        (e.prototype.exec = function (e, t) {
-          return this.execMethod(e, t);
-        }),
-        (e.prototype.lessOrEqualThan = function (e) {
-          return this.precendce <= e.precendce;
-        }),
-        e
-      );
-    })(),
-    ye = new Map([
-      [
-        "+",
-        new be(1, function (e, t) {
-          return e + t;
-        }),
-      ],
-      [
-        "-",
-        new be(1, function (e, t) {
-          return e - t;
-        }),
-      ],
-      [
-        "*",
-        new be(2, function (e, t) {
-          return e * t;
-        }),
-      ],
-      [
-        "/",
-        new be(2, function (e, t) {
-          return e / t;
-        }),
-      ],
-    ]);
-
-  function Se(e, t, r) {
-    void 0 === r && (r = 0);
-    for (var n, a = []; (n = e.exec(t)); ) a.push(n[r]);
-    return a;
-  }
-
-  function _e(e, t) {
-    void 0 === t && (t = 0);
-    for (var r = e.length, n = 0, a = -1, o = t; o < r; o++)
-      if (0 === n) {
-        if ((i = e.indexOf("(", o)) < 0) break;
-        (a = i), n++, (o = i);
+          if (op.lessOrEqualThan(currentOp)) {
+            rpnStack.push(workingStack.shift());
+          } else {
+            break;
+          }
+        }
+        workingStack.unshift(token);
+      } else if (!lastToken || operators.has(lastToken)) {
+        rpnStack.push(token);
       } else {
-        var i,
-          u = e.indexOf(")", o);
-        if (u < 0) break;
-        if ((i = e.indexOf("(", o)) < 0 || u < i) {
-          if (0 === --n)
-            return {
-              start: a,
-              end: u + 1,
-            };
-          o = u;
-        } else n++, (o = i);
+        rpnStack[rpnStack.length - 1] += token;
       }
+      lastToken = token;
+    }
+    rpnStack.push.apply(rpnStack, __spreadArray([], __read(workingStack), false));
+    var stack = [];
+    for (var i = 0, len = rpnStack.length; i < len; i++) {
+      var op = operators.get(rpnStack[i]);
+      if (op) {
+        var args = stack.splice(0, 2);
+        stack.push(op.exec(args[1], args[0]));
+      } else {
+        stack.unshift(parseFloat(rpnStack[i]));
+      }
+    }
+    return stack[0];
+  }
+  var Operator = (function () {
+    function Operator(precedence, method) {
+      this.precendce = precedence;
+      this.execMethod = method;
+    }
+    Operator.prototype.exec = function (left, right) {
+      return this.execMethod(left, right);
+    };
+    Operator.prototype.lessOrEqualThan = function (op) {
+      return this.precendce <= op.precendce;
+    };
+    return Operator;
+  })();
+  var operators = new Map([
+    [
+      "+",
+      new Operator(1, function (left, right) {
+        return left + right;
+      }),
+    ],
+    [
+      "-",
+      new Operator(1, function (left, right) {
+        return left - right;
+      }),
+    ],
+    [
+      "*",
+      new Operator(2, function (left, right) {
+        return left * right;
+      }),
+    ],
+    [
+      "/",
+      new Operator(2, function (left, right) {
+        return left / right;
+      }),
+    ],
+  ]);
+
+  function getMatches(regex, input, group) {
+    if (group === void 0) {
+      group = 0;
+    }
+    var matches = [];
+    var m;
+    while ((m = regex.exec(input))) {
+      matches.push(m[group]);
+    }
+    return matches;
+  }
+  function formatCSS(text) {
+    function trimLeft(text) {
+      return text.replace(/^\s+/, "");
+    }
+    function getIndent(depth) {
+      if (depth === 0) {
+        return "";
+      }
+      return " ".repeat(4 * depth);
+    }
+    if (text.length < 50000) {
+      var emptyRuleRegexp = /[^{}]+{\s*}/;
+      while (emptyRuleRegexp.test(text)) {
+        text = text.replace(emptyRuleRegexp, "");
+      }
+    }
+    var css = text
+      .replace(/\s{2,}/g, " ")
+      .replace(/\{/g, "{\n")
+      .replace(/\}/g, "\n}\n")
+      .replace(/\;(?![^\(|\"]*(\)|\"))/g, ";\n")
+      .replace(/\,(?![^\(|\"]*(\)|\"))/g, ",\n")
+      .replace(/\n\s*\n/g, "\n")
+      .split("\n");
+    var depth = 0;
+    var formatted = [];
+    for (var x = 0, len = css.length; x < len; x++) {
+      var line = "".concat(css[x], "\n");
+      if (line.includes("{")) {
+        formatted.push(getIndent(depth++) + trimLeft(line));
+      } else if (line.includes("}")) {
+        formatted.push(getIndent(--depth) + trimLeft(line));
+      } else {
+        formatted.push(getIndent(depth) + trimLeft(line));
+      }
+    }
+    return formatted.join("").trim();
+  }
+  function getParenthesesRange(input, searchStartIndex) {
+    if (searchStartIndex === void 0) {
+      searchStartIndex = 0;
+    }
+    var length = input.length;
+    var depth = 0;
+    var firstOpenIndex = -1;
+    for (var i = searchStartIndex; i < length; i++) {
+      if (depth === 0) {
+        var openIndex = input.indexOf("(", i);
+        if (openIndex < 0) {
+          break;
+        }
+        firstOpenIndex = openIndex;
+        depth++;
+        i = openIndex;
+      } else {
+        var closingIndex = input.indexOf(")", i);
+        if (closingIndex < 0) {
+          break;
+        }
+        var openIndex = input.indexOf("(", i);
+        if (openIndex < 0 || closingIndex < openIndex) {
+          depth--;
+          if (depth === 0) {
+            return { start: firstOpenIndex, end: closingIndex + 1 };
+          }
+          i = closingIndex;
+        } else {
+          depth++;
+          i = openIndex;
+        }
+      }
+    }
     return null;
   }
-  var ke = new Map(),
-    we = new Map();
 
-  function Ee(e) {
-    if (((e = e.trim()), we.has(e))) return we.get(e);
-    e.includes("calc(") &&
-      (e = (function (e) {
-        var t = 0,
-          r = function (t, r, n) {
-            e = e.substring(0, t) + n + e.substring(r);
-          };
-        for (; -1 !== (t = e.indexOf("calc(")); ) {
-          var n = _e(e, t);
-          if (!n) break;
-          var a = e.slice(n.start + 1, n.end - 1),
-            o = a.includes("%");
-          a = a.split("%").join("");
-          var i = Math.round(ge(a));
-          r(n.start - 4, n.end, i + (o ? "%" : ""));
-        }
-        return e;
-      })(e));
-    var t = (function (e) {
-      var t = e.trim().toLowerCase();
-      if (t.match(Ae))
-        return (
-          (r = i(Oe(t, De, Pe), 4)),
-          (n = r[0]),
-          (a = r[1]),
-          (o = r[2]),
-          (u = r[3]),
-          {
-            r: n,
-            g: a,
-            b: o,
-            a: void 0 === u ? 1 : u,
-          }
-        );
-      var r, n, a, o, u;
-      if (t.match(Me))
-        return (function (e) {
-          var t = i(Oe(e, Ie, Ne), 4),
-            r = t[0],
-            n = t[1],
-            a = t[2],
-            o = t[3];
-          return xe({
-            h: r,
-            s: n,
-            l: a,
-            a: void 0 === o ? 1 : o,
-          });
-        })(t);
-      if (t.match(Le))
-        return (function (e) {
-          var t = e.substring(1);
-          switch (t.length) {
-            case 3:
-            case 4:
-              var r = i(
-                [0, 1, 2].map(function (e) {
-                  return parseInt("".concat(t[e]).concat(t[e]), 16);
-                }),
-                3
-              );
-              return {
-                r: r[0],
-                g: r[1],
-                b: r[2],
-                a: 3 === t.length ? 1 : parseInt("".concat(t[3]).concat(t[3]), 16) / 255,
-              };
-            case 6:
-            case 8:
-              var n = i(
-                [0, 2, 4].map(function (e) {
-                  return parseInt(t.substring(e, e + 2), 16);
-                }),
-                3
-              );
-              return {
-                r: n[0],
-                g: n[1],
-                b: n[2],
-                a: 6 === t.length ? 1 : parseInt(t.substring(6, 8), 16) / 255,
-              };
-          }
-          return null;
-        })(t);
-      if (Fe.has(t))
-        return (function (e) {
-          var t = Fe.get(e);
-          return {
-            r: (t >> 16) & 255,
-            g: (t >> 8) & 255,
-            b: (t >> 0) & 255,
-            a: 1,
-          };
-        })(t);
-      if (je.has(t))
-        return (function (e) {
-          var t = je.get(e);
-          return {
-            r: (t >> 16) & 255,
-            g: (t >> 8) & 255,
-            b: (t >> 0) & 255,
-            a: 1,
-          };
-        })(t);
-      if ("transparent" === e)
-        return {
-          r: 0,
-          g: 0,
-          b: 0,
-          a: 0,
-        };
+  var hslaParseCache = new Map();
+  var rgbaParseCache = new Map();
+  function parseColorWithCache($color) {
+    $color = $color.trim();
+    if (rgbaParseCache.has($color)) {
+      return rgbaParseCache.get($color);
+    }
+    if ($color.includes("calc(")) {
+      $color = lowerCalcExpression($color);
+    }
+    var color = parse($color);
+    color && rgbaParseCache.set($color, color);
+    return color;
+  }
+  function parseToHSLWithCache(color) {
+    if (hslaParseCache.has(color)) {
+      return hslaParseCache.get(color);
+    }
+    var rgb = parseColorWithCache(color);
+    if (!rgb) {
       return null;
-    })(e);
-    return t && we.set(e, t), t;
+    }
+    var hsl = rgbToHSL(rgb);
+    hslaParseCache.set(color, hsl);
+    return hsl;
   }
-
-  function Ce(e) {
-    if (ke.has(e)) return ke.get(e);
-    var t = Ee(e);
-    if (!t) return null;
-    var r = Te(t);
-    return ke.set(e, r), r;
+  function clearColorCache() {
+    hslaParseCache.clear();
+    rgbaParseCache.clear();
   }
-
-  function xe(e) {
-    var t = e.h,
-      r = e.s,
-      n = e.l,
-      a = e.a,
-      o = void 0 === a ? 1 : a;
-    if (0 === r) {
-      var u = i(
-          [n, n, n].map(function (e) {
-            return Math.round(255 * e);
+  function hslToRGB(_a) {
+    var h = _a.h,
+      s = _a.s,
+      l = _a.l,
+      _b = _a.a,
+      a = _b === void 0 ? 1 : _b;
+    if (s === 0) {
+      var _c = __read(
+          [l, l, l].map(function (x) {
+            return Math.round(x * 255);
           }),
           3
         ),
-        c = u[0],
-        s = u[1];
-      return {
-        r: c,
-        g: u[2],
-        b: s,
-        a: o,
-      };
+        r_1 = _c[0],
+        b_1 = _c[1],
+        g_1 = _c[2];
+      return { r: r_1, g: g_1, b: b_1, a: a };
     }
-    var l = (1 - Math.abs(2 * n - 1)) * r,
-      d = l * (1 - Math.abs(((t / 60) % 2) - 1)),
-      f = n - l / 2,
-      h = i(
-        (t < 60 ? [l, d, 0] : t < 120 ? [d, l, 0] : t < 180 ? [0, l, d] : t < 240 ? [0, d, l] : t < 300 ? [d, 0, l] : [l, 0, d]).map(function (e) {
-          return Math.round(255 * (e + f));
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+    var m = l - c / 2;
+    var _d = __read(
+        (h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x]).map(function (n) {
+          return Math.round((n + m) * 255);
         }),
         3
-      );
-    return {
-      r: h[0],
-      g: h[1],
-      b: h[2],
-      a: o,
-    };
+      ),
+      r = _d[0],
+      g = _d[1],
+      b = _d[2];
+    return { r: r, g: g, b: b, a: a };
   }
-
-  function Te(e) {
-    var t = e.r,
-      r = e.g,
-      n = e.b,
-      a = e.a,
-      o = void 0 === a ? 1 : a,
-      i = t / 255,
-      u = r / 255,
-      c = n / 255,
-      s = Math.max(i, u, c),
-      l = Math.min(i, u, c),
-      d = s - l,
-      f = (s + l) / 2;
-    if (0 === d)
-      return {
-        h: 0,
-        s: 0,
-        l: f,
-        a: o,
-      };
-    var h = 60 * (s === i ? ((u - c) / d) % 6 : s === u ? (c - i) / d + 2 : (i - u) / d + 4);
-    return (
-      h < 0 && (h += 360),
-      {
-        h: h,
-        s: d / (1 - Math.abs(2 * f - 1)),
-        l: f,
-        a: o,
-      }
-    );
-  }
-
-  function Re(e, t) {
-    void 0 === t && (t = 0);
-    var r = e.toFixed(t);
-    if (0 === t) return r;
-    var n = r.indexOf(".");
-    if (n >= 0) {
-      var a = r.match(/0+$/);
-      if (a) return a.index === n + 1 ? r.substring(0, n) : r.substring(0, a.index);
+  function rgbToHSL(_a) {
+    var r255 = _a.r,
+      g255 = _a.g,
+      b255 = _a.b,
+      _b = _a.a,
+      a = _b === void 0 ? 1 : _b;
+    var r = r255 / 255;
+    var g = g255 / 255;
+    var b = b255 / 255;
+    var max = Math.max(r, g, b);
+    var min = Math.min(r, g, b);
+    var c = max - min;
+    var l = (max + min) / 2;
+    if (c === 0) {
+      return { h: 0, s: 0, l: l, a: a };
     }
-    return r;
+    var h = (max === r ? ((g - b) / c) % 6 : max === g ? (b - r) / c + 2 : (r - g) / c + 4) * 60;
+    if (h < 0) {
+      h += 360;
+    }
+    var s = c / (1 - Math.abs(2 * l - 1));
+    return { h: h, s: s, l: l, a: a };
   }
-
-  function Ve(e) {
-    var t = e.h,
-      r = e.s,
-      n = e.l,
-      a = e.a;
-    return null != a && a < 1
-      ? "hsla("
-          .concat(Re(t), ", ")
-          .concat(Re(100 * r), "%, ")
-          .concat(Re(100 * n), "%, ")
-          .concat(Re(a, 2), ")")
-      : "hsl("
-          .concat(Re(t), ", ")
-          .concat(Re(100 * r), "%, ")
-          .concat(Re(100 * n), "%)");
-  }
-  var Ae = /^rgba?\([^\(\)]+\)$/,
-    Me = /^hsla?\([^\(\)]+\)$/,
-    Le = /^#[0-9a-f]+$/i;
-
-  function Oe(e, t, r) {
-    var n = (function (e) {
-        var t = [],
-          r = 0,
-          n = !1,
-          a = e.indexOf("(");
-        e = e.substring(a + 1, e.length - 1);
-        for (var o = 0; o < e.length; o++) {
-          var i = e[o];
-          (i >= "0" && i <= "9") || "." === i || "+" === i || "-" === i ? (n = !0) : !n || (" " !== i && "," !== i) ? n || (r = o + 1) : (t.push(e.substring(r, o)), (n = !1), (r = o + 1));
+  function toFixed(n, digits) {
+    if (digits === void 0) {
+      digits = 0;
+    }
+    var fixed = n.toFixed(digits);
+    if (digits === 0) {
+      return fixed;
+    }
+    var dot = fixed.indexOf(".");
+    if (dot >= 0) {
+      var zerosMatch = fixed.match(/0+$/);
+      if (zerosMatch) {
+        if (zerosMatch.index === dot + 1) {
+          return fixed.substring(0, dot);
         }
-        return n && t.push(e.substring(r, e.length)), t;
-      })(e),
-      a = Object.entries(r);
-    return n
-      .map(function (e) {
-        return e.trim();
-      })
-      .map(function (e, r) {
-        var n,
-          o = a.find(function (t) {
-            var r = i(t, 1)[0];
-            return e.endsWith(r);
-          });
-        return (n = o ? (parseFloat(e.substring(0, e.length - o[0].length)) / o[1]) * t[r] : parseFloat(e)), t[r] > 1 ? Math.round(n) : n;
-      });
-  }
-  var De = [255, 255, 255, 1],
-    Pe = {
-      "%": 100,
-    };
-  var Ie = [360, 1, 1, 1],
-    Ne = {
-      "%": 100,
-      deg: 360,
-      rad: 2 * Math.PI,
-      turn: 1,
-    };
-  var Fe = new Map(
-      Object.entries({
-        aliceblue: 15792383,
-        antiquewhite: 16444375,
-        aqua: 65535,
-        aquamarine: 8388564,
-        azure: 15794175,
-        beige: 16119260,
-        bisque: 16770244,
-        black: 0,
-        blanchedalmond: 16772045,
-        blue: 255,
-        blueviolet: 9055202,
-        brown: 10824234,
-        burlywood: 14596231,
-        cadetblue: 6266528,
-        chartreuse: 8388352,
-        chocolate: 13789470,
-        coral: 16744272,
-        cornflowerblue: 6591981,
-        cornsilk: 16775388,
-        crimson: 14423100,
-        cyan: 65535,
-        darkblue: 139,
-        darkcyan: 35723,
-        darkgoldenrod: 12092939,
-        darkgray: 11119017,
-        darkgrey: 11119017,
-        darkgreen: 25600,
-        darkkhaki: 12433259,
-        darkmagenta: 9109643,
-        darkolivegreen: 5597999,
-        darkorange: 16747520,
-        darkorchid: 10040012,
-        darkred: 9109504,
-        darksalmon: 15308410,
-        darkseagreen: 9419919,
-        darkslateblue: 4734347,
-        darkslategray: 3100495,
-        darkslategrey: 3100495,
-        darkturquoise: 52945,
-        darkviolet: 9699539,
-        deeppink: 16716947,
-        deepskyblue: 49151,
-        dimgray: 6908265,
-        dimgrey: 6908265,
-        dodgerblue: 2003199,
-        firebrick: 11674146,
-        floralwhite: 16775920,
-        forestgreen: 2263842,
-        fuchsia: 16711935,
-        gainsboro: 14474460,
-        ghostwhite: 16316671,
-        gold: 16766720,
-        goldenrod: 14329120,
-        gray: 8421504,
-        grey: 8421504,
-        green: 32768,
-        greenyellow: 11403055,
-        honeydew: 15794160,
-        hotpink: 16738740,
-        indianred: 13458524,
-        indigo: 4915330,
-        ivory: 16777200,
-        khaki: 15787660,
-        lavender: 15132410,
-        lavenderblush: 16773365,
-        lawngreen: 8190976,
-        lemonchiffon: 16775885,
-        lightblue: 11393254,
-        lightcoral: 15761536,
-        lightcyan: 14745599,
-        lightgoldenrodyellow: 16448210,
-        lightgray: 13882323,
-        lightgrey: 13882323,
-        lightgreen: 9498256,
-        lightpink: 16758465,
-        lightsalmon: 16752762,
-        lightseagreen: 2142890,
-        lightskyblue: 8900346,
-        lightslategray: 7833753,
-        lightslategrey: 7833753,
-        lightsteelblue: 11584734,
-        lightyellow: 16777184,
-        lime: 65280,
-        limegreen: 3329330,
-        linen: 16445670,
-        magenta: 16711935,
-        maroon: 8388608,
-        mediumaquamarine: 6737322,
-        mediumblue: 205,
-        mediumorchid: 12211667,
-        mediumpurple: 9662683,
-        mediumseagreen: 3978097,
-        mediumslateblue: 8087790,
-        mediumspringgreen: 64154,
-        mediumturquoise: 4772300,
-        mediumvioletred: 13047173,
-        midnightblue: 1644912,
-        mintcream: 16121850,
-        mistyrose: 16770273,
-        moccasin: 16770229,
-        navajowhite: 16768685,
-        navy: 128,
-        oldlace: 16643558,
-        olive: 8421376,
-        olivedrab: 7048739,
-        orange: 16753920,
-        orangered: 16729344,
-        orchid: 14315734,
-        palegoldenrod: 15657130,
-        palegreen: 10025880,
-        paleturquoise: 11529966,
-        palevioletred: 14381203,
-        papayawhip: 16773077,
-        peachpuff: 16767673,
-        peru: 13468991,
-        pink: 16761035,
-        plum: 14524637,
-        powderblue: 11591910,
-        purple: 8388736,
-        rebeccapurple: 6697881,
-        red: 16711680,
-        rosybrown: 12357519,
-        royalblue: 4286945,
-        saddlebrown: 9127187,
-        salmon: 16416882,
-        sandybrown: 16032864,
-        seagreen: 3050327,
-        seashell: 16774638,
-        sienna: 10506797,
-        silver: 12632256,
-        skyblue: 8900331,
-        slateblue: 6970061,
-        slategray: 7372944,
-        slategrey: 7372944,
-        snow: 16775930,
-        springgreen: 65407,
-        steelblue: 4620980,
-        tan: 13808780,
-        teal: 32896,
-        thistle: 14204888,
-        tomato: 16737095,
-        turquoise: 4251856,
-        violet: 15631086,
-        wheat: 16113331,
-        white: 16777215,
-        whitesmoke: 16119285,
-        yellow: 16776960,
-        yellowgreen: 10145074,
-      })
-    ),
-    je = new Map(
-      Object.entries({
-        ActiveBorder: 3906044,
-        ActiveCaption: 0,
-        AppWorkspace: 11184810,
-        Background: 6513614,
-        ButtonFace: 16777215,
-        ButtonHighlight: 15329769,
-        ButtonShadow: 10461343,
-        ButtonText: 0,
-        CaptionText: 0,
-        GrayText: 8355711,
-        Highlight: 11720703,
-        HighlightText: 0,
-        InactiveBorder: 16777215,
-        InactiveCaption: 16777215,
-        InactiveCaptionText: 0,
-        InfoBackground: 16514245,
-        InfoText: 0,
-        Menu: 16185078,
-        MenuText: 16777215,
-        Scrollbar: 11184810,
-        ThreeDDarkShadow: 0,
-        ThreeDFace: 12632256,
-        ThreeDHighlight: 16777215,
-        ThreeDLightShadow: 16777215,
-        ThreeDShadow: 0,
-        Window: 15527148,
-        WindowFrame: 11184810,
-        WindowText: 0,
-        "-webkit-focus-ring-color": 15046400,
-      }).map(function (e) {
-        var t = i(e, 2),
-          r = t[0],
-          n = t[1];
-        return [r.toLowerCase(), n];
-      })
-    );
-
-  function Be(e, t, r) {
-    return (0.2126 * e + 0.7152 * t + 0.0722 * r) / 255;
-  }
-
-  function qe(e, t, r, n, a) {
-    return ((e - t) * (a - n)) / (r - t) + n;
-  }
-
-  function Ue(e, t, r) {
-    return Math.min(r, Math.max(t, e));
-  }
-
-  function We(e, t) {
-    for (var r = [], n = 0, a = e.length; n < a; n++) {
-      r[n] = [];
-      for (var o = 0, i = t[0].length; o < i; o++) {
-        for (var u = 0, c = 0, s = e[0].length; c < s; c++) u += e[n][c] * t[c][o];
-        r[n][o] = u;
+        return fixed.substring(0, zerosMatch.index);
       }
     }
-    return r;
+    return fixed;
+  }
+  function rgbToString(rgb) {
+    var r = rgb.r,
+      g = rgb.g,
+      b = rgb.b,
+      a = rgb.a;
+    if (a != null && a < 1) {
+      return "rgba(".concat(toFixed(r), ", ").concat(toFixed(g), ", ").concat(toFixed(b), ", ").concat(toFixed(a, 2), ")");
+    }
+    return "rgb(".concat(toFixed(r), ", ").concat(toFixed(g), ", ").concat(toFixed(b), ")");
+  }
+  function rgbToHexString(_a) {
+    var r = _a.r,
+      g = _a.g,
+      b = _a.b,
+      a = _a.a;
+    return "#".concat(
+      (a != null && a < 1 ? [r, g, b, Math.round(a * 255)] : [r, g, b])
+        .map(function (x) {
+          return "".concat(x < 16 ? "0" : "").concat(x.toString(16));
+        })
+        .join("")
+    );
+  }
+  function hslToString(hsl) {
+    var h = hsl.h,
+      s = hsl.s,
+      l = hsl.l,
+      a = hsl.a;
+    if (a != null && a < 1) {
+      return "hsla("
+        .concat(toFixed(h), ", ")
+        .concat(toFixed(s * 100), "%, ")
+        .concat(toFixed(l * 100), "%, ")
+        .concat(toFixed(a, 2), ")");
+    }
+    return "hsl("
+      .concat(toFixed(h), ", ")
+      .concat(toFixed(s * 100), "%, ")
+      .concat(toFixed(l * 100), "%)");
+  }
+  var rgbMatch = /^rgba?\([^\(\)]+\)$/;
+  var hslMatch = /^hsla?\([^\(\)]+\)$/;
+  var hexMatch = /^#[0-9a-f]+$/i;
+  function parse($color) {
+    var c = $color.trim().toLowerCase();
+    if (c.match(rgbMatch)) {
+      return parseRGB(c);
+    }
+    if (c.match(hslMatch)) {
+      return parseHSL(c);
+    }
+    if (c.match(hexMatch)) {
+      return parseHex(c);
+    }
+    if (knownColors.has(c)) {
+      return getColorByName(c);
+    }
+    if (systemColors.has(c)) {
+      return getSystemColor(c);
+    }
+    if ($color === "transparent") {
+      return { r: 0, g: 0, b: 0, a: 0 };
+    }
+    return null;
+  }
+  function getNumbers($color) {
+    var numbers = [];
+    var prevPos = 0;
+    var isMining = false;
+    var startIndex = $color.indexOf("(");
+    $color = $color.substring(startIndex + 1, $color.length - 1);
+    for (var i = 0; i < $color.length; i++) {
+      var c = $color[i];
+      if ((c >= "0" && c <= "9") || c === "." || c === "+" || c === "-") {
+        isMining = true;
+      } else if (isMining && (c === " " || c === "," || c === "/")) {
+        numbers.push($color.substring(prevPos, i));
+        isMining = false;
+        prevPos = i + 1;
+      } else if (!isMining) {
+        prevPos = i + 1;
+      }
+    }
+    if (isMining) {
+      numbers.push($color.substring(prevPos, $color.length));
+    }
+    return numbers;
+  }
+  function getNumbersFromString(str, range, units) {
+    var raw = getNumbers(str);
+    var unitsList = Object.entries(units);
+    var numbers = raw
+      .map(function (r) {
+        return r.trim();
+      })
+      .map(function (r, i) {
+        var n;
+        var unit = unitsList.find(function (_a) {
+          var _b = __read(_a, 1),
+            u = _b[0];
+          return r.endsWith(u);
+        });
+        if (unit) {
+          n = (parseFloat(r.substring(0, r.length - unit[0].length)) / unit[1]) * range[i];
+        } else {
+          n = parseFloat(r);
+        }
+        if (range[i] > 1) {
+          return Math.round(n);
+        }
+        return n;
+      });
+    return numbers;
+  }
+  var rgbRange = [255, 255, 255, 1];
+  var rgbUnits = { "%": 100 };
+  function parseRGB($rgb) {
+    var _a = __read(getNumbersFromString($rgb, rgbRange, rgbUnits), 4),
+      r = _a[0],
+      g = _a[1],
+      b = _a[2],
+      _b = _a[3],
+      a = _b === void 0 ? 1 : _b;
+    return { r: r, g: g, b: b, a: a };
+  }
+  var hslRange = [360, 1, 1, 1];
+  var hslUnits = { "%": 100, deg: 360, rad: 2 * Math.PI, turn: 1 };
+  function parseHSL($hsl) {
+    var _a = __read(getNumbersFromString($hsl, hslRange, hslUnits), 4),
+      h = _a[0],
+      s = _a[1],
+      l = _a[2],
+      _b = _a[3],
+      a = _b === void 0 ? 1 : _b;
+    return hslToRGB({ h: h, s: s, l: l, a: a });
+  }
+  function parseHex($hex) {
+    var h = $hex.substring(1);
+    switch (h.length) {
+      case 3:
+      case 4: {
+        var _a = __read(
+            [0, 1, 2].map(function (i) {
+              return parseInt("".concat(h[i]).concat(h[i]), 16);
+            }),
+            3
+          ),
+          r = _a[0],
+          g = _a[1],
+          b = _a[2];
+        var a = h.length === 3 ? 1 : parseInt("".concat(h[3]).concat(h[3]), 16) / 255;
+        return { r: r, g: g, b: b, a: a };
+      }
+      case 6:
+      case 8: {
+        var _b = __read(
+            [0, 2, 4].map(function (i) {
+              return parseInt(h.substring(i, i + 2), 16);
+            }),
+            3
+          ),
+          r = _b[0],
+          g = _b[1],
+          b = _b[2];
+        var a = h.length === 6 ? 1 : parseInt(h.substring(6, 8), 16) / 255;
+        return { r: r, g: g, b: b, a: a };
+      }
+    }
+    return null;
+  }
+  function getColorByName($color) {
+    var n = knownColors.get($color);
+    return {
+      r: (n >> 16) & 255,
+      g: (n >> 8) & 255,
+      b: (n >> 0) & 255,
+      a: 1,
+    };
+  }
+  function getSystemColor($color) {
+    var n = systemColors.get($color);
+    return {
+      r: (n >> 16) & 255,
+      g: (n >> 8) & 255,
+      b: (n >> 0) & 255,
+      a: 1,
+    };
+  }
+  function lowerCalcExpression(color) {
+    var searchIndex = 0;
+    var replaceBetweenIndices = function (start, end, replacement) {
+      color = color.substring(0, start) + replacement + color.substring(end);
+    };
+    while ((searchIndex = color.indexOf("calc(")) !== -1) {
+      var range = getParenthesesRange(color, searchIndex);
+      if (!range) {
+        break;
+      }
+      var slice = color.slice(range.start + 1, range.end - 1);
+      var includesPercentage = slice.includes("%");
+      slice = slice.split("%").join("");
+      var output = Math.round(evalMath(slice));
+      replaceBetweenIndices(range.start - 4, range.end, output + (includesPercentage ? "%" : ""));
+    }
+    return color;
+  }
+  var knownColors = new Map(
+    Object.entries({
+      aliceblue: 0xf0f8ff,
+      antiquewhite: 0xfaebd7,
+      aqua: 0x00ffff,
+      aquamarine: 0x7fffd4,
+      azure: 0xf0ffff,
+      beige: 0xf5f5dc,
+      bisque: 0xffe4c4,
+      black: 0x000000,
+      blanchedalmond: 0xffebcd,
+      blue: 0x0000ff,
+      blueviolet: 0x8a2be2,
+      brown: 0xa52a2a,
+      burlywood: 0xdeb887,
+      cadetblue: 0x5f9ea0,
+      chartreuse: 0x7fff00,
+      chocolate: 0xd2691e,
+      coral: 0xff7f50,
+      cornflowerblue: 0x6495ed,
+      cornsilk: 0xfff8dc,
+      crimson: 0xdc143c,
+      cyan: 0x00ffff,
+      darkblue: 0x00008b,
+      darkcyan: 0x008b8b,
+      darkgoldenrod: 0xb8860b,
+      darkgray: 0xa9a9a9,
+      darkgrey: 0xa9a9a9,
+      darkgreen: 0x006400,
+      darkkhaki: 0xbdb76b,
+      darkmagenta: 0x8b008b,
+      darkolivegreen: 0x556b2f,
+      darkorange: 0xff8c00,
+      darkorchid: 0x9932cc,
+      darkred: 0x8b0000,
+      darksalmon: 0xe9967a,
+      darkseagreen: 0x8fbc8f,
+      darkslateblue: 0x483d8b,
+      darkslategray: 0x2f4f4f,
+      darkslategrey: 0x2f4f4f,
+      darkturquoise: 0x00ced1,
+      darkviolet: 0x9400d3,
+      deeppink: 0xff1493,
+      deepskyblue: 0x00bfff,
+      dimgray: 0x696969,
+      dimgrey: 0x696969,
+      dodgerblue: 0x1e90ff,
+      firebrick: 0xb22222,
+      floralwhite: 0xfffaf0,
+      forestgreen: 0x228b22,
+      fuchsia: 0xff00ff,
+      gainsboro: 0xdcdcdc,
+      ghostwhite: 0xf8f8ff,
+      gold: 0xffd700,
+      goldenrod: 0xdaa520,
+      gray: 0x808080,
+      grey: 0x808080,
+      green: 0x008000,
+      greenyellow: 0xadff2f,
+      honeydew: 0xf0fff0,
+      hotpink: 0xff69b4,
+      indianred: 0xcd5c5c,
+      indigo: 0x4b0082,
+      ivory: 0xfffff0,
+      khaki: 0xf0e68c,
+      lavender: 0xe6e6fa,
+      lavenderblush: 0xfff0f5,
+      lawngreen: 0x7cfc00,
+      lemonchiffon: 0xfffacd,
+      lightblue: 0xadd8e6,
+      lightcoral: 0xf08080,
+      lightcyan: 0xe0ffff,
+      lightgoldenrodyellow: 0xfafad2,
+      lightgray: 0xd3d3d3,
+      lightgrey: 0xd3d3d3,
+      lightgreen: 0x90ee90,
+      lightpink: 0xffb6c1,
+      lightsalmon: 0xffa07a,
+      lightseagreen: 0x20b2aa,
+      lightskyblue: 0x87cefa,
+      lightslategray: 0x778899,
+      lightslategrey: 0x778899,
+      lightsteelblue: 0xb0c4de,
+      lightyellow: 0xffffe0,
+      lime: 0x00ff00,
+      limegreen: 0x32cd32,
+      linen: 0xfaf0e6,
+      magenta: 0xff00ff,
+      maroon: 0x800000,
+      mediumaquamarine: 0x66cdaa,
+      mediumblue: 0x0000cd,
+      mediumorchid: 0xba55d3,
+      mediumpurple: 0x9370db,
+      mediumseagreen: 0x3cb371,
+      mediumslateblue: 0x7b68ee,
+      mediumspringgreen: 0x00fa9a,
+      mediumturquoise: 0x48d1cc,
+      mediumvioletred: 0xc71585,
+      midnightblue: 0x191970,
+      mintcream: 0xf5fffa,
+      mistyrose: 0xffe4e1,
+      moccasin: 0xffe4b5,
+      navajowhite: 0xffdead,
+      navy: 0x000080,
+      oldlace: 0xfdf5e6,
+      olive: 0x808000,
+      olivedrab: 0x6b8e23,
+      orange: 0xffa500,
+      orangered: 0xff4500,
+      orchid: 0xda70d6,
+      palegoldenrod: 0xeee8aa,
+      palegreen: 0x98fb98,
+      paleturquoise: 0xafeeee,
+      palevioletred: 0xdb7093,
+      papayawhip: 0xffefd5,
+      peachpuff: 0xffdab9,
+      peru: 0xcd853f,
+      pink: 0xffc0cb,
+      plum: 0xdda0dd,
+      powderblue: 0xb0e0e6,
+      purple: 0x800080,
+      rebeccapurple: 0x663399,
+      red: 0xff0000,
+      rosybrown: 0xbc8f8f,
+      royalblue: 0x4169e1,
+      saddlebrown: 0x8b4513,
+      salmon: 0xfa8072,
+      sandybrown: 0xf4a460,
+      seagreen: 0x2e8b57,
+      seashell: 0xfff5ee,
+      sienna: 0xa0522d,
+      silver: 0xc0c0c0,
+      skyblue: 0x87ceeb,
+      slateblue: 0x6a5acd,
+      slategray: 0x708090,
+      slategrey: 0x708090,
+      snow: 0xfffafa,
+      springgreen: 0x00ff7f,
+      steelblue: 0x4682b4,
+      tan: 0xd2b48c,
+      teal: 0x008080,
+      thistle: 0xd8bfd8,
+      tomato: 0xff6347,
+      turquoise: 0x40e0d0,
+      violet: 0xee82ee,
+      wheat: 0xf5deb3,
+      white: 0xffffff,
+      whitesmoke: 0xf5f5f5,
+      yellow: 0xffff00,
+      yellowgreen: 0x9acd32,
+    })
+  );
+  var systemColors = new Map(
+    Object.entries({
+      ActiveBorder: 0x3b99fc,
+      ActiveCaption: 0x000000,
+      AppWorkspace: 0xaaaaaa,
+      Background: 0x6363ce,
+      ButtonFace: 0xffffff,
+      ButtonHighlight: 0xe9e9e9,
+      ButtonShadow: 0x9fa09f,
+      ButtonText: 0x000000,
+      CaptionText: 0x000000,
+      GrayText: 0x7f7f7f,
+      Highlight: 0xb2d7ff,
+      HighlightText: 0x000000,
+      InactiveBorder: 0xffffff,
+      InactiveCaption: 0xffffff,
+      InactiveCaptionText: 0x000000,
+      InfoBackground: 0xfbfcc5,
+      InfoText: 0x000000,
+      Menu: 0xf6f6f6,
+      MenuText: 0xffffff,
+      Scrollbar: 0xaaaaaa,
+      ThreeDDarkShadow: 0x000000,
+      ThreeDFace: 0xc0c0c0,
+      ThreeDHighlight: 0xffffff,
+      ThreeDLightShadow: 0xffffff,
+      ThreeDShadow: 0x000000,
+      Window: 0xececec,
+      WindowFrame: 0xaaaaaa,
+      WindowText: 0x000000,
+      "-webkit-focus-ring-color": 0xe59700,
+    }).map(function (_a) {
+      var _b = __read(_a, 2),
+        key = _b[0],
+        value = _b[1];
+      return [key.toLowerCase(), value];
+    })
+  );
+  function getSRGBLightness(r, g, b) {
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
   }
 
-  function Ge(e) {
-    var t = He.identity();
-    return 0 !== e.sepia && (t = We(t, He.sepia(e.sepia / 100))), 0 !== e.grayscale && (t = We(t, He.grayscale(e.grayscale / 100))), 100 !== e.contrast && (t = We(t, He.contrast(e.contrast / 100))), 100 !== e.brightness && (t = We(t, He.brightness(e.brightness / 100))), 1 === e.mode && (t = We(t, He.invertNHue())), t;
+  function scale(x, inLow, inHigh, outLow, outHigh) {
+    return ((x - inLow) * (outHigh - outLow)) / (inHigh - inLow) + outLow;
   }
-  var He = {
+  function clamp(x, min, max) {
+    return Math.min(max, Math.max(min, x));
+  }
+  function multiplyMatrices(m1, m2) {
+    var result = [];
+    for (var i = 0, len = m1.length; i < len; i++) {
+      result[i] = [];
+      for (var j = 0, len2 = m2[0].length; j < len2; j++) {
+        var sum = 0;
+        for (var k = 0, len3 = m1[0].length; k < len3; k++) {
+          sum += m1[i][k] * m2[k][j];
+        }
+        result[i][j] = sum;
+      }
+    }
+    return result;
+  }
+
+  function createFilterMatrix(config) {
+    var m = Matrix.identity();
+    if (config.sepia !== 0) {
+      m = multiplyMatrices(m, Matrix.sepia(config.sepia / 100));
+    }
+    if (config.grayscale !== 0) {
+      m = multiplyMatrices(m, Matrix.grayscale(config.grayscale / 100));
+    }
+    if (config.contrast !== 100) {
+      m = multiplyMatrices(m, Matrix.contrast(config.contrast / 100));
+    }
+    if (config.brightness !== 100) {
+      m = multiplyMatrices(m, Matrix.brightness(config.brightness / 100));
+    }
+    if (config.mode === 1) {
+      m = multiplyMatrices(m, Matrix.invertNHue());
+    }
+    return m;
+  }
+  function applyColorMatrix(_a, matrix) {
+    var _b = __read(_a, 3),
+      r = _b[0],
+      g = _b[1],
+      b = _b[2];
+    var rgb = [[r / 255], [g / 255], [b / 255], [1], [1]];
+    var result = multiplyMatrices(matrix, rgb);
+    return [0, 1, 2].map(function (i) {
+      return clamp(Math.round(result[i][0] * 255), 0, 255);
+    });
+  }
+  var Matrix = {
     identity: function () {
       return [
         [1, 0, 0, 0, 0],
@@ -1441,472 +1892,471 @@
         [0, 0, 0, 0, 1],
       ];
     },
-    brightness: function (e) {
+    brightness: function (v) {
       return [
-        [e, 0, 0, 0, 0],
-        [0, e, 0, 0, 0],
-        [0, 0, e, 0, 0],
+        [v, 0, 0, 0, 0],
+        [0, v, 0, 0, 0],
+        [0, 0, v, 0, 0],
         [0, 0, 0, 1, 0],
         [0, 0, 0, 0, 1],
       ];
     },
-    contrast: function (e) {
-      var t = (1 - e) / 2;
+    contrast: function (v) {
+      var t = (1 - v) / 2;
       return [
-        [e, 0, 0, 0, t],
-        [0, e, 0, 0, t],
-        [0, 0, e, 0, t],
+        [v, 0, 0, 0, t],
+        [0, v, 0, 0, t],
+        [0, 0, v, 0, t],
         [0, 0, 0, 1, 0],
         [0, 0, 0, 0, 1],
       ];
     },
-    sepia: function (e) {
+    sepia: function (v) {
       return [
-        [0.393 + 0.607 * (1 - e), 0.769 - 0.769 * (1 - e), 0.189 - 0.189 * (1 - e), 0, 0],
-        [0.349 - 0.349 * (1 - e), 0.686 + 0.314 * (1 - e), 0.168 - 0.168 * (1 - e), 0, 0],
-        [0.272 - 0.272 * (1 - e), 0.534 - 0.534 * (1 - e), 0.131 + 0.869 * (1 - e), 0, 0],
+        [0.393 + 0.607 * (1 - v), 0.769 - 0.769 * (1 - v), 0.189 - 0.189 * (1 - v), 0, 0],
+        [0.349 - 0.349 * (1 - v), 0.686 + 0.314 * (1 - v), 0.168 - 0.168 * (1 - v), 0, 0],
+        [0.272 - 0.272 * (1 - v), 0.534 - 0.534 * (1 - v), 0.131 + 0.869 * (1 - v), 0, 0],
         [0, 0, 0, 1, 0],
         [0, 0, 0, 0, 1],
       ];
     },
-    grayscale: function (e) {
+    grayscale: function (v) {
       return [
-        [0.2126 + 0.7874 * (1 - e), 0.7152 - 0.7152 * (1 - e), 0.0722 - 0.0722 * (1 - e), 0, 0],
-        [0.2126 - 0.2126 * (1 - e), 0.7152 + 0.2848 * (1 - e), 0.0722 - 0.0722 * (1 - e), 0, 0],
-        [0.2126 - 0.2126 * (1 - e), 0.7152 - 0.7152 * (1 - e), 0.0722 + 0.9278 * (1 - e), 0, 0],
+        [0.2126 + 0.7874 * (1 - v), 0.7152 - 0.7152 * (1 - v), 0.0722 - 0.0722 * (1 - v), 0, 0],
+        [0.2126 - 0.2126 * (1 - v), 0.7152 + 0.2848 * (1 - v), 0.0722 - 0.0722 * (1 - v), 0, 0],
+        [0.2126 - 0.2126 * (1 - v), 0.7152 - 0.7152 * (1 - v), 0.0722 + 0.9278 * (1 - v), 0, 0],
         [0, 0, 0, 1, 0],
         [0, 0, 0, 0, 1],
       ];
     },
   };
 
-  function $e(e) {
-    return e[1 === e.mode ? "darkSchemeBackgroundColor" : "lightSchemeBackgroundColor"];
+  function getBgPole(theme) {
+    var isDarkScheme = theme.mode === 1;
+    var prop = isDarkScheme ? "darkSchemeBackgroundColor" : "lightSchemeBackgroundColor";
+    return theme[prop];
   }
-
-  function ze(e) {
-    return e[1 === e.mode ? "darkSchemeTextColor" : "lightSchemeTextColor"];
+  function getFgPole(theme) {
+    var isDarkScheme = theme.mode === 1;
+    var prop = isDarkScheme ? "darkSchemeTextColor" : "lightSchemeTextColor";
+    return theme[prop];
   }
-  var Qe = new Map();
-  var Ke = ["r", "g", "b", "a"],
-    Ye = ["mode", "brightness", "contrast", "grayscale", "sepia", "darkSchemeBackgroundColor", "darkSchemeTextColor", "lightSchemeBackgroundColor", "lightSchemeTextColor"];
-
-  function Xe(e, t, r, n, a) {
-    var o;
-    Qe.has(r) ? (o = Qe.get(r)) : ((o = new Map()), Qe.set(r, o));
-    var u = (function (e, t) {
-      var r = "";
-      return (
-        Ke.forEach(function (t) {
-          r += "".concat(e[t], ";");
-        }),
-        Ye.forEach(function (e) {
-          r += "".concat(t[e], ";");
-        }),
-        r
-      );
-    })(e, t);
-    if (o.has(u)) return o.get(u);
-    var c = xe(r(Te(e), null == n ? null : Ce(n), null == a ? null : Ce(a))),
-      s = c.r,
-      l = c.g,
-      d = c.b,
-      f = c.a,
-      h = i(
-        (function (e, t) {
-          var r = i(e, 3),
-            n = We(t, [[r[0] / 255], [r[1] / 255], [r[2] / 255], [1], [1]]);
-          return [0, 1, 2].map(function (e) {
-            return Ue(Math.round(255 * n[e][0]), 0, 255);
-          });
-        })([s, l, d], Ge(t)),
-        3
-      ),
-      p = h[0],
-      v = h[1],
-      m = h[2],
-      g =
-        1 === f
-          ? (function (e) {
-              var t = e.r,
-                r = e.g,
-                n = e.b,
-                a = e.a;
-              return "#".concat(
-                (null != a && a < 1 ? [t, r, n, Math.round(255 * a)] : [t, r, n])
-                  .map(function (e) {
-                    return "".concat(e < 16 ? "0" : "").concat(e.toString(16));
-                  })
-                  .join("")
-              );
-            })({
-              r: p,
-              g: v,
-              b: m,
-            })
-          : (function (e) {
-              var t = e.r,
-                r = e.g,
-                n = e.b,
-                a = e.a;
-              return null != a && a < 1 ? "rgba(".concat(Re(t), ", ").concat(Re(r), ", ").concat(Re(n), ", ").concat(Re(a, 2), ")") : "rgb(".concat(Re(t), ", ").concat(Re(r), ", ").concat(Re(n), ")");
-            })({
-              r: p,
-              g: v,
-              b: m,
-              a: f,
-            });
-    return o.set(u, g), g;
+  var colorModificationCache = new Map();
+  function clearColorModificationCache() {
+    colorModificationCache.clear();
   }
-
-  function Ze(e) {
-    return e;
+  var rgbCacheKeys = ["r", "g", "b", "a"];
+  var themeCacheKeys$1 = ["mode", "brightness", "contrast", "grayscale", "sepia", "darkSchemeBackgroundColor", "darkSchemeTextColor", "lightSchemeBackgroundColor", "lightSchemeTextColor"];
+  function getCacheId(rgb, theme) {
+    var resultId = "";
+    rgbCacheKeys.forEach(function (key) {
+      resultId += "".concat(rgb[key], ";");
+    });
+    themeCacheKeys$1.forEach(function (key) {
+      resultId += "".concat(theme[key], ";");
+    });
+    return resultId;
   }
-
-  function Je(e, t) {
-    var r = $e(t);
-    return Xe(e, t, et, ze(t), r);
-  }
-
-  function et(e, t, r) {
-    var n,
-      a = e.h,
-      o = e.s,
-      i = e.l,
-      u = e.a,
-      c = i < 0.5;
-    c ? (n = i < 0.2 || o < 0.12) : (n = o < 0.24 || (i > 0.8 && a > 200 && a < 280));
-    var s = a,
-      l = i;
-    return (
-      n && (c ? ((s = t.h), (l = t.s)) : ((s = r.h), (l = r.s))),
-      {
-        h: s,
-        s: l,
-        l: qe(i, 0, 1, t.l, r.l),
-        a: u,
-      }
-    );
-  }
-
-  function tt(e, t) {
-    var r = e.h,
-      n = e.s,
-      a = e.l,
-      o = e.a,
-      i = n < 0.12 || (a > 0.8 && r > 200 && r < 280);
-    if (a < 0.5) {
-      var u = qe(a, 0, 0.5, 0, 0.4);
-      return i
-        ? {
-            h: t.h,
-            s: t.s,
-            l: u,
-            a: o,
-          }
-        : {
-            h: r,
-            s: n,
-            l: u,
-            a: o,
-          };
+  function modifyColorWithCache(rgb, theme, modifyHSL, poleColor, anotherPoleColor) {
+    var fnCache;
+    if (colorModificationCache.has(modifyHSL)) {
+      fnCache = colorModificationCache.get(modifyHSL);
+    } else {
+      fnCache = new Map();
+      colorModificationCache.set(modifyHSL, fnCache);
     }
-    var c = qe(a, 0.5, 1, 0.4, t.l);
-    if (i)
-      return {
-        h: t.h,
-        s: t.s,
-        l: c,
-        a: o,
-      };
-    var s = r;
-    r > 60 && r < 180 && (s = r > 120 ? qe(r, 120, 180, 135, 180) : qe(r, 60, 120, 60, 105));
-    return (
-      s > 40 && s < 80 && (c *= 0.75),
-      {
-        h: s,
-        s: n,
-        l: c,
-        a: o,
-      }
-    );
-  }
-
-  function rt(e, t) {
-    if (0 === t.mode) return Je(e, t);
-    var n = $e(t);
-    return Xe(
-      e,
-      r(r({}, t), {
-        mode: 0,
-      }),
-      tt,
-      n
-    );
-  }
-  var nt,
-    at = 0.55;
-
-  function ot(e) {
-    return qe(e, 205, 245, 205, 220);
-  }
-
-  function it(e, t) {
-    var r = e.h,
-      n = e.s,
-      a = e.l,
-      o = e.a,
-      i = a < 0.2 || n < 0.24,
-      u = !i && r > 205 && r < 245;
-    if (a > 0.5) {
-      var c = qe(a, 0.5, 1, at, t.l);
-      if (i)
-        return {
-          h: t.h,
-          s: t.s,
-          l: c,
-          a: o,
-        };
-      var s = r;
-      return (
-        u && (s = ot(r)),
-        {
-          h: s,
-          s: n,
-          l: c,
-          a: o,
-        }
-      );
+    var id = getCacheId(rgb, theme);
+    if (fnCache.has(id)) {
+      return fnCache.get(id);
     }
-    if (i)
-      return {
-        h: t.h,
-        s: t.s,
-        l: qe(a, 0, 0.5, t.l, at),
-        a: o,
-      };
-    var l,
-      d = r;
-    return (
-      u ? ((d = ot(r)), (l = qe(a, 0, 0.5, t.l, Math.min(1, 0.6000000000000001)))) : (l = qe(a, 0, 0.5, t.l, at)),
-      {
-        h: d,
-        s: n,
-        l: l,
-        a: o,
+    var hsl = rgbToHSL(rgb);
+    var pole = poleColor == null ? null : parseToHSLWithCache(poleColor);
+    var anotherPole = anotherPoleColor == null ? null : parseToHSLWithCache(anotherPoleColor);
+    var modified = modifyHSL(hsl, pole, anotherPole);
+    var _a = hslToRGB(modified),
+      r = _a.r,
+      g = _a.g,
+      b = _a.b,
+      a = _a.a;
+    var matrix = createFilterMatrix(theme);
+    var _b = __read(applyColorMatrix([r, g, b], matrix), 3),
+      rf = _b[0],
+      gf = _b[1],
+      bf = _b[2];
+    var color = a === 1 ? rgbToHexString({ r: rf, g: gf, b: bf }) : rgbToString({ r: rf, g: gf, b: bf, a: a });
+    fnCache.set(id, color);
+    return color;
+  }
+  function noopHSL(hsl) {
+    return hsl;
+  }
+  function modifyColor(rgb, theme) {
+    return modifyColorWithCache(rgb, theme, noopHSL);
+  }
+  function modifyLightSchemeColor(rgb, theme) {
+    var poleBg = getBgPole(theme);
+    var poleFg = getFgPole(theme);
+    return modifyColorWithCache(rgb, theme, modifyLightModeHSL, poleFg, poleBg);
+  }
+  function modifyLightModeHSL(_a, poleFg, poleBg) {
+    var h = _a.h,
+      s = _a.s,
+      l = _a.l,
+      a = _a.a;
+    var isDark = l < 0.5;
+    var isNeutral;
+    if (isDark) {
+      isNeutral = l < 0.2 || s < 0.12;
+    } else {
+      var isBlue = h > 200 && h < 280;
+      isNeutral = s < 0.24 || (l > 0.8 && isBlue);
+    }
+    var hx = h;
+    var sx = l;
+    if (isNeutral) {
+      if (isDark) {
+        hx = poleFg.h;
+        sx = poleFg.s;
+      } else {
+        hx = poleBg.h;
+        sx = poleBg.s;
       }
-    );
+    }
+    var lx = scale(l, 0, 1, poleFg.l, poleBg.l);
+    return { h: hx, s: sx, l: lx, a: a };
   }
-
-  function ut(e, t) {
-    if (0 === t.mode) return Je(e, t);
-    var n = ze(t);
-    return Xe(
-      e,
-      r(r({}, t), {
-        mode: 0,
-      }),
-      it,
-      n
-    );
-  }
-
-  function ct(e, t, r) {
-    var n = e.h,
-      a = e.s,
-      o = e.l,
-      i = e.a,
-      u = n,
-      c = a;
-    return (
-      (o < 0.2 || a < 0.24) && (o < 0.5 ? ((u = t.h), (c = t.s)) : ((u = r.h), (c = r.s))),
-      {
-        h: u,
-        s: c,
-        l: qe(o, 0, 1, 0.5, 0.2),
-        a: i,
+  var MAX_BG_LIGHTNESS = 0.4;
+  function modifyBgHSL(_a, pole) {
+    var h = _a.h,
+      s = _a.s,
+      l = _a.l,
+      a = _a.a;
+    var isDark = l < 0.5;
+    var isBlue = h > 200 && h < 280;
+    var isNeutral = s < 0.12 || (l > 0.8 && isBlue);
+    if (isDark) {
+      var lx_1 = scale(l, 0, 0.5, 0, MAX_BG_LIGHTNESS);
+      if (isNeutral) {
+        var hx_1 = pole.h;
+        var sx = pole.s;
+        return { h: hx_1, s: sx, l: lx_1, a: a };
       }
-    );
+      return { h: h, s: s, l: lx_1, a: a };
+    }
+    var lx = scale(l, 0.5, 1, MAX_BG_LIGHTNESS, pole.l);
+    if (isNeutral) {
+      var hx_2 = pole.h;
+      var sx = pole.s;
+      return { h: hx_2, s: sx, l: lx, a: a };
+    }
+    var hx = h;
+    var isYellow = h > 60 && h < 180;
+    if (isYellow) {
+      var isCloserToGreen = h > 120;
+      if (isCloserToGreen) {
+        hx = scale(h, 120, 180, 135, 180);
+      } else {
+        hx = scale(h, 60, 120, 60, 105);
+      }
+    }
+    if (hx > 40 && hx < 80) {
+      lx *= 0.75;
+    }
+    return { h: hx, s: s, l: lx, a: a };
+  }
+  function modifyBackgroundColor(rgb, theme) {
+    if (theme.mode === 0) {
+      return modifyLightSchemeColor(rgb, theme);
+    }
+    var pole = getBgPole(theme);
+    return modifyColorWithCache(rgb, __assign(__assign({}, theme), { mode: 0 }), modifyBgHSL, pole);
+  }
+  var MIN_FG_LIGHTNESS = 0.55;
+  function modifyBlueFgHue(hue) {
+    return scale(hue, 205, 245, 205, 220);
+  }
+  function modifyFgHSL(_a, pole) {
+    var h = _a.h,
+      s = _a.s,
+      l = _a.l,
+      a = _a.a;
+    var isLight = l > 0.5;
+    var isNeutral = l < 0.2 || s < 0.24;
+    var isBlue = !isNeutral && h > 205 && h < 245;
+    if (isLight) {
+      var lx_2 = scale(l, 0.5, 1, MIN_FG_LIGHTNESS, pole.l);
+      if (isNeutral) {
+        var hx_3 = pole.h;
+        var sx = pole.s;
+        return { h: hx_3, s: sx, l: lx_2, a: a };
+      }
+      var hx_4 = h;
+      if (isBlue) {
+        hx_4 = modifyBlueFgHue(h);
+      }
+      return { h: hx_4, s: s, l: lx_2, a: a };
+    }
+    if (isNeutral) {
+      var hx_5 = pole.h;
+      var sx = pole.s;
+      var lx_3 = scale(l, 0, 0.5, pole.l, MIN_FG_LIGHTNESS);
+      return { h: hx_5, s: sx, l: lx_3, a: a };
+    }
+    var hx = h;
+    var lx;
+    if (isBlue) {
+      hx = modifyBlueFgHue(h);
+      lx = scale(l, 0, 0.5, pole.l, Math.min(1, MIN_FG_LIGHTNESS + 0.05));
+    } else {
+      lx = scale(l, 0, 0.5, pole.l, MIN_FG_LIGHTNESS);
+    }
+    return { h: hx, s: s, l: lx, a: a };
+  }
+  function modifyForegroundColor(rgb, theme) {
+    if (theme.mode === 0) {
+      return modifyLightSchemeColor(rgb, theme);
+    }
+    var pole = getFgPole(theme);
+    return modifyColorWithCache(rgb, __assign(__assign({}, theme), { mode: 0 }), modifyFgHSL, pole);
+  }
+  function modifyBorderHSL(_a, poleFg, poleBg) {
+    var h = _a.h,
+      s = _a.s,
+      l = _a.l,
+      a = _a.a;
+    var isDark = l < 0.5;
+    var isNeutral = l < 0.2 || s < 0.24;
+    var hx = h;
+    var sx = s;
+    if (isNeutral) {
+      if (isDark) {
+        hx = poleFg.h;
+        sx = poleFg.s;
+      } else {
+        hx = poleBg.h;
+        sx = poleBg.s;
+      }
+    }
+    var lx = scale(l, 0, 1, 0.5, 0.2);
+    return { h: hx, s: sx, l: lx, a: a };
+  }
+  function modifyBorderColor(rgb, theme) {
+    if (theme.mode === 0) {
+      return modifyLightSchemeColor(rgb, theme);
+    }
+    var poleFg = getFgPole(theme);
+    var poleBg = getBgPole(theme);
+    return modifyColorWithCache(rgb, __assign(__assign({}, theme), { mode: 0 }), modifyBorderHSL, poleFg, poleBg);
+  }
+  function modifyShadowColor(rgb, filter) {
+    return modifyBackgroundColor(rgb, filter);
+  }
+  function modifyGradientColor(rgb, filter) {
+    return modifyBackgroundColor(rgb, filter);
   }
 
-  function st(e, t) {
-    if (0 === t.mode) return Je(e, t);
-    var n = ze(t),
-      a = $e(t);
-    return Xe(
-      e,
-      r(r({}, t), {
-        mode: 0,
-      }),
-      ct,
-      n,
-      a
-    );
+  function createTextStyle(config) {
+    var lines = [];
+    lines.push('*:not(pre, pre *, code, .far, .fa, .glyphicon, [class*="vjs-"], .fab, .fa-github, .fas, .material-icons, .icofont, .typcn, mu, [class*="mu-"], .glyphicon, .icon) {');
+    if (config.useFont && config.fontFamily) {
+      lines.push("  font-family: ".concat(config.fontFamily, " !important;"));
+    }
+    if (config.textStroke > 0) {
+      lines.push("  -webkit-text-stroke: ".concat(config.textStroke, "px !important;"));
+      lines.push("  text-stroke: ".concat(config.textStroke, "px !important;"));
+    }
+    lines.push("}");
+    return lines.join("\n");
   }
 
-  function lt(e, t) {
-    return rt(e, t);
+  var FilterMode;
+  (function (FilterMode) {
+    FilterMode[(FilterMode["light"] = 0)] = "light";
+    FilterMode[(FilterMode["dark"] = 1)] = "dark";
+  })(FilterMode || (FilterMode = {}));
+  function getCSSFilterValue(config) {
+    var filters = [];
+    if (config.mode === FilterMode.dark) {
+      filters.push("invert(100%) hue-rotate(180deg)");
+    }
+    if (config.brightness !== 100) {
+      filters.push("brightness(".concat(config.brightness, "%)"));
+    }
+    if (config.contrast !== 100) {
+      filters.push("contrast(".concat(config.contrast, "%)"));
+    }
+    if (config.grayscale !== 0) {
+      filters.push("grayscale(".concat(config.grayscale, "%)"));
+    }
+    if (config.sepia !== 0) {
+      filters.push("sepia(".concat(config.sepia, "%)"));
+    }
+    if (filters.length === 0) {
+      return null;
+    }
+    return filters.join(" ");
   }
 
-  function dt(e) {
-    var t = [];
-    return e.mode === nt.dark && t.push("invert(100%) hue-rotate(180deg)"), 100 !== e.brightness && t.push("brightness(".concat(e.brightness, "%)")), 100 !== e.contrast && t.push("contrast(".concat(e.contrast, "%)")), 0 !== e.grayscale && t.push("grayscale(".concat(e.grayscale, "%)")), 0 !== e.sepia && t.push("sepia(".concat(e.sepia, "%)")), 0 === t.length ? null : t.join(" ");
+  function toSVGMatrix(matrix) {
+    return matrix
+      .slice(0, 4)
+      .map(function (m) {
+        return m
+          .map(function (m) {
+            return m.toFixed(3);
+          })
+          .join(" ");
+      })
+      .join(" ");
   }
-  !(function (e) {
-    (e[(e.light = 0)] = "light"), (e[(e.dark = 1)] = "dark");
-  })(nt || (nt = {}));
-  var ft = 0,
-    ht = new Map(),
-    pt = new Map();
+  function getSVGFilterMatrixValue(config) {
+    return toSVGMatrix(createFilterMatrix(config));
+  }
 
-  function vt(e) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (r) {
+  function hexify(number) {
+    return (number < 16 ? "0" : "") + number.toString(16);
+  }
+  function generateUID() {
+    if ("randomUUID" in crypto) {
+      var uuid = crypto.randomUUID();
+      return uuid.substring(0, 8) + uuid.substring(9, 13) + uuid.substring(14, 18) + uuid.substring(19, 23) + uuid.substring(24);
+    }
+    if ("getRandomValues" in crypto) {
+      return Array.from(crypto.getRandomValues(new Uint8Array(16)))
+        .map(function (x) {
+          return hexify(x);
+        })
+        .join("");
+    }
+    return Math.floor(Math.random() * Math.pow(2, 55)).toString(36);
+  }
+
+  var resolvers$1 = new Map();
+  var rejectors = new Map();
+  function bgFetch(request) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
         return [
           2,
-          new Promise(function (r, n) {
-            var a = ++ft;
-            ht.set(a, r),
-              pt.set(a, n),
-              chrome.runtime.sendMessage({
-                type: t.CS_FETCH,
-                data: e,
-                id: a,
-              });
+          new Promise(function (resolve, reject) {
+            var id = generateUID();
+            resolvers$1.set(id, resolve);
+            rejectors.set(id, reject);
+            chrome.runtime.sendMessage({
+              type: MessageTypeCStoBG.FETCH,
+              data: request,
+              id: id,
+            });
           }),
         ];
       });
     });
   }
-  chrome.runtime.onMessage.addListener(function (e) {
-    var r = e.type,
-      n = e.data,
-      a = e.error,
-      o = e.id;
-    if (r === t.BG_FETCH_RESPONSE) {
-      var i = ht.get(o),
-        u = pt.get(o);
-      ht.delete(o), pt.delete(o), a ? u && u(a) : i && i(n);
+  chrome.runtime.onMessage.addListener(function (_a) {
+    var type = _a.type,
+      data = _a.data,
+      error = _a.error,
+      id = _a.id;
+    if (type === MessageTypeBGtoCS.FETCH_RESPONSE) {
+      var resolve = resolvers$1.get(id);
+      var reject = rejectors.get(id);
+      resolvers$1.delete(id);
+      rejectors.delete(id);
+      if (error) {
+        reject && reject(error);
+      } else {
+        resolve && resolve(data);
+      }
     }
   });
-  var mt = new ((function () {
-    function e() {
-      (this.queue = []), (this.timerId = null), (this.frameDuration = 1e3 / 60);
-    }
-    return (
-      (e.prototype.addToQueue = function (e) {
-        this.queue.push(e), this.startQueue();
-      }),
-      (e.prototype.stopQueue = function () {
-        null !== this.timerId && (cancelAnimationFrame(this.timerId), (this.timerId = null)), (this.queue = []);
-      }),
-      (e.prototype.startQueue = function () {
-        var e = this;
-        this.timerId ||
-          (this.timerId = requestAnimationFrame(function () {
-            e.timerId = null;
-            for (var t, r = Date.now(); (t = e.queue.shift()); )
-              if ((t(), Date.now() - r >= e.frameDuration)) {
-                e.startQueue();
-                break;
-              }
-          }));
-      }),
-      e
-    );
-  })())();
 
-  function gt(e) {
-    return n(this, void 0, void 0, function () {
-      var t = this;
-      return a(this, function (o) {
+  var AsyncQueue = (function () {
+    function AsyncQueue() {
+      this.queue = [];
+      this.timerId = null;
+      this.frameDuration = 1000 / 60;
+    }
+    AsyncQueue.prototype.addToQueue = function (entry) {
+      this.queue.push(entry);
+      this.startQueue();
+    };
+    AsyncQueue.prototype.stopQueue = function () {
+      if (this.timerId !== null) {
+        cancelAnimationFrame(this.timerId);
+        this.timerId = null;
+      }
+      this.queue = [];
+    };
+    AsyncQueue.prototype.startQueue = function () {
+      var _this = this;
+      if (this.timerId) {
+        return;
+      }
+      this.timerId = requestAnimationFrame(function () {
+        _this.timerId = null;
+        var start = Date.now();
+        var cb;
+        while ((cb = _this.queue.shift())) {
+          cb();
+          if (Date.now() - start >= _this.frameDuration) {
+            _this.startQueue();
+            break;
+          }
+        }
+      });
+    };
+    return AsyncQueue;
+  })();
+
+  var imageManager = new AsyncQueue();
+  function getImageDetails(url) {
+    return __awaiter(this, void 0, void 0, function () {
+      var _this = this;
+      return __generator(this, function (_a) {
         return [
           2,
-          new Promise(function (o, i) {
-            return n(t, void 0, void 0, function () {
-              var t, n, u, c;
-              return a(this, function (a) {
-                switch (a.label) {
+          new Promise(function (resolve, reject) {
+            return __awaiter(_this, void 0, void 0, function () {
+              var dataURL, error_1, image_1, error_2;
+              return __generator(this, function (_a) {
+                switch (_a.label) {
                   case 0:
-                    return e.startsWith("data:") ? ((t = e), [3, 4]) : [3, 1];
+                    if (!url.startsWith("data:")) return [3, 1];
+                    dataURL = url;
+                    return [3, 4];
                   case 1:
-                    return a.trys.push([1, 3, , 4]), [4, bt(e)];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4, getImageDataURL(url)];
                   case 2:
-                    return (t = a.sent()), [3, 4];
+                    dataURL = _a.sent();
+                    return [3, 4];
                   case 3:
-                    return (n = a.sent()), i(n), [2];
+                    error_1 = _a.sent();
+                    reject(error_1);
+                    return [2];
                   case 4:
-                    return a.trys.push([4, 6, , 7]), [4, yt(t)];
+                    _a.trys.push([4, 6, , 7]);
+                    return [4, urlToImage(dataURL)];
                   case 5:
-                    return (
-                      (u = a.sent()),
-                      mt.addToQueue(function () {
-                        o(
-                          r(
-                            {
-                              src: e,
-                              dataURL: t,
-                              width: u.naturalWidth,
-                              height: u.naturalHeight,
-                            },
-                            (function (e) {
-                              St ||
-                                ((t = kt),
-                                (r = kt),
-                                ((St = document.createElement("canvas")).width = t),
-                                (St.height = r),
-                                ((_t = St.getContext("2d", {
-                                  willReadFrequently: true,
-                                })).imageSmoothingEnabled = !1));
-                              var t, r;
-                              var n = e.naturalWidth,
-                                a = e.naturalHeight;
-                              if (0 === a || 0 === n) return "logWarn(Image is empty ".concat(e.currentSrc, ")"), null;
-                              if (n * a * 4 > wt)
-                                return {
-                                  isDark: !1,
-                                  isLight: !1,
-                                  isTransparent: !1,
-                                  isLarge: !1,
-                                  isTooLarge: !0,
-                                };
-                              var o = n * a,
-                                i = Math.min(1, Math.sqrt(kt / o)),
-                                u = Math.ceil(n * i),
-                                c = Math.ceil(a * i);
-                              _t.clearRect(0, 0, u, c), _t.drawImage(e, 0, 0, n, a, 0, 0, u, c);
-                              var s,
-                                l,
-                                d,
-                                f,
-                                h,
-                                p,
-                                v,
-                                m = _t.getImageData(0, 0, u, c).data,
-                                g = 0.05,
-                                b = 0.4,
-                                y = 0.7,
-                                S = 0,
-                                _ = 0,
-                                k = 0;
-                              for (d = 0; d < c; d++) for (l = 0; l < u; l++) (f = m[(s = 4 * (d * u + l)) + 0]), (h = m[s + 1]), (p = m[s + 2]), m[s + 3] / 255 < g ? S++ : ((v = Be(f, h, p)) < b && _++, v > y && k++);
-                              var w = u * c,
-                                E = w - S;
-                              return {
-                                isDark: _ / E >= 0.7,
-                                isLight: k / E >= 0.7,
-                                isTransparent: S / w >= 0.1,
-                                isLarge: o >= 48e4,
-                                isTooLarge: !1,
-                              };
-                            })(u)
-                          )
-                        );
-                      }),
-                      [3, 7]
-                    );
+                    image_1 = _a.sent();
+                    imageManager.addToQueue(function () {
+                      resolve(
+                        __assign(
+                          {
+                            src: url,
+                            dataURL: dataURL,
+                            width: image_1.naturalWidth,
+                            height: image_1.naturalHeight,
+                          },
+                          analyzeImage(image_1)
+                        )
+                      );
+                    });
+                    return [3, 7];
                   case 6:
-                    return (c = a.sent()), i(c), [3, 7];
+                    error_2 = _a.sent();
+                    reject(error_2);
+                    return [3, 7];
                   case 7:
                     return [2];
                 }
@@ -1917,3459 +2367,4141 @@
       });
     });
   }
-
-  function bt(e) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (t) {
-        switch (t.label) {
+  function getImageDataURL(url) {
+    return __awaiter(this, void 0, void 0, function () {
+      var parsedURL;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
-            return new URL(e).origin !== location.origin ? [3, 2] : [4, w(e)];
+            parsedURL = new URL(url);
+            if (!(parsedURL.origin === location.origin)) return [3, 2];
+            return [4, loadAsDataURL(url)];
           case 1:
-          case 3:
-            return [2, t.sent()];
+            return [2, _a.sent()];
           case 2:
-            return [
-              4,
-              vt({
-                url: e,
-                responseType: "data-url",
-              }),
-            ];
+            return [4, bgFetch({ url: url, responseType: "data-url" })];
+          case 3:
+            return [2, _a.sent()];
         }
       });
     });
   }
-
-  function yt(e) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (t) {
+  function urlToImage(url) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
         return [
           2,
-          new Promise(function (t, r) {
-            var n = new Image();
-            (n.onload = function () {
-              return t(n);
-            }),
-              (n.onerror = function () {
-                return r("Unable to load image ".concat(e));
-              }),
-              (n.src = e);
+          new Promise(function (resolve, reject) {
+            var image = new Image();
+            image.onload = function () {
+              return resolve(image);
+            };
+            image.onerror = function () {
+              return reject("Unable to load image ".concat(url));
+            };
+            image.src = url;
           }),
         ];
       });
     });
   }
-  var St,
-    _t,
-    kt = 1024;
-  var wt = 5242880;
-
-  function Et(e, t) {
-    var r = e.dataURL,
-      n = e.width,
-      a = e.height,
-      o = Ge(t)
-        .slice(0, 4)
-        .map(function (e) {
-          return e
-            .map(function (e) {
-              return e.toFixed(3);
-            })
-            .join(" ");
-        })
-        .join(" "),
-      i = [
-        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="'.concat(n, '" height="').concat(a, '">'),
-        "<defs>",
-        '<filter id="darkreader-image-filter">',
-        '<feColorMatrix type="matrix" values="'.concat(o, '" />'),
-        "</filter>",
-        "</defs>",
-        '<image width="'.concat(n, '" height="').concat(a, '" filter="url(#darkreader-image-filter)" xlink:href="').concat(r, '" />'),
-        "</svg>",
-      ].join("");
-    return "data:image/svg+xml;base64,".concat(btoa(i));
+  var MAX_ANALIZE_PIXELS_COUNT = 32 * 32;
+  var canvas;
+  var context;
+  function createCanvas() {
+    var maxWidth = MAX_ANALIZE_PIXELS_COUNT;
+    var maxHeight = MAX_ANALIZE_PIXELS_COUNT;
+    canvas = document.createElement("canvas");
+    canvas.width = maxWidth;
+    canvas.height = maxHeight;
+    context = canvas.getContext("2d", { willReadFrequently: true });
+    context.imageSmoothingEnabled = false;
+  }
+  function removeCanvas() {
+    canvas = null;
+    context = null;
+  }
+  var MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+  function analyzeImage(image) {
+    if (!canvas) {
+      createCanvas();
+    }
+    var naturalWidth = image.naturalWidth,
+      naturalHeight = image.naturalHeight;
+    if (naturalHeight === 0 || naturalWidth === 0) {
+      logWarn("logWarn(Image is empty ".concat(image.currentSrc, ")"));
+      return {
+        isDark: false,
+        isLight: false,
+        isTransparent: false,
+        isLarge: false,
+        isTooLarge: false,
+      };
+    }
+    var size = naturalWidth * naturalHeight * 4;
+    if (size > MAX_IMAGE_SIZE) {
+      return {
+        isDark: false,
+        isLight: false,
+        isTransparent: false,
+        isLarge: false,
+        isTooLarge: true,
+      };
+    }
+    var naturalPixelsCount = naturalWidth * naturalHeight;
+    var k = Math.min(1, Math.sqrt(MAX_ANALIZE_PIXELS_COUNT / naturalPixelsCount));
+    var width = Math.ceil(naturalWidth * k);
+    var height = Math.ceil(naturalHeight * k);
+    context.clearRect(0, 0, width, height);
+    context.drawImage(image, 0, 0, naturalWidth, naturalHeight, 0, 0, width, height);
+    var imageData = context.getImageData(0, 0, width, height);
+    var d = imageData.data;
+    var TRANSPARENT_ALPHA_THRESHOLD = 0.05;
+    var DARK_LIGHTNESS_THRESHOLD = 0.4;
+    var LIGHT_LIGHTNESS_THRESHOLD = 0.7;
+    var transparentPixelsCount = 0;
+    var darkPixelsCount = 0;
+    var lightPixelsCount = 0;
+    var i, x, y;
+    var r, g, b, a;
+    var l;
+    for (y = 0; y < height; y++) {
+      for (x = 0; x < width; x++) {
+        i = 4 * (y * width + x);
+        r = d[i + 0];
+        g = d[i + 1];
+        b = d[i + 2];
+        a = d[i + 3];
+        if (a / 255 < TRANSPARENT_ALPHA_THRESHOLD) {
+          transparentPixelsCount++;
+        } else {
+          l = getSRGBLightness(r, g, b);
+          if (l < DARK_LIGHTNESS_THRESHOLD) {
+            darkPixelsCount++;
+          }
+          if (l > LIGHT_LIGHTNESS_THRESHOLD) {
+            lightPixelsCount++;
+          }
+        }
+      }
+    }
+    var totalPixelsCount = width * height;
+    var opaquePixelsCount = totalPixelsCount - transparentPixelsCount;
+    var DARK_IMAGE_THRESHOLD = 0.7;
+    var LIGHT_IMAGE_THRESHOLD = 0.7;
+    var TRANSPARENT_IMAGE_THRESHOLD = 0.1;
+    var LARGE_IMAGE_PIXELS_COUNT = 800 * 600;
+    return {
+      isDark: darkPixelsCount / opaquePixelsCount >= DARK_IMAGE_THRESHOLD,
+      isLight: lightPixelsCount / opaquePixelsCount >= LIGHT_IMAGE_THRESHOLD,
+      isTransparent: transparentPixelsCount / totalPixelsCount >= TRANSPARENT_IMAGE_THRESHOLD,
+      isLarge: naturalPixelsCount >= LARGE_IMAGE_PIXELS_COUNT,
+      isTooLarge: false,
+    };
+  }
+  function getFilteredImageDataURL(_a, theme) {
+    var dataURL = _a.dataURL,
+      width = _a.width,
+      height = _a.height;
+    var matrix = getSVGFilterMatrixValue(theme);
+    var svg = [
+      '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="'.concat(width, '" height="').concat(height, '">'),
+      "<defs>",
+      '<filter id="darkreader-image-filter">',
+      '<feColorMatrix type="matrix" values="'.concat(matrix, '" />'),
+      "</filter>",
+      "</defs>",
+      '<image width="'.concat(width, '" height="').concat(height, '" filter="url(#darkreader-image-filter)" xlink:href="').concat(dataURL, '" />'),
+      "</svg>",
+    ].join("");
+    return "data:image/svg+xml;base64,".concat(btoa(svg));
+  }
+  function cleanImageProcessingCache() {
+    imageManager && imageManager.stopQueue();
+    removeCanvas();
   }
 
-  function Ct() {
-    mt && mt.stopQueue(), (St = null), (_t = null);
+  var gradientLength = "gradient".length;
+  var conicGradient = "conic-";
+  var conicGradientLength = conicGradient.length;
+  var radialGradient = "radial-";
+  var linearGradient = "linear-";
+  function parseGradient(value) {
+    var result = [];
+    var index = 0;
+    var startIndex = conicGradient.length;
+    var _loop_1 = function () {
+      var typeGradient;
+      [linearGradient, radialGradient, conicGradient].find(function (possibleType) {
+        if (index - possibleType.length >= 0) {
+          var possibleGradient = value.substring(index - possibleType.length, index);
+          if (possibleGradient === possibleType) {
+            if (value.slice(index - possibleType.length - 10, index - possibleType.length - 1) === "repeating") {
+              typeGradient = "repeating-".concat(possibleType, "gradient");
+              return true;
+            }
+            if (value.slice(index - possibleType.length - 8, index - possibleType.length - 1) === "-webkit") {
+              typeGradient = "-webkit-".concat(possibleType, "gradient");
+              return true;
+            }
+            typeGradient = "".concat(possibleType, "gradient");
+            return true;
+          }
+        }
+      });
+      if (!typeGradient) {
+        return "break";
+      }
+      var _a = getParenthesesRange(value, index + gradientLength),
+        start = _a.start,
+        end = _a.end;
+      var match = value.substring(start + 1, end - 1);
+      startIndex = end + 1 + conicGradientLength;
+      result.push({
+        typeGradient: typeGradient,
+        match: match,
+        offset: typeGradient.length + 2,
+        index: index - typeGradient.length + gradientLength,
+        hasComma: true,
+      });
+    };
+    while ((index = value.indexOf("gradient", startIndex)) !== -1) {
+      var state_1 = _loop_1();
+      if (state_1 === "break") break;
+    }
+    if (result.length) {
+      result[result.length - 1].hasComma = false;
+    }
+    return result;
   }
-  var xt = "gradient".length,
-    Tt = "conic-",
-    Rt = Tt.length,
-    Vt = "radial-",
-    At = "linear-";
 
-  function Mt(e, t) {
-    return Boolean(e && e.getPropertyPriority(t));
+  function getPriority(ruleStyle, property) {
+    return Boolean(ruleStyle && ruleStyle.getPropertyPriority(property));
   }
-
-  function Lt(e, t, r, n, a, o) {
-    if (e.startsWith("--")) {
-      var i = (function (e, t, r, n, a, o) {
-        return e.getModifierForVariable({
-          varName: t,
-          sourceValue: r,
-          rule: n,
-          ignoredImgSelectors: a,
-          isCancelled: o,
-        });
-      })(n, e, t, r, a, o);
-      if (i)
+  function getModifiableCSSDeclaration(property, value, rule, variablesStore, ignoreImageSelectors, isCancelled) {
+    if (property.startsWith("--")) {
+      var modifier = getVariableModifier(variablesStore, property, value, rule, ignoreImageSelectors, isCancelled);
+      if (modifier) {
         return {
-          property: e,
-          value: i,
-          important: Mt(r.style, e),
-          sourceValue: t,
+          property: property,
+          value: modifier,
+          important: getPriority(rule.style, property),
+          sourceValue: value,
         };
-    } else if (t.includes("var(")) {
-      i = (function (e, t, r) {
-        return e.getModifierForVarDependant(t, r);
-      })(n, e, t);
-      if (i)
+      }
+    } else if (value.includes("var(")) {
+      var modifier = getVariableDependantModifier(variablesStore, property, value);
+      if (modifier) {
         return {
-          property: e,
-          value: i,
-          important: Mt(r.style, e),
-          sourceValue: t,
+          property: property,
+          value: modifier,
+          important: getPriority(rule.style, property),
+          sourceValue: value,
         };
-    } else {
-      if ("color-scheme" === e) return null;
-      if ((e.includes("color") && "-webkit-print-color-adjust" !== e) || "fill" === e || "stroke" === e || "stop-color" === e) {
-        i = (function (e, t, r) {
-          if (Nt.has(t.toLowerCase())) return t;
-          var n = Ee(t);
-          if (!n) return null;
-          if (e.includes("background"))
-            return (r.style.webkitMaskImage && "none" !== r.style.webkitMaskImage) || (r.style.webkitMask && !r.style.webkitMask.startsWith("none")) || (r.style.mask && "none" !== r.style.mask) || (r.style.getPropertyValue("mask-image") && "none" !== r.style.getPropertyValue("mask-image"))
-              ? function (e) {
-                  return ut(n, e);
-                }
-              : function (e) {
-                  return rt(n, e);
-                };
-          if (e.includes("border") || e.includes("outline"))
-            return function (e) {
-              return st(n, e);
-            };
-          return function (e) {
-            return ut(n, e);
-          };
-        })(e, t, r);
-        if (i)
-          return {
-            property: e,
-            value: i,
-            important: Mt(r.style, e),
-            sourceValue: t,
-          };
-      } else if ("background-image" === e || "list-style-image" === e) {
-        if ((i = Bt(t, r, a, o)))
-          return {
-            property: e,
-            value: i,
-            important: Mt(r.style, e),
-            sourceValue: t,
-          };
-      } else if (e.includes("shadow")) {
-        i = (function (e) {
-          var t = qt(e);
-          if (!t) return null;
-          return function (e) {
-            return t(e).result;
-          };
-        })(t);
-        if (i)
-          return {
-            property: e,
-            value: i,
-            important: Mt(r.style, e),
-            sourceValue: t,
-          };
+      }
+    } else if (property === "color-scheme") {
+      return null;
+    } else if ((property.includes("color") && property !== "-webkit-print-color-adjust") || property === "fill" || property === "stroke" || property === "stop-color") {
+      var modifier = getColorModifier(property, value, rule);
+      if (modifier) {
+        return {
+          property: property,
+          value: modifier,
+          important: getPriority(rule.style, property),
+          sourceValue: value,
+        };
+      }
+    } else if (property === "background-image" || property === "list-style-image") {
+      var modifier = getBgImageModifier(value, rule, ignoreImageSelectors, isCancelled);
+      if (modifier) {
+        return {
+          property: property,
+          value: modifier,
+          important: getPriority(rule.style, property),
+          sourceValue: value,
+        };
+      }
+    } else if (property.includes("shadow")) {
+      var modifier = getShadowModifier(value);
+      if (modifier) {
+        return {
+          property: property,
+          value: modifier,
+          important: getPriority(rule.style, property),
+          sourceValue: value,
+        };
       }
     }
     return null;
   }
-
-  function Ot() {
-    for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
-    return e.filter(Boolean).join(", ");
+  function joinSelectors() {
+    var selectors = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      selectors[_i] = arguments[_i];
+    }
+    return selectors.filter(Boolean).join(", ");
   }
-
-  function Dt(e, t, n) {
-    var a = [];
-    t ||
-      (a.push("html {"),
-      a.push(
-        "    background-color: ".concat(
-          rt(
-            {
-              r: 255,
-              g: 255,
-              b: 255,
-            },
-            e
-          ),
-          " !important;"
-        )
-      ),
-      a.push("}")),
-      _ && (a.push("html {"), a.push("    color-scheme: ".concat(1 === e.mode ? "dark" : "dark light", " !important;")), a.push("}"));
-    var o = Ot(t ? "" : "html, body", n ? "input, textarea, select, button, dialog" : "");
-    return (
-      o &&
-        (a.push("".concat(o, " {")),
-        a.push(
-          "    background-color: ".concat(
-            rt(
-              {
-                r: 255,
-                g: 255,
-                b: 255,
-              },
-              e
-            ),
-            ";"
-          )
-        ),
-        a.push("}")),
-      a.push("".concat(Ot("html, body", n ? "input, textarea, select, button" : ""), " {")),
-      a.push(
-        "    border-color: ".concat(
-          st(
-            {
-              r: 76,
-              g: 76,
-              b: 76,
-            },
-            e
-          ),
-          ";"
-        )
-      ),
-      a.push(
-        "    color: ".concat(
-          ut(
-            {
-              r: 0,
-              g: 0,
-              b: 0,
-            },
-            e
-          ),
-          ";"
-        )
-      ),
-      a.push("}"),
-      a.push("a {"),
-      a.push(
-        "    color: ".concat(
-          ut(
-            {
-              r: 0,
-              g: 64,
-              b: 255,
-            },
-            e
-          ),
-          ";"
-        )
-      ),
-      a.push("}"),
-      a.push("table {"),
-      a.push(
-        "    border-color: ".concat(
-          st(
-            {
-              r: 128,
-              g: 128,
-              b: 128,
-            },
-            e
-          ),
-          ";"
-        )
-      ),
-      a.push("}"),
-      a.push("::placeholder {"),
-      a.push(
-        "    color: ".concat(
-          ut(
-            {
-              r: 169,
-              g: 169,
-              b: 169,
-            },
-            e
-          ),
-          ";"
-        )
-      ),
-      a.push("}"),
-      a.push("input:-webkit-autofill,"),
-      a.push("textarea:-webkit-autofill,"),
-      a.push("select:-webkit-autofill {"),
-      a.push(
-        "    background-color: ".concat(
-          rt(
-            {
-              r: 250,
-              g: 255,
-              b: 189,
-            },
-            e
-          ),
-          " !important;"
-        )
-      ),
-      a.push(
-        "    color: ".concat(
-          ut(
-            {
-              r: 0,
-              g: 0,
-              b: 0,
-            },
-            e
-          ),
-          " !important;"
-        )
-      ),
-      a.push("}"),
-      e.scrollbarColor &&
-        a.push(
-          (function (e) {
-            var t,
-              n,
-              a,
-              o,
-              i,
-              u,
-              c = [];
-            if ("auto" === e.scrollbarColor)
-              (t = rt(
-                {
-                  r: 241,
-                  g: 241,
-                  b: 241,
-                },
-                e
-              )),
-                (n = ut(
-                  {
-                    r: 96,
-                    g: 96,
-                    b: 96,
-                  },
-                  e
-                )),
-                (a = rt(
-                  {
-                    r: 176,
-                    g: 176,
-                    b: 176,
-                  },
-                  e
-                )),
-                (o = rt(
-                  {
-                    r: 144,
-                    g: 144,
-                    b: 144,
-                  },
-                  e
-                )),
-                (i = rt(
-                  {
-                    r: 96,
-                    g: 96,
-                    b: 96,
-                  },
-                  e
-                )),
-                (u = rt(
-                  {
-                    r: 255,
-                    g: 255,
-                    b: 255,
-                  },
-                  e
-                ));
-            else {
-              var s = Te(Ee(e.scrollbarColor)),
-                l = s.l > 0.5,
-                d = function (e) {
-                  return r(r({}, s), {
-                    l: Ue(s.l + e, 0, 1),
-                  });
-                },
-                f = function (e) {
-                  return r(r({}, s), {
-                    l: Ue(s.l - e, 0, 1),
-                  });
-                };
-              (t = Ve(f(0.4))), (n = Ve(l ? f(0.4) : d(0.4))), (a = Ve(s)), (o = Ve(d(0.1))), (i = Ve(d(0.2)));
-            }
-            c.push("::-webkit-scrollbar {"),
-              c.push("    background-color: ".concat(t, ";")),
-              c.push("    color: ".concat(n, ";")),
-              c.push("}"),
-              c.push("::-webkit-scrollbar-thumb {"),
-              c.push("    background-color: ".concat(a, ";")),
-              c.push("}"),
-              c.push("::-webkit-scrollbar-thumb:hover {"),
-              c.push("    background-color: ".concat(o, ";")),
-              c.push("}"),
-              c.push("::-webkit-scrollbar-thumb:active {"),
-              c.push("    background-color: ".concat(i, ";")),
-              c.push("}"),
-              c.push("::-webkit-scrollbar-corner {"),
-              c.push("    background-color: ".concat(u, ";")),
-              c.push("}"),
-              h && (c.push("* {"), c.push("    scrollbar-color: ".concat(a, " ").concat(t, ";")), c.push("}"));
-            return c.join("\n");
-          })(e)
-        ),
-      e.selectionColor &&
-        a.push(
-          (function (e) {
-            var t = [],
-              r = Pt(e),
-              n = r.backgroundColorSelection,
-              a = r.foregroundColorSelection;
-            return (
-              ["::selection", "::-moz-selection"].forEach(function (e) {
-                t.push("".concat(e, " {")), t.push("    background-color: ".concat(n, " !important;")), t.push("    color: ".concat(a, " !important;")), t.push("}");
-              }),
-              t.join("\n")
-            );
-          })(e)
-        ),
-      a.join("\n")
-    );
+  function getModifiedUserAgentStyle(theme, isIFrame, styleSystemControls) {
+    var lines = [];
+    if (!isIFrame) {
+      lines.push("html {");
+      lines.push("    background-color: ".concat(modifyBackgroundColor({ r: 255, g: 255, b: 255 }, theme), " !important;"));
+      lines.push("}");
+    }
+    if (isCSSColorSchemePropSupported) {
+      lines.push("html {");
+      lines.push("    color-scheme: ".concat(theme.mode === 1 ? "dark" : "dark light", " !important;"));
+      lines.push("}");
+    }
+    var bgSelectors = joinSelectors(isIFrame ? "" : "html, body", styleSystemControls ? "input, textarea, select, button, dialog" : "");
+    if (bgSelectors) {
+      lines.push("".concat(bgSelectors, " {"));
+      lines.push("    background-color: ".concat(modifyBackgroundColor({ r: 255, g: 255, b: 255 }, theme), ";"));
+      lines.push("}");
+    }
+    lines.push("".concat(joinSelectors("html, body", styleSystemControls ? "input, textarea, select, button" : ""), " {"));
+    lines.push("    border-color: ".concat(modifyBorderColor({ r: 76, g: 76, b: 76 }, theme), ";"));
+    lines.push("    color: ".concat(modifyForegroundColor({ r: 0, g: 0, b: 0 }, theme), ";"));
+    lines.push("}");
+    lines.push("a {");
+    lines.push("    color: ".concat(modifyForegroundColor({ r: 0, g: 64, b: 255 }, theme), ";"));
+    lines.push("}");
+    lines.push("table {");
+    lines.push("    border-color: ".concat(modifyBorderColor({ r: 128, g: 128, b: 128 }, theme), ";"));
+    lines.push("}");
+    lines.push("::placeholder {");
+    lines.push("    color: ".concat(modifyForegroundColor({ r: 169, g: 169, b: 169 }, theme), ";"));
+    lines.push("}");
+    lines.push("input:-webkit-autofill,");
+    lines.push("textarea:-webkit-autofill,");
+    lines.push("select:-webkit-autofill {");
+    lines.push("    background-color: ".concat(modifyBackgroundColor({ r: 250, g: 255, b: 189 }, theme), " !important;"));
+    lines.push("    color: ".concat(modifyForegroundColor({ r: 0, g: 0, b: 0 }, theme), " !important;"));
+    lines.push("}");
+    if (theme.scrollbarColor) {
+      lines.push(getModifiedScrollbarStyle(theme));
+    }
+    if (theme.selectionColor) {
+      lines.push(getModifiedSelectionStyle(theme));
+    }
+    return lines.join("\n");
   }
-
-  function Pt(e) {
-    var t, n;
-    if ("auto" === e.selectionColor)
-      (t = rt(
-        {
-          r: 0,
-          g: 96,
-          b: 212,
-        },
-        r(r({}, e), {
-          grayscale: 0,
-        })
-      )),
-        (n = ut(
-          {
-            r: 255,
-            g: 255,
-            b: 255,
-          },
-          r(r({}, e), {
-            grayscale: 0,
-          })
-        ));
-    else {
-      var a = Te(Ee(e.selectionColor));
-      (t = e.selectionColor), (n = a.l < 0.5 ? "#FFF" : "#000");
+  function getSelectionColor(theme) {
+    var backgroundColorSelection;
+    var foregroundColorSelection;
+    if (theme.selectionColor === "auto") {
+      backgroundColorSelection = modifyBackgroundColor({ r: 0, g: 96, b: 212 }, __assign(__assign({}, theme), { grayscale: 0 }));
+      foregroundColorSelection = modifyForegroundColor({ r: 255, g: 255, b: 255 }, __assign(__assign({}, theme), { grayscale: 0 }));
+    } else {
+      var rgb = parseColorWithCache(theme.selectionColor);
+      var hsl = rgbToHSL(rgb);
+      backgroundColorSelection = theme.selectionColor;
+      if (hsl.l < 0.5) {
+        foregroundColorSelection = "#FFF";
+      } else {
+        foregroundColorSelection = "#000";
+      }
     }
     return {
-      backgroundColorSelection: t,
-      foregroundColorSelection: n,
+      backgroundColorSelection: backgroundColorSelection,
+      foregroundColorSelection: foregroundColorSelection,
     };
   }
-
-  function It(e, t) {
-    var r = t.strict,
-      n = [],
-      a = ["microsoft.com", "docs.microsoft.com"].includes(location.hostname);
-    return (
-      n.push("html, body, ".concat(r ? "body :not(iframe)".concat(a ? ':not(div[style^="position:absolute;top:0;left:-"]' : "") : "body > :not(iframe)", " {")),
-      n.push(
-        "    background-color: ".concat(
-          rt(
-            {
-              r: 255,
-              g: 255,
-              b: 255,
-            },
-            e
-          ),
-          " !important;"
-        )
-      ),
-      n.push(
-        "    border-color: ".concat(
-          st(
-            {
-              r: 64,
-              g: 64,
-              b: 64,
-            },
-            e
-          ),
-          " !important;"
-        )
-      ),
-      n.push(
-        "    color: ".concat(
-          ut(
-            {
-              r: 0,
-              g: 0,
-              b: 0,
-            },
-            e
-          ),
-          " !important;"
-        )
-      ),
-      n.push("}"),
-      n.join("\n")
-    );
+  function getModifiedSelectionStyle(theme) {
+    var lines = [];
+    var modifiedSelectionColor = getSelectionColor(theme);
+    var backgroundColorSelection = modifiedSelectionColor.backgroundColorSelection;
+    var foregroundColorSelection = modifiedSelectionColor.foregroundColorSelection;
+    ["::selection", "::-moz-selection"].forEach(function (selection) {
+      lines.push("".concat(selection, " {"));
+      lines.push("    background-color: ".concat(backgroundColorSelection, " !important;"));
+      lines.push("    color: ".concat(foregroundColorSelection, " !important;"));
+      lines.push("}");
+    });
+    return lines.join("\n");
   }
-  var Nt = new Set(["inherit", "transparent", "initial", "currentcolor", "none", "unset"]);
-  var Ft = new Map(),
-    jt = new Map();
-
-  function Bt(e, t, o, i) {
-    var u,
-      c,
-      s = this;
+  function getModifiedScrollbarStyle(theme) {
+    var lines = [];
+    var colorTrack;
+    var colorIcons;
+    var colorThumb;
+    var colorThumbHover;
+    var colorThumbActive;
+    var colorCorner;
+    if (theme.scrollbarColor === "auto") {
+      colorTrack = modifyBackgroundColor({ r: 241, g: 241, b: 241 }, theme);
+      colorIcons = modifyForegroundColor({ r: 96, g: 96, b: 96 }, theme);
+      colorThumb = modifyBackgroundColor({ r: 176, g: 176, b: 176 }, theme);
+      colorThumbHover = modifyBackgroundColor({ r: 144, g: 144, b: 144 }, theme);
+      colorThumbActive = modifyBackgroundColor({ r: 96, g: 96, b: 96 }, theme);
+      colorCorner = modifyBackgroundColor({ r: 255, g: 255, b: 255 }, theme);
+    } else {
+      var rgb = parseColorWithCache(theme.scrollbarColor);
+      var hsl_1 = rgbToHSL(rgb);
+      var isLight = hsl_1.l > 0.5;
+      var lighten = function (lighter) {
+        return __assign(__assign({}, hsl_1), {
+          l: clamp(hsl_1.l + lighter, 0, 1),
+        });
+      };
+      var darken = function (darker) {
+        return __assign(__assign({}, hsl_1), {
+          l: clamp(hsl_1.l - darker, 0, 1),
+        });
+      };
+      colorTrack = hslToString(darken(0.4));
+      colorIcons = hslToString(isLight ? darken(0.4) : lighten(0.4));
+      colorThumb = hslToString(hsl_1);
+      colorThumbHover = hslToString(lighten(0.1));
+      colorThumbActive = hslToString(lighten(0.2));
+      colorCorner = hslToString(darken(0.5));
+    }
+    lines.push("::-webkit-scrollbar {");
+    lines.push("    background-color: ".concat(colorTrack, ";"));
+    lines.push("    color: ".concat(colorIcons, ";"));
+    lines.push("}");
+    lines.push("::-webkit-scrollbar-thumb {");
+    lines.push("    background-color: ".concat(colorThumb, ";"));
+    lines.push("}");
+    lines.push("::-webkit-scrollbar-thumb:hover {");
+    lines.push("    background-color: ".concat(colorThumbHover, ";"));
+    lines.push("}");
+    lines.push("::-webkit-scrollbar-thumb:active {");
+    lines.push("    background-color: ".concat(colorThumbActive, ";"));
+    lines.push("}");
+    lines.push("::-webkit-scrollbar-corner {");
+    lines.push("    background-color: ".concat(colorCorner, ";"));
+    lines.push("}");
+    if (isFirefox) {
+      lines.push("* {");
+      lines.push("    scrollbar-color: ".concat(colorThumb, " ").concat(colorTrack, ";"));
+      lines.push("}");
+    }
+    return lines.join("\n");
+  }
+  function getModifiedFallbackStyle(filter, _a) {
+    var strict = _a.strict;
+    var lines = [];
+    var isMicrosoft = ["microsoft.com", "docs.microsoft.com"].includes(location.hostname);
+    lines.push("html, body, ".concat(strict ? "body :not(iframe)".concat(isMicrosoft ? ':not(div[style^="position:absolute;top:0;left:-"]' : "") : "body > :not(iframe)", " {"));
+    lines.push("    background-color: ".concat(modifyBackgroundColor({ r: 255, g: 255, b: 255 }, filter), " !important;"));
+    lines.push("    border-color: ".concat(modifyBorderColor({ r: 64, g: 64, b: 64 }, filter), " !important;"));
+    lines.push("    color: ".concat(modifyForegroundColor({ r: 0, g: 0, b: 0 }, filter), " !important;"));
+    lines.push("}");
+    return lines.join("\n");
+  }
+  var unparsableColors = new Set(["inherit", "transparent", "initial", "currentcolor", "none", "unset"]);
+  function getColorModifier(prop, value, rule) {
+    if (unparsableColors.has(value.toLowerCase())) {
+      return value;
+    }
+    var rgb = parseColorWithCache(value);
+    if (!rgb) {
+      return null;
+    }
+    if (prop.includes("background")) {
+      if ((rule.style.webkitMaskImage && rule.style.webkitMaskImage !== "none") || (rule.style.webkitMask && !rule.style.webkitMask.startsWith("none")) || (rule.style.mask && rule.style.mask !== "none") || (rule.style.getPropertyValue("mask-image") && rule.style.getPropertyValue("mask-image") !== "none")) {
+        return function (filter) {
+          return modifyForegroundColor(rgb, filter);
+        };
+      }
+      return function (filter) {
+        return modifyBackgroundColor(rgb, filter);
+      };
+    }
+    if (prop.includes("border") || prop.includes("outline")) {
+      return function (filter) {
+        return modifyBorderColor(rgb, filter);
+      };
+    }
+    return function (filter) {
+      return modifyForegroundColor(rgb, filter);
+    };
+  }
+  var imageDetailsCache = new Map();
+  var awaitingForImageLoading = new Map();
+  function shouldIgnoreImage(selectorText, selectors) {
+    if (!selectorText || selectors.length === 0) {
+      return false;
+    }
+    if (
+      selectors.some(function (s) {
+        return s === "*";
+      })
+    ) {
+      return true;
+    }
+    var ruleSelectors = selectorText.split(/,\s*/g);
+    var _loop_1 = function (i) {
+      var ignoredSelector = selectors[i];
+      if (
+        ruleSelectors.some(function (s) {
+          return s === ignoredSelector;
+        })
+      ) {
+        return { value: true };
+      }
+    };
+    for (var i = 0; i < selectors.length; i++) {
+      var state_1 = _loop_1(i);
+      if (typeof state_1 === "object") return state_1.value;
+    }
+    return false;
+  }
+  function getBgImageModifier(value, rule, ignoreImageSelectors, isCancelled) {
+    var _this = this;
     try {
-      var l = (function (e) {
-          for (
-            var t = [],
-              r = 0,
-              n = Tt.length,
-              a = function () {
-                var a;
-                if (
-                  ([At, Vt, Tt].find(function (t) {
-                    if (r - t.length >= 0 && e.substring(r - t.length, r) === t) return "repeating" === e.slice(r - t.length - 10, r - t.length - 1) ? ((a = "repeating-".concat(t, "gradient")), !0) : "-webkit" === e.slice(r - t.length - 8, r - t.length - 1) ? ((a = "-webkit-".concat(t, "gradient")), !0) : ((a = "".concat(t, "gradient")), !0);
-                  }),
-                  !a)
-                )
-                  return "break";
-                var o = _e(e, r + xt),
-                  i = o.start,
-                  u = o.end,
-                  c = e.substring(i + 1, u - 1);
-                (n = u + 1 + Rt),
-                  t.push({
-                    typeGradient: a,
-                    match: c,
-                    offset: a.length + 2,
-                    index: r - a.length + xt,
-                    hasComma: !0,
-                  });
-              };
-            -1 !== (r = e.indexOf("gradient", n)) && "break" !== a();
-
-          );
-          return t.length && (t[t.length - 1].hasComma = !1), t;
-        })(e),
-        d = Se(de, e);
-      if (0 === d.length && 0 === l.length) return e;
-      var f = l
-          .map(function (e) {
-            return r(
-              {
-                type: "gradient",
-              },
-              e
-            );
+      var gradients = parseGradient(value);
+      var urls = getMatches(cssURLRegex, value);
+      if (urls.length === 0 && gradients.length === 0) {
+        return value;
+      }
+      var getIndices = function (matches) {
+        var index = 0;
+        return matches.map(function (match) {
+          var valueIndex = value.indexOf(match, index);
+          index = valueIndex + match.length;
+          return { match: match, index: valueIndex };
+        });
+      };
+      var matches_1 = gradients
+        .map(function (i) {
+          return __assign({ type: "gradient" }, i);
+        })
+        .concat(
+          getIndices(urls).map(function (i) {
+            return __assign({ type: "url", offset: 0 }, i);
           })
-          .concat(
-            ((u = d),
-            (c = 0),
-            u.map(function (t) {
-              var r = e.indexOf(t, c);
-              return (
-                (c = r + t.length),
-                {
-                  match: t,
-                  index: r,
-                }
-              );
-            })).map(function (e) {
-              return r(
-                {
-                  type: "url",
-                  offset: 0,
-                },
-                e
-              );
-            })
-          )
-          .sort(function (e, t) {
-            return e.index > t.index ? 1 : -1;
-          }),
-        h = function (e, t) {
-          var n,
-            a = e.isDark,
-            o = e.isLight,
-            i = e.isTransparent,
-            u = e.isLarge,
-            c = e.isTooLarge,
-            s = e.width;
-          if (c) n = 'url("'.concat(e.src, '")');
-          else if (a && i && 1 === t.mode && !u && s > 2) {
-            "Inverting dark image ".concat(e.src);
-            var l = Et(
-              e,
-              r(r({}, t), {
-                sepia: Ue(t.sepia + 10, 0, 100),
-              })
-            );
-            n = 'url("'.concat(l, '")');
-          } else if (o && !i && 1 === t.mode)
-            if (u) n = "none";
-            else {
-              "Dimming light image ".concat(e.src);
-              var d = Et(e, t);
-              n = 'url("'.concat(d, '")');
+        )
+        .sort(function (a, b) {
+          return a.index > b.index ? 1 : -1;
+        });
+      var getGradientModifier_1 = function (gradient) {
+        var typeGradient = gradient.typeGradient,
+          match = gradient.match,
+          hasComma = gradient.hasComma;
+        var partsRegex = /([^\(\),]+(\([^\(\)]*(\([^\(\)]*\)*[^\(\)]*)?\))?([^\(\), ]|( (?!calc)))*),?/g;
+        var colorStopRegex = /^(from|color-stop|to)\(([^\(\)]*?,\s*)?(.*?)\)$/;
+        var parts = getMatches(partsRegex, match, 1).map(function (part) {
+          part = part.trim();
+          var rgb = parseColorWithCache(part);
+          if (rgb) {
+            return function (filter) {
+              return modifyGradientColor(rgb, filter);
+            };
+          }
+          var space = part.lastIndexOf(" ");
+          rgb = parseColorWithCache(part.substring(0, space));
+          if (rgb) {
+            return function (filter) {
+              return "".concat(modifyGradientColor(rgb, filter), " ").concat(part.substring(space + 1));
+            };
+          }
+          var colorStopMatch = part.match(colorStopRegex);
+          if (colorStopMatch) {
+            rgb = parseColorWithCache(colorStopMatch[3]);
+            if (rgb) {
+              return function (filter) {
+                return ""
+                  .concat(colorStopMatch[1], "(")
+                  .concat(colorStopMatch[2] ? "".concat(colorStopMatch[2], ", ") : "")
+                  .concat(modifyGradientColor(rgb, filter), ")");
+              };
             }
-          else if (0 === t.mode && o && !u) {
-            "Applying filter to image ".concat(e.src);
-            var f = Et(
-              e,
-              r(r({}, t), {
-                brightness: Ue(t.brightness - 10, 5, 200),
-                sepia: Ue(t.sepia + 10, 0, 100),
-              })
-            );
-            n = 'url("'.concat(f, '")');
-          } else n = null;
-          return n;
-        },
-        p = [],
-        v = 0,
-        m = !1;
-      return (
-        f.forEach(function (r, u) {
-          var c = r.type,
-            l = r.match,
-            d = r.index,
-            g = r.typeGradient,
-            b = r.hasComma,
-            y = r.offset,
-            S = d,
-            _ = v,
-            k = S + l.length + y;
-          (v = k),
-            _ !== S &&
-              (m
-                ? p.push(function () {
-                    var t = e.substring(_, S);
-                    return "," === t[0] && (t = t.substring(1)), t;
-                  })
-                : p.push(function () {
-                    return e.substring(_, S);
-                  })),
-            (m = b || !1),
-            "url" === c
-              ? p.push(
-                  (function (e) {
-                    var r;
-                    if (
-                      (function (e, t) {
-                        if (!e || 0 === t.length) return !1;
-                        if (
-                          t.some(function (e) {
-                            return "*" === e;
-                          })
-                        )
-                          return !0;
-                        for (
-                          var r = e.split(/,\s*/g),
-                            n = function (e) {
-                              var n = t[e];
-                              if (
-                                r.some(function (e) {
-                                  return e === n;
-                                })
-                              )
-                                return {
-                                  value: !0,
-                                };
-                            },
-                            a = 0;
-                          a < t.length;
-                          a++
-                        ) {
-                          var o = n(a);
-                          if ("object" == typeof o) return o.value;
-                        }
-                        return !1;
-                      })(t.selectorText, o)
-                    )
-                      return null;
-                    var u = he(e),
-                      c = 0 === u.length,
-                      l = t.parentStyleSheet,
-                      d = l && l.href ? pe(l.href) : (null === (r = l.ownerNode) || void 0 === r ? void 0 : r.baseURI) || location.origin;
-                    u = ie(d, u);
-                    var f = 'url("'.concat(u, '")');
-                    return function (e) {
-                      return n(s, void 0, void 0, function () {
-                        var t, r;
-                        return a(this, function (n) {
-                          switch (n.label) {
-                            case 0:
-                              return c ? [2, "url('')"] : Ft.has(u) ? ((t = Ft.get(u)), [3, 7]) : [3, 1];
-                            case 1:
-                              return (
-                                n.trys.push([1, 6, , 7]),
-                                jt.has(u)
-                                  ? ((r = jt.get(u)),
-                                    [
-                                      4,
-                                      new Promise(function (e) {
-                                        return r.push(e);
-                                      }),
-                                    ])
-                                  : [3, 3]
-                              );
-                            case 2:
-                              return (t = n.sent()) ? [3, 5] : [2, null];
-                            case 3:
-                              return jt.set(u, []), [4, gt(u)];
-                            case 4:
-                              (t = n.sent()),
-                                Ft.set(u, t),
-                                jt.get(u).forEach(function (e) {
-                                  return e(t);
-                                }),
-                                jt.delete(u),
-                                (n.label = 5);
-                            case 5:
-                              return i() ? [2, null] : [3, 7];
-                            case 6:
-                              return (
-                                n.sent(),
-                                jt.has(u) &&
-                                  (jt.get(u).forEach(function (e) {
-                                    return e(null);
-                                  }),
-                                  jt.delete(u)),
-                                [2, f]
-                              );
-                            case 7:
-                              return [2, h(t, e) || f];
-                          }
-                        });
-                      });
-                    };
-                  })(l)
-                )
-              : "gradient" === c &&
-                p.push(
-                  (function (e) {
-                    var t = e.typeGradient,
-                      r = e.match,
-                      n = e.hasComma,
-                      a = /^(from|color-stop|to)\(([^\(\)]*?,\s*)?(.*?)\)$/,
-                      o = Se(/([^\(\),]+(\([^\(\)]*(\([^\(\)]*\)*[^\(\)]*)?\))?([^\(\), ]|( (?!calc)))*),?/g, r, 1).map(function (e) {
-                        var t = Ee((e = e.trim()));
-                        if (t)
-                          return function (e) {
-                            return lt(t, e);
-                          };
-                        var r = e.lastIndexOf(" ");
-                        if ((t = Ee(e.substring(0, r))))
-                          return function (n) {
-                            return "".concat(lt(t, n), " ").concat(e.substring(r + 1));
-                          };
-                        var n = e.match(a);
-                        return n && (t = Ee(n[3]))
-                          ? function (e) {
-                              return ""
-                                .concat(n[1], "(")
-                                .concat(n[2] ? "".concat(n[2], ", ") : "")
-                                .concat(lt(t, e), ")");
-                            }
-                          : function () {
-                              return e;
-                            };
-                      });
-                    return function (e) {
-                      return ""
-                        .concat(t, "(")
-                        .concat(
-                          o
-                            .map(function (t) {
-                              return t(e);
-                            })
-                            .join(", "),
-                          ")"
-                        )
-                        .concat(n ? ", " : "");
-                    };
-                  })({
-                    match: l,
-                    index: d,
-                    typeGradient: g,
-                    hasComma: b,
-                    offset: y,
-                  })
-                ),
-            u === f.length - 1 &&
-              p.push(function () {
-                return e.substring(k);
-              });
-        }),
-        function (e) {
-          var t = p.filter(Boolean).map(function (t) {
-            return t(e);
-          });
-          if (
-            t.some(function (e) {
-              return e instanceof Promise;
-            })
-          )
-            return Promise.all(t).then(function (e) {
-              return e.filter(Boolean).join("");
-            });
-          var r = t.join("");
-          return r.endsWith(", initial") ? r.slice(0, -9) : r;
+          }
+          return function () {
+            return part;
+          };
+        });
+        return function (filter) {
+          return ""
+            .concat(typeGradient, "(")
+            .concat(
+              parts
+                .map(function (modify) {
+                  return modify(filter);
+                })
+                .join(", "),
+              ")"
+            )
+            .concat(hasComma ? ", " : "");
+        };
+      };
+      var getURLModifier_1 = function (urlValue) {
+        var _a;
+        if (shouldIgnoreImage(rule.selectorText, ignoreImageSelectors)) {
+          return null;
         }
-      );
-    } catch (e) {
+        var url = getCSSURLValue(urlValue);
+        var isURLEmpty = url.length === 0;
+        var parentStyleSheet = rule.parentStyleSheet;
+        var baseURL = parentStyleSheet && parentStyleSheet.href ? getCSSBaseBath(parentStyleSheet.href) : ((_a = parentStyleSheet.ownerNode) === null || _a === void 0 ? void 0 : _a.baseURI) || location.origin;
+        url = getAbsoluteURL(baseURL, url);
+        var absoluteValue = 'url("'.concat(url, '")');
+        return function (filter) {
+          return __awaiter(_this, void 0, void 0, function () {
+            var imageDetails, awaiters_1, err_1, bgImageValue;
+            return __generator(this, function (_a) {
+              switch (_a.label) {
+                case 0:
+                  if (isURLEmpty) {
+                    return [2, "url('')"];
+                  }
+                  if (!imageDetailsCache.has(url)) return [3, 1];
+                  imageDetails = imageDetailsCache.get(url);
+                  return [3, 7];
+                case 1:
+                  _a.trys.push([1, 6, , 7]);
+                  if (!awaitingForImageLoading.has(url)) return [3, 3];
+                  awaiters_1 = awaitingForImageLoading.get(url);
+                  return [
+                    4,
+                    new Promise(function (resolve) {
+                      return awaiters_1.push(resolve);
+                    }),
+                  ];
+                case 2:
+                  imageDetails = _a.sent();
+                  if (!imageDetails) {
+                    return [2, null];
+                  }
+                  return [3, 5];
+                case 3:
+                  awaitingForImageLoading.set(url, []);
+                  return [4, getImageDetails(url)];
+                case 4:
+                  imageDetails = _a.sent();
+                  imageDetailsCache.set(url, imageDetails);
+                  awaitingForImageLoading.get(url).forEach(function (resolve) {
+                    return resolve(imageDetails);
+                  });
+                  awaitingForImageLoading.delete(url);
+                  _a.label = 5;
+                case 5:
+                  if (isCancelled()) {
+                    return [2, null];
+                  }
+                  return [3, 7];
+                case 6:
+                  err_1 = _a.sent();
+                  logWarn(err_1);
+                  if (awaitingForImageLoading.has(url)) {
+                    awaitingForImageLoading.get(url).forEach(function (resolve) {
+                      return resolve(null);
+                    });
+                    awaitingForImageLoading.delete(url);
+                  }
+                  return [2, absoluteValue];
+                case 7:
+                  bgImageValue = getBgImageValue_1(imageDetails, filter) || absoluteValue;
+                  return [2, bgImageValue];
+              }
+            });
+          });
+        };
+      };
+      var getBgImageValue_1 = function (imageDetails, filter) {
+        var isDark = imageDetails.isDark,
+          isLight = imageDetails.isLight,
+          isTransparent = imageDetails.isTransparent,
+          isLarge = imageDetails.isLarge,
+          isTooLarge = imageDetails.isTooLarge,
+          width = imageDetails.width;
+        var result;
+        if (isTooLarge) {
+          logInfo("Not modifying too large image ".concat(imageDetails.src));
+          result = 'url("'.concat(imageDetails.src, '")');
+        } else if (isDark && isTransparent && filter.mode === 1 && !isLarge && width > 2) {
+          logInfo("Inverting dark image ".concat(imageDetails.src));
+          var inverted = getFilteredImageDataURL(
+            imageDetails,
+            __assign(__assign({}, filter), {
+              sepia: clamp(filter.sepia + 10, 0, 100),
+            })
+          );
+          result = 'url("'.concat(inverted, '")');
+        } else if (isLight && !isTransparent && filter.mode === 1) {
+          if (isLarge) {
+            logInfo("Not modifying light non-transparent large image ".concat(imageDetails.src));
+            result = "none";
+          } else {
+            logInfo("Dimming light image ".concat(imageDetails.src));
+            var dimmed = getFilteredImageDataURL(imageDetails, filter);
+            result = 'url("'.concat(dimmed, '")');
+          }
+        } else if (filter.mode === 0 && isLight && !isLarge) {
+          logInfo("Applying filter to image ".concat(imageDetails.src));
+          var filtered = getFilteredImageDataURL(
+            imageDetails,
+            __assign(__assign({}, filter), {
+              brightness: clamp(filter.brightness - 10, 5, 200),
+              sepia: clamp(filter.sepia + 10, 0, 100),
+            })
+          );
+          result = 'url("'.concat(filtered, '")');
+        } else {
+          logInfo("Not modifying too large image ".concat(imageDetails.src));
+          result = null;
+        }
+        return result;
+      };
+      var modifiers_1 = [];
+      var matchIndex_1 = 0;
+      var prevHasComma_1 = false;
+      matches_1.forEach(function (_a, i) {
+        var type = _a.type,
+          match = _a.match,
+          index = _a.index,
+          typeGradient = _a.typeGradient,
+          hasComma = _a.hasComma,
+          offset = _a.offset;
+        var matchStart = index;
+        var prefixStart = matchIndex_1;
+        var matchEnd = matchStart + match.length + offset;
+        matchIndex_1 = matchEnd;
+        if (prefixStart !== matchStart) {
+          if (prevHasComma_1) {
+            modifiers_1.push(function () {
+              var betweenValue = value.substring(prefixStart, matchStart);
+              if (betweenValue[0] === ",") {
+                betweenValue = betweenValue.substring(1);
+              }
+              return betweenValue;
+            });
+          } else {
+            modifiers_1.push(function () {
+              return value.substring(prefixStart, matchStart);
+            });
+          }
+        }
+        prevHasComma_1 = hasComma || false;
+        if (type === "url") {
+          modifiers_1.push(getURLModifier_1(match));
+        } else if (type === "gradient") {
+          modifiers_1.push(
+            getGradientModifier_1({
+              match: match,
+              index: index,
+              typeGradient: typeGradient,
+              hasComma: hasComma || false,
+              offset: offset,
+            })
+          );
+        }
+        if (i === matches_1.length - 1) {
+          modifiers_1.push(function () {
+            return value.substring(matchEnd);
+          });
+        }
+      });
+      return function (filter) {
+        var results = modifiers_1.filter(Boolean).map(function (modify) {
+          return modify(filter);
+        });
+        if (
+          results.some(function (r) {
+            return r instanceof Promise;
+          })
+        ) {
+          return Promise.all(results).then(function (asyncResults) {
+            return asyncResults.filter(Boolean).join("");
+          });
+        }
+        var combinedResult = results.join("");
+        if (combinedResult.endsWith(", initial")) {
+          return combinedResult.slice(0, -9);
+        }
+        return combinedResult;
+      };
+    } catch (err) {
       return null;
     }
   }
-
-  function qt(e) {
+  function getShadowModifierWithInfo(value) {
     try {
-      var t = 0,
-        r = Se(/(^|\s)(?!calc)([a-z]+\(.+?\)|#[0-9a-f]+|[a-z]+)(.*?(inset|outset)?($|,))/gi, e, 2),
-        n = 0,
-        a = r.map(function (a, o) {
-          var i = t,
-            u = e.indexOf(a, t),
-            c = u + a.length;
-          t = c;
-          var s = Ee(a);
-          return s
-            ? function (t) {
-                return ""
-                  .concat(e.substring(i, u))
-                  .concat(
-                    (function (e, t) {
-                      return rt(e, t);
-                    })(s, t)
-                  )
-                  .concat(o === r.length - 1 ? e.substring(c) : "");
-              }
-            : (n++,
-              function () {
-                return e.substring(i, c);
-              });
-        });
-      return function (e) {
-        var t = a
-          .map(function (t) {
-            return t(e);
+      var index_1 = 0;
+      var colorMatches_1 = getMatches(/(^|\s)(?!calc)([a-z]+\(.+?\)|#[0-9a-f]+|[a-z]+)(.*?(inset|outset)?($|,))/gi, value, 2);
+      var notParsed_1 = 0;
+      var modifiers_2 = colorMatches_1.map(function (match, i) {
+        var prefixIndex = index_1;
+        var matchIndex = value.indexOf(match, index_1);
+        var matchEnd = matchIndex + match.length;
+        index_1 = matchEnd;
+        var rgb = parseColorWithCache(match);
+        if (!rgb) {
+          notParsed_1++;
+          return function () {
+            return value.substring(prefixIndex, matchEnd);
+          };
+        }
+        return function (filter) {
+          return ""
+            .concat(value.substring(prefixIndex, matchIndex))
+            .concat(modifyShadowColor(rgb, filter))
+            .concat(i === colorMatches_1.length - 1 ? value.substring(matchEnd) : "");
+        };
+      });
+      return function (filter) {
+        var modified = modifiers_2
+          .map(function (modify) {
+            return modify(filter);
           })
           .join("");
         return {
-          matchesLength: r.length,
-          unparseableMatchesLength: n,
-          result: t,
+          matchesLength: colorMatches_1.length,
+          unparseableMatchesLength: notParsed_1,
+          result: modified,
         };
       };
-    } catch (e) {
+    } catch (err) {
       return null;
     }
   }
-
-  function Ut() {
-    Qe.clear(), Ft.clear(), Ct(), jt.clear();
-  }
-  var Wt = new ((function () {
-    function e() {
-      (this.varTypes = new Map()), (this.rulesQueue = []), (this.definedVars = new Set()), (this.varRefs = new Map()), (this.unknownColorVars = new Set()), (this.unknownBgVars = new Set()), (this.undefinedVars = new Set()), (this.initialVarTypes = new Map()), (this.changedTypeVars = new Set()), (this.typeChangeSubscriptions = new Map()), (this.unstableVarValues = new Map());
+  function getShadowModifier(value) {
+    var shadowModifier = getShadowModifierWithInfo(value);
+    if (!shadowModifier) {
+      return null;
     }
-    return (
-      (e.prototype.clear = function () {
-        this.varTypes.clear(), this.rulesQueue.splice(0), this.definedVars.clear(), this.varRefs.clear(), this.unknownColorVars.clear(), this.unknownBgVars.clear(), this.undefinedVars.clear(), this.initialVarTypes.clear(), this.changedTypeVars.clear(), this.typeChangeSubscriptions.clear(), this.unstableVarValues.clear();
-      }),
-      (e.prototype.isVarType = function (e, t) {
-        return this.varTypes.has(e) && (this.varTypes.get(e) & t) > 0;
-      }),
-      (e.prototype.addRulesForMatching = function (e) {
-        this.rulesQueue.push(e);
-      }),
-      (e.prototype.matchVariablesAndDependants = function () {
-        var e = this;
-        this.changedTypeVars.clear(),
-          (this.initialVarTypes = new Map(this.varTypes)),
-          this.collectRootVariables(),
-          this.collectVariablesAndVarDep(this.rulesQueue),
-          this.rulesQueue.splice(0),
-          this.collectRootVarDependants(),
-          this.varRefs.forEach(function (t, r) {
-            t.forEach(function (t) {
-              e.varTypes.has(r) && e.resolveVariableType(t, e.varTypes.get(r));
-            });
-          }),
-          this.unknownColorVars.forEach(function (t) {
-            e.unknownBgVars.has(t) ? (e.unknownColorVars.delete(t), e.unknownBgVars.delete(t), e.resolveVariableType(t, 1)) : e.isVarType(t, 7) ? e.unknownColorVars.delete(t) : e.undefinedVars.add(t);
-          }),
-          this.unknownBgVars.forEach(function (t) {
-            null !=
-            e.findVarRef(t, function (t) {
-              return e.unknownColorVars.has(t) || e.isVarType(t, 6);
-            })
-              ? e.itarateVarRefs(t, function (t) {
-                  e.resolveVariableType(t, 1);
-                })
-              : e.isVarType(t, 9)
-              ? e.unknownBgVars.delete(t)
-              : e.undefinedVars.add(t);
-          }),
-          this.changedTypeVars.forEach(function (t) {
-            e.typeChangeSubscriptions.has(t) &&
-              e.typeChangeSubscriptions.get(t).forEach(function (e) {
-                e();
-              });
-          }),
-          this.changedTypeVars.clear();
-      }),
-      (e.prototype.getModifierForVariable = function (e) {
-        var t = this;
-        return function (r) {
-          var n = e.varName,
-            a = e.sourceValue,
-            o = e.rule,
-            i = e.ignoredImgSelectors,
-            u = e.isCancelled,
-            c = function () {
-              var e = [],
-                c = function (o, i, u) {
-                  if (t.isVarType(n, o)) {
-                    var c,
-                      s = i(n);
-                    if (Jt(a))
-                      if (er(a)) {
-                        var l = ur(a, t.unstableVarValues);
-                        l || (l = 1 === o ? "#ffffff" : "#000000"), (c = u(l, r));
-                      } else
-                        c = zt(
-                          a,
-                          function (e) {
-                            return i(e);
-                          },
-                          function (e) {
-                            return u(e, r);
-                          }
-                        );
-                    else c = u(a, r);
-                    e.push({
-                      property: s,
-                      value: c,
-                    });
-                  }
-                };
-              if ((c(1, Qt, ar), c(2, Kt, or), c(4, Yt, ir), t.isVarType(n, 8))) {
-                var s = Xt(n),
-                  l = a;
-                Jt(a) &&
-                  (l = zt(
-                    a,
-                    function (e) {
-                      return Qt(e);
-                    },
-                    function (e) {
-                      return ar(e, r);
-                    }
-                  ));
-                var d = Bt(l, o, i, u);
-                (l = "function" == typeof d ? d(r) : d),
-                  e.push({
-                    property: s,
-                    value: l,
-                  });
-              }
-              return e;
-            },
-            s = new Set();
-          return {
-            declarations: c(),
-            onTypeChange: {
-              addListener: function (e) {
-                var r = function () {
-                  var t = c();
-                  e(t);
-                };
-                s.add(r), t.subscribeForVarTypeChange(n, r);
-              },
-              removeListeners: function () {
-                s.forEach(function (e) {
-                  t.unsubscribeFromVariableTypeChanges(n, e);
-                });
-              },
-            },
-          };
-        };
-      }),
-      (e.prototype.getModifierForVarDependant = function (e, t) {
-        var r = this;
-        if (t.match(/^\s*(rgb|hsl)a?\(/)) {
-          var n = e.startsWith("background"),
-            a = tr(e);
-          return function (e) {
-            var o = ur(t, r.unstableVarValues);
-            return o || (o = n ? "#ffffff" : "#000000"), (n ? ar : a ? or : ir)(o, e);
-          };
-        }
-        return "background-color" === e
-          ? function (e) {
-              return zt(
-                t,
-                function (e) {
-                  return Qt(e);
-                },
-                function (t) {
-                  return ar(t, e);
-                }
-              );
-            }
-          : tr(e)
-          ? function (e) {
-              return zt(
-                t,
-                function (e) {
-                  return Kt(e);
-                },
-                function (t) {
-                  return or(t, e);
-                }
-              );
-            }
-          : "background" === e || "background-image" === e || "box-shadow" === e
-          ? function (n) {
-              var a = new Set(),
-                o = function () {
-                  var o = zt(
-                    t,
-                    function (e) {
-                      return r.isVarType(e, 1) ? Qt(e) : r.isVarType(e, 8) ? Xt(e) : (a.add(e), e);
-                    },
-                    function (e) {
-                      return ar(e, n);
-                    }
-                  );
-                  if ("box-shadow" === e) {
-                    var i = qt(o)(n);
-                    if (i.unparseableMatchesLength !== i.matchesLength) return i.result;
-                  }
-                  return o;
-                },
-                i = o();
-              return a.size > 0
-                ? new Promise(function (e) {
-                    var t = a.values().next().value,
-                      n = function () {
-                        r.unsubscribeFromVariableTypeChanges(t, n);
-                        var a = o();
-                        e(a);
-                      };
-                    r.subscribeForVarTypeChange(t, n);
-                  })
-                : i;
-            }
-          : e.startsWith("border") || e.startsWith("outline")
-          ? function (e) {
-              return zt(
-                t,
-                function (e) {
-                  return Yt(e);
-                },
-                function (t) {
-                  return ir(t, e);
-                }
-              );
-            }
-          : null;
-      }),
-      (e.prototype.subscribeForVarTypeChange = function (e, t) {
-        this.typeChangeSubscriptions.has(e) || this.typeChangeSubscriptions.set(e, new Set());
-        var r = this.typeChangeSubscriptions.get(e);
-        r.has(t) || r.add(t);
-      }),
-      (e.prototype.unsubscribeFromVariableTypeChanges = function (e, t) {
-        this.typeChangeSubscriptions.has(e) && this.typeChangeSubscriptions.get(e).delete(t);
-      }),
-      (e.prototype.collectVariablesAndVarDep = function (e) {
-        var t = this;
-        e.forEach(function (e) {
-          ue(e, function (e) {
-            e.style &&
-              le(e.style, function (e, r) {
-                Zt(e) && t.inspectVariable(e, r), Jt(r) && t.inspectVarDependant(e, r);
-              });
-          });
-        });
-      }),
-      (e.prototype.collectRootVariables = function () {
-        var e = this;
-        le(document.documentElement.style, function (t, r) {
-          Zt(t) && e.inspectVariable(t, r);
-        });
-      }),
-      (e.prototype.inspectVariable = function (e, t) {
-        (this.unstableVarValues.set(e, t), Jt(t) && er(t) && (this.unknownColorVars.add(e), this.definedVars.add(e)), this.definedVars.has(e)) || (this.definedVars.add(e), Ee(t) ? this.unknownColorVars.add(e) : (t.includes("url(") || t.includes("linear-gradient(") || t.includes("radial-gradient(")) && this.resolveVariableType(e, 8));
-      }),
-      (e.prototype.resolveVariableType = function (e, t) {
-        var r = this.initialVarTypes.get(e) || 0,
-          n = (this.varTypes.get(e) || 0) | t;
-        this.varTypes.set(e, n), (n !== r || this.undefinedVars.has(e)) && (this.changedTypeVars.add(e), this.undefinedVars.delete(e)), this.unknownColorVars.delete(e), this.unknownBgVars.delete(e);
-      }),
-      (e.prototype.collectRootVarDependants = function () {
-        var e = this;
-        le(document.documentElement.style, function (t, r) {
-          Jt(r) && e.inspectVarDependant(t, r);
-        });
-      }),
-      (e.prototype.inspectVarDependant = function (e, t) {
-        var r = this;
-        Zt(e)
-          ? this.iterateVarDeps(t, function (t) {
-              r.varRefs.has(e) || r.varRefs.set(e, new Set()), r.varRefs.get(e).add(t);
-            })
-          : "background-color" === e || "box-shadow" === e
-          ? this.iterateVarDeps(t, function (e) {
-              return r.resolveVariableType(e, 1);
-            })
-          : tr(e)
-          ? this.iterateVarDeps(t, function (e) {
-              return r.resolveVariableType(e, 2);
-            })
-          : e.startsWith("border") || e.startsWith("outline")
-          ? this.iterateVarDeps(t, function (e) {
-              return r.resolveVariableType(e, 4);
-            })
-          : ("background" !== e && "background-image" !== e) ||
-            this.iterateVarDeps(t, function (e) {
-              if (!r.isVarType(e, 9)) {
-                var t =
-                  null !=
-                  r.findVarRef(e, function (e) {
-                    return r.unknownColorVars.has(e) || r.isVarType(e, 6);
-                  });
-                r.itarateVarRefs(e, function (e) {
-                  t ? r.resolveVariableType(e, 1) : r.unknownBgVars.add(e);
-                });
-              }
-            });
-      }),
-      (e.prototype.iterateVarDeps = function (e, t) {
-        var r = new Set();
-        !(function (e, t) {
-          zt(e, function (e) {
-            return t(e), e;
-          });
-        })(e, function (e) {
-          return r.add(e);
-        }),
-          r.forEach(function (e) {
-            return t(e);
-          });
-      }),
-      (e.prototype.findVarRef = function (e, t, r) {
-        var n, a;
-        if ((void 0 === r && (r = new Set()), r.has(e))) return null;
-        if ((r.add(e), t(e))) return e;
-        var i = this.varRefs.get(e);
-        if (!i || 0 === i.size) return null;
-        try {
-          for (var u = o(i), c = u.next(); !c.done; c = u.next()) {
-            var s = c.value,
-              l = this.findVarRef(s, t, r);
-            if (l) return l;
-          }
-        } catch (e) {
-          n = {
-            error: e,
-          };
-        } finally {
-          try {
-            c && !c.done && (a = u.return) && a.call(u);
-          } finally {
-            if (n) throw n.error;
-          }
-        }
-        return null;
-      }),
-      (e.prototype.itarateVarRefs = function (e, t) {
-        this.findVarRef(e, function (e) {
-          return t(e), !1;
-        });
-      }),
-      (e.prototype.setOnRootVariableChange = function (e) {
-        this.onRootVariableDefined = e;
-      }),
-      (e.prototype.putRootVars = function (e, t) {
-        var r,
-          n,
-          a = this,
-          u = e.sheet;
-        u.cssRules.length > 0 && u.deleteRule(0);
-        var c = new Map();
-        le(document.documentElement.style, function (e, r) {
-          Zt(e) && (a.isVarType(e, 1) && c.set(Qt(e), ar(r, t)), a.isVarType(e, 2) && c.set(Kt(e), or(r, t)), a.isVarType(e, 4) && c.set(Yt(e), ir(r, t)), a.subscribeForVarTypeChange(e, a.onRootVariableDefined));
-        });
-        var s = [];
-        s.push(":root {");
-        try {
-          for (var l = o(c), d = l.next(); !d.done; d = l.next()) {
-            var f = i(d.value, 2),
-              h = f[0],
-              p = f[1];
-            s.push("    ".concat(h, ": ").concat(p, ";"));
-          }
-        } catch (e) {
-          r = {
-            error: e,
-          };
-        } finally {
-          try {
-            d && !d.done && (n = l.return) && n.call(l);
-          } finally {
-            if (r) throw r.error;
-          }
-        }
-        s.push("}");
-        var v = s.join("\n");
-        u.insertRule(v);
-      }),
-      e
-    );
-  })())();
-
-  function Gt(e, t) {
-    void 0 === t && (t = 0);
-    var r = e.indexOf("var(", t);
-    if (r >= 0) {
-      var n = _e(e, r + 3);
-      return n
-        ? {
-            start: r,
-            end: n.end,
-          }
-        : null;
-    }
+    return function (theme) {
+      return shadowModifier(theme).result;
+    };
   }
-
-  function Ht(e, t) {
-    var r = (function (e) {
-        for (var t, r = [], n = 0; (t = Gt(e, n)); ) {
-          var a = t.start,
-            o = t.end;
-          r.push({
-            start: a,
-            end: o,
-            value: e.substring(a, o),
-          }),
-            (n = t.end + 1);
-        }
-        return r;
-      })(e),
-      n = r.length;
-    if (0 === n) return e;
-    var a = e.length,
-      o = r.map(function (e) {
-        return t(e.value);
-      }),
-      i = [];
-    i.push(e.substring(0, r[0].start));
-    for (var u = 0; u < n; u++) {
-      i.push(o[u]);
-      var c = r[u].end,
-        s = u < n - 1 ? r[u + 1].start : a;
-      i.push(e.substring(c, s));
-    }
-    return i.join("");
-  }
-
-  function $t(e) {
-    var t,
-      r,
-      n = e.indexOf(",");
-    return (
-      n >= 0 ? ((t = e.substring(4, n).trim()), (r = e.substring(n + 1, e.length - 1).trim())) : ((t = e.substring(4, e.length - 1).trim()), (r = "")),
-      {
-        name: t,
-        fallback: r,
-      }
-    );
-  }
-
-  function zt(e, t, r) {
-    return Ht(e, function (e) {
-      var n,
-        a = $t(e),
-        o = a.name,
-        i = a.fallback,
-        u = t(o);
-      return i ? ((n = Jt(i) ? zt(i, t, r) : r ? r(i) : i), "var(".concat(u, ", ").concat(n, ")")) : "var(".concat(u, ")");
+  function getVariableModifier(variablesStore, prop, value, rule, ignoredImgSelectors, isCancelled) {
+    return variablesStore.getModifierForVariable({
+      varName: prop,
+      sourceValue: value,
+      rule: rule,
+      ignoredImgSelectors: ignoredImgSelectors,
+      isCancelled: isCancelled,
     });
   }
-
-  function Qt(e) {
-    return "--darkreader-bg".concat(e);
+  function getVariableDependantModifier(variablesStore, prop, value) {
+    return variablesStore.getModifierForVarDependant(prop, value);
+  }
+  function cleanModificationCache() {
+    clearColorModificationCache();
+    imageDetailsCache.clear();
+    cleanImageProcessingCache();
+    awaitingForImageLoading.clear();
   }
 
-  function Kt(e) {
-    return "--darkreader-text".concat(e);
-  }
-
-  function Yt(e) {
-    return "--darkreader-border".concat(e);
-  }
-
-  function Xt(e) {
-    return "--darkreader-bgimg".concat(e);
-  }
-
-  function Zt(e) {
-    return e.startsWith("--");
-  }
-
-  function Jt(e) {
-    return e.includes("var(");
-  }
-
-  function er(e) {
-    return e.match(/^\s*(rgb|hsl)a?\(/);
-  }
-
-  function tr(e) {
-    return "color" === e || "caret-color" === e || "-webkit-text-fill-color" === e;
-  }
-  var rr = /^\d{1,3}, ?\d{1,3}, ?\d{1,3}$/;
-
-  function nr(e, t, r) {
-    var n = (function (e) {
-        if (rr.test(e)) {
-          var t = e.split(","),
-            r = "rgb(";
-          return (
-            t.forEach(function (e) {
-              r += "".concat(e.trim(), ", ");
-            }),
-            (r = r.substring(0, r.length - 2)),
-            {
-              isRaw: !0,
-              color: (r += ")"),
+  var VAR_TYPE_BGCOLOR = 1 << 0;
+  var VAR_TYPE_TEXTCOLOR = 1 << 1;
+  var VAR_TYPE_BORDERCOLOR = 1 << 2;
+  var VAR_TYPE_BGIMG = 1 << 3;
+  var VariablesStore = (function () {
+    function VariablesStore() {
+      this.varTypes = new Map();
+      this.rulesQueue = [];
+      this.definedVars = new Set();
+      this.varRefs = new Map();
+      this.unknownColorVars = new Set();
+      this.unknownBgVars = new Set();
+      this.undefinedVars = new Set();
+      this.initialVarTypes = new Map();
+      this.changedTypeVars = new Set();
+      this.typeChangeSubscriptions = new Map();
+      this.unstableVarValues = new Map();
+    }
+    VariablesStore.prototype.clear = function () {
+      this.varTypes.clear();
+      this.rulesQueue.splice(0);
+      this.definedVars.clear();
+      this.varRefs.clear();
+      this.unknownColorVars.clear();
+      this.unknownBgVars.clear();
+      this.undefinedVars.clear();
+      this.initialVarTypes.clear();
+      this.changedTypeVars.clear();
+      this.typeChangeSubscriptions.clear();
+      this.unstableVarValues.clear();
+    };
+    VariablesStore.prototype.isVarType = function (varName, typeNum) {
+      return this.varTypes.has(varName) && (this.varTypes.get(varName) & typeNum) > 0;
+    };
+    VariablesStore.prototype.addRulesForMatching = function (rules) {
+      this.rulesQueue.push(rules);
+    };
+    VariablesStore.prototype.matchVariablesAndDependants = function () {
+      var _this = this;
+      this.changedTypeVars.clear();
+      this.initialVarTypes = new Map(this.varTypes);
+      this.collectRootVariables();
+      this.collectVariablesAndVarDep(this.rulesQueue);
+      this.rulesQueue.splice(0);
+      this.collectRootVarDependants();
+      this.varRefs.forEach(function (refs, v) {
+        refs.forEach(function (r) {
+          if (_this.varTypes.has(v)) {
+            _this.resolveVariableType(r, _this.varTypes.get(v));
+          }
+        });
+      });
+      this.unknownColorVars.forEach(function (v) {
+        if (_this.unknownBgVars.has(v)) {
+          _this.unknownColorVars.delete(v);
+          _this.unknownBgVars.delete(v);
+          _this.resolveVariableType(v, VAR_TYPE_BGCOLOR);
+        } else if (_this.isVarType(v, VAR_TYPE_BGCOLOR | VAR_TYPE_TEXTCOLOR | VAR_TYPE_BORDERCOLOR)) {
+          _this.unknownColorVars.delete(v);
+        } else {
+          _this.undefinedVars.add(v);
+        }
+      });
+      this.unknownBgVars.forEach(function (v) {
+        var hasColor =
+          _this.findVarRef(v, function (ref) {
+            return _this.unknownColorVars.has(ref) || _this.isVarType(ref, VAR_TYPE_TEXTCOLOR | VAR_TYPE_BORDERCOLOR);
+          }) != null;
+        if (hasColor) {
+          _this.itarateVarRefs(v, function (ref) {
+            _this.resolveVariableType(ref, VAR_TYPE_BGCOLOR);
+          });
+        } else if (_this.isVarType(v, VAR_TYPE_BGCOLOR | VAR_TYPE_BGIMG)) {
+          _this.unknownBgVars.delete(v);
+        } else {
+          _this.undefinedVars.add(v);
+        }
+      });
+      this.changedTypeVars.forEach(function (varName) {
+        if (_this.typeChangeSubscriptions.has(varName)) {
+          _this.typeChangeSubscriptions.get(varName).forEach(function (callback) {
+            callback();
+          });
+        }
+      });
+      this.changedTypeVars.clear();
+    };
+    VariablesStore.prototype.getModifierForVariable = function (options) {
+      var _this = this;
+      return function (theme) {
+        var varName = options.varName,
+          sourceValue = options.sourceValue,
+          rule = options.rule,
+          ignoredImgSelectors = options.ignoredImgSelectors,
+          isCancelled = options.isCancelled;
+        var getDeclarations = function () {
+          var declarations = [];
+          var addModifiedValue = function (typeNum, varNameWrapper, colorModifier) {
+            if (!_this.isVarType(varName, typeNum)) {
+              return;
+            }
+            var property = varNameWrapper(varName);
+            var modifiedValue;
+            if (isVarDependant(sourceValue)) {
+              if (isConstructedColorVar(sourceValue)) {
+                var value = insertVarValues(sourceValue, _this.unstableVarValues);
+                if (!value) {
+                  value = typeNum === VAR_TYPE_BGCOLOR ? "#ffffff" : "#000000";
+                }
+                modifiedValue = colorModifier(value, theme);
+              } else {
+                modifiedValue = replaceCSSVariablesNames(
+                  sourceValue,
+                  function (v) {
+                    return varNameWrapper(v);
+                  },
+                  function (fallback) {
+                    return colorModifier(fallback, theme);
+                  }
+                );
+              }
+            } else {
+              modifiedValue = colorModifier(sourceValue, theme);
+            }
+            declarations.push({
+              property: property,
+              value: modifiedValue,
+            });
+          };
+          addModifiedValue(VAR_TYPE_BGCOLOR, wrapBgColorVariableName, tryModifyBgColor);
+          addModifiedValue(VAR_TYPE_TEXTCOLOR, wrapTextColorVariableName, tryModifyTextColor);
+          addModifiedValue(VAR_TYPE_BORDERCOLOR, wrapBorderColorVariableName, tryModifyBorderColor);
+          if (_this.isVarType(varName, VAR_TYPE_BGIMG)) {
+            var property = wrapBgImgVariableName(varName);
+            var modifiedValue = sourceValue;
+            if (isVarDependant(sourceValue)) {
+              modifiedValue = replaceCSSVariablesNames(
+                sourceValue,
+                function (v) {
+                  return wrapBgColorVariableName(v);
+                },
+                function (fallback) {
+                  return tryModifyBgColor(fallback, theme);
+                }
+              );
+            }
+            var bgModifier = getBgImageModifier(modifiedValue, rule, ignoredImgSelectors, isCancelled);
+            modifiedValue = typeof bgModifier === "function" ? bgModifier(theme) : bgModifier;
+            declarations.push({
+              property: property,
+              value: modifiedValue,
+            });
+          }
+          return declarations;
+        };
+        var callbacks = new Set();
+        var addListener = function (onTypeChange) {
+          var callback = function () {
+            var decs = getDeclarations();
+            onTypeChange(decs);
+          };
+          callbacks.add(callback);
+          _this.subscribeForVarTypeChange(varName, callback);
+        };
+        var removeListeners = function () {
+          callbacks.forEach(function (callback) {
+            _this.unsubscribeFromVariableTypeChanges(varName, callback);
+          });
+        };
+        return {
+          declarations: getDeclarations(),
+          onTypeChange: {
+            addListener: addListener,
+            removeListeners: removeListeners,
+          },
+        };
+      };
+    };
+    VariablesStore.prototype.getModifierForVarDependant = function (property, sourceValue) {
+      var _this = this;
+      if (sourceValue.match(/^\s*(rgb|hsl)a?\(/)) {
+        var isBg_1 = property.startsWith("background");
+        var isText_1 = isTextColorProperty(property);
+        return function (theme) {
+          var value = insertVarValues(sourceValue, _this.unstableVarValues);
+          if (!value) {
+            value = isBg_1 ? "#ffffff" : "#000000";
+          }
+          var modifier = isBg_1 ? tryModifyBgColor : isText_1 ? tryModifyTextColor : tryModifyBorderColor;
+          return modifier(value, theme);
+        };
+      }
+      if (property === "background-color") {
+        return function (theme) {
+          return replaceCSSVariablesNames(
+            sourceValue,
+            function (v) {
+              return wrapBgColorVariableName(v);
+            },
+            function (fallback) {
+              return tryModifyBgColor(fallback, theme);
             }
           );
-        }
-        return {
-          isRaw: !1,
-          color: e,
         };
-      })(e),
-      a = n.isRaw,
-      o = n.color,
-      i = Ee(o);
-    if (i) {
-      var u = r(i, t);
-      if (a) {
-        var c = Ee(u);
-        return c ? "".concat(c.r, ", ").concat(c.g, ", ").concat(c.b) : u;
       }
-      return u;
-    }
-    return o;
-  }
-
-  function ar(e, t) {
-    return nr(e, t, rt);
-  }
-
-  function or(e, t) {
-    return nr(e, t, ut);
-  }
-
-  function ir(e, t) {
-    return nr(e, t, st);
-  }
-
-  function ur(e, t, r) {
-    void 0 === r && (r = new Set());
-    var n = !1,
-      a = Ht(e, function (e) {
-        var a = $t(e),
-          o = a.name,
-          i = a.fallback;
-        if (r.has(o)) return (n = !0), null;
-        r.add(o);
-        var u = t.get(o) || i,
-          c = null;
-        return u && (c = Jt(u) ? ur(u, t, r) : u), c || ((n = !0), null);
+      if (isTextColorProperty(property)) {
+        return function (theme) {
+          return replaceCSSVariablesNames(
+            sourceValue,
+            function (v) {
+              return wrapTextColorVariableName(v);
+            },
+            function (fallback) {
+              return tryModifyTextColor(fallback, theme);
+            }
+          );
+        };
+      }
+      if (property === "background" || property === "background-image" || property === "box-shadow") {
+        return function (theme) {
+          var unknownVars = new Set();
+          var modify = function () {
+            var variableReplaced = replaceCSSVariablesNames(
+              sourceValue,
+              function (v) {
+                if (_this.isVarType(v, VAR_TYPE_BGCOLOR)) {
+                  return wrapBgColorVariableName(v);
+                }
+                if (_this.isVarType(v, VAR_TYPE_BGIMG)) {
+                  return wrapBgImgVariableName(v);
+                }
+                unknownVars.add(v);
+                return v;
+              },
+              function (fallback) {
+                return tryModifyBgColor(fallback, theme);
+              }
+            );
+            if (property === "box-shadow") {
+              var shadowModifier = getShadowModifierWithInfo(variableReplaced);
+              var modifiedShadow = shadowModifier(theme);
+              if (modifiedShadow.unparseableMatchesLength !== modifiedShadow.matchesLength) {
+                return modifiedShadow.result;
+              }
+            }
+            return variableReplaced;
+          };
+          var modified = modify();
+          if (unknownVars.size > 0) {
+            return new Promise(function (resolve) {
+              var firstUnknownVar = unknownVars.values().next().value;
+              var callback = function () {
+                _this.unsubscribeFromVariableTypeChanges(firstUnknownVar, callback);
+                var newValue = modify();
+                resolve(newValue);
+              };
+              _this.subscribeForVarTypeChange(firstUnknownVar, callback);
+            });
+          }
+          return modified;
+        };
+      }
+      if (property.startsWith("border") || property.startsWith("outline")) {
+        return function (theme) {
+          return replaceCSSVariablesNames(
+            sourceValue,
+            function (v) {
+              return wrapBorderColorVariableName(v);
+            },
+            function (fallback) {
+              return tryModifyBorderColor(fallback, theme);
+            }
+          );
+        };
+      }
+      return null;
+    };
+    VariablesStore.prototype.subscribeForVarTypeChange = function (varName, callback) {
+      if (!this.typeChangeSubscriptions.has(varName)) {
+        this.typeChangeSubscriptions.set(varName, new Set());
+      }
+      var rootStore = this.typeChangeSubscriptions.get(varName);
+      if (!rootStore.has(callback)) {
+        rootStore.add(callback);
+      }
+    };
+    VariablesStore.prototype.unsubscribeFromVariableTypeChanges = function (varName, callback) {
+      if (this.typeChangeSubscriptions.has(varName)) {
+        this.typeChangeSubscriptions.get(varName).delete(callback);
+      }
+    };
+    VariablesStore.prototype.collectVariablesAndVarDep = function (ruleList) {
+      var _this = this;
+      ruleList.forEach(function (rules) {
+        iterateCSSRules(rules, function (rule) {
+          rule.style &&
+            iterateCSSDeclarations(rule.style, function (property, value) {
+              if (isVariable(property)) {
+                _this.inspectVariable(property, value);
+              }
+              if (isVarDependant(value)) {
+                _this.inspectVarDependant(property, value);
+              }
+            });
+        });
       });
-    return n ? null : a;
+    };
+    VariablesStore.prototype.collectRootVariables = function () {
+      var _this = this;
+      iterateCSSDeclarations(document.documentElement.style, function (property, value) {
+        if (isVariable(property)) {
+          _this.inspectVariable(property, value);
+        }
+      });
+    };
+    VariablesStore.prototype.inspectVariable = function (varName, value) {
+      this.unstableVarValues.set(varName, value);
+      if (isVarDependant(value) && isConstructedColorVar(value)) {
+        this.unknownColorVars.add(varName);
+        this.definedVars.add(varName);
+      }
+      if (this.definedVars.has(varName)) {
+        return;
+      }
+      this.definedVars.add(varName);
+      var isColor = rawValueRegex.test(value) || parseColorWithCache(value);
+      if (isColor) {
+        this.unknownColorVars.add(varName);
+      } else if (value.includes("url(") || value.includes("linear-gradient(") || value.includes("radial-gradient(")) {
+        this.resolveVariableType(varName, VAR_TYPE_BGIMG);
+      }
+    };
+    VariablesStore.prototype.resolveVariableType = function (varName, typeNum) {
+      var initialType = this.initialVarTypes.get(varName) || 0;
+      var currentType = this.varTypes.get(varName) || 0;
+      var newType = currentType | typeNum;
+      this.varTypes.set(varName, newType);
+      if (newType !== initialType || this.undefinedVars.has(varName)) {
+        this.changedTypeVars.add(varName);
+        this.undefinedVars.delete(varName);
+      }
+      this.unknownColorVars.delete(varName);
+      this.unknownBgVars.delete(varName);
+    };
+    VariablesStore.prototype.collectRootVarDependants = function () {
+      var _this = this;
+      iterateCSSDeclarations(document.documentElement.style, function (property, value) {
+        if (isVarDependant(value)) {
+          _this.inspectVarDependant(property, value);
+        }
+      });
+    };
+    VariablesStore.prototype.inspectVarDependant = function (property, value) {
+      var _this = this;
+      if (isVariable(property)) {
+        this.iterateVarDeps(value, function (ref) {
+          if (!_this.varRefs.has(property)) {
+            _this.varRefs.set(property, new Set());
+          }
+          _this.varRefs.get(property).add(ref);
+        });
+      } else if (property === "background-color" || property === "box-shadow") {
+        this.iterateVarDeps(value, function (v) {
+          return _this.resolveVariableType(v, VAR_TYPE_BGCOLOR);
+        });
+      } else if (isTextColorProperty(property)) {
+        this.iterateVarDeps(value, function (v) {
+          return _this.resolveVariableType(v, VAR_TYPE_TEXTCOLOR);
+        });
+      } else if (property.startsWith("border") || property.startsWith("outline")) {
+        this.iterateVarDeps(value, function (v) {
+          return _this.resolveVariableType(v, VAR_TYPE_BORDERCOLOR);
+        });
+      } else if (property === "background" || property === "background-image") {
+        this.iterateVarDeps(value, function (v) {
+          if (_this.isVarType(v, VAR_TYPE_BGCOLOR | VAR_TYPE_BGIMG)) {
+            return;
+          }
+          var isBgColor =
+            _this.findVarRef(v, function (ref) {
+              return _this.unknownColorVars.has(ref) || _this.isVarType(ref, VAR_TYPE_TEXTCOLOR | VAR_TYPE_BORDERCOLOR);
+            }) != null;
+          _this.itarateVarRefs(v, function (ref) {
+            if (isBgColor) {
+              _this.resolveVariableType(ref, VAR_TYPE_BGCOLOR);
+            } else {
+              _this.unknownBgVars.add(ref);
+            }
+          });
+        });
+      }
+    };
+    VariablesStore.prototype.iterateVarDeps = function (value, iterator) {
+      var varDeps = new Set();
+      iterateVarDependencies(value, function (v) {
+        return varDeps.add(v);
+      });
+      varDeps.forEach(function (v) {
+        return iterator(v);
+      });
+    };
+    VariablesStore.prototype.findVarRef = function (varName, iterator, stack) {
+      var e_1, _a;
+      if (stack === void 0) {
+        stack = new Set();
+      }
+      if (stack.has(varName)) {
+        return null;
+      }
+      stack.add(varName);
+      var result = iterator(varName);
+      if (result) {
+        return varName;
+      }
+      var refs = this.varRefs.get(varName);
+      if (!refs || refs.size === 0) {
+        return null;
+      }
+      try {
+        for (var refs_1 = __values(refs), refs_1_1 = refs_1.next(); !refs_1_1.done; refs_1_1 = refs_1.next()) {
+          var ref = refs_1_1.value;
+          var found = this.findVarRef(ref, iterator, stack);
+          if (found) {
+            return found;
+          }
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (refs_1_1 && !refs_1_1.done && (_a = refs_1.return)) _a.call(refs_1);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+      return null;
+    };
+    VariablesStore.prototype.itarateVarRefs = function (varName, iterator) {
+      this.findVarRef(varName, function (ref) {
+        iterator(ref);
+        return false;
+      });
+    };
+    VariablesStore.prototype.setOnRootVariableChange = function (callback) {
+      this.onRootVariableDefined = callback;
+    };
+    VariablesStore.prototype.putRootVars = function (styleElement, theme) {
+      var e_2, _a;
+      var _this = this;
+      var sheet = styleElement.sheet;
+      if (sheet.cssRules.length > 0) {
+        sheet.deleteRule(0);
+      }
+      var declarations = new Map();
+      iterateCSSDeclarations(document.documentElement.style, function (property, value) {
+        if (isVariable(property)) {
+          if (_this.isVarType(property, VAR_TYPE_BGCOLOR)) {
+            declarations.set(wrapBgColorVariableName(property), tryModifyBgColor(value, theme));
+          }
+          if (_this.isVarType(property, VAR_TYPE_TEXTCOLOR)) {
+            declarations.set(wrapTextColorVariableName(property), tryModifyTextColor(value, theme));
+          }
+          if (_this.isVarType(property, VAR_TYPE_BORDERCOLOR)) {
+            declarations.set(wrapBorderColorVariableName(property), tryModifyBorderColor(value, theme));
+          }
+          _this.subscribeForVarTypeChange(property, _this.onRootVariableDefined);
+        }
+      });
+      var cssLines = [];
+      cssLines.push(":root {");
+      try {
+        for (var declarations_1 = __values(declarations), declarations_1_1 = declarations_1.next(); !declarations_1_1.done; declarations_1_1 = declarations_1.next()) {
+          var _b = __read(declarations_1_1.value, 2),
+            property = _b[0],
+            value = _b[1];
+          cssLines.push("    ".concat(property, ": ").concat(value, ";"));
+        }
+      } catch (e_2_1) {
+        e_2 = { error: e_2_1 };
+      } finally {
+        try {
+          if (declarations_1_1 && !declarations_1_1.done && (_a = declarations_1.return)) _a.call(declarations_1);
+        } finally {
+          if (e_2) throw e_2.error;
+        }
+      }
+      cssLines.push("}");
+      var cssText = cssLines.join("\n");
+      sheet.insertRule(cssText);
+    };
+    return VariablesStore;
+  })();
+  var variablesStore = new VariablesStore();
+  function getVariableRange(input, searchStart) {
+    if (searchStart === void 0) {
+      searchStart = 0;
+    }
+    var start = input.indexOf("var(", searchStart);
+    if (start >= 0) {
+      var range = getParenthesesRange(input, start + 3);
+      if (range) {
+        return { start: start, end: range.end };
+      }
+    }
+    return null;
   }
-  var cr = {
-      "background-color": {
-        customProp: "--darkreader-inline-bgcolor",
-        cssProp: "background-color",
-        dataAttr: "data-darkreader-inline-bgcolor",
-      },
-      "background-image": {
-        customProp: "--darkreader-inline-bgimage",
-        cssProp: "background-image",
-        dataAttr: "data-darkreader-inline-bgimage",
-      },
-      "border-color": {
-        customProp: "--darkreader-inline-border",
-        cssProp: "border-color",
-        dataAttr: "data-darkreader-inline-border",
-      },
-      "border-bottom-color": {
-        customProp: "--darkreader-inline-border-bottom",
-        cssProp: "border-bottom-color",
-        dataAttr: "data-darkreader-inline-border-bottom",
-      },
-      "border-left-color": {
-        customProp: "--darkreader-inline-border-left",
-        cssProp: "border-left-color",
-        dataAttr: "data-darkreader-inline-border-left",
-      },
-      "border-right-color": {
-        customProp: "--darkreader-inline-border-right",
-        cssProp: "border-right-color",
-        dataAttr: "data-darkreader-inline-border-right",
-      },
-      "border-top-color": {
-        customProp: "--darkreader-inline-border-top",
-        cssProp: "border-top-color",
-        dataAttr: "data-darkreader-inline-border-top",
-      },
-      "box-shadow": {
-        customProp: "--darkreader-inline-boxshadow",
-        cssProp: "box-shadow",
-        dataAttr: "data-darkreader-inline-boxshadow",
-      },
-      color: {
-        customProp: "--darkreader-inline-color",
-        cssProp: "color",
-        dataAttr: "data-darkreader-inline-color",
-      },
-      fill: {
-        customProp: "--darkreader-inline-fill",
-        cssProp: "fill",
-        dataAttr: "data-darkreader-inline-fill",
-      },
-      stroke: {
-        customProp: "--darkreader-inline-stroke",
-        cssProp: "stroke",
-        dataAttr: "data-darkreader-inline-stroke",
-      },
-      "outline-color": {
-        customProp: "--darkreader-inline-outline",
-        cssProp: "outline-color",
-        dataAttr: "data-darkreader-inline-outline",
-      },
-      "stop-color": {
-        customProp: "--darkreader-inline-stopcolor",
-        cssProp: "stop-color",
-        dataAttr: "data-darkreader-inline-stopcolor",
-      },
-    },
-    sr = Object.values(cr),
-    lr = {};
-  sr.forEach(function (e) {
-    var t = e.cssProp,
-      r = e.customProp;
-    return (lr[r] = t);
-  });
-  var dr = ["style", "fill", "stop-color", "stroke", "bgcolor", "color"],
-    fr = dr
-      .map(function (e) {
-        return "[".concat(e, "]");
-      })
-      .join(", ");
+  function getVariablesMatches(input) {
+    var ranges = [];
+    var i = 0;
+    var range;
+    while ((range = getVariableRange(input, i))) {
+      var start = range.start,
+        end = range.end;
+      ranges.push({
+        start: start,
+        end: end,
+        value: input.substring(start, end),
+      });
+      i = range.end + 1;
+    }
+    return ranges;
+  }
+  function replaceVariablesMatches(input, replacer) {
+    var matches = getVariablesMatches(input);
+    var matchesCount = matches.length;
+    if (matchesCount === 0) {
+      return input;
+    }
+    var inputLength = input.length;
+    var replacements = matches.map(function (m) {
+      return replacer(m.value);
+    });
+    var parts = [];
+    parts.push(input.substring(0, matches[0].start));
+    for (var i = 0; i < matchesCount; i++) {
+      parts.push(replacements[i]);
+      var start = matches[i].end;
+      var end = i < matchesCount - 1 ? matches[i + 1].start : inputLength;
+      parts.push(input.substring(start, end));
+    }
+    return parts.join("");
+  }
+  function getVariableNameAndFallback(match) {
+    var commaIndex = match.indexOf(",");
+    var name;
+    var fallback;
+    if (commaIndex >= 0) {
+      name = match.substring(4, commaIndex).trim();
+      fallback = match.substring(commaIndex + 1, match.length - 1).trim();
+    } else {
+      name = match.substring(4, match.length - 1).trim();
+      fallback = "";
+    }
+    return { name: name, fallback: fallback };
+  }
+  function replaceCSSVariablesNames(value, nameReplacer, fallbackReplacer) {
+    var matchReplacer = function (match) {
+      var _a = getVariableNameAndFallback(match),
+        name = _a.name,
+        fallback = _a.fallback;
+      var newName = nameReplacer(name);
+      if (!fallback) {
+        return "var(".concat(newName, ")");
+      }
+      var newFallback;
+      if (isVarDependant(fallback)) {
+        newFallback = replaceCSSVariablesNames(fallback, nameReplacer, fallbackReplacer);
+      } else if (fallbackReplacer) {
+        newFallback = fallbackReplacer(fallback);
+      } else {
+        newFallback = fallback;
+      }
+      return "var(".concat(newName, ", ").concat(newFallback, ")");
+    };
+    return replaceVariablesMatches(value, matchReplacer);
+  }
+  function iterateVarDependencies(value, iterator) {
+    replaceCSSVariablesNames(value, function (varName) {
+      iterator(varName);
+      return varName;
+    });
+  }
+  function wrapBgColorVariableName(name) {
+    return "--darkreader-bg".concat(name);
+  }
+  function wrapTextColorVariableName(name) {
+    return "--darkreader-text".concat(name);
+  }
+  function wrapBorderColorVariableName(name) {
+    return "--darkreader-border".concat(name);
+  }
+  function wrapBgImgVariableName(name) {
+    return "--darkreader-bgimg".concat(name);
+  }
+  function isVariable(property) {
+    return property.startsWith("--");
+  }
+  function isVarDependant(value) {
+    return value.includes("var(");
+  }
+  function isConstructedColorVar(value) {
+    return value.match(/^\s*(rgb|hsl)a?\(/);
+  }
+  function isTextColorProperty(property) {
+    return property === "color" || property === "caret-color" || property === "-webkit-text-fill-color";
+  }
+  var rawValueRegex = /^\d{1,3}, ?\d{1,3}, ?\d{1,3}$/;
+  function parseRawValue(color) {
+    if (rawValueRegex.test(color)) {
+      var splitted = color.split(",");
+      var resultInRGB_1 = "rgb(";
+      splitted.forEach(function (number) {
+        resultInRGB_1 += "".concat(number.trim(), ", ");
+      });
+      resultInRGB_1 = resultInRGB_1.substring(0, resultInRGB_1.length - 2);
+      resultInRGB_1 += ")";
+      return { isRaw: true, color: resultInRGB_1 };
+    }
+    return { isRaw: false, color: color };
+  }
+  function handleRawValue(color, theme, modifyFunction) {
+    var _a = parseRawValue(color),
+      isRaw = _a.isRaw,
+      newColor = _a.color;
+    var rgb = parseColorWithCache(newColor);
+    if (rgb) {
+      var outputColor = modifyFunction(rgb, theme);
+      if (isRaw) {
+        var outputInRGB = parseColorWithCache(outputColor);
+        return outputInRGB ? "".concat(outputInRGB.r, ", ").concat(outputInRGB.g, ", ").concat(outputInRGB.b) : outputColor;
+      }
+      return outputColor;
+    }
+    return newColor;
+  }
+  function tryModifyBgColor(color, theme) {
+    return handleRawValue(color, theme, modifyBackgroundColor);
+  }
+  function tryModifyTextColor(color, theme) {
+    return handleRawValue(color, theme, modifyForegroundColor);
+  }
+  function tryModifyBorderColor(color, theme) {
+    return handleRawValue(color, theme, modifyBorderColor);
+  }
+  function insertVarValues(source, varValues, stack) {
+    if (stack === void 0) {
+      stack = new Set();
+    }
+    var containsUnresolvedVar = false;
+    var matchReplacer = function (match) {
+      var _a = getVariableNameAndFallback(match),
+        name = _a.name,
+        fallback = _a.fallback;
+      if (stack.has(name)) {
+        containsUnresolvedVar = true;
+        return null;
+      }
+      stack.add(name);
+      var varValue = varValues.get(name) || fallback;
+      var inserted = null;
+      if (varValue) {
+        if (isVarDependant(varValue)) {
+          inserted = insertVarValues(varValue, varValues, stack);
+        } else {
+          inserted = varValue;
+        }
+      }
+      if (!inserted) {
+        containsUnresolvedVar = true;
+        return null;
+      }
+      return inserted;
+    };
+    var replaced = replaceVariablesMatches(source, matchReplacer);
+    if (containsUnresolvedVar) {
+      return null;
+    }
+    return replaced;
+  }
 
-  function hr() {
-    return sr
-      .map(function (e) {
-        var t = e.dataAttr,
-          r = e.customProp,
-          n = e.cssProp;
-        return ["[".concat(t, "] {"), "  ".concat(n, ": var(").concat(r, ") !important;"), "}"].join("\n");
+  var overrides = {
+    "background-color": {
+      customProp: "--darkreader-inline-bgcolor",
+      cssProp: "background-color",
+      dataAttr: "data-darkreader-inline-bgcolor",
+    },
+    "background-image": {
+      customProp: "--darkreader-inline-bgimage",
+      cssProp: "background-image",
+      dataAttr: "data-darkreader-inline-bgimage",
+    },
+    "border-color": {
+      customProp: "--darkreader-inline-border",
+      cssProp: "border-color",
+      dataAttr: "data-darkreader-inline-border",
+    },
+    "border-bottom-color": {
+      customProp: "--darkreader-inline-border-bottom",
+      cssProp: "border-bottom-color",
+      dataAttr: "data-darkreader-inline-border-bottom",
+    },
+    "border-left-color": {
+      customProp: "--darkreader-inline-border-left",
+      cssProp: "border-left-color",
+      dataAttr: "data-darkreader-inline-border-left",
+    },
+    "border-right-color": {
+      customProp: "--darkreader-inline-border-right",
+      cssProp: "border-right-color",
+      dataAttr: "data-darkreader-inline-border-right",
+    },
+    "border-top-color": {
+      customProp: "--darkreader-inline-border-top",
+      cssProp: "border-top-color",
+      dataAttr: "data-darkreader-inline-border-top",
+    },
+    "box-shadow": {
+      customProp: "--darkreader-inline-boxshadow",
+      cssProp: "box-shadow",
+      dataAttr: "data-darkreader-inline-boxshadow",
+    },
+    color: {
+      customProp: "--darkreader-inline-color",
+      cssProp: "color",
+      dataAttr: "data-darkreader-inline-color",
+    },
+    fill: {
+      customProp: "--darkreader-inline-fill",
+      cssProp: "fill",
+      dataAttr: "data-darkreader-inline-fill",
+    },
+    stroke: {
+      customProp: "--darkreader-inline-stroke",
+      cssProp: "stroke",
+      dataAttr: "data-darkreader-inline-stroke",
+    },
+    "outline-color": {
+      customProp: "--darkreader-inline-outline",
+      cssProp: "outline-color",
+      dataAttr: "data-darkreader-inline-outline",
+    },
+    "stop-color": {
+      customProp: "--darkreader-inline-stopcolor",
+      cssProp: "stop-color",
+      dataAttr: "data-darkreader-inline-stopcolor",
+    },
+  };
+  var overridesList = Object.values(overrides);
+  var normalizedPropList = {};
+  overridesList.forEach(function (_a) {
+    var cssProp = _a.cssProp,
+      customProp = _a.customProp;
+    return (normalizedPropList[customProp] = cssProp);
+  });
+  var INLINE_STYLE_ATTRS = ["style", "fill", "stop-color", "stroke", "bgcolor", "color"];
+  var INLINE_STYLE_SELECTOR = INLINE_STYLE_ATTRS.map(function (attr) {
+    return "[".concat(attr, "]");
+  }).join(", ");
+  function getInlineOverrideStyle() {
+    return overridesList
+      .map(function (_a) {
+        var dataAttr = _a.dataAttr,
+          customProp = _a.customProp,
+          cssProp = _a.cssProp;
+        return ["[".concat(dataAttr, "] {"), "  ".concat(cssProp, ": var(").concat(customProp, ") !important;"), "}"].join("\n");
       })
       .join("\n");
   }
-  var pr = new Map(),
-    vr = new Map();
-
-  function mr(e, t, r) {
-    pr.has(e) && (pr.get(e).disconnect(), vr.get(e).disconnect());
-    var n = new WeakSet();
-
-    function a(e) {
-      (function (e) {
-        var t = [];
-        return e instanceof Element && e.matches(fr) && t.push(e), (e instanceof Element || (b && e instanceof ShadowRoot) || e instanceof Document) && j(t, e.querySelectorAll(fr)), t;
-      })(e).forEach(function (e) {
-        n.has(e) || (n.add(e), t(e));
-      }),
-        G(e, function (a) {
-          n.has(e) || (n.add(e), r(a.shadowRoot), mr(a.shadowRoot, t, r));
-        });
+  function getInlineStyleElements(root) {
+    var results = [];
+    if (root instanceof Element && root.matches(INLINE_STYLE_SELECTOR)) {
+      results.push(root);
     }
-    var o = re(e, {
-      onMinorMutations: function (e) {
-        e.additions.forEach(function (e) {
-          return a(e);
+    if (root instanceof Element || (isShadowDomSupported && root instanceof ShadowRoot) || root instanceof Document) {
+      push(results, root.querySelectorAll(INLINE_STYLE_SELECTOR));
+    }
+    return results;
+  }
+  var treeObservers = new Map();
+  var attrObservers = new Map();
+  function watchForInlineStyles(elementStyleDidChange, shadowRootDiscovered) {
+    deepWatchForInlineStyles(document, elementStyleDidChange, shadowRootDiscovered);
+    iterateShadowHosts(document.documentElement, function (host) {
+      deepWatchForInlineStyles(host.shadowRoot, elementStyleDidChange, shadowRootDiscovered);
+    });
+  }
+  function deepWatchForInlineStyles(root, elementStyleDidChange, shadowRootDiscovered) {
+    if (treeObservers.has(root)) {
+      treeObservers.get(root).disconnect();
+      attrObservers.get(root).disconnect();
+    }
+    var discoveredNodes = new WeakSet();
+    function discoverNodes(node) {
+      getInlineStyleElements(node).forEach(function (el) {
+        if (discoveredNodes.has(el)) {
+          return;
+        }
+        discoveredNodes.add(el);
+        elementStyleDidChange(el);
+      });
+      iterateShadowHosts(node, function (n) {
+        if (discoveredNodes.has(node)) {
+          return;
+        }
+        discoveredNodes.add(node);
+        shadowRootDiscovered(n.shadowRoot);
+        deepWatchForInlineStyles(n.shadowRoot, elementStyleDidChange, shadowRootDiscovered);
+      });
+    }
+    var treeObserver = createOptimizedTreeObserver(root, {
+      onMinorMutations: function (_a) {
+        var additions = _a.additions;
+        additions.forEach(function (added) {
+          return discoverNodes(added);
         });
       },
       onHugeMutations: function () {
-        a(e);
+        discoverNodes(root);
       },
     });
-    pr.set(e, o);
-    var c = 0,
-      s = null,
-      l = q({
-        seconds: 10,
-      }),
-      d = q({
-        seconds: 2,
-      }),
-      f = [],
-      h = null,
-      p = B(function (e) {
-        e.forEach(function (e) {
-          dr.includes(e.attributeName) && t(e.target);
-        });
-      }),
-      v = new MutationObserver(function (e) {
-        if (h) f.push.apply(f, u([], i(e), !1));
-        else {
-          c++;
-          var t = Date.now();
-          if (null == s) s = t;
-          else if (c >= 50) {
-            if (t - s < l)
-              return (
-                (h = setTimeout(function () {
-                  (s = null), (c = 0), (h = null);
-                  var e = f;
-                  (f = []), p(e);
-                }, d)),
-                void f.push.apply(f, u([], i(e), !1))
-              );
-            (s = t), (c = 1);
-          }
-          p(e);
+    treeObservers.set(root, treeObserver);
+    var attemptCount = 0;
+    var start = null;
+    var ATTEMPTS_INTERVAL = getDuration({ seconds: 10 });
+    var RETRY_TIMEOUT = getDuration({ seconds: 2 });
+    var MAX_ATTEMPTS_COUNT = 50;
+    var cache = [];
+    var timeoutId = null;
+    var handleAttributeMutations = throttle(function (mutations) {
+      var handledTargets = new Set();
+      mutations.forEach(function (m) {
+        var target = m.target;
+        if (handledTargets.has(target)) {
+          return;
+        }
+        if (INLINE_STYLE_ATTRS.includes(m.attributeName)) {
+          handledTargets.add(target);
+          elementStyleDidChange(target);
         }
       });
-    v.observe(e, {
-      attributes: !0,
-      attributeFilter: dr.concat(
-        sr.map(function (e) {
-          return e.dataAttr;
+    });
+    var attrObserver = new MutationObserver(function (mutations) {
+      if (timeoutId) {
+        cache.push.apply(cache, __spreadArray([], __read(mutations), false));
+        return;
+      }
+      attemptCount++;
+      var now = Date.now();
+      if (start == null) {
+        start = now;
+      } else if (attemptCount >= MAX_ATTEMPTS_COUNT) {
+        if (now - start < ATTEMPTS_INTERVAL) {
+          timeoutId = setTimeout(function () {
+            start = null;
+            attemptCount = 0;
+            timeoutId = null;
+            var attributeCache = cache;
+            cache = [];
+            handleAttributeMutations(attributeCache);
+          }, RETRY_TIMEOUT);
+          cache.push.apply(cache, __spreadArray([], __read(mutations), false));
+          return;
+        }
+        start = now;
+        attemptCount = 1;
+      }
+      handleAttributeMutations(mutations);
+    });
+    attrObserver.observe(root, {
+      attributes: true,
+      attributeFilter: INLINE_STYLE_ATTRS.concat(
+        overridesList.map(function (_a) {
+          var dataAttr = _a.dataAttr;
+          return dataAttr;
         })
       ),
-      subtree: !0,
-    }),
-      vr.set(e, v);
+      subtree: true,
+    });
+    attrObservers.set(root, attrObserver);
   }
-  var gr = new WeakMap(),
-    br = ["brightness", "contrast", "grayscale", "sepia", "mode"];
-
-  function yr(e, t) {
-    return dr
-      .map(function (t) {
-        return "".concat(t, '="').concat(e.getAttribute(t), '"');
-      })
+  function stopWatchingForInlineStyles() {
+    treeObservers.forEach(function (o) {
+      return o.disconnect();
+    });
+    attrObservers.forEach(function (o) {
+      return o.disconnect();
+    });
+    treeObservers.clear();
+    attrObservers.clear();
+  }
+  var inlineStyleCache = new WeakMap();
+  var filterProps = ["brightness", "contrast", "grayscale", "sepia", "mode"];
+  function getInlineStyleCacheKey(el, theme) {
+    return INLINE_STYLE_ATTRS.map(function (attr) {
+      return "".concat(attr, '="').concat(el.getAttribute(attr), '"');
+    })
       .concat(
-        br.map(function (e) {
-          return "".concat(e, '="').concat(t[e], '"');
+        filterProps.map(function (prop) {
+          return "".concat(prop, '="').concat(theme[prop], '"');
         })
       )
       .join(" ");
   }
-
-  function Sr(e, t, r, n) {
-    if (yr(e, t) !== gr.get(e)) {
-      var a = new Set(Object.keys(cr));
-      if (
-        r.length > 0 &&
-        (function (e, t) {
-          for (var r = 0, n = t.length; r < n; r++) {
-            var a = t[r];
-            if (e.matches(a)) return !0;
-          }
-          return !1;
-        })(e, r)
-      )
-        a.forEach(function (t) {
-          e.removeAttribute(cr[t].dataAttr);
+  function shouldIgnoreInlineStyle(element, selectors) {
+    for (var i = 0, len = selectors.length; i < len; i++) {
+      var ingnoredSelector = selectors[i];
+      if (element.matches(ingnoredSelector)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function overrideInlineStyle(element, theme, ignoreInlineSelectors, ignoreImageSelectors) {
+    var cacheKey = getInlineStyleCacheKey(element, theme);
+    if (cacheKey === inlineStyleCache.get(element)) {
+      return;
+    }
+    var unsetProps = new Set(Object.keys(overrides));
+    function setCustomProp(targetCSSProp, modifierCSSProp, cssVal) {
+      var isPropertyVariable = targetCSSProp.startsWith("--");
+      var _a = isPropertyVariable ? {} : overrides[targetCSSProp],
+        customProp = _a.customProp,
+        dataAttr = _a.dataAttr;
+      var mod = getModifiableCSSDeclaration(modifierCSSProp, cssVal, { style: element.style }, variablesStore, ignoreImageSelectors, null);
+      if (!mod) {
+        return;
+      }
+      var value = mod.value;
+      if (typeof value === "function") {
+        value = value(theme);
+      }
+      if (isPropertyVariable && typeof value === "object") {
+        var typedValue = value;
+        typedValue.declarations.forEach(function (_a) {
+          var property = _a.property,
+            value = _a.value;
+          !(value instanceof Promise) && element.style.setProperty(property, value);
         });
-      else {
-        if (e.hasAttribute("bgcolor")) ((u = e.getAttribute("bgcolor")).match(/^[0-9a-f]{3}$/i) || u.match(/^[0-9a-f]{6}$/i)) && (u = "#".concat(u)), c("background-color", "background-color", u);
-        if (e.hasAttribute("color") && "mask-icon" !== e.rel) ((u = e.getAttribute("color")).match(/^[0-9a-f]{3}$/i) || u.match(/^[0-9a-f]{6}$/i)) && (u = "#".concat(u)), c("color", "color", u);
-        if (e instanceof SVGElement) {
-          if (e.hasAttribute("fill")) {
-            var o = e.getAttribute("fill");
-            if ("none" !== o)
-              if (e instanceof SVGTextElement) c("fill", "color", o);
-              else {
-                var i = function () {
-                  var t = e.getBoundingClientRect(),
-                    r = t.width,
-                    n = t.height;
-                  c("fill", r > 32 || n > 32 ? "background-color" : "color", o);
-                };
-                K() ? i() : X(i);
-              }
-          }
-          e.hasAttribute("stop-color") && c("stop-color", "background-color", e.getAttribute("stop-color"));
+      } else {
+        element.style.setProperty(customProp, value);
+        if (!element.hasAttribute(dataAttr)) {
+          element.setAttribute(dataAttr, "");
         }
-        if (e.hasAttribute("stroke")) {
-          var u = e.getAttribute("stroke");
-          c("stroke", e instanceof SVGLineElement || e instanceof SVGTextElement ? "border-color" : "color", u);
-        }
-        e.style &&
-          le(e.style, function (t, r) {
-            if ("background-image" !== t || !r.includes("url"))
-              if (cr.hasOwnProperty(t) || (t.startsWith("--") && !lr[t])) c(t, t, r);
-              else {
-                var n = lr[t];
-                if (n && !e.style.getPropertyValue(n) && !e.hasAttribute(n)) {
-                  if ("background-color" === n && e.hasAttribute("bgcolor")) return;
-                  e.style.setProperty(t, "");
-                }
-              }
-          }),
-          e.style && e instanceof SVGTextElement && e.style.fill && c("fill", "color", e.style.getPropertyValue("fill")),
-          F(a, function (t) {
-            e.removeAttribute(cr[t].dataAttr);
-          }),
-          gr.set(e, yr(e, t));
+        unsetProps.delete(targetCSSProp);
       }
     }
-
-    function c(r, o, i) {
-      var u = r.startsWith("--"),
-        c = u ? {} : cr[r],
-        s = c.customProp,
-        l = c.dataAttr,
-        d = Lt(
-          o,
-          i,
-          {
-            style: e.style,
-          },
-          Wt,
-          n,
-          null
-        );
-      if (d) {
-        var f = d.value;
-        if (("function" == typeof f && (f = f(t)), u && "object" == typeof f))
-          f.declarations.forEach(function (t) {
-            var r = t.property,
-              n = t.value;
-            !(n instanceof Promise) && e.style.setProperty(r, n);
-          });
-        else e.style.setProperty(s, f), e.hasAttribute(l) || e.setAttribute(l, ""), a.delete(r);
+    if (ignoreInlineSelectors.length > 0) {
+      if (shouldIgnoreInlineStyle(element, ignoreInlineSelectors)) {
+        unsetProps.forEach(function (cssProp) {
+          element.removeAttribute(overrides[cssProp].dataAttr);
+        });
+        return;
       }
     }
-  }
-  var _r = "theme-color",
-    kr = 'meta[name="'.concat(_r, '"]'),
-    wr = null,
-    Er = null;
-
-  function Cr(e, t) {
-    var r = Ee((wr = wr || e.content));
-    r && (e.content = rt(r, t));
-  }
-  var xr = ["mode", "brightness", "contrast", "grayscale", "sepia", "darkSchemeBackgroundColor", "darkSchemeTextColor", "lightSchemeBackgroundColor", "lightSchemeTextColor"];
-  var Tr = (function () {
-    var e = [],
-      t = null;
-
-    function r() {
-      for (var r; (r = e.shift()); ) r();
-      t = null;
+    if (element.hasAttribute("bgcolor")) {
+      var value = element.getAttribute("bgcolor");
+      if (value.match(/^[0-9a-f]{3}$/i) || value.match(/^[0-9a-f]{6}$/i)) {
+        value = "#".concat(value);
+      }
+      setCustomProp("background-color", "background-color", value);
     }
-    return {
-      add: function (n) {
-        e.push(n), t || (t = requestAnimationFrame(r));
-      },
-      cancel: function () {
-        e.splice(0), cancelAnimationFrame(t), (t = null);
-      },
-    };
-  })();
-
-  function Rr() {
-    var e = 0,
-      t = new Set(),
-      r = new Map(),
-      n = new Set(),
-      a = null,
-      o = !1,
-      c = !1;
-    return {
-      modifySheet: function (s) {
-        var l = s.sourceCSSRules,
-          d = s.theme,
-          f = s.ignoreImageAnalysis,
-          h = s.force,
-          p = s.prepareSheet,
-          v = s.isAsyncCancelled,
-          m = 0 === r.size,
-          g = new Set(r.keys()),
-          b = (function (e) {
-            var t = "";
-            return (
-              xr.forEach(function (r) {
-                t += "".concat(r, ":").concat(e[r], ";");
-              }),
-              t
-            );
-          })(d),
-          y = b !== a;
-        o && (c = !0);
-        var S = [];
-        if (
-          (ue(
-            l,
-            function (e) {
-              var n = e.cssText,
-                a = !1;
-              if ((g.delete(n), e.parentRule instanceof CSSMediaRule && (n += ";".concat(e.parentRule.media.mediaText)), t.has(n) || (t.add(n), (a = !0)), a)) {
-                m = !0;
-                var o = [];
-                e.style &&
-                  le(e.style, function (t, r) {
-                    var n = Lt(t, r, e, Wt, f, v);
-                    n && o.push(n);
-                  });
-                var i = null;
-                if (o.length > 0) {
-                  var u = e.parentRule;
-                  (i = {
-                    selector: e.selectorText,
-                    declarations: o,
-                    parentRule: u,
-                  }),
-                    S.push(i);
-                }
-                r.set(n, i);
-              } else S.push(r.get(n));
-            },
-            function () {
-              o = !0;
+    if (element.hasAttribute("color") && element.rel !== "mask-icon") {
+      var value = element.getAttribute("color");
+      if (value.match(/^[0-9a-f]{3}$/i) || value.match(/^[0-9a-f]{6}$/i)) {
+        value = "#".concat(value);
+      }
+      setCustomProp("color", "color", value);
+    }
+    if (element instanceof SVGElement) {
+      if (element.hasAttribute("fill")) {
+        var SMALL_SVG_LIMIT_1 = 32;
+        var value_1 = element.getAttribute("fill");
+        if (value_1 !== "none") {
+          if (!(element instanceof SVGTextElement)) {
+            var handleSVGElement = function () {
+              var _a = element.getBoundingClientRect(),
+                width = _a.width,
+                height = _a.height;
+              var isBg = width > SMALL_SVG_LIMIT_1 || height > SMALL_SVG_LIMIT_1;
+              setCustomProp("fill", isBg ? "background-color" : "color", value_1);
+            };
+            if (isReadyStateComplete()) {
+              handleSVGElement();
+            } else {
+              addReadyStateCompleteListener(handleSVGElement);
             }
-          ),
-          g.forEach(function (e) {
-            t.delete(e), r.delete(e);
-          }),
-          (a = b),
-          h || m || y)
-        ) {
-          e++;
-          var _ = new Map(),
-            k = new Map(),
-            w = 0,
-            E = 0,
-            C = {
-              rule: null,
-              rules: [],
-              isGroup: !0,
-            },
-            x = new WeakMap();
-          n.forEach(function (e) {
-            return e();
-          }),
-            n.clear(),
-            S.filter(function (e) {
-              return e;
-            }).forEach(function (t) {
-              var r = t.selector,
-                a = t.declarations,
-                o = V(t.parentRule),
-                c = {
-                  selector: r,
-                  declarations: [],
-                  isGroup: !1,
-                },
-                s = c.declarations;
-
-              function l(t, r, n, a) {
-                var o = ++w,
-                  i = {
-                    property: t,
-                    value: null,
-                    important: n,
-                    asyncKey: o,
-                    sourceValue: a,
-                  };
-                s.push(i);
-                var u = e;
-                r.then(function (t) {
-                  t &&
-                    !v() &&
-                    u === e &&
-                    ((i.value = t),
-                    Tr.add(function () {
-                      v() ||
-                        u !== e ||
-                        (function (e) {
-                          var t = _.get(e),
-                            r = t.rule,
-                            n = t.target,
-                            a = t.index;
-                          n.deleteRule(a), R(n, a, r), _.delete(e);
-                        })(o);
-                    }));
-                });
-              }
-
-              function f(t, r, a, o) {
-                var c = r,
-                  d = c.declarations,
-                  f = c.onTypeChange,
-                  h = ++E,
-                  p = e,
-                  m = s.length,
-                  g = [];
-                if (0 === d.length) {
-                  var b = {
-                    property: t,
-                    value: o,
-                    important: a,
-                    sourceValue: o,
-                    varKey: h,
-                  };
-                  s.push(b), (g = [b]);
-                }
-                d.forEach(function (e) {
-                  if (e.value instanceof Promise) l(e.property, e.value, a, o);
-                  else {
-                    var t = {
-                      property: e.property,
-                      value: e.value,
-                      important: a,
-                      sourceValue: o,
-                      varKey: h,
-                    };
-                    s.push(t), g.push(t);
-                  }
-                }),
-                  f.addListener(function (t) {
-                    if (!v() && p === e) {
-                      var r = t.map(function (e) {
-                          return {
-                            property: e.property,
-                            value: e.value,
-                            important: a,
-                            sourceValue: o,
-                            varKey: h,
-                          };
-                        }),
-                        n = s.indexOf(g[0], m);
-                      s.splice.apply(s, u([n, g.length], i(r), !1)),
-                        (g = r),
-                        (function (e) {
-                          var t = k.get(e),
-                            r = t.rule,
-                            n = t.target,
-                            a = t.index;
-                          n.deleteRule(a), R(n, a, r);
-                        })(h);
-                    }
-                  }),
-                  n.add(function () {
-                    return f.removeListeners();
-                  });
-              }
-              o.rules.push(c),
-                a.forEach(function (e) {
-                  var t = e.property,
-                    r = e.value,
-                    n = e.important,
-                    a = e.sourceValue;
-                  if ("function" == typeof r) {
-                    var o = r(d);
-                    o instanceof Promise
-                      ? l(t, o, n, a)
-                      : t.startsWith("--")
-                      ? f(t, o, n, a)
-                      : s.push({
-                          property: t,
-                          value: o,
-                          important: n,
-                          sourceValue: a,
-                        });
-                  } else
-                    s.push({
-                      property: t,
-                      value: r,
-                      important: n,
-                      sourceValue: a,
-                    });
-                });
-            });
-          var T = p();
-          !(function e(t, r, n) {
-            t.rules.forEach(function (t) {
-              if (t.isGroup) {
-                var a = (function (e, t) {
-                  var r = e.rule;
-                  if (r instanceof CSSMediaRule) {
-                    var n = r.media,
-                      a = t.cssRules.length;
-                    return t.insertRule("@media ".concat(n.mediaText, " {}"), a), t.cssRules[a];
-                  }
-                  return t;
-                })(t, r);
-                e(t, a, n);
-              } else n(t, r);
-            });
-          })(C, T, function (e, t) {
-            var r = t.cssRules.length;
-            e.declarations.forEach(function (n) {
-              var a = n.asyncKey,
-                o = n.varKey;
-              null != a &&
-                _.set(a, {
-                  rule: e,
-                  target: t,
-                  index: r,
-                }),
-                null != o &&
-                  k.set(o, {
-                    rule: e,
-                    target: t,
-                    index: r,
-                  });
-            }),
-              R(t, r, e);
-          });
+          } else {
+            setCustomProp("fill", "color", value_1);
+          }
         }
-
-        function R(e, t, r) {
-          var n = r.selector,
-            a = r.declarations,
-            o = "";
-          a.forEach(function (e) {
-            var t, r, n, a, i;
-            o += "".concat(
-              ((r = (t = e).property),
-              (n = t.value),
-              (a = t.important),
-              (i = t.sourceValue),
-              ""
-                .concat(r, ": ")
-                .concat(null == n ? i : n)
-                .concat(a ? " !important" : "", ";")),
-              " "
-            );
-          });
-          var i = "".concat(n, " { ").concat(o, " }");
-          e.insertRule(i, t);
+      }
+      if (element.hasAttribute("stop-color")) {
+        setCustomProp("stop-color", "background-color", element.getAttribute("stop-color"));
+      }
+    }
+    if (element.hasAttribute("stroke")) {
+      var value = element.getAttribute("stroke");
+      setCustomProp("stroke", element instanceof SVGLineElement || element instanceof SVGTextElement ? "border-color" : "color", value);
+    }
+    element.style &&
+      iterateCSSDeclarations(element.style, function (property, value) {
+        if (property === "background-image" && value.includes("url")) {
+          return;
         }
+        if (overrides.hasOwnProperty(property) || (property.startsWith("--") && !normalizedPropList[property])) {
+          setCustomProp(property, property, value);
+        } else {
+          var overridenProp = normalizedPropList[property];
+          if (overridenProp && !element.style.getPropertyValue(overridenProp) && !element.hasAttribute(overridenProp)) {
+            if (overridenProp === "background-color" && element.hasAttribute("bgcolor")) {
+              return;
+            }
+            element.style.setProperty(property, "");
+          }
+        }
+      });
+    if (element.style && element instanceof SVGTextElement && element.style.fill) {
+      setCustomProp("fill", "color", element.style.getPropertyValue("fill"));
+    }
+    forEach(unsetProps, function (cssProp) {
+      element.removeAttribute(overrides[cssProp].dataAttr);
+    });
+    inlineStyleCache.set(element, getInlineStyleCacheKey(element, theme));
+  }
 
-        function V(e) {
-          if (null == e) return C;
-          if (x.has(e)) return x.get(e);
-          var t = {
-            rule: e,
-            rules: [],
-            isGroup: !0,
+  var metaThemeColorName = "theme-color";
+  var metaThemeColorSelector = 'meta[name="'.concat(metaThemeColorName, '"]');
+  var srcMetaThemeColor = null;
+  var observer = null;
+  function changeMetaThemeColor(meta, theme) {
+    srcMetaThemeColor = srcMetaThemeColor || meta.content;
+    var color = parseColorWithCache(srcMetaThemeColor);
+    if (!color) {
+      return;
+    }
+    meta.content = modifyBackgroundColor(color, theme);
+  }
+  function changeMetaThemeColorWhenAvailable(theme) {
+    var meta = document.querySelector(metaThemeColorSelector);
+    if (meta) {
+      changeMetaThemeColor(meta, theme);
+    } else {
+      if (observer) {
+        observer.disconnect();
+      }
+      observer = new MutationObserver(function (mutations) {
+        loop: for (var i = 0; i < mutations.length; i++) {
+          var addedNodes = mutations[i].addedNodes;
+          for (var j = 0; j < addedNodes.length; j++) {
+            var node = addedNodes[j];
+            if (node instanceof HTMLMetaElement && node.name === metaThemeColorName) {
+              observer.disconnect();
+              observer = null;
+              changeMetaThemeColor(node, theme);
+              break loop;
+            }
+          }
+        }
+      });
+      observer.observe(document.head, { childList: true });
+    }
+  }
+  function restoreMetaThemeColor() {
+    if (observer) {
+      observer.disconnect();
+      observer = null;
+    }
+    var meta = document.querySelector(metaThemeColorSelector);
+    if (meta && srcMetaThemeColor) {
+      meta.content = srcMetaThemeColor;
+    }
+  }
+
+  var themeCacheKeys = ["mode", "brightness", "contrast", "grayscale", "sepia", "darkSchemeBackgroundColor", "darkSchemeTextColor", "lightSchemeBackgroundColor", "lightSchemeTextColor"];
+  function getThemeKey(theme) {
+    var resultKey = "";
+    themeCacheKeys.forEach(function (key) {
+      resultKey += "".concat(key, ":").concat(theme[key], ";");
+    });
+    return resultKey;
+  }
+  var asyncQueue = createAsyncTasksQueue();
+  function createStyleSheetModifier() {
+    var renderId = 0;
+    var rulesTextCache = new Set();
+    var rulesModCache = new Map();
+    var varTypeChangeCleaners = new Set();
+    var prevFilterKey = null;
+    var hasNonLoadedLink = false;
+    var wasRebuilt = false;
+    function shouldRebuildStyle() {
+      return hasNonLoadedLink && !wasRebuilt;
+    }
+    function modifySheet(options) {
+      var rules = options.sourceCSSRules;
+      var theme = options.theme,
+        ignoreImageAnalysis = options.ignoreImageAnalysis,
+        force = options.force,
+        prepareSheet = options.prepareSheet,
+        isAsyncCancelled = options.isAsyncCancelled;
+      var rulesChanged = rulesModCache.size === 0;
+      var notFoundCacheKeys = new Set(rulesModCache.keys());
+      var themeKey = getThemeKey(theme);
+      var themeChanged = themeKey !== prevFilterKey;
+      if (hasNonLoadedLink) {
+        wasRebuilt = true;
+      }
+      var modRules = [];
+      iterateCSSRules(
+        rules,
+        function (rule) {
+          var cssText = rule.cssText;
+          var textDiffersFromPrev = false;
+          notFoundCacheKeys.delete(cssText);
+          if (rule.parentRule instanceof CSSMediaRule) {
+            cssText += ";".concat(rule.parentRule.media.mediaText);
+          }
+          if (!rulesTextCache.has(cssText)) {
+            rulesTextCache.add(cssText);
+            textDiffersFromPrev = true;
+          }
+          if (textDiffersFromPrev) {
+            rulesChanged = true;
+          } else {
+            modRules.push(rulesModCache.get(cssText));
+            return;
+          }
+          if (rule.style.all === "revert") {
+            return;
+          }
+          var modDecs = [];
+          rule.style &&
+            iterateCSSDeclarations(rule.style, function (property, value) {
+              var mod = getModifiableCSSDeclaration(property, value, rule, variablesStore, ignoreImageAnalysis, isAsyncCancelled);
+              if (mod) {
+                modDecs.push(mod);
+              }
+            });
+          var modRule = null;
+          if (modDecs.length > 0) {
+            var parentRule = rule.parentRule;
+            modRule = {
+              selector: rule.selectorText,
+              declarations: modDecs,
+              parentRule: parentRule,
+            };
+            modRules.push(modRule);
+          }
+          rulesModCache.set(cssText, modRule);
+        },
+        function () {
+          hasNonLoadedLink = true;
+        }
+      );
+      notFoundCacheKeys.forEach(function (key) {
+        rulesTextCache.delete(key);
+        rulesModCache.delete(key);
+      });
+      prevFilterKey = themeKey;
+      if (!force && !rulesChanged && !themeChanged) {
+        return;
+      }
+      renderId++;
+      function setRule(target, index, rule) {
+        var selector = rule.selector,
+          declarations = rule.declarations;
+        var getDeclarationText = function (dec) {
+          var property = dec.property,
+            value = dec.value,
+            important = dec.important,
+            sourceValue = dec.sourceValue;
+          return ""
+            .concat(property, ": ")
+            .concat(value == null ? sourceValue : value)
+            .concat(important ? " !important" : "", ";");
+        };
+        var cssRulesText = "";
+        declarations.forEach(function (declarations) {
+          cssRulesText += "".concat(getDeclarationText(declarations), " ");
+        });
+        var ruleText = "".concat(selector, " { ").concat(cssRulesText, " }");
+        target.insertRule(ruleText, index);
+      }
+      var asyncDeclarations = new Map();
+      var varDeclarations = new Map();
+      var asyncDeclarationCounter = 0;
+      var varDeclarationCounter = 0;
+      var rootReadyGroup = { rule: null, rules: [], isGroup: true };
+      var groupRefs = new WeakMap();
+      function getGroup(rule) {
+        if (rule == null) {
+          return rootReadyGroup;
+        }
+        if (groupRefs.has(rule)) {
+          return groupRefs.get(rule);
+        }
+        var group = { rule: rule, rules: [], isGroup: true };
+        groupRefs.set(rule, group);
+        var parentGroup = getGroup(rule.parentRule);
+        parentGroup.rules.push(group);
+        return group;
+      }
+      varTypeChangeCleaners.forEach(function (clear) {
+        return clear();
+      });
+      varTypeChangeCleaners.clear();
+      modRules
+        .filter(function (r) {
+          return r;
+        })
+        .forEach(function (_a) {
+          var selector = _a.selector,
+            declarations = _a.declarations,
+            parentRule = _a.parentRule;
+          var group = getGroup(parentRule);
+          var readyStyleRule = {
+            selector: selector,
+            declarations: [],
+            isGroup: false,
           };
-          return x.set(e, t), V(e.parentRule).rules.push(t), t;
+          var readyDeclarations = readyStyleRule.declarations;
+          group.rules.push(readyStyleRule);
+          function handleAsyncDeclaration(property, modified, important, sourceValue) {
+            var asyncKey = ++asyncDeclarationCounter;
+            var asyncDeclaration = {
+              property: property,
+              value: null,
+              important: important,
+              asyncKey: asyncKey,
+              sourceValue: sourceValue,
+            };
+            readyDeclarations.push(asyncDeclaration);
+            var currentRenderId = renderId;
+            modified.then(function (asyncValue) {
+              if (!asyncValue || isAsyncCancelled() || currentRenderId !== renderId) {
+                return;
+              }
+              asyncDeclaration.value = asyncValue;
+              asyncQueue.add(function () {
+                if (isAsyncCancelled() || currentRenderId !== renderId) {
+                  return;
+                }
+                rebuildAsyncRule(asyncKey);
+              });
+            });
+          }
+          function handleVarDeclarations(property, modified, important, sourceValue) {
+            var varDecs = modified.declarations,
+              onTypeChange = modified.onTypeChange;
+            var varKey = ++varDeclarationCounter;
+            var currentRenderId = renderId;
+            var initialIndex = readyDeclarations.length;
+            var oldDecs = [];
+            if (varDecs.length === 0) {
+              var tempDec = {
+                property: property,
+                value: sourceValue,
+                important: important,
+                sourceValue: sourceValue,
+                varKey: varKey,
+              };
+              readyDeclarations.push(tempDec);
+              oldDecs = [tempDec];
+            }
+            varDecs.forEach(function (mod) {
+              if (mod.value instanceof Promise) {
+                handleAsyncDeclaration(mod.property, mod.value, important, sourceValue);
+              } else {
+                var readyDec = {
+                  property: mod.property,
+                  value: mod.value,
+                  important: important,
+                  sourceValue: sourceValue,
+                  varKey: varKey,
+                };
+                readyDeclarations.push(readyDec);
+                oldDecs.push(readyDec);
+              }
+            });
+            onTypeChange.addListener(function (newDecs) {
+              if (isAsyncCancelled() || currentRenderId !== renderId) {
+                return;
+              }
+              var readyVarDecs = newDecs.map(function (mod) {
+                return {
+                  property: mod.property,
+                  value: mod.value,
+                  important: important,
+                  sourceValue: sourceValue,
+                  varKey: varKey,
+                };
+              });
+              var index = readyDeclarations.indexOf(oldDecs[0], initialIndex);
+              readyDeclarations.splice.apply(readyDeclarations, __spreadArray([index, oldDecs.length], __read(readyVarDecs), false));
+              oldDecs = readyVarDecs;
+              rebuildVarRule(varKey);
+            });
+            varTypeChangeCleaners.add(function () {
+              return onTypeChange.removeListeners();
+            });
+          }
+          declarations.forEach(function (_a) {
+            var property = _a.property,
+              value = _a.value,
+              important = _a.important,
+              sourceValue = _a.sourceValue;
+            if (typeof value === "function") {
+              var modified = value(theme);
+              if (modified instanceof Promise) {
+                handleAsyncDeclaration(property, modified, important, sourceValue);
+              } else if (property.startsWith("--")) {
+                handleVarDeclarations(property, modified, important, sourceValue);
+              } else {
+                readyDeclarations.push({
+                  property: property,
+                  value: modified,
+                  important: important,
+                  sourceValue: sourceValue,
+                });
+              }
+            } else {
+              readyDeclarations.push({
+                property: property,
+                value: value,
+                important: important,
+                sourceValue: sourceValue,
+              });
+            }
+          });
+        });
+      var sheet = prepareSheet();
+      function buildStyleSheet() {
+        function createTarget(group, parent) {
+          var rule = group.rule;
+          if (rule instanceof CSSMediaRule) {
+            var media = rule.media;
+            var index = parent.cssRules.length;
+            parent.insertRule("@media ".concat(media.mediaText, " {}"), index);
+            return parent.cssRules[index];
+          }
+          return parent;
         }
-      },
-      shouldRebuildStyle: function () {
-        return o && !c;
-      },
+        function iterateReadyRules(group, target, styleIterator) {
+          group.rules.forEach(function (r) {
+            if (r.isGroup) {
+              var t = createTarget(r, target);
+              iterateReadyRules(r, t, styleIterator);
+            } else {
+              styleIterator(r, target);
+            }
+          });
+        }
+        iterateReadyRules(rootReadyGroup, sheet, function (rule, target) {
+          var index = target.cssRules.length;
+          rule.declarations.forEach(function (_a) {
+            var asyncKey = _a.asyncKey,
+              varKey = _a.varKey;
+            if (asyncKey != null) {
+              asyncDeclarations.set(asyncKey, {
+                rule: rule,
+                target: target,
+                index: index,
+              });
+            }
+            if (varKey != null) {
+              varDeclarations.set(varKey, {
+                rule: rule,
+                target: target,
+                index: index,
+              });
+            }
+          });
+          setRule(target, index, rule);
+        });
+      }
+      function rebuildAsyncRule(key) {
+        var _a = asyncDeclarations.get(key),
+          rule = _a.rule,
+          target = _a.target,
+          index = _a.index;
+        target.deleteRule(index);
+        setRule(target, index, rule);
+        asyncDeclarations.delete(key);
+      }
+      function rebuildVarRule(key) {
+        var _a = varDeclarations.get(key),
+          rule = _a.rule,
+          target = _a.target,
+          index = _a.index;
+        target.deleteRule(index);
+        setRule(target, index, rule);
+      }
+      buildStyleSheet();
+    }
+    return {
+      modifySheet: modifySheet,
+      shouldRebuildStyle: shouldRebuildStyle,
     };
   }
 
-  function Vr(e) {
-    return (
-      (e instanceof HTMLStyleElement ||
-        e instanceof SVGStyleElement ||
-        (e instanceof HTMLLinkElement &&
-          e.rel &&
-          e.rel.toLowerCase().includes("stylesheet") &&
-          e.href &&
-          !e.disabled &&
-          (!h || !e.href.startsWith("moz-extension://")) &&
-          !(function (e) {
-            if (!e.href) return !1;
-            try {
-              return "fonts.googleapis.com" === new URL(e.href).hostname;
-            } catch (t) {
-              return "Couldn't construct ".concat(e.href, " as URL"), !1;
-            }
-          })(e))) &&
-      !e.classList.contains("darkreader") &&
-      "print" !== e.media.toLowerCase() &&
-      !e.classList.contains("stylus")
-    );
-  }
-
-  function Ar(e, t, r) {
-    return (
-      void 0 === t && (t = []),
-      void 0 === r && (r = !0),
-      Vr(e)
-        ? t.push(e)
-        : (e instanceof Element || (b && e instanceof ShadowRoot) || e === document) &&
-          (F(e.querySelectorAll('style, link[rel*="stylesheet" i]:not([disabled])'), function (e) {
-            return Ar(e, t, !1);
-          }),
-          r &&
-            G(e, function (e) {
-              return Ar(e.shadowRoot, t, !1);
-            })),
-      t
-    );
-  }
-  var Mr = new WeakSet(),
-    Lr = new WeakSet(),
-    Or = !1;
-  document.addEventListener("__darkreader__inlineScriptsAllowed", function () {
-    Or = !0;
-  });
-  var Dr = 0,
-    Pr = new Map();
-
-  function Ir(e, t) {
-    for (var r = t.update, o = t.loadingStart, u = t.loadingEnd, c = [], s = e; (s = s.nextElementSibling) && s.matches(".darkreader"); ) c.push(s);
-    var l =
-        c.find(function (e) {
-          return e.matches(".darkreader--cors") && !Lr.has(e);
-        }) || null,
-      d =
-        c.find(function (e) {
-          return e.matches(".darkreader--sync") && !Mr.has(e);
-        }) || null,
-      f = null,
-      h = null,
-      v = !1,
-      m = !0,
-      g = Rr(),
-      b = new MutationObserver(function () {
-        r();
-      }),
-      y = {
-        attributes: !0,
-        childList: !0,
-        subtree: !0,
-        characterData: !0,
-      };
-
-    function S() {
-      return e instanceof HTMLStyleElement && e.textContent.trim().match(fe);
+  var STYLE_SELECTOR = 'style, link[rel*="stylesheet" i]:not([disabled])';
+  function isFontsGoogleApiStyle(element) {
+    if (!element.href) {
+      return false;
     }
-
-    function _(e, t) {
-      var r = !1;
-      if (e) {
-        var n = void 0;
-        e: for (var a = 0, o = e.length; a < o; a++)
-          if ((n = e[a]).href) {
-            if (!t) {
-              r = !0;
-              break e;
-            }
-            if (n.href.startsWith("http") && !n.href.startsWith(location.origin)) {
-              r = !0;
-              break e;
+    try {
+      var elementURL = new URL(element.href);
+      return elementURL.hostname === "fonts.googleapis.com";
+    } catch (err) {
+      logInfo("Couldn't construct ".concat(element.href, " as URL"));
+      return false;
+    }
+  }
+  function shouldManageStyle(element) {
+    return (
+      (element instanceof HTMLStyleElement || element instanceof SVGStyleElement || (element instanceof HTMLLinkElement && Boolean(element.rel) && element.rel.toLowerCase().includes("stylesheet") && Boolean(element.href) && !element.disabled && (isFirefox ? !element.href.startsWith("moz-extension://") : true) && !isFontsGoogleApiStyle(element))) &&
+      !element.classList.contains("darkreader") &&
+      element.media.toLowerCase() !== "print" &&
+      !element.classList.contains("stylus")
+    );
+  }
+  function getManageableStyles(node, results, deep) {
+    if (results === void 0) {
+      results = [];
+    }
+    if (deep === void 0) {
+      deep = true;
+    }
+    if (shouldManageStyle(node)) {
+      results.push(node);
+    } else if (node instanceof Element || (isShadowDomSupported && node instanceof ShadowRoot) || node === document) {
+      forEach(node.querySelectorAll(STYLE_SELECTOR), function (style) {
+        return getManageableStyles(style, results, false);
+      });
+      if (deep) {
+        iterateShadowHosts(node, function (host) {
+          return getManageableStyles(host.shadowRoot, results, false);
+        });
+      }
+    }
+    return results;
+  }
+  var syncStyleSet = new WeakSet();
+  var corsStyleSet = new WeakSet();
+  var canOptimizeUsingProxy$1 = false;
+  document.addEventListener(
+    "__darkreader__inlineScriptsAllowed",
+    function () {
+      canOptimizeUsingProxy$1 = true;
+    },
+    { once: true, passive: true }
+  );
+  var loadingLinkCounter = 0;
+  var rejectorsForLoadingLinks = new Map();
+  function cleanLoadingLinks() {
+    rejectorsForLoadingLinks.clear();
+  }
+  function manageStyle(element, _a) {
+    var update = _a.update,
+      loadingStart = _a.loadingStart,
+      loadingEnd = _a.loadingEnd;
+    var prevStyles = [];
+    var next = element;
+    while ((next = next.nextElementSibling) && next.matches(".darkreader")) {
+      prevStyles.push(next);
+    }
+    var corsCopy =
+      prevStyles.find(function (el) {
+        return el.matches(".darkreader--cors") && !corsStyleSet.has(el);
+      }) || null;
+    var syncStyle =
+      prevStyles.find(function (el) {
+        return el.matches(".darkreader--sync") && !syncStyleSet.has(el);
+      }) || null;
+    var corsCopyPositionWatcher = null;
+    var syncStylePositionWatcher = null;
+    var cancelAsyncOperations = false;
+    var isOverrideEmpty = true;
+    var sheetModifier = createStyleSheetModifier();
+    var observer = new MutationObserver(function () {
+      update();
+    });
+    var observerOptions = {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      characterData: true,
+    };
+    function containsCSSImport() {
+      return element instanceof HTMLStyleElement && element.textContent.trim().match(cssImportRegex);
+    }
+    function hasImports(cssRules, checkCrossOrigin) {
+      var result = false;
+      if (cssRules) {
+        var rule = void 0;
+        cssRulesLoop: for (var i = 0, len = cssRules.length; i < len; i++) {
+          rule = cssRules[i];
+          if (rule.href) {
+            if (checkCrossOrigin) {
+              if (!rule.href.startsWith("https://fonts.googleapis.com/") && rule.href.startsWith("http") && !rule.href.startsWith(location.origin)) {
+                result = true;
+                break cssRulesLoop;
+              }
+            } else {
+              result = true;
+              break cssRulesLoop;
             }
           }
+        }
       }
-      return r;
+      return result;
     }
-
-    function k() {
-      if (l) return l.sheet.cssRules;
-      if (S()) return null;
-      var t = A();
-      return (e instanceof HTMLLinkElement &&
-        !(function (e) {
-          if (e.startsWith("data:")) return !0;
-          var t = oe(e);
-          return t.protocol === location.protocol && t.hostname === location.hostname && t.port === location.port && t.pathname === location.pathname;
-        })(e.href) &&
-        _(t, !1)) ||
-        _(t, !0)
-        ? null
-        : t;
+    function getRulesSync() {
+      if (corsCopy) {
+        return corsCopy.sheet.cssRules;
+      }
+      if (containsCSSImport()) {
+        return null;
+      }
+      var cssRules = safeGetSheetRules();
+      if (element instanceof HTMLLinkElement && !isRelativeHrefOnAbsolutePath(element.href) && hasImports(cssRules, false)) {
+        return null;
+      }
+      if (hasImports(cssRules, true)) {
+        return null;
+      }
+      return cssRules;
     }
-
-    function w() {
-      l ? (e.nextSibling !== l && e.parentNode.insertBefore(l, e.nextSibling), l.nextSibling !== d && e.parentNode.insertBefore(d, l.nextSibling)) : e.nextSibling !== d && e.parentNode.insertBefore(d, e.nextSibling);
+    function insertStyle() {
+      if (corsCopy) {
+        if (element.nextSibling !== corsCopy) {
+          element.parentNode.insertBefore(corsCopy, element.nextSibling);
+        }
+        if (corsCopy.nextSibling !== syncStyle) {
+          element.parentNode.insertBefore(syncStyle, corsCopy.nextSibling);
+        }
+      } else if (element.nextSibling !== syncStyle) {
+        element.parentNode.insertBefore(syncStyle, element.nextSibling);
+      }
     }
-    var E = !1,
-      C = !1,
-      x = ++Dr;
-
-    function T() {
-      return n(this, void 0, void 0, function () {
-        var t, r, n, o, u, c, s;
-        return a(this, function (a) {
-          switch (a.label) {
+    function createSyncStyle() {
+      syncStyle = element instanceof SVGStyleElement ? document.createElementNS("http://www.w3.org/2000/svg", "style") : document.createElement("style");
+      syncStyle.classList.add("darkreader");
+      syncStyle.classList.add("darkreader--sync");
+      syncStyle.media = "screen";
+      if (element.title) {
+        syncStyle.title = element.title;
+      }
+      syncStyleSet.add(syncStyle);
+    }
+    var isLoadingRules = false;
+    var wasLoadingError = false;
+    var loadingLinkId = ++loadingLinkCounter;
+    function getRulesAsync() {
+      return __awaiter(this, void 0, void 0, function () {
+        var cssText, cssBasePath, _a, cssRules, accessError, fullCSSText;
+        var _b;
+        return __generator(this, function (_c) {
+          switch (_c.label) {
             case 0:
-              if (!(e instanceof HTMLLinkElement)) return [3, 7];
-              if (((n = i(V(), 2)), (o = n[0]), (u = n[1]), !((!o && !u && !p) || (p && !e.sheet) || ((d = u), d && d.message && d.message.includes("loading"))))) return [3, 5];
-              a.label = 1;
+              if (!(element instanceof HTMLLinkElement)) return [3, 7];
+              (_a = __read(getRulesOrError(), 2)), (cssRules = _a[0]), (accessError = _a[1]);
+              if (!((isSafari && !element.sheet) || (!isSafari && !cssRules && !accessError) || isStillLoadingError(accessError))) return [3, 5];
+              _c.label = 1;
             case 1:
-              return a.trys.push([1, 3, , 4]), [4, Nr(e, x)];
+              _c.trys.push([1, 3, , 4]);
+              return [4, linkLoading(element, loadingLinkId)];
             case 2:
-              return a.sent(), [3, 4];
+              _c.sent();
+              return [3, 4];
             case 3:
-              return a.sent(), (C = !0), [3, 4];
+              _c.sent();
+              wasLoadingError = true;
+              return [3, 4];
             case 4:
-              if (v) return [2, null];
-              (s = i(V(), 2)), (o = s[0]), (u = s[1]), (a.label = 5);
+              if (cancelAsyncOperations) {
+                return [2, null];
+              }
+              (_b = __read(getRulesOrError(), 2)), (cssRules = _b[0]), (accessError = _b[1]);
+              _c.label = 5;
             case 5:
-              return o && !_(o, !1) ? [2, o] : [4, Fr(e.href)];
+              if (cssRules) {
+                if (!hasImports(cssRules, false)) {
+                  return [2, cssRules];
+                }
+              }
+              return [4, loadText(element.href)];
             case 6:
-              return (t = a.sent()), (r = pe(e.href)), v ? [2, null] : [3, 8];
+              cssText = _c.sent();
+              cssBasePath = getCSSBaseBath(element.href);
+              if (cancelAsyncOperations) {
+                return [2, null];
+              }
+              return [3, 8];
             case 7:
-              if (!S()) return [2, null];
-              (t = e.textContent.trim()), (r = pe(location.href)), (a.label = 8);
+              if (containsCSSImport()) {
+                cssText = element.textContent.trim();
+                cssBasePath = getCSSBaseBath(location.href);
+              } else {
+                return [2, null];
+              }
+              _c.label = 8;
             case 8:
-              if (!t) return [3, 13];
-              a.label = 9;
+              if (!cssText) return [3, 13];
+              _c.label = 9;
             case 9:
-              return a.trys.push([9, 11, , 12]), [4, jr(t, r)];
+              _c.trys.push([9, 11, , 12]);
+              return [4, replaceCSSImports(cssText, cssBasePath)];
             case 10:
-              return (
-                (c = a.sent()),
-                (l = (function (e, t) {
-                  if (!t) return null;
-                  var r = document.createElement("style");
-                  return r.classList.add("darkreader"), r.classList.add("darkreader--cors"), (r.media = "screen"), (r.textContent = t), e.parentNode.insertBefore(r, e.nextSibling), (r.sheet.disabled = !0), Lr.add(r), r;
-                })(e, c)),
-                [3, 12]
-              );
+              fullCSSText = _c.sent();
+              corsCopy = createCORSCopy(element, fullCSSText);
+              return [3, 12];
             case 11:
-              return a.sent(), [3, 12];
+              _c.sent();
+              return [3, 12];
             case 12:
-              if (l) return (f = W(l, "prev-sibling")), [2, l.sheet.cssRules];
-              a.label = 13;
+              if (corsCopy) {
+                corsCopyPositionWatcher = watchForNodePosition(corsCopy, "prev-sibling");
+                return [2, corsCopy.sheet.cssRules];
+              }
+              _c.label = 13;
             case 13:
               return [2, null];
           }
-          var d;
         });
       });
     }
-    var R = !1;
-
-    function V() {
-      try {
-        return null == e.sheet ? [null, null] : [e.sheet.cssRules, null];
-      } catch (e) {
-        return [null, e];
-      }
-    }
-
-    function A() {
-      var e = i(V(), 2),
-        t = e[0];
-      return e[1] ? null : t;
-    }
-
-    function M() {
-      e.addEventListener("__darkreader__updateSheet", N),
-        (Or && e.sheet) ||
-          (function () {
-            (L = D()), P();
-            var t = function () {
-              D() !== L && ((L = D()), r()), Or && e.sheet ? P() : (O = requestAnimationFrame(t));
-            };
-            t();
-          })();
-    }
-    var L = null,
-      O = null;
-
-    function D() {
-      var e = A();
-      return e ? e.length : null;
-    }
-
-    function P() {
-      cancelAnimationFrame(O);
-    }
-    var I = !1;
-
-    function N() {
-      function e() {
-        (I = !1), v || r();
-      }
-      (Or = !0), P(), I || ((I = !0), "function" == typeof queueMicrotask ? queueMicrotask(e) : requestAnimationFrame(e));
-    }
-
-    function F() {
-      e.removeEventListener("__darkreader__updateSheet", N), P();
-    }
-
-    function j() {
-      b.disconnect(), (v = !0), f && f.stop(), h && h.stop(), F();
-    }
-    var B = 0;
-    return {
-      details: function (e) {
-        var t = k();
-        return t
-          ? {
-              rules: t,
+    function details(options) {
+      var rules = getRulesSync();
+      if (!rules) {
+        if (options.secondRound) {
+          return null;
+        }
+        if (isLoadingRules || wasLoadingError) {
+          return null;
+        }
+        isLoadingRules = true;
+        loadingStart();
+        getRulesAsync()
+          .then(function (results) {
+            isLoadingRules = false;
+            loadingEnd();
+            if (results) {
+              update();
             }
-          : (e.secondRound ||
-              E ||
-              C ||
-              ((E = !0),
-              o(),
-              T()
-                .then(function (e) {
-                  (E = !1), u(), e && r();
-                })
-                .catch(function (e) {
-                  (E = !1), u();
-                })),
-            null);
-      },
-      render: function (t, n) {
-        var a = k();
-
-        function o() {
-          return (
-            d || ((d = e instanceof SVGStyleElement ? document.createElementNS("http://www.w3.org/2000/svg", "style") : document.createElement("style")).classList.add("darkreader"), d.classList.add("darkreader--sync"), (d.media = "screen"), e.title && (d.title = e.title), Mr.add(d)),
-            h && h.stop(),
-            w(),
-            null == d.sheet && (d.textContent = ""),
-            (function (e) {
-              for (var t = e.cssRules.length - 1; t >= 0; t--) e.deleteRule(t);
-            })(d.sheet),
-            h
-              ? h.run()
-              : (h = W(d, "prev-sibling", function () {
-                  (R = !0), i();
-                })),
-            d.sheet
-          );
+          })
+          .catch(function (err) {
+            isLoadingRules = false;
+            loadingEnd();
+          });
+        return null;
+      }
+      return { rules: rules };
+    }
+    var forceRenderStyle = false;
+    function render(theme, ignoreImageAnalysis) {
+      var rules = getRulesSync();
+      if (!rules) {
+        return;
+      }
+      cancelAsyncOperations = false;
+      function removeCSSRulesFromSheet(sheet) {
+        if (!sheet) {
+          return;
         }
-
-        function i() {
-          var e = R;
-          (R = !1),
-            g.modifySheet({
-              prepareSheet: o,
-              sourceCSSRules: a,
-              theme: t,
-              ignoreImageAnalysis: n,
-              force: e,
-              isAsyncCancelled: function () {
-                return v;
-              },
-            }),
-            (m = 0 === d.sheet.cssRules.length),
-            g.shouldRebuildStyle() &&
-              X(function () {
-                return r();
-              });
+        for (var i = sheet.cssRules.length - 1; i >= 0; i--) {
+          sheet.deleteRule(i);
         }
-        a && ((v = !1), i());
-      },
-      pause: j,
-      destroy: function () {
-        if ((j(), U(l), U(d), u(), Pr.has(x))) {
-          var e = Pr.get(x);
-          Pr.delete(x), e && e();
+      }
+      function prepareOverridesSheet() {
+        if (!syncStyle) {
+          createSyncStyle();
         }
-      },
-      watch: function () {
-        b.observe(e, y), e instanceof HTMLStyleElement && M();
-      },
-      restore: function () {
-        d && (++B > 10 || (w(), f && f.skip(), h && h.skip(), m || ((R = !0), r())));
-      },
+        syncStylePositionWatcher && syncStylePositionWatcher.stop();
+        insertStyle();
+        if (syncStyle.sheet == null) {
+          syncStyle.textContent = "";
+        }
+        var sheet = syncStyle.sheet;
+        removeCSSRulesFromSheet(sheet);
+        if (syncStylePositionWatcher) {
+          syncStylePositionWatcher.run();
+        } else {
+          syncStylePositionWatcher = watchForNodePosition(syncStyle, "prev-sibling", function () {
+            forceRenderStyle = true;
+            buildOverrides();
+          });
+        }
+        return syncStyle.sheet;
+      }
+      function buildOverrides() {
+        var force = forceRenderStyle;
+        forceRenderStyle = false;
+        sheetModifier.modifySheet({
+          prepareSheet: prepareOverridesSheet,
+          sourceCSSRules: rules,
+          theme: theme,
+          ignoreImageAnalysis: ignoreImageAnalysis,
+          force: force,
+          isAsyncCancelled: function () {
+            return cancelAsyncOperations;
+          },
+        });
+        isOverrideEmpty = syncStyle.sheet.cssRules.length === 0;
+        if (sheetModifier.shouldRebuildStyle()) {
+          addReadyStateCompleteListener(function () {
+            return update();
+          });
+        }
+      }
+      buildOverrides();
+    }
+    function getRulesOrError() {
+      try {
+        if (element.sheet == null) {
+          return [null, null];
+        }
+        return [element.sheet.cssRules, null];
+      } catch (err) {
+        return [null, err];
+      }
+    }
+    function isStillLoadingError(error) {
+      return error && error.message && error.message.includes("loading");
+    }
+    function safeGetSheetRules() {
+      var _a = __read(getRulesOrError(), 2),
+        cssRules = _a[0],
+        err = _a[1];
+      if (err) {
+        return null;
+      }
+      return cssRules;
+    }
+    function watchForSheetChanges() {
+      watchForSheetChangesUsingProxy();
+      if (!(canOptimizeUsingProxy$1 && element.sheet)) {
+        watchForSheetChangesUsingRAF();
+      }
+    }
+    var rulesChangeKey = null;
+    var rulesCheckFrameId = null;
+    function getRulesChangeKey() {
+      var rules = safeGetSheetRules();
+      return rules ? rules.length : null;
+    }
+    function didRulesKeyChange() {
+      return getRulesChangeKey() !== rulesChangeKey;
+    }
+    function watchForSheetChangesUsingRAF() {
+      rulesChangeKey = getRulesChangeKey();
+      stopWatchingForSheetChangesUsingRAF();
+      var checkForUpdate = function () {
+        if (didRulesKeyChange()) {
+          rulesChangeKey = getRulesChangeKey();
+          update();
+        }
+        if (canOptimizeUsingProxy$1 && element.sheet) {
+          stopWatchingForSheetChangesUsingRAF();
+          return;
+        }
+        rulesCheckFrameId = requestAnimationFrame(checkForUpdate);
+      };
+      checkForUpdate();
+    }
+    function stopWatchingForSheetChangesUsingRAF() {
+      cancelAnimationFrame(rulesCheckFrameId);
+    }
+    var areSheetChangesPending = false;
+    function onSheetChange() {
+      canOptimizeUsingProxy$1 = true;
+      stopWatchingForSheetChangesUsingRAF();
+      if (areSheetChangesPending) {
+        return;
+      }
+      function handleSheetChanges() {
+        areSheetChangesPending = false;
+        if (cancelAsyncOperations) {
+          return;
+        }
+        update();
+      }
+      areSheetChangesPending = true;
+      if (typeof queueMicrotask === "function") {
+        queueMicrotask(handleSheetChanges);
+      } else {
+        requestAnimationFrame(handleSheetChanges);
+      }
+    }
+    function watchForSheetChangesUsingProxy() {
+      element.addEventListener("__darkreader__updateSheet", onSheetChange, { passive: true });
+    }
+    function stopWatchingForSheetChangesUsingProxy() {
+      element.removeEventListener("__darkreader__updateSheet", onSheetChange);
+    }
+    function stopWatchingForSheetChanges() {
+      stopWatchingForSheetChangesUsingProxy();
+      stopWatchingForSheetChangesUsingRAF();
+    }
+    function pause() {
+      observer.disconnect();
+      cancelAsyncOperations = true;
+      corsCopyPositionWatcher && corsCopyPositionWatcher.stop();
+      syncStylePositionWatcher && syncStylePositionWatcher.stop();
+      stopWatchingForSheetChanges();
+    }
+    function destroy() {
+      pause();
+      removeNode(corsCopy);
+      removeNode(syncStyle);
+      loadingEnd();
+      if (rejectorsForLoadingLinks.has(loadingLinkId)) {
+        var reject = rejectorsForLoadingLinks.get(loadingLinkId);
+        rejectorsForLoadingLinks.delete(loadingLinkId);
+        reject && reject();
+      }
+    }
+    function watch() {
+      observer.observe(element, observerOptions);
+      if (element instanceof HTMLStyleElement) {
+        watchForSheetChanges();
+      }
+    }
+    var maxMoveCount = 10;
+    var moveCount = 0;
+    function restore() {
+      if (!syncStyle) {
+        return;
+      }
+      moveCount++;
+      if (moveCount > maxMoveCount) {
+        return;
+      }
+      insertStyle();
+      corsCopyPositionWatcher && corsCopyPositionWatcher.skip();
+      syncStylePositionWatcher && syncStylePositionWatcher.skip();
+      if (!isOverrideEmpty) {
+        forceRenderStyle = true;
+        update();
+      }
+    }
+    return {
+      details: details,
+      render: render,
+      pause: pause,
+      destroy: destroy,
+      watch: watch,
+      restore: restore,
     };
   }
-
-  function Nr(e, t) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (r) {
+  function linkLoading(link, loadingId) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
         return [
           2,
-          new Promise(function (r, n) {
-            var a = function () {
-                e.removeEventListener("load", o), e.removeEventListener("error", i), Pr.delete(t);
-              },
-              o = function () {
-                a(), r();
-              },
-              i = function () {
-                a(), n("Linkelement ".concat(t, " couldn't be loaded. ").concat(e.href));
-              };
-            Pr.set(t, function () {
-              a(), n();
-            }),
-              e.addEventListener("load", o),
-              e.addEventListener("error", i),
-              e.href || i();
+          new Promise(function (resolve, reject) {
+            var cleanUp = function () {
+              link.removeEventListener("load", onLoad);
+              link.removeEventListener("error", onError);
+              rejectorsForLoadingLinks.delete(loadingId);
+            };
+            var onLoad = function () {
+              cleanUp();
+              resolve();
+            };
+            var onError = function () {
+              cleanUp();
+              reject("Linkelement ".concat(loadingId, " couldn't be loaded. ").concat(link.href));
+            };
+            rejectorsForLoadingLinks.set(loadingId, function () {
+              cleanUp();
+              reject();
+            });
+            link.addEventListener("load", onLoad, { passive: true });
+            link.addEventListener("error", onError, {
+              passive: true,
+            });
+            if (!link.href) {
+              onError();
+            }
           }),
         ];
       });
     });
   }
-
-  function Fr(e) {
-    return n(this, void 0, void 0, function () {
-      return a(this, function (t) {
-        switch (t.label) {
+  function getCSSImportURL(importDeclaration) {
+    return getCSSURLValue(
+      importDeclaration
+        .substring(7)
+        .trim()
+        .replace(/;$/, "")
+        .replace(/screen$/, "")
+    );
+  }
+  function loadText(url) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
-            return e.startsWith("data:") ? [4, fetch(e)] : [3, 3];
+            if (!url.startsWith("data:")) return [3, 3];
+            return [4, fetch(url)];
           case 1:
-            return [4, t.sent().text()];
+            return [4, _a.sent().text()];
           case 2:
-          case 4:
-            return [2, t.sent()];
+            return [2, _a.sent()];
           case 3:
             return [
               4,
-              vt({
-                url: e,
+              bgFetch({
+                url: url,
                 responseType: "text",
                 mimeType: "text/css",
                 origin: window.location.origin,
               }),
             ];
+          case 4:
+            return [2, _a.sent()];
         }
       });
     });
   }
-
-  function jr(e, t, r) {
-    return (
-      void 0 === r && (r = new Map()),
-      n(this, void 0, void 0, function () {
-        var n, i, u, c, s, l, d, f, h, p;
-        return a(this, function (a) {
-          switch (a.label) {
-            case 0:
-              (e = (function (e, t) {
-                return e.replace(de, function (e) {
-                  var r = he(e);
-                  try {
-                    return "url('".concat(ie(t, r), "')");
-                  } catch (t) {
-                    return e;
-                  }
-                });
-              })(
-                (e = (function (e) {
-                  return e.replace(me, "");
-                })((e = e.replace(ve, "")))),
-                t
-              )),
-                (n = Se(fe, e)),
-                (a.label = 1);
-            case 1:
-              a.trys.push([1, 10, 11, 12]), (i = o(n)), (u = i.next()), (a.label = 2);
-            case 2:
-              return u.done
-                ? [3, 9]
-                : ((c = u.value),
-                  (s = he(
-                    c
-                      .substring(7)
-                      .trim()
-                      .replace(/;$/, "")
-                      .replace(/screen$/, "")
-                  )),
-                  (l = ie(t, s)),
-                  (d = void 0),
-                  r.has(l) ? ((d = r.get(l)), [3, 7]) : [3, 3]);
-            case 3:
-              return a.trys.push([3, 6, , 7]), [4, Fr(l)];
-            case 4:
-              return (d = a.sent()), r.set(l, d), [4, jr(d, pe(l), r)];
-            case 5:
-              return (d = a.sent()), [3, 7];
-            case 6:
-              return a.sent(), (d = ""), [3, 7];
-            case 7:
-              (e = e.split(c).join(d)), (a.label = 8);
-            case 8:
-              return (u = i.next()), [3, 2];
-            case 9:
-              return [3, 12];
-            case 10:
-              return (
-                (f = a.sent()),
-                (h = {
-                  error: f,
-                }),
-                [3, 12]
-              );
-            case 11:
-              try {
-                u && !u.done && (p = i.return) && p.call(i);
-              } finally {
-                if (h) throw h.error;
-              }
-              return [7];
-            case 12:
-              return [2, (e = e.trim())];
-          }
-        });
-      })
-    );
-  }
-  var Br,
-    qr,
-    Ur = [],
-    Wr = new Map();
-
-  function Gr(e) {
-    S &&
-      F(e.querySelectorAll(":not(:defined)"), function (e) {
-        var t = e.tagName.toLowerCase();
-        if (!t.includes("-")) {
-          var r = e.getAttribute("is");
-          if (!r) return;
-          t = r;
-        }
-        Wr.has(t) ||
-          (Wr.set(t, new Set()),
-          (function (e) {
-            return n(this, void 0, void 0, function () {
-              return a(this, function (t) {
-                return [
-                  2,
-                  new Promise(function (t) {
-                    if (window.customElements && "function" == typeof customElements.whenDefined)
-                      customElements.whenDefined(e).then(function () {
-                        return t();
-                      });
-                    else if (Hr)
-                      $r.set(e, t),
-                        document.dispatchEvent(
-                          new CustomEvent("__darkreader__addUndefinedResolver", {
-                            detail: {
-                              tag: e,
-                            },
-                          })
-                        );
-                    else {
-                      var r = function () {
-                        var n = Wr.get(e);
-                        n && n.size > 0 && (n.values().next().value.matches(":defined") ? t() : requestAnimationFrame(r));
-                      };
-                      requestAnimationFrame(r);
-                    }
-                  }),
-                ];
-              });
-            });
-          })(t).then(function () {
-            if (qr) {
-              var e = Wr.get(t);
-              Wr.delete(t), qr(Array.from(e));
+  function replaceCSSImports(cssText, basePath, cache) {
+    if (cache === void 0) {
+      cache = new Map();
+    }
+    return __awaiter(this, void 0, void 0, function () {
+      var importMatches, importMatches_1, importMatches_1_1, match, importURL, absoluteURL, importedCSS, e_1_1;
+      var e_1, _a;
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            cssText = removeCSSComments(cssText);
+            cssText = replaceCSSFontFace(cssText);
+            cssText = replaceCSSRelativeURLsWithAbsolute(cssText, basePath);
+            importMatches = getMatches(cssImportRegex, cssText);
+            _b.label = 1;
+          case 1:
+            _b.trys.push([1, 10, 11, 12]);
+            (importMatches_1 = __values(importMatches)), (importMatches_1_1 = importMatches_1.next());
+            _b.label = 2;
+          case 2:
+            if (!!importMatches_1_1.done) return [3, 9];
+            match = importMatches_1_1.value;
+            importURL = getCSSImportURL(match);
+            absoluteURL = getAbsoluteURL(basePath, importURL);
+            importedCSS = void 0;
+            if (!cache.has(absoluteURL)) return [3, 3];
+            importedCSS = cache.get(absoluteURL);
+            return [3, 7];
+          case 3:
+            _b.trys.push([3, 6, , 7]);
+            return [4, loadText(absoluteURL)];
+          case 4:
+            importedCSS = _b.sent();
+            cache.set(absoluteURL, importedCSS);
+            return [4, replaceCSSImports(importedCSS, getCSSBaseBath(absoluteURL), cache)];
+          case 5:
+            importedCSS = _b.sent();
+            return [3, 7];
+          case 6:
+            _b.sent();
+            importedCSS = "";
+            return [3, 7];
+          case 7:
+            cssText = cssText.split(match).join(importedCSS);
+            _b.label = 8;
+          case 8:
+            importMatches_1_1 = importMatches_1.next();
+            return [3, 2];
+          case 9:
+            return [3, 12];
+          case 10:
+            e_1_1 = _b.sent();
+            e_1 = { error: e_1_1 };
+            return [3, 12];
+          case 11:
+            try {
+              if (importMatches_1_1 && !importMatches_1_1.done && (_a = importMatches_1.return)) _a.call(importMatches_1);
+            } finally {
+              if (e_1) throw e_1.error;
             }
-          })),
-          Wr.get(t).add(e);
+            return [7];
+          case 12:
+            cssText = cssText.trim();
+            return [2, cssText];
+        }
       });
+    });
   }
-  var Hr = !1;
-  document.addEventListener("__darkreader__inlineScriptsAllowed", function () {
-    Hr = !0;
-  });
-  var $r = new Map();
-
-  function zr(e) {
-    ((Hr = !0), $r.has(e.detail.tag)) && $r.get(e.detail.tag)();
+  function createCORSCopy(srcElement, cssText) {
+    if (!cssText) {
+      return null;
+    }
+    var cors = document.createElement("style");
+    cors.classList.add("darkreader");
+    cors.classList.add("darkreader--cors");
+    cors.media = "screen";
+    cors.textContent = cssText;
+    srcElement.parentNode.insertBefore(cors, srcElement.nextSibling);
+    cors.sheet.disabled = true;
+    corsStyleSet.add(cors);
+    return cors;
   }
 
-  function Qr(e, t, r) {
-    Kr();
-    var n = new Set(e),
-      a = new WeakMap(),
-      o = new WeakMap();
-
-    function i(e) {
-      a.set(e, e.previousElementSibling), o.set(e, e.nextElementSibling);
+  var observers = [];
+  var observedRoots;
+  var definedCustomElements = new Set();
+  var undefinedGroups = new Map();
+  var elementsDefinitionCallback;
+  function isCustomElement(element) {
+    if (element.tagName.includes("-") || element.getAttribute("is")) {
+      return true;
     }
-
-    function u(e) {
-      var r = e.createdStyles,
-        u = e.removedStyles,
-        c = e.movedStyles;
-      r.forEach(function (e) {
-        return i(e);
-      }),
-        c.forEach(function (e) {
-          return i(e);
-        }),
-        u.forEach(function (e) {
-          return (t = e), a.delete(t), void o.delete(t);
-          var t;
-        }),
-        r.forEach(function (e) {
-          return n.add(e);
-        }),
-        u.forEach(function (e) {
-          return n.delete(e);
-        }),
-        r.size + u.size + c.size > 0 &&
-          t({
-            created: Array.from(r),
-            removed: Array.from(u),
-            moved: Array.from(c),
-            updated: [],
-          });
+    return false;
+  }
+  function recordUndefinedElement(element) {
+    var tag = element.tagName.toLowerCase();
+    if (!tag.includes("-")) {
+      var extendedTag = element.getAttribute("is");
+      if (extendedTag) {
+        tag = extendedTag;
+      } else {
+        return;
+      }
     }
-
-    function c(e) {
-      var t = e.additions,
-        r = e.moves,
-        n = e.deletions,
-        a = new Set(),
-        o = new Set(),
-        i = new Set();
-      t.forEach(function (e) {
-        return Ar(e).forEach(function (e) {
-          return a.add(e);
-        });
-      }),
-        n.forEach(function (e) {
-          return Ar(e).forEach(function (e) {
-            return o.add(e);
-          });
-        }),
-        r.forEach(function (e) {
-          return Ar(e).forEach(function (e) {
-            return i.add(e);
-          });
-        }),
-        u({
-          createdStyles: a,
-          removedStyles: o,
-          movedStyles: i,
-        }),
-        t.forEach(function (e) {
-          G(e, f), Gr(e);
-        });
+    if (!undefinedGroups.has(tag)) {
+      undefinedGroups.set(tag, new Set());
+      customElementsWhenDefined(tag).then(function () {
+        if (elementsDefinitionCallback) {
+          var elements = undefinedGroups.get(tag);
+          undefinedGroups.delete(tag);
+          elementsDefinitionCallback(Array.from(elements));
+        }
+      });
     }
-
-    function s(e) {
-      var t = new Set(Ar(e)),
-        r = new Set(),
-        i = new Set(),
-        c = new Set();
-      t.forEach(function (e) {
-        n.has(e) || r.add(e);
-      }),
-        n.forEach(function (e) {
-          t.has(e) || i.add(e);
-        }),
-        t.forEach(function (e) {
-          var t;
-          r.has(e) || i.has(e) || ((t = e).previousElementSibling === a.get(t) && t.nextElementSibling === o.get(t)) || c.add(e);
-        }),
-        u({
-          createdStyles: r,
-          removedStyles: i,
-          movedStyles: c,
-        }),
-        G(e, f),
-        Gr(e);
+    undefinedGroups.get(tag).add(element);
+  }
+  function collectUndefinedElements(root) {
+    if (!isDefinedSelectorSupported) {
+      return;
     }
-
-    function l(e) {
-      var r = new Set(),
-        n = new Set();
-      e.forEach(function (e) {
-        var t = e.target;
-        t.isConnected && (Vr(t) ? r.add(t) : t instanceof HTMLLinkElement && t.disabled && n.add(t));
-      }),
-        r.size + n.size > 0 &&
-          t({
-            updated: Array.from(r),
-            created: [],
-            removed: Array.from(n),
-            moved: [],
-          });
+    forEach(root.querySelectorAll(":not(:defined)"), recordUndefinedElement);
+  }
+  var canOptimizeUsingProxy = false;
+  document.addEventListener(
+    "__darkreader__inlineScriptsAllowed",
+    function () {
+      canOptimizeUsingProxy = true;
+    },
+    { once: true, passive: true }
+  );
+  var resolvers = new Map();
+  function handleIsDefined(e) {
+    canOptimizeUsingProxy = true;
+    var tag = e.detail.tag;
+    definedCustomElements.add(tag);
+    if (resolvers.has(tag)) {
+      var r = resolvers.get(tag);
+      resolvers.delete(tag);
+      r.forEach(function (r) {
+        return r();
+      });
     }
-
-    function d(e) {
-      var t = re(e, {
-          onMinorMutations: c,
-          onHugeMutations: s,
-        }),
-        r = new MutationObserver(l);
-      r.observe(e, {
-        attributes: !0,
-        attributeFilter: ["rel", "disabled", "media", "href"],
-        subtree: !0,
-      }),
-        Ur.push(t, r),
-        Br.add(e);
-    }
-
-    function f(e) {
-      var t = e.shadowRoot;
-      null == t || Br.has(t) || (d(t), r(t));
-    }
-    e.forEach(i),
-      d(document),
-      G(document.documentElement, f),
-      (qr = function (e) {
-        var r = [];
-        e.forEach(function (e) {
-          return j(r, Ar(e.shadowRoot));
-        }),
-          t({
-            created: r,
-            updated: [],
-            removed: [],
-            moved: [],
+  }
+  function customElementsWhenDefined(tag) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        if (definedCustomElements.has(tag)) {
+          return [2];
+        }
+        return [
+          2,
+          new Promise(function (resolve) {
+            if (window.customElements && typeof customElements.whenDefined === "function") {
+              customElements.whenDefined(tag).then(function () {
+                return resolve();
+              });
+            } else if (canOptimizeUsingProxy) {
+              if (resolvers.has(tag)) {
+                resolvers.get(tag).push(resolve);
+              } else {
+                resolvers.set(tag, [resolve]);
+              }
+              document.dispatchEvent(new CustomEvent("__darkreader__addUndefinedResolver", { detail: { tag: tag } }));
+            } else {
+              var checkIfDefined_1 = function () {
+                var elements = undefinedGroups.get(tag);
+                if (elements && elements.size > 0) {
+                  if (elements.values().next().value.matches(":defined")) {
+                    resolve();
+                  } else {
+                    requestAnimationFrame(checkIfDefined_1);
+                  }
+                }
+              };
+              requestAnimationFrame(checkIfDefined_1);
+            }
           }),
-          e.forEach(function (e) {
-            var t = e.shadowRoot;
-            null != t && (f(e), G(t, f), Gr(t));
-          });
-      }),
-      document.addEventListener("__darkreader__isDefined", zr),
-      Gr(document);
+        ];
+      });
+    });
   }
-
-  function Kr() {
-    Ur.forEach(function (e) {
-      return e.disconnect();
-    }),
-      Ur.splice(0, Ur.length),
-      (Br = new WeakSet()),
-      (qr = null),
-      Wr.clear(),
-      document.removeEventListener("__darkreader__isDefined", zr);
+  function watchWhenCustomElementsDefined(callback) {
+    elementsDefinitionCallback = callback;
   }
-  var Yr = new WeakMap(),
-    Xr = new WeakSet();
-
-  function Zr(e) {
-    var t = !1;
-    return {
-      render: function (r, n) {
-        e.adoptedStyleSheets.forEach(function (a) {
-          if (!Xr.has(a)) {
-            var o = a.rules,
-              c = new CSSStyleSheet();
-            Rr().modifySheet({
-              prepareSheet: function () {
-                for (var t = c.cssRules.length - 1; t >= 0; t--) c.deleteRule(t);
-                return (
-                  (function (t, r) {
-                    var n = u([], i(e.adoptedStyleSheets), !1),
-                      a = n.indexOf(t),
-                      o = n.indexOf(r);
-                    a !== o - 1 && (o >= 0 && n.splice(o, 1), n.splice(a + 1, 0, r), (e.adoptedStyleSheets = n));
-                  })(a, c),
-                  Yr.set(a, c),
-                  Xr.add(c),
-                  c
-                );
-              },
-              sourceCSSRules: o,
-              theme: r,
-              ignoreImageAnalysis: n,
-              force: !1,
-              isAsyncCancelled: function () {
-                return t;
-              },
-            });
-          }
+  function unsubscribeFromDefineCustomElements() {
+    elementsDefinitionCallback = null;
+    undefinedGroups.clear();
+    document.removeEventListener("__darkreader__isDefined", handleIsDefined);
+  }
+  function watchForStyleChanges(currentStyles, update, shadowRootDiscovered) {
+    stopWatchingForStyleChanges();
+    var prevStyles = new Set(currentStyles);
+    var prevStyleSiblings = new WeakMap();
+    var nextStyleSiblings = new WeakMap();
+    function saveStylePosition(style) {
+      prevStyleSiblings.set(style, style.previousElementSibling);
+      nextStyleSiblings.set(style, style.nextElementSibling);
+    }
+    function forgetStylePosition(style) {
+      prevStyleSiblings.delete(style);
+      nextStyleSiblings.delete(style);
+    }
+    function didStylePositionChange(style) {
+      return style.previousElementSibling !== prevStyleSiblings.get(style) || style.nextElementSibling !== nextStyleSiblings.get(style);
+    }
+    currentStyles.forEach(saveStylePosition);
+    function handleStyleOperations(operations) {
+      var createdStyles = operations.createdStyles,
+        removedStyles = operations.removedStyles,
+        movedStyles = operations.movedStyles;
+      createdStyles.forEach(function (s) {
+        return saveStylePosition(s);
+      });
+      movedStyles.forEach(function (s) {
+        return saveStylePosition(s);
+      });
+      removedStyles.forEach(function (s) {
+        return forgetStylePosition(s);
+      });
+      createdStyles.forEach(function (s) {
+        return prevStyles.add(s);
+      });
+      removedStyles.forEach(function (s) {
+        return prevStyles.delete(s);
+      });
+      if (createdStyles.size + removedStyles.size + movedStyles.size > 0) {
+        update({
+          created: Array.from(createdStyles),
+          removed: Array.from(removedStyles),
+          moved: Array.from(movedStyles),
+          updated: [],
         });
-      },
-      destroy: function () {
-        t = !0;
-        var r = u([], i(e.adoptedStyleSheets), !1);
-        e.adoptedStyleSheets.forEach(function (e) {
-          if (Xr.has(e)) {
-            var t = r.indexOf(e);
-            t >= 0 && r.splice(t, 1), Yr.delete(e), Xr.delete(e);
+      }
+    }
+    function handleMinorTreeMutations(_a) {
+      var additions = _a.additions,
+        moves = _a.moves,
+        deletions = _a.deletions;
+      var createdStyles = new Set();
+      var removedStyles = new Set();
+      var movedStyles = new Set();
+      additions.forEach(function (node) {
+        return getManageableStyles(node).forEach(function (style) {
+          return createdStyles.add(style);
+        });
+      });
+      deletions.forEach(function (node) {
+        return getManageableStyles(node).forEach(function (style) {
+          return removedStyles.add(style);
+        });
+      });
+      moves.forEach(function (node) {
+        return getManageableStyles(node).forEach(function (style) {
+          return movedStyles.add(style);
+        });
+      });
+      handleStyleOperations({
+        createdStyles: createdStyles,
+        removedStyles: removedStyles,
+        movedStyles: movedStyles,
+      });
+      additions.forEach(function (n) {
+        extendedIterateShadowHosts(n);
+        collectUndefinedElements(n);
+      });
+      additions.forEach(function (node) {
+        return isCustomElement(node) && recordUndefinedElement(node);
+      });
+    }
+    function handleHugeTreeMutations(root) {
+      var styles = new Set(getManageableStyles(root));
+      var createdStyles = new Set();
+      var removedStyles = new Set();
+      var movedStyles = new Set();
+      styles.forEach(function (s) {
+        if (!prevStyles.has(s)) {
+          createdStyles.add(s);
+        }
+      });
+      prevStyles.forEach(function (s) {
+        if (!styles.has(s)) {
+          removedStyles.add(s);
+        }
+      });
+      styles.forEach(function (s) {
+        if (!createdStyles.has(s) && !removedStyles.has(s) && didStylePositionChange(s)) {
+          movedStyles.add(s);
+        }
+      });
+      handleStyleOperations({
+        createdStyles: createdStyles,
+        removedStyles: removedStyles,
+        movedStyles: movedStyles,
+      });
+      extendedIterateShadowHosts(root);
+      collectUndefinedElements(root);
+    }
+    function handleAttributeMutations(mutations) {
+      var updatedStyles = new Set();
+      var removedStyles = new Set();
+      mutations.forEach(function (m) {
+        var target = m.target;
+        if (target.isConnected) {
+          if (shouldManageStyle(target)) {
+            updatedStyles.add(target);
+          } else if (target instanceof HTMLLinkElement && target.disabled) {
+            removedStyles.add(target);
           }
-        }),
-          (e.adoptedStyleSheets = r);
-      },
+        }
+      });
+      if (updatedStyles.size + removedStyles.size > 0) {
+        update({
+          updated: Array.from(updatedStyles),
+          created: [],
+          removed: Array.from(removedStyles),
+          moved: [],
+        });
+      }
+    }
+    function observe(root) {
+      if (observedRoots.has(root)) {
+        return;
+      }
+      var treeObserver = createOptimizedTreeObserver(root, {
+        onMinorMutations: handleMinorTreeMutations,
+        onHugeMutations: handleHugeTreeMutations,
+      });
+      var attrObserver = new MutationObserver(handleAttributeMutations);
+      attrObserver.observe(root, {
+        attributeFilter: ["rel", "disabled", "media", "href"],
+        subtree: true,
+      });
+      observers.push(treeObserver, attrObserver);
+      observedRoots.add(root);
+    }
+    function subscribeForShadowRootChanges(node) {
+      var shadowRoot = node.shadowRoot;
+      if (shadowRoot == null || observedRoots.has(shadowRoot)) {
+        return;
+      }
+      observe(shadowRoot);
+      shadowRootDiscovered(shadowRoot);
+    }
+    function extendedIterateShadowHosts(node) {
+      iterateShadowHosts(node, subscribeForShadowRootChanges);
+    }
+    observe(document);
+    extendedIterateShadowHosts(document.documentElement);
+    watchWhenCustomElementsDefined(function (hosts) {
+      var newStyles = [];
+      hosts.forEach(function (host) {
+        return push(newStyles, getManageableStyles(host.shadowRoot));
+      });
+      update({ created: newStyles, updated: [], removed: [], moved: [] });
+      hosts.forEach(function (host) {
+        var shadowRoot = host.shadowRoot;
+        if (shadowRoot == null) {
+          return;
+        }
+        subscribeForShadowRootChanges(host);
+        extendedIterateShadowHosts(shadowRoot);
+        collectUndefinedElements(shadowRoot);
+      });
+    });
+    document.addEventListener("__darkreader__isDefined", handleIsDefined, {
+      passive: true,
+    });
+    collectUndefinedElements(document);
+  }
+  function resetObservers() {
+    observers.forEach(function (o) {
+      return o.disconnect();
+    });
+    observers.splice(0, observers.length);
+    observedRoots = new WeakSet();
+  }
+  function stopWatchingForStyleChanges() {
+    resetObservers();
+    unsubscribeFromDefineCustomElements();
+  }
+
+  var adoptedStyleOverrides = new WeakMap();
+  var overrideList = new WeakSet();
+  function createAdoptedStyleSheetOverride(node) {
+    var cancelAsyncOperations = false;
+    function injectSheet(sheet, override) {
+      var newSheets = __spreadArray([], __read(node.adoptedStyleSheets), false);
+      var sheetIndex = newSheets.indexOf(sheet);
+      var existingIndex = newSheets.indexOf(override);
+      if (sheetIndex === existingIndex - 1) {
+        return;
+      }
+      if (existingIndex >= 0) {
+        newSheets.splice(existingIndex, 1);
+      }
+      newSheets.splice(sheetIndex + 1, 0, override);
+      node.adoptedStyleSheets = newSheets;
+    }
+    function destroy() {
+      cancelAsyncOperations = true;
+      var newSheets = __spreadArray([], __read(node.adoptedStyleSheets), false);
+      node.adoptedStyleSheets.forEach(function (adoptedStyleSheet) {
+        if (overrideList.has(adoptedStyleSheet)) {
+          var existingIndex = newSheets.indexOf(adoptedStyleSheet);
+          if (existingIndex >= 0) {
+            newSheets.splice(existingIndex, 1);
+          }
+          adoptedStyleOverrides.delete(adoptedStyleSheet);
+          overrideList.delete(adoptedStyleSheet);
+        }
+      });
+      node.adoptedStyleSheets = newSheets;
+    }
+    function render(theme, ignoreImageAnalysis) {
+      node.adoptedStyleSheets.forEach(function (sheet) {
+        if (overrideList.has(sheet)) {
+          return;
+        }
+        var rules = sheet.rules;
+        var override = new CSSStyleSheet();
+        function prepareOverridesSheet() {
+          for (var i = override.cssRules.length - 1; i >= 0; i--) {
+            override.deleteRule(i);
+          }
+          injectSheet(sheet, override);
+          adoptedStyleOverrides.set(sheet, override);
+          overrideList.add(override);
+          return override;
+        }
+        var sheetModifier = createStyleSheetModifier();
+        sheetModifier.modifySheet({
+          prepareSheet: prepareOverridesSheet,
+          sourceCSSRules: rules,
+          theme: theme,
+          ignoreImageAnalysis: ignoreImageAnalysis,
+          force: false,
+          isAsyncCancelled: function () {
+            return cancelAsyncOperations;
+          },
+        });
+      });
+    }
+    return {
+      render: render,
+      destroy: destroy,
     };
   }
 
-  function Jr(e) {
+  function injectProxy(enableStyleSheetsProxy, enableCustomElementRegistryProxy) {
     document.dispatchEvent(new CustomEvent("__darkreader__inlineScriptsAllowed"));
-    var t = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "addRule"),
-      r = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "insertRule"),
-      n = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "deleteRule"),
-      a = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "removeRule"),
-      o = e ? Object.getOwnPropertyDescriptor(Document.prototype, "styleSheets") : null,
-      c = ["baidu.com", "baike.baidu.com", "ditu.baidu.com", "map.baidu.com", "maps.baidu.com", "haokan.baidu.com", "pan.baidu.com", "passport.baidu.com", "tieba.baidu.com", "www.baidu.com"].includes(location.hostname),
-      s = c ? Object.getOwnPropertyDescriptor(Element.prototype, "getElementsByTagName") : null,
-      l = function () {
-        Object.defineProperty(CSSStyleSheet.prototype, "addRule", t),
-          Object.defineProperty(CSSStyleSheet.prototype, "insertRule", r),
-          Object.defineProperty(CSSStyleSheet.prototype, "deleteRule", n),
-          Object.defineProperty(CSSStyleSheet.prototype, "removeRule", a),
-          document.removeEventListener("__darkreader__cleanUp", l),
-          document.removeEventListener("__darkreader__addUndefinedResolver", d),
-          e && Object.defineProperty(Document.prototype, "styleSheets", o),
-          c && Object.defineProperty(Element.prototype, "getElementsByTagName", s);
-      },
-      d = function (e) {
-        customElements.whenDefined(e.detail.tag).then(function () {
-          document.dispatchEvent(
-            new CustomEvent("__darkreader__isDefined", {
-              detail: {
-                tag: e.detail.tag,
-              },
-            })
-          );
-        });
-      };
-    document.addEventListener("__darkreader__cleanUp", l), document.addEventListener("__darkreader__addUndefinedResolver", d);
-    var f = new Event("__darkreader__updateSheet");
-    Object.defineProperty(
-      CSSStyleSheet.prototype,
-      "addRule",
-      Object.assign({}, t, {
-        value: function (e, r, n) {
-          return t.value.call(this, e, r, n), this.ownerNode && !this.ownerNode.classList.contains("darkreader") && this.ownerNode.dispatchEvent(f), -1;
-        },
-      })
-    ),
-      Object.defineProperty(
-        CSSStyleSheet.prototype,
-        "insertRule",
-        Object.assign({}, r, {
-          value: function (e, t) {
-            var n = r.value.call(this, e, t);
-            return this.ownerNode && !this.ownerNode.classList.contains("darkreader") && this.ownerNode.dispatchEvent(f), n;
-          },
-        })
-      ),
-      Object.defineProperty(
-        CSSStyleSheet.prototype,
-        "deleteRule",
-        Object.assign({}, n, {
-          value: function (e) {
-            n.value.call(this, e), this.ownerNode && !this.ownerNode.classList.contains("darkreader") && this.ownerNode.dispatchEvent(f);
-          },
-        })
-      ),
-      Object.defineProperty(
-        CSSStyleSheet.prototype,
-        "removeRule",
-        Object.assign({}, a, {
-          value: function (e) {
-            a.value.call(this, e), this.ownerNode && !this.ownerNode.classList.contains("darkreader") && this.ownerNode.dispatchEvent(f);
-          },
-        })
-      ),
-      e &&
-        Object.defineProperty(
-          Document.prototype,
-          "styleSheets",
-          Object.assign({}, o, {
-            get: function () {
-              var e = this,
-                t = function () {
-                  var t = u([], i(o.get.call(e)), !1).filter(function (e) {
-                    return !e.ownerNode.classList.contains("darkreader");
-                  });
-                  return (
-                    (t.item = function (e) {
-                      return t[e];
-                    }),
-                    Object.setPrototypeOf(t, StyleSheetList.prototype)
-                  );
-                },
-                r = t();
-              return new Proxy(r, {
-                get: function (e, r) {
-                  return t()[r];
-                },
-              });
-            },
-          })
-        ),
-      c &&
-        Object.defineProperty(
-          Element.prototype,
-          "getElementsByTagName",
-          Object.assign({}, s, {
-            value: function (e) {
-              var t = this;
-              if ("style" !== e) return s.value.call(this, e);
-              var r = function () {
-                  var r = s.value.call(t, e);
-                  return Object.setPrototypeOf(
-                    u([], i(r), !1).filter(function (e) {
-                      return !e.classList.contains("darkreader");
-                    }),
-                    NodeList.prototype
-                  );
-                },
-                n = r();
-              return new Proxy(n, {
-                get: function (e, t) {
-                  return r()[Number(t) || t];
-                },
-              });
-            },
+    var addRuleDescriptor = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "addRule");
+    var insertRuleDescriptor = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "insertRule");
+    var deleteRuleDescriptor = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "deleteRule");
+    var removeRuleDescriptor = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, "removeRule");
+    var documentStyleSheetsDescriptor = enableStyleSheetsProxy ? Object.getOwnPropertyDescriptor(Document.prototype, "styleSheets") : null;
+    var customElementRegistryDefineDescriptor = enableCustomElementRegistryProxy ? Object.getOwnPropertyDescriptor(CustomElementRegistry.prototype, "define") : null;
+    var shouldWrapHTMLElement = ["baidu.com", "baike.baidu.com", "ditu.baidu.com", "map.baidu.com", "maps.baidu.com", "haokan.baidu.com", "pan.baidu.com", "passport.baidu.com", "tieba.baidu.com", "www.baidu.com"].includes(location.hostname);
+    var getElementsByTagNameDescriptor = shouldWrapHTMLElement ? Object.getOwnPropertyDescriptor(Element.prototype, "getElementsByTagName") : null;
+    var shouldProxyChildNodes = location.hostname === "www.vy.no";
+    var childNodesDescriptor = shouldProxyChildNodes ? Object.getOwnPropertyDescriptor(Node.prototype, "childNodes") : null;
+    var cleanUp = function () {
+      Object.defineProperty(CSSStyleSheet.prototype, "addRule", addRuleDescriptor);
+      Object.defineProperty(CSSStyleSheet.prototype, "insertRule", insertRuleDescriptor);
+      Object.defineProperty(CSSStyleSheet.prototype, "deleteRule", deleteRuleDescriptor);
+      Object.defineProperty(CSSStyleSheet.prototype, "removeRule", removeRuleDescriptor);
+      document.removeEventListener("__darkreader__cleanUp", cleanUp);
+      document.removeEventListener("__darkreader__addUndefinedResolver", addUndefinedResolver);
+      if (enableStyleSheetsProxy) {
+        Object.defineProperty(Document.prototype, "styleSheets", documentStyleSheetsDescriptor);
+      }
+      if (enableCustomElementRegistryProxy) {
+        Object.defineProperty(CustomElementRegistry.prototype, "define", customElementRegistryDefineDescriptor);
+      }
+      if (shouldWrapHTMLElement) {
+        Object.defineProperty(Element.prototype, "getElementsByTagName", getElementsByTagNameDescriptor);
+      }
+      if (shouldProxyChildNodes) {
+        Object.defineProperty(Node.prototype, "childNodes", childNodesDescriptor);
+      }
+    };
+    var addUndefinedResolverInner = function (tag) {
+      customElements.whenDefined(tag).then(function () {
+        document.dispatchEvent(
+          new CustomEvent("__darkreader__isDefined", {
+            detail: { tag: tag },
           })
         );
-  }
-  var en = (function () {
-      if ("randomUUID" in crypto) {
-        var e = crypto.randomUUID();
-        return e.substring(0, 8) + e.substring(9, 13) + e.substring(14, 18) + e.substring(19, 23) + e.substring(24);
-      }
-      return Array.from(crypto.getRandomValues(new Uint8Array(16)))
-        .map(function (e) {
-          return ((t = e) < 16 ? "0" : "") + t.toString(16);
-          var t;
-        })
-        .join("");
-    })(),
-    tn = new Map(),
-    rn = [],
-    nn = null,
-    an = null,
-    on = null,
-    un = null,
-    cn = null;
-
-  function sn(e, t) {
-    void 0 === t && (t = document.head || document);
-    var r = t.querySelector(".".concat(e));
-    return r || ((r = document.createElement("style")).classList.add("darkreader"), r.classList.add(e), (r.media = "screen"), (r.textContent = "")), r;
-  }
-  var ln = new Map();
-
-  function dn(e, t) {
-    ln.has(t) && ln.get(t).stop(), ln.set(t, W(e, "parent"));
-  }
-
-  function fn() {
-    var e = sn("darkreader--fallback", document);
-    (e.textContent = It(nn, {
-      strict: !0,
-    })),
-      document.head.insertBefore(e, document.head.firstChild),
-      dn(e, "fallback");
-    var t = sn("darkreader--user-agent");
-    (t.textContent = Dt(nn, on, nn.styleSystemControls)), document.head.insertBefore(t, e.nextSibling), dn(t, "user-agent");
-    var n,
-      a,
-      o = sn("darkreader--text");
-    nn.useFont || nn.textStroke > 0
-      ? (o.textContent =
-          ((n = nn),
-          (a = []).push('*:not(pre, pre *, code, .far, .fa, .glyphicon, [class*="vjs-"], .fab, .fa-github, .fas, .material-icons, .icofont, .typcn, mu, [class*="mu-"], .glyphicon, .icon) {'),
-          n.useFont && n.fontFamily && a.push("  font-family: ".concat(n.fontFamily, " !important;")),
-          n.textStroke > 0 && (a.push("  -webkit-text-stroke: ".concat(n.textStroke, "px !important;")), a.push("  text-stroke: ".concat(n.textStroke, "px !important;"))),
-          a.push("}"),
-          a.join("\n")))
-      : (o.textContent = ""),
-      document.head.insertBefore(o, e.nextSibling),
-      dn(o, "text");
-    var i = sn("darkreader--invert");
-    an && Array.isArray(an.invert) && an.invert.length > 0
-      ? (i.textContent = [
-          "".concat(an.invert.join(", "), " {"),
-          "    filter: ".concat(
-            dt(
-              r(r({}, nn), {
-                contrast: 0 === nn.mode ? nn.contrast : Ue(nn.contrast - 10, 0, 100),
-              })
-            ),
-            " !important;"
-          ),
-          "}",
-        ].join("\n"))
-      : (i.textContent = ""),
-      document.head.insertBefore(i, o.nextSibling),
-      dn(i, "invert");
-    var u = sn("darkreader--inline");
-    (u.textContent = hr()), document.head.insertBefore(u, i.nextSibling), dn(u, "inline");
-    var c = sn("darkreader--override");
-    (c.textContent = an && an.css ? vn(an.css) : ""), document.head.appendChild(c), dn(c, "override");
-    var s = sn("darkreader--variables"),
-      l = Pt(nn),
-      d = nn.darkSchemeBackgroundColor,
-      f = nn.darkSchemeTextColor,
-      h = nn.lightSchemeBackgroundColor,
-      p = nn.lightSchemeTextColor,
-      v = nn.mode,
-      m = 0 === v ? h : d,
-      g = 0 === v ? p : f;
-    (m = rt(Ee(m), nn)),
-      (g = ut(Ee(g), nn)),
-      (s.textContent = [":root {", "   --darkreader-neutral-background: ".concat(m, ";"), "   --darkreader-neutral-text: ".concat(g, ";"), "   --darkreader-selection-background: ".concat(l.backgroundColorSelection, ";"), "   --darkreader-selection-text: ".concat(l.foregroundColorSelection, ";"), "}"].join("\n")),
-      document.head.insertBefore(s, u.nextSibling),
-      dn(s, "variables");
-    var b = sn("darkreader--root-vars");
-    document.head.insertBefore(b, s.nextSibling);
-    var y = !(an && an.disableStyleSheetsProxy),
-      S = (function (e, t) {
-        void 0 === t && (t = document.head || document);
-        var r = t.querySelector(".".concat(e));
-        return r || ((r = document.createElement("script")).classList.add("darkreader"), r.classList.add(e)), r;
-      })("darkreader--proxy");
-    S.append("(".concat(Jr, ")(").concat(y, ")")), document.head.insertBefore(S, b.nextSibling), S.remove();
-  }
-  var hn = new Set();
-
-  function pn(e) {
-    var t = sn("darkreader--inline", e);
-    (t.textContent = hr()), e.insertBefore(t, e.firstChild);
-    var n = sn("darkreader--override", e);
-    (n.textContent = an && an.css ? vn(an.css) : ""), e.insertBefore(n, t.nextSibling);
-    var a = sn("darkreader--invert", e);
-    an && Array.isArray(an.invert) && an.invert.length > 0
-      ? (a.textContent = [
-          "".concat(an.invert.join(", "), " {"),
-          "    filter: ".concat(
-            dt(
-              r(r({}, nn), {
-                contrast: 0 === nn.mode ? nn.contrast : Ue(nn.contrast - 10, 0, 100),
-              })
-            ),
-            " !important;"
-          ),
-          "}",
-        ].join("\n"))
-      : (a.textContent = ""),
-      e.insertBefore(a, n.nextSibling),
-      hn.add(e);
-  }
-
-  function vn(e) {
-    return e.replace(/\${(.+?)}/g, function (e, t) {
-      var r = Ee(t);
-      return r ? Xe(r, nn, Ze) : t;
-    });
-  }
-
-  function mn() {
-    var e = document.querySelector(".darkreader--fallback");
-    e && (e.textContent = "");
-  }
-  var gn = 0,
-    bn = new Set();
-
-  function yn(e) {
-    var t = ++gn;
-    var r = Ir(e, {
-      update: function () {
-        var e = r.details({
-          secondRound: !0,
-        });
-        e && (Wt.addRulesForMatching(e.rules), Wt.matchVariablesAndDependants(), r.render(nn, un));
-      },
-      loadingStart: function () {
-        if (!H() || !xn) {
-          bn.add(t), "Current amount of styles loading: ".concat(bn.size);
-          var e = document.querySelector(".darkreader--fallback");
-          e.textContent ||
-            (e.textContent = It(nn, {
-              strict: !1,
-            }));
-        }
-      },
-      loadingEnd: function () {
-        bn.delete(t), "Removed loadingStyle ".concat(t, ", now awaiting: ").concat(bn.size), 0 === bn.size && H() && mn();
-      },
-    });
-    return tn.set(e, r), r;
-  }
-
-  function Sn(e) {
-    var t = tn.get(e);
-    t && (t.destroy(), tn.delete(e));
-  }
-  var _n = B(function (e) {
-      tn.forEach(function (e) {
-        return e.render(nn, un);
-      }),
-        rn.forEach(function (e) {
-          return e.render(nn, un);
-        }),
-        e && e();
-    }),
-    kn = function () {
-      _n.cancel();
+      });
     };
-
-  function wn() {
-    0 !== bn.size || mn();
-  }
-  var En,
-    Cn = null,
-    xn = !document.hidden;
-
-  function Tn() {
-    document.removeEventListener("visibilitychange", Cn), (Cn = null);
-  }
-
-  function Rn() {
-    function e() {
-      var e, t;
-      !(function () {
-        kn();
-        var e = Ar(document)
-          .filter(function (e) {
-            return !tn.has(e);
-          })
-          .map(function (e) {
-            return yn(e);
-          });
-        e
-          .map(function (e) {
-            return e.details({
-              secondRound: !1,
-            });
-          })
-          .filter(function (e) {
-            return e && e.rules.length > 0;
-          })
-          .forEach(function (e) {
-            Wt.addRulesForMatching(e.rules);
-          }),
-          Wt.matchVariablesAndDependants(),
-          Wt.setOnRootVariableChange(function () {
-            Wt.putRootVars(document.head.querySelector(".darkreader--root-vars"), nn);
-          }),
-          Wt.putRootVars(document.head.querySelector(".darkreader--root-vars"), nn),
-          tn.forEach(function (e) {
-            return e.render(nn, un);
-          }),
-          0 === bn.size && mn(),
-          e.forEach(function (e) {
-            return e.watch();
-          });
-        var t = (function (e) {
-          for (var t = [], r = 0, n = e.length; r < n; r++) t.push(e[r]);
-          return t;
-        })(document.querySelectorAll(fr));
-        G(document.documentElement, function (e) {
-          pn(e.shadowRoot);
-          var r = e.shadowRoot.querySelectorAll(fr);
-          r.length > 0 && j(t, r);
-        }),
-          t.forEach(function (e) {
-            return Sr(e, nn, cn, un);
-          }),
-          Vn(document);
-      })(),
-        Qr(
-          Array.from(tn.keys()),
-          function (e) {
-            var t = e.created,
-              r = e.updated,
-              n = e.removed,
-              a = e.moved,
-              o = n,
-              i = t
-                .concat(r)
-                .concat(a)
-                .filter(function (e) {
-                  return !tn.has(e);
-                }),
-              u = a.filter(function (e) {
-                return tn.has(e);
-              });
-            o.forEach(function (e) {
-              return Sn(e);
-            });
-            var c = i.map(function (e) {
-              return yn(e);
-            });
-            c
-              .map(function (e) {
-                return e.details({
-                  secondRound: !1,
-                });
-              })
-              .filter(function (e) {
-                return e && e.rules.length > 0;
-              })
-              .forEach(function (e) {
-                Wt.addRulesForMatching(e.rules);
-              }),
-              Wt.matchVariablesAndDependants(),
-              c.forEach(function (e) {
-                return e.render(nn, un);
-              }),
-              c.forEach(function (e) {
-                return e.watch();
-              }),
-              u.forEach(function (e) {
-                return tn.get(e).restore();
-              });
-          },
-          function (e) {
-            pn(e), Vn(e);
-          }
-        ),
-        (e = function (e) {
-          Sr(e, nn, cn, un), e === document.documentElement && (e.getAttribute("style") || "").includes("--") && (Wt.matchVariablesAndDependants(), Wt.putRootVars(document.head.querySelector(".darkreader--root-vars"), nn));
-        }),
-        (t = function (e) {
-          pn(e);
-          var t = e.querySelectorAll(fr);
-          t.length > 0 &&
-            F(t, function (e) {
-              return Sr(e, nn, cn, un);
-            });
-        }),
-        mr(document, e, t),
-        G(document.documentElement, function (r) {
-          mr(r.shadowRoot, e, t);
-        }),
-        z(wn);
+    var addUndefinedResolver = function (e) {
+      return addUndefinedResolverInner(e.detail.tag);
+    };
+    document.addEventListener("__darkreader__cleanUp", cleanUp, {
+      passive: true,
+    });
+    document.addEventListener("__darkreader__addUndefinedResolver", addUndefinedResolver, { passive: true });
+    var updateSheetEvent = new Event("__darkreader__updateSheet");
+    function proxyAddRule(selector, style, index) {
+      addRuleDescriptor.value.call(this, selector, style, index);
+      if (this.ownerNode && !(this.ownerNode.classList && this.ownerNode.classList.contains("darkreader"))) {
+        this.ownerNode.dispatchEvent(updateSheetEvent);
+      }
+      return -1;
     }
-    var t, r, n, a;
-    fn(),
-      document.hidden && !nn.immediateModify
-        ? ((t = e),
-          (r = Boolean(Cn)),
-          (Cn = function () {
-            document.hidden || (Tn(), t(), (xn = !0));
+    function proxyInsertRule(rule, index) {
+      var returnValue = insertRuleDescriptor.value.call(this, rule, index);
+      if (this.ownerNode && !(this.ownerNode.classList && this.ownerNode.classList.contains("darkreader"))) {
+        this.ownerNode.dispatchEvent(updateSheetEvent);
+      }
+      return returnValue;
+    }
+    function proxyDeleteRule(index) {
+      deleteRuleDescriptor.value.call(this, index);
+      if (this.ownerNode && !(this.ownerNode.classList && this.ownerNode.classList.contains("darkreader"))) {
+        this.ownerNode.dispatchEvent(updateSheetEvent);
+      }
+    }
+    function proxyRemoveRule(index) {
+      removeRuleDescriptor.value.call(this, index);
+      if (this.ownerNode && !(this.ownerNode.classList && this.ownerNode.classList.contains("darkreader"))) {
+        this.ownerNode.dispatchEvent(updateSheetEvent);
+      }
+    }
+    function proxyDocumentStyleSheets() {
+      var _this = this;
+      var getCurrentValue = function () {
+        var docSheets = documentStyleSheetsDescriptor.get.call(_this);
+        function __spreadArray2(to, from, pack) {
+          if (pack || arguments.length === 2)
+            for (var i = 0, l = from.length, ar; i < l; i++) {
+              if (ar || !(i in from)) {
+                if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+                ar[i] = from[i];
+              }
+            }
+          return to.concat(ar || Array.prototype.slice.call(from));
+        }
+        function __read2(o, n) {
+          var m = typeof Symbol === "function" && o[Symbol.iterator];
+          if (!m) return o;
+          var i = m.call(o),
+            r,
+            ar = [],
+            e;
+          try {
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+          } catch (error) {
+            e = { error: error };
+          } finally {
+            try {
+              if (r && !r.done && (m = i["return"])) m.call(i);
+            } finally {
+              if (e) throw e.error;
+            }
+          }
+          return ar;
+        }
+        var filteredSheets = __spreadArray2([], __read2(docSheets), false).filter(function (styleSheet) {
+          return styleSheet.ownerNode && !(styleSheet.ownerNode.classList && styleSheet.ownerNode.classList.contains("darkreader"));
+        });
+        filteredSheets.item = function (item) {
+          return filteredSheets[item];
+        };
+        return Object.setPrototypeOf(filteredSheets, StyleSheetList.prototype);
+      };
+      var elements = getCurrentValue();
+      var styleSheetListBehavior = {
+        get: function (_, property) {
+          return getCurrentValue()[property];
+        },
+      };
+      elements = new Proxy(elements, styleSheetListBehavior);
+      return elements;
+    }
+    function proxyCustomElementRegistryDefine(name, constructor, options) {
+      addUndefinedResolverInner(name);
+      customElementRegistryDefineDescriptor.value.call(this, name, constructor, options);
+    }
+    function proxyGetElementsByTagName(tagName) {
+      var _this = this;
+      if (tagName !== "style") {
+        return getElementsByTagNameDescriptor.value.call(this, tagName);
+      }
+      var getCurrentElementValue = function () {
+        var elements = getElementsByTagNameDescriptor.value.call(_this, tagName);
+        return Object.setPrototypeOf(
+          __spreadArray([], __read(elements), false).filter(function (element) {
+            return element && !(element.classList && element.classList.contains("darkreader"));
           }),
-          r || document.addEventListener("visibilitychange", Cn))
-        : e(),
-      (n = nn),
-      (a = document.querySelector(kr))
-        ? Cr(a, n)
-        : (Er && Er.disconnect(),
-          (Er = new MutationObserver(function (e) {
-            e: for (var t = 0; t < e.length; t++)
-              for (var r = e[t].addedNodes, a = 0; a < r.length; a++) {
-                var o = r[a];
-                if (o instanceof HTMLMetaElement && o.name === _r) {
-                  Er.disconnect(), (Er = null), Cr(o, n);
-                  break e;
+          NodeList.prototype
+        );
+      };
+      var elements = getCurrentElementValue();
+      var nodeListBehavior = {
+        get: function (_, property) {
+          return getCurrentElementValue()[Number(property) || property];
+        },
+      };
+      elements = new Proxy(elements, nodeListBehavior);
+      return elements;
+    }
+    function proxyChildNodes() {
+      var childNodes = childNodesDescriptor.get.call(this);
+      return Object.setPrototypeOf(
+        __spreadArray([], __read(childNodes), false).filter(function (element) {
+          return !element.classList || !element.classList.contains("darkreader");
+        }),
+        NodeList.prototype
+      );
+    }
+    Object.defineProperty(CSSStyleSheet.prototype, "addRule", Object.assign({}, addRuleDescriptor, { value: proxyAddRule }));
+    Object.defineProperty(CSSStyleSheet.prototype, "insertRule", Object.assign({}, insertRuleDescriptor, { value: proxyInsertRule }));
+    Object.defineProperty(CSSStyleSheet.prototype, "deleteRule", Object.assign({}, deleteRuleDescriptor, { value: proxyDeleteRule }));
+    Object.defineProperty(CSSStyleSheet.prototype, "removeRule", Object.assign({}, removeRuleDescriptor, { value: proxyRemoveRule }));
+    if (enableStyleSheetsProxy) {
+      Object.defineProperty(
+        Document.prototype,
+        "styleSheets",
+        Object.assign({}, documentStyleSheetsDescriptor, {
+          get: proxyDocumentStyleSheets,
+        })
+      );
+    }
+    if (enableCustomElementRegistryProxy) {
+      Object.defineProperty(
+        CustomElementRegistry.prototype,
+        "define",
+        Object.assign({}, customElementRegistryDefineDescriptor, {
+          value: proxyCustomElementRegistryDefine,
+        })
+      );
+    }
+    if (shouldWrapHTMLElement) {
+      Object.defineProperty(
+        Element.prototype,
+        "getElementsByTagName",
+        Object.assign({}, getElementsByTagNameDescriptor, {
+          value: proxyGetElementsByTagName,
+        })
+      );
+    }
+    if (shouldProxyChildNodes) {
+      Object.defineProperty(Node.prototype, "childNodes", Object.assign({}, childNodesDescriptor, { get: proxyChildNodes }));
+    }
+  }
+
+  var documentVisibilityListener = null;
+  var documentIsVisible_ = !document.hidden;
+  var listenerOptions = {
+    capture: true,
+    passive: true,
+  };
+  function watchForDocumentVisibility() {
+    document.addEventListener("visibilitychange", documentVisibilityListener, listenerOptions);
+    window.addEventListener("pageshow", documentVisibilityListener, listenerOptions);
+    window.addEventListener("focus", documentVisibilityListener, listenerOptions);
+  }
+  function stopWatchingForDocumentVisibility() {
+    document.removeEventListener("visibilitychange", documentVisibilityListener, listenerOptions);
+    window.removeEventListener("pageshow", documentVisibilityListener, listenerOptions);
+    window.removeEventListener("focus", documentVisibilityListener, listenerOptions);
+  }
+  function setDocumentVisibilityListener(callback) {
+    var alreadyWatching = Boolean(documentVisibilityListener);
+    documentVisibilityListener = function () {
+      if (!document.hidden) {
+        removeDocumentVisibilityListener();
+        callback();
+        documentIsVisible_ = true;
+      }
+    };
+    if (!alreadyWatching) {
+      watchForDocumentVisibility();
+    }
+  }
+  function removeDocumentVisibilityListener() {
+    stopWatchingForDocumentVisibility();
+    documentVisibilityListener = null;
+  }
+  function documentIsVisible() {
+    return documentIsVisible_;
+  }
+
+  var INSTANCE_ID = generateUID();
+  var styleManagers = new Map();
+  var adoptedStyleManagers = [];
+  var filter = null;
+  var fixes = null;
+  var isIFrame$1 = null;
+  var ignoredImageAnalysisSelectors = [];
+  var ignoredInlineSelectors = [];
+  function createOrUpdateStyle(className, root) {
+    if (root === void 0) {
+      root = document.head || document;
+    }
+    var element = root.querySelector(".".concat(className));
+    if (!element) {
+      element = document.createElement("style");
+      element.classList.add("darkreader");
+      element.classList.add(className);
+      element.media = "screen";
+      element.textContent = "";
+    }
+    return element;
+  }
+  function createOrUpdateScript(className, root) {
+    if (root === void 0) {
+      root = document.head || document;
+    }
+    var element = root.querySelector(".".concat(className));
+    if (!element) {
+      element = document.createElement("script");
+      element.classList.add("darkreader");
+      element.classList.add(className);
+    }
+    return element;
+  }
+  var nodePositionWatchers = new Map();
+  function setupNodePositionWatcher(node, alias) {
+    nodePositionWatchers.has(alias) && nodePositionWatchers.get(alias).stop();
+    nodePositionWatchers.set(alias, watchForNodePosition(node, "head"));
+  }
+  function stopStylePositionWatchers() {
+    forEach(nodePositionWatchers.values(), function (watcher) {
+      return watcher.stop();
+    });
+    nodePositionWatchers.clear();
+  }
+  function createStaticStyleOverrides() {
+    var fallbackStyle = createOrUpdateStyle("darkreader--fallback", document);
+    fallbackStyle.textContent = getModifiedFallbackStyle(filter, {
+      strict: true,
+    });
+    document.head.insertBefore(fallbackStyle, document.head.firstChild);
+    setupNodePositionWatcher(fallbackStyle, "fallback");
+    var userAgentStyle = createOrUpdateStyle("darkreader--user-agent");
+    userAgentStyle.textContent = getModifiedUserAgentStyle(filter, isIFrame$1, filter.styleSystemControls);
+    document.head.insertBefore(userAgentStyle, fallbackStyle.nextSibling);
+    setupNodePositionWatcher(userAgentStyle, "user-agent");
+    var textStyle = createOrUpdateStyle("darkreader--text");
+    if (filter.useFont || filter.textStroke > 0) {
+      textStyle.textContent = createTextStyle(filter);
+    } else {
+      textStyle.textContent = "";
+    }
+    document.head.insertBefore(textStyle, fallbackStyle.nextSibling);
+    setupNodePositionWatcher(textStyle, "text");
+    var invertStyle = createOrUpdateStyle("darkreader--invert");
+    if (fixes && Array.isArray(fixes.invert) && fixes.invert.length > 0) {
+      invertStyle.textContent = [
+        "".concat(fixes.invert.join(", "), " {"),
+        "    filter: ".concat(
+          getCSSFilterValue(
+            __assign(__assign({}, filter), {
+              contrast: filter.mode === 0 ? filter.contrast : clamp(filter.contrast - 10, 0, 100),
+            })
+          ),
+          " !important;"
+        ),
+        "}",
+      ].join("\n");
+    } else {
+      invertStyle.textContent = "";
+    }
+    document.head.insertBefore(invertStyle, textStyle.nextSibling);
+    setupNodePositionWatcher(invertStyle, "invert");
+    var inlineStyle = createOrUpdateStyle("darkreader--inline");
+    inlineStyle.textContent = getInlineOverrideStyle();
+    document.head.insertBefore(inlineStyle, invertStyle.nextSibling);
+    setupNodePositionWatcher(inlineStyle, "inline");
+    var overrideStyle = createOrUpdateStyle("darkreader--override");
+    overrideStyle.textContent = fixes && fixes.css ? replaceCSSTemplates(fixes.css) : "";
+    document.head.appendChild(overrideStyle);
+    setupNodePositionWatcher(overrideStyle, "override");
+    var variableStyle = createOrUpdateStyle("darkreader--variables");
+    var selectionColors = getSelectionColor(filter);
+    var _a = filter,
+      darkSchemeBackgroundColor = _a.darkSchemeBackgroundColor,
+      darkSchemeTextColor = _a.darkSchemeTextColor,
+      lightSchemeBackgroundColor = _a.lightSchemeBackgroundColor,
+      lightSchemeTextColor = _a.lightSchemeTextColor,
+      mode = _a.mode;
+    var schemeBackgroundColor = mode === 0 ? lightSchemeBackgroundColor : darkSchemeBackgroundColor;
+    var schemeTextColor = mode === 0 ? lightSchemeTextColor : darkSchemeTextColor;
+    schemeBackgroundColor = modifyBackgroundColor(parseColorWithCache(schemeBackgroundColor), filter);
+    schemeTextColor = modifyForegroundColor(parseColorWithCache(schemeTextColor), filter);
+    variableStyle.textContent = [":root {", "   --darkreader-neutral-background: ".concat(schemeBackgroundColor, ";"), "   --darkreader-neutral-text: ".concat(schemeTextColor, ";"), "   --darkreader-selection-background: ".concat(selectionColors.backgroundColorSelection, ";"), "   --darkreader-selection-text: ".concat(selectionColors.foregroundColorSelection, ";"), "}"].join("\n");
+    document.head.insertBefore(variableStyle, inlineStyle.nextSibling);
+    setupNodePositionWatcher(variableStyle, "variables");
+    var rootVarsStyle = createOrUpdateStyle("darkreader--root-vars");
+    document.head.insertBefore(rootVarsStyle, variableStyle.nextSibling);
+    var enableStyleSheetsProxy = !(fixes && fixes.disableStyleSheetsProxy);
+    var enableCustomElementRegistryProxy = !(fixes && fixes.disableCustomElementRegistryProxy);
+    {
+      var proxyScript = createOrUpdateScript("darkreader--proxy");
+      proxyScript.append("(".concat(injectProxy, ")(").concat(enableStyleSheetsProxy, ", ").concat(enableCustomElementRegistryProxy, ")"));
+      document.head.insertBefore(proxyScript, rootVarsStyle.nextSibling);
+      proxyScript.remove();
+    }
+  }
+  var shadowRootsWithOverrides = new Set();
+  function createShadowStaticStyleOverridesInner(root) {
+    var inlineStyle = createOrUpdateStyle("darkreader--inline", root);
+    inlineStyle.textContent = getInlineOverrideStyle();
+    root.insertBefore(inlineStyle, root.firstChild);
+    var overrideStyle = createOrUpdateStyle("darkreader--override", root);
+    overrideStyle.textContent = fixes && fixes.css ? replaceCSSTemplates(fixes.css) : "";
+    root.insertBefore(overrideStyle, inlineStyle.nextSibling);
+    var invertStyle = createOrUpdateStyle("darkreader--invert", root);
+    if (fixes && Array.isArray(fixes.invert) && fixes.invert.length > 0) {
+      invertStyle.textContent = [
+        "".concat(fixes.invert.join(", "), " {"),
+        "    filter: ".concat(
+          getCSSFilterValue(
+            __assign(__assign({}, filter), {
+              contrast: filter.mode === 0 ? filter.contrast : clamp(filter.contrast - 10, 0, 100),
+            })
+          ),
+          " !important;"
+        ),
+        "}",
+      ].join("\n");
+    } else {
+      invertStyle.textContent = "";
+    }
+    root.insertBefore(invertStyle, overrideStyle.nextSibling);
+    shadowRootsWithOverrides.add(root);
+  }
+  function delayedCreateShadowStaticStyleOverrides(root) {
+    var observer = new MutationObserver(function (mutations, observer) {
+      var e_1, _a, e_2, _b;
+      observer.disconnect();
+      try {
+        for (var mutations_1 = __values(mutations), mutations_1_1 = mutations_1.next(); !mutations_1_1.done; mutations_1_1 = mutations_1.next()) {
+          var _c = mutations_1_1.value,
+            type = _c.type,
+            removedNodes = _c.removedNodes;
+          if (type === "childList") {
+            try {
+              for (var _d = ((e_2 = void 0), __values(removedNodes)), _e = _d.next(); !_e.done; _e = _d.next()) {
+                var _f = _e.value,
+                  nodeName = _f.nodeName,
+                  className = _f.className;
+                if (nodeName === "STYLE" && ["darkreader darkreader--inline", "darkreader darkreader--override", "darkreader darkreader--invert"].includes(className)) {
+                  createShadowStaticStyleOverridesInner(root);
+                  return;
                 }
               }
-          })).observe(document.head, {
-            childList: !0,
-          }));
-  }
-
-  function Vn(e) {
-    try {
-      if (Array.isArray(e.adoptedStyleSheets) && e.adoptedStyleSheets.length > 0) {
-        var t = Zr(e);
-        rn.push(t), t.render(nn, un);
-      }
-    } catch (e) {}
-  }
-
-  function An() {
-    tn.forEach(function (e) {
-      return e.pause();
-    }),
-      F(ln.values(), function (e) {
-        return e.stop();
-      }),
-      ln.clear(),
-      Kr(),
-      pr.forEach(function (e) {
-        return e.disconnect();
-      }),
-      vr.forEach(function (e) {
-        return e.disconnect();
-      }),
-      pr.clear(),
-      vr.clear(),
-      Q(wn),
-      Y.clear();
-  }
-
-  function Mn() {
-    if (document.querySelector('meta[name="darkreader-lock"]')) return !0;
-    var e,
-      t = document.querySelector('meta[name="darkreader"]');
-    return t
-      ? t.content !== en
-      : (((e = document.createElement("meta")).name = "darkreader"),
-        (e.content = en),
-        document.head.appendChild(e),
-        (En = new MutationObserver(function () {
-          document.querySelector('meta[name="darkreader-lock"]') && (En.disconnect(), On());
-        })).observe(document.head, {
-          childList: !0,
-          subtree: !0,
-        }),
-        !1);
-  }
-
-  function Ln(e, t, r) {
-    if (
-      ((nn = e),
-      (an = t) ? ((un = Array.isArray(an.ignoreImageAnalysis) ? an.ignoreImageAnalysis : []), (cn = Array.isArray(an.ignoreInlineStyle) ? an.ignoreInlineStyle : [])) : ((un = []), (cn = [])),
-      nn.immediateModify &&
-        (H = function () {
-          return !0;
-        }),
-      (on = r),
-      document.head)
-    ) {
-      if (Mn()) return;
-      document.documentElement.setAttribute("data-darkreader-mode", "dynamic"), document.documentElement.setAttribute("data-darkreader-scheme", nn.mode ? "dark" : "dimmed"), Rn();
-    } else {
-      if (!h) {
-        var n = sn("darkreader--fallback");
-        document.documentElement.appendChild(n),
-          (n.textContent = It(nn, {
-            strict: !0,
-          }));
-      }
-      var a = new MutationObserver(function () {
-        if (document.head) {
-          if ((a.disconnect(), Mn())) return void On();
-          Rn();
+            } catch (e_2_1) {
+              e_2 = { error: e_2_1 };
+            } finally {
+              try {
+                if (_e && !_e.done && (_b = _d.return)) _b.call(_d);
+              } finally {
+                if (e_2) throw e_2.error;
+              }
+            }
+          }
         }
-      });
-      a.observe(document, {
-        childList: !0,
-        subtree: !0,
-      });
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (mutations_1_1 && !mutations_1_1.done && (_a = mutations_1.return)) _a.call(mutations_1);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+    });
+    observer.observe(root, { childList: true });
+  }
+  function createShadowStaticStyleOverrides(root) {
+    var uninit = root.firstChild === null;
+    createShadowStaticStyleOverridesInner(root);
+    if (uninit) {
+      delayedCreateShadowStaticStyleOverrides(root);
     }
   }
-
-  function On() {
-    document.documentElement.removeAttribute("data-darkreader-mode"),
-      document.documentElement.removeAttribute("data-darkreader-scheme"),
-      Wt.clear(),
-      ne.clear(),
-      Tn(),
-      kn(),
-      An(),
-      Ut(),
-      ke.clear(),
-      we.clear(),
-      U(document.querySelector(".darkreader--fallback")),
-      document.head &&
-        (!(function () {
-          Er && (Er.disconnect(), (Er = null));
-          var e = document.querySelector(kr);
-          e && wr && (e.content = wr);
-        })(),
-        U(document.head.querySelector(".darkreader--user-agent")),
-        U(document.head.querySelector(".darkreader--text")),
-        U(document.head.querySelector(".darkreader--invert")),
-        U(document.head.querySelector(".darkreader--inline")),
-        U(document.head.querySelector(".darkreader--override")),
-        U(document.head.querySelector(".darkreader--variables")),
-        U(document.head.querySelector(".darkreader--root-vars")),
-        U(document.head.querySelector('meta[name="darkreader"]')),
-        document.dispatchEvent(new CustomEvent("__darkreader__cleanUp")),
-        U(document.head.querySelector(".darkreader--proxy"))),
-      hn.forEach(function (e) {
-        U(e.querySelector(".darkreader--inline")), U(e.querySelector(".darkreader--override"));
-      }),
-      hn.clear(),
-      F(tn.keys(), function (e) {
-        return Sn(e);
-      }),
-      bn.clear(),
-      Pr.clear(),
-      F(document.querySelectorAll(".darkreader"), U),
-      rn.forEach(function (e) {
-        e.destroy();
-      }),
-      rn.splice(0),
-      En && En.disconnect();
-  }
-  var Dn = /url\(\"(blob\:.*?)\"\)/g;
-
-  function Pn(e) {
-    return n(this, void 0, void 0, function () {
-      var t, r;
-      return a(this, function (n) {
-        switch (n.label) {
-          case 0:
-            return (
-              (t = []),
-              Se(Dn, e, 1).forEach(function (e) {
-                var r = w(e);
-                t.push(r);
-              }),
-              [4, Promise.all(t)]
-            );
-          case 1:
-            return (
-              (r = n.sent()),
-              [
-                2,
-                e.replace(Dn, function () {
-                  return 'url("'.concat(r.shift(), '")');
-                }),
-              ]
-            );
-        }
-      });
+  function replaceCSSTemplates($cssText) {
+    return $cssText.replace(/\${(.+?)}/g, function (_, $color) {
+      var color = parseColorWithCache($color);
+      if (color) {
+        return modifyColor(color, filter);
+      }
+      return $color;
     });
   }
-
-  function In() {
-    return n(this, void 0, void 0, function () {
-      function e(e, r) {
-        var n = document.querySelector(e);
-        n && n.textContent && (t.push("/* ".concat(r, " */")), t.push(n.textContent), t.push(""));
-      }
-      var t, r, n, o, i;
-      return a(this, function (a) {
-        switch (a.label) {
-          case 0:
-            return (
-              (t = [
-                '/*\n                        _______\n                       /       \\\n                      .==.    .==.\n                     ((  ))==((  ))\n                    / "=="    "=="\\\n                   /____|| || ||___\\\n       ________     ____    ________  ___    ___\n       |  ___  \\   /    \\   |  ___  \\ |  |  /  /\n       |  |  \\  \\ /  /\\  \\  |  |  \\  \\|  |_/  /\n       |  |   )  /  /__\\  \\ |  |__/  /|  ___  \\\n       |  |__/  /  ______  \\|  ____  \\|  |  \\  \\\n_______|_______/__/ ____ \\__\\__|___\\__\\__|___\\__\\____\n|  ___  \\ |  ____/ /    \\   |  ___  \\ |  ____|  ___  \\\n|  |  \\  \\|  |___ /  /\\  \\  |  |  \\  \\|  |___|  |  \\  \\\n|  |__/  /|  ____/  /__\\  \\ |  |   )  |  ____|  |__/  /\n|  ____  \\|  |__/  ______  \\|  |__/  /|  |___|  ____  \\\n|__|   \\__\\____/__/      \\__\\_______/ |______|__|   \\__\\\n                https://darkreader.org\n*/\n\n/*! Dark reader generated CSS | Licensed under MIT https://github.com/darkreader/darkreader/blob/main/LICENSE */\n',
-              ]),
-              e(".darkreader--fallback", "Fallback Style"),
-              e(".darkreader--user-agent", "User-Agent Style"),
-              e(".darkreader--text", "Text Style"),
-              e(".darkreader--invert", "Invert Style"),
-              e(".darkreader--variables", "Variables Style"),
-              (r = []),
-              document.querySelectorAll(".darkreader--sync").forEach(function (e) {
-                F(e.sheet.cssRules, function (e) {
-                  e && e.cssText && r.push(e.cssText);
-                });
-              }),
-              r.length
-                ? ((n = (function (e) {
-                    function t(e) {
-                      return e.replace(/^\s+/, "");
-                    }
-
-                    function r(e) {
-                      return 0 === e ? "" : " ".repeat(4 * e);
-                    }
-                    if (e.length < 5e4) for (var n = /[^{}]+{\s*}/; n.test(e); ) e = e.replace(n, "");
-                    for (
-                      var a = e
-                          .replace(/\s{2,}/g, " ")
-                          .replace(/\{/g, "{\n")
-                          .replace(/\}/g, "\n}\n")
-                          .replace(/\;(?![^\(|\"]*(\)|\"))/g, ";\n")
-                          .replace(/\,(?![^\(|\"]*(\)|\"))/g, ",\n")
-                          .replace(/\n\s*\n/g, "\n")
-                          .split("\n"),
-                        o = 0,
-                        i = [],
-                        u = 0,
-                        c = a.length;
-                      u < c;
-                      u++
-                    ) {
-                      var s = "".concat(a[u], "\n");
-                      s.includes("{") ? i.push(r(o++) + t(s)) : s.includes("}") ? i.push(r(--o) + t(s)) : i.push(r(o) + t(s));
-                    }
-                    return i.join("").trim();
-                  })(r.join("\n"))),
-                  t.push("/* Modified CSS */"),
-                  (i = (o = t).push),
-                  [4, Pn(n)])
-                : [3, 2]
-            );
-          case 1:
-            i.apply(o, [a.sent()]), t.push(""), (a.label = 2);
-          case 2:
-            return e(".darkreader--override", "Override Style"), [2, t.join("\n")];
-        }
+  function cleanFallbackStyle() {
+    var fallback = document.querySelector(".darkreader--fallback");
+    if (fallback) {
+      fallback.textContent = "";
+    }
+  }
+  function createDynamicStyleOverrides() {
+    cancelRendering();
+    var allStyles = getManageableStyles(document);
+    var newManagers = allStyles
+      .filter(function (style) {
+        return !styleManagers.has(style);
+      })
+      .map(function (style) {
+        return createManager(style);
       });
+    newManagers
+      .map(function (manager) {
+        return manager.details({ secondRound: false });
+      })
+      .filter(function (detail) {
+        return detail && detail.rules.length > 0;
+      })
+      .forEach(function (detail) {
+        variablesStore.addRulesForMatching(detail.rules);
+      });
+    variablesStore.matchVariablesAndDependants();
+    variablesStore.setOnRootVariableChange(function () {
+      var rootVarsStyle = createOrUpdateStyle("darkreader--root-vars");
+      variablesStore.putRootVars(rootVarsStyle, filter);
     });
-  }
-  var Nn = !1,
-    Fn = (function () {
-      try {
-        return window.self !== window.top;
-      } catch (e) {
-        return (e) => {}, !0;
+    var rootVarsStyle = createOrUpdateStyle("darkreader--root-vars");
+    variablesStore.putRootVars(rootVarsStyle, filter);
+    styleManagers.forEach(function (manager) {
+      return manager.render(filter, ignoredImageAnalysisSelectors);
+    });
+    if (loadingStyles.size === 0) {
+      cleanFallbackStyle();
+    }
+    newManagers.forEach(function (manager) {
+      return manager.watch();
+    });
+    var inlineStyleElements = toArray(document.querySelectorAll(INLINE_STYLE_SELECTOR));
+    iterateShadowHosts(document.documentElement, function (host) {
+      createShadowStaticStyleOverrides(host.shadowRoot);
+      var elements = host.shadowRoot.querySelectorAll(INLINE_STYLE_SELECTOR);
+      if (elements.length > 0) {
+        push(inlineStyleElements, elements);
       }
-    })();
-
-  function jn(e, t) {
-    void 0 === e && (e = {}), void 0 === t && (t = null);
-    var n = r(r({}, N), e);
-    if (n.engine !== R.dynamicTheme) throw new Error("Theme engine is not supported.");
-    Ln(n, t, Fn), (Nn = !0);
+    });
+    inlineStyleElements.forEach(function (el) {
+      return overrideInlineStyle(el, filter, ignoredInlineSelectors, ignoredImageAnalysisSelectors);
+    });
+    handleAdoptedStyleSheets(document);
   }
-
-  function Bn() {
-    On(), (Nn = !1);
+  var loadingStylesCounter = 0;
+  var loadingStyles = new Set();
+  function createManager(element) {
+    var loadingStyleId = ++loadingStylesCounter;
+    function loadingStart() {
+      if (!isDOMReady() || !documentIsVisible()) {
+        loadingStyles.add(loadingStyleId);
+        logInfo("Current amount of styles loading: ".concat(loadingStyles.size));
+        var fallbackStyle = document.querySelector(".darkreader--fallback");
+        if (!fallbackStyle.textContent) {
+          fallbackStyle.textContent = getModifiedFallbackStyle(filter, { strict: false });
+        }
+      }
+    }
+    function loadingEnd() {
+      loadingStyles.delete(loadingStyleId);
+      logInfo("Removed loadingStyle ".concat(loadingStyleId, ", now awaiting: ").concat(loadingStyles.size));
+      if (loadingStyles.size === 0 && isDOMReady()) {
+        cleanFallbackStyle();
+      }
+    }
+    function update() {
+      var details = manager.details({ secondRound: true });
+      if (!details) {
+        return;
+      }
+      variablesStore.addRulesForMatching(details.rules);
+      variablesStore.matchVariablesAndDependants();
+      manager.render(filter, ignoredImageAnalysisSelectors);
+    }
+    var manager = manageStyle(element, {
+      update: update,
+      loadingStart: loadingStart,
+      loadingEnd: loadingEnd,
+    });
+    styleManagers.set(element, manager);
+    return manager;
   }
-  var qn = matchMedia("(prefers-color-scheme: dark)"),
-    Un = {
-      themeOptions: null,
-      fixes: null,
-    };
-
-  function Wn() {
-    qn.matches ? jn(Un.themeOptions, Un.fixes) : Bn();
+  function removeManager(element) {
+    var manager = styleManagers.get(element);
+    if (manager) {
+      manager.destroy();
+      styleManagers.delete(element);
+    }
   }
-  var Gn = function (e) {
-    x = e || C;
+  var throttledRenderAllStyles = throttle(function (callback) {
+    styleManagers.forEach(function (manager) {
+      return manager.render(filter, ignoredImageAnalysisSelectors);
+    });
+    adoptedStyleManagers.forEach(function (manager) {
+      return manager.render(filter, ignoredImageAnalysisSelectors);
+    });
+    callback && callback();
+  });
+  var cancelRendering = function () {
+    throttledRenderAllStyles.cancel();
   };
-  (e.auto = function (e, t) {
-    void 0 === e && (e = {}),
-      void 0 === t && (t = null),
-      e
-        ? ((Un = {
-            themeOptions: e,
-            fixes: t,
-          }),
-          Wn(),
-          y ? qn.addEventListener("change", Wn) : qn.addListener(Wn))
-        : (y ? qn.removeEventListener("change", Wn) : qn.removeListener(Wn), Bn());
-  }),
-    (e.disable = Bn),
-    (e.enable = jn),
-    (e.exportGeneratedCSS = function () {
-      return n(this, void 0, void 0, function () {
-        return a(this, function (e) {
-          switch (e.label) {
-            case 0:
-              return [4, In()];
-            case 1:
-              return [2, e.sent()];
-          }
+  function onDOMReady() {
+    if (loadingStyles.size === 0) {
+      cleanFallbackStyle();
+      return;
+    }
+  }
+  function runDynamicStyle() {
+    createDynamicStyleOverrides();
+    watchForUpdates();
+  }
+  function createThemeAndWatchForUpdates() {
+    createStaticStyleOverrides();
+    if (!documentIsVisible() && !filter.immediateModify) {
+      setDocumentVisibilityListener(runDynamicStyle);
+    } else {
+      runDynamicStyle();
+    }
+    changeMetaThemeColorWhenAvailable(filter);
+  }
+  function handleAdoptedStyleSheets(node) {
+    try {
+      if (Array.isArray(node.adoptedStyleSheets)) {
+        if (node.adoptedStyleSheets.length > 0) {
+          var newManger = createAdoptedStyleSheetOverride(node);
+          adoptedStyleManagers.push(newManger);
+          newManger.render(filter, ignoredImageAnalysisSelectors);
+        }
+      }
+    } catch (err) {}
+  }
+  function watchForUpdates() {
+    var managedStyles = Array.from(styleManagers.keys());
+    watchForStyleChanges(
+      managedStyles,
+      function (_a) {
+        var created = _a.created,
+          updated = _a.updated,
+          removed = _a.removed,
+          moved = _a.moved;
+        var stylesToRemove = removed;
+        var stylesToManage = created
+          .concat(updated)
+          .concat(moved)
+          .filter(function (style) {
+            return !styleManagers.has(style);
+          });
+        var stylesToRestore = moved.filter(function (style) {
+          return styleManagers.has(style);
         });
-      });
-    }),
-    (e.isEnabled = function () {
-      return Nn;
-    }),
-    (e.setFetchMethod = Gn),
-    Object.defineProperty(e, "__esModule", {
-      value: !0,
+        stylesToRemove.forEach(function (style) {
+          return removeManager(style);
+        });
+        var newManagers = stylesToManage.map(function (style) {
+          return createManager(style);
+        });
+        newManagers
+          .map(function (manager) {
+            return manager.details({ secondRound: false });
+          })
+          .filter(function (detail) {
+            return detail && detail.rules.length > 0;
+          })
+          .forEach(function (detail) {
+            variablesStore.addRulesForMatching(detail.rules);
+          });
+        variablesStore.matchVariablesAndDependants();
+        newManagers.forEach(function (manager) {
+          return manager.render(filter, ignoredImageAnalysisSelectors);
+        });
+        newManagers.forEach(function (manager) {
+          return manager.watch();
+        });
+        stylesToRestore.forEach(function (style) {
+          return styleManagers.get(style).restore();
+        });
+      },
+      function (shadowRoot) {
+        createShadowStaticStyleOverrides(shadowRoot);
+        handleAdoptedStyleSheets(shadowRoot);
+      }
+    );
+    watchForInlineStyles(
+      function (element) {
+        overrideInlineStyle(element, filter, ignoredInlineSelectors, ignoredImageAnalysisSelectors);
+        if (element === document.documentElement) {
+          var styleAttr = element.getAttribute("style") || "";
+          if (styleAttr.includes("--")) {
+            variablesStore.matchVariablesAndDependants();
+            var rootVarsStyle = createOrUpdateStyle("darkreader--root-vars");
+            variablesStore.putRootVars(rootVarsStyle, filter);
+          }
+        }
+      },
+      function (root) {
+        createShadowStaticStyleOverrides(root);
+        var inlineStyleElements = root.querySelectorAll(INLINE_STYLE_SELECTOR);
+        if (inlineStyleElements.length > 0) {
+          forEach(inlineStyleElements, function (el) {
+            return overrideInlineStyle(el, filter, ignoredInlineSelectors, ignoredImageAnalysisSelectors);
+          });
+        }
+      }
+    );
+    addDOMReadyListener(onDOMReady);
+  }
+  function stopWatchingForUpdates() {
+    styleManagers.forEach(function (manager) {
+      return manager.pause();
     });
+    stopStylePositionWatchers();
+    stopWatchingForStyleChanges();
+    stopWatchingForInlineStyles();
+    removeDOMReadyListener(onDOMReady);
+    cleanReadyStateCompleteListeners();
+  }
+  var metaObserver;
+  function addMetaListener() {
+    metaObserver = new MutationObserver(function () {
+      if (document.querySelector('meta[name="darkreader-lock"]')) {
+        metaObserver.disconnect();
+        removeDynamicTheme();
+      }
+    });
+    metaObserver.observe(document.head, { childList: true, subtree: true });
+  }
+  function createDarkReaderInstanceMarker() {
+    var metaElement = document.createElement("meta");
+    metaElement.name = "darkreader";
+    metaElement.content = INSTANCE_ID;
+    document.head.appendChild(metaElement);
+  }
+  function isAnotherDarkReaderInstanceActive() {
+    if (document.querySelector('meta[name="darkreader-lock"]')) {
+      return true;
+    }
+    var meta = document.querySelector('meta[name="darkreader"]');
+    if (meta) {
+      if (meta.content !== INSTANCE_ID) {
+        return true;
+      }
+      return false;
+    }
+    createDarkReaderInstanceMarker();
+    addMetaListener();
+    return false;
+  }
+  function createOrUpdateDynamicThemeInternal(filterConfig, dynamicThemeFixes, iframe) {
+    filter = filterConfig;
+    fixes = dynamicThemeFixes;
+    if (fixes) {
+      ignoredImageAnalysisSelectors = Array.isArray(fixes.ignoreImageAnalysis) ? fixes.ignoreImageAnalysis : [];
+      ignoredInlineSelectors = Array.isArray(fixes.ignoreInlineStyle) ? fixes.ignoreInlineStyle : [];
+    } else {
+      ignoredImageAnalysisSelectors = [];
+      ignoredInlineSelectors = [];
+    }
+    if (filter.immediateModify) {
+      setIsDOMReady(function () {
+        return true;
+      });
+    }
+    isIFrame$1 = iframe;
+    if (document.head) {
+      if (isAnotherDarkReaderInstanceActive()) {
+        removeDynamicTheme();
+        return;
+      }
+      document.documentElement.setAttribute("data-darkreader-mode", "dynamic");
+      document.documentElement.setAttribute("data-darkreader-scheme", filter.mode ? "dark" : "dimmed");
+      createThemeAndWatchForUpdates();
+    } else {
+      if (!isFirefox) {
+        var fallbackStyle = createOrUpdateStyle("darkreader--fallback");
+        document.documentElement.appendChild(fallbackStyle);
+        fallbackStyle.textContent = getModifiedFallbackStyle(filter, {
+          strict: true,
+        });
+      }
+      var headObserver_1 = new MutationObserver(function () {
+        if (document.head) {
+          headObserver_1.disconnect();
+          if (isAnotherDarkReaderInstanceActive()) {
+            removeDynamicTheme();
+            return;
+          }
+          createThemeAndWatchForUpdates();
+        }
+      });
+      headObserver_1.observe(document, { childList: true, subtree: true });
+    }
+  }
+  function removeProxy() {
+    document.dispatchEvent(new CustomEvent("__darkreader__cleanUp"));
+    removeNode(document.head.querySelector(".darkreader--proxy"));
+  }
+  function removeDynamicTheme() {
+    document.documentElement.removeAttribute("data-darkreader-mode");
+    document.documentElement.removeAttribute("data-darkreader-scheme");
+    cleanDynamicThemeCache();
+    removeNode(document.querySelector(".darkreader--fallback"));
+    if (document.head) {
+      restoreMetaThemeColor();
+      removeNode(document.head.querySelector(".darkreader--user-agent"));
+      removeNode(document.head.querySelector(".darkreader--text"));
+      removeNode(document.head.querySelector(".darkreader--invert"));
+      removeNode(document.head.querySelector(".darkreader--inline"));
+      removeNode(document.head.querySelector(".darkreader--override"));
+      removeNode(document.head.querySelector(".darkreader--variables"));
+      removeNode(document.head.querySelector(".darkreader--root-vars"));
+      removeNode(document.head.querySelector('meta[name="darkreader"]'));
+      removeProxy();
+    }
+    shadowRootsWithOverrides.forEach(function (root) {
+      removeNode(root.querySelector(".darkreader--inline"));
+      removeNode(root.querySelector(".darkreader--override"));
+    });
+    shadowRootsWithOverrides.clear();
+    forEach(styleManagers.keys(), function (el) {
+      return removeManager(el);
+    });
+    loadingStyles.clear();
+    cleanLoadingLinks();
+    forEach(document.querySelectorAll(".darkreader"), removeNode);
+    adoptedStyleManagers.forEach(function (manager) {
+      manager.destroy();
+    });
+    adoptedStyleManagers.splice(0);
+    metaObserver && metaObserver.disconnect();
+  }
+  function cleanDynamicThemeCache() {
+    variablesStore.clear();
+    parsedURLCache.clear();
+    removeDocumentVisibilityListener();
+    cancelRendering();
+    stopWatchingForUpdates();
+    cleanModificationCache();
+    clearColorCache();
+  }
+
+  var blobRegex = /url\(\"(blob\:.*?)\"\)/g;
+  function replaceBlobs(text) {
+    return __awaiter(this, void 0, void 0, function () {
+      var promises, data;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            promises = [];
+            getMatches(blobRegex, text, 1).forEach(function (url) {
+              var promise = loadAsDataURL(url);
+              promises.push(promise);
+            });
+            return [4, Promise.all(promises)];
+          case 1:
+            data = _a.sent();
+            return [
+              2,
+              text.replace(blobRegex, function () {
+                return 'url("'.concat(data.shift(), '")');
+              }),
+            ];
+        }
+      });
+    });
+  }
+  var banner =
+    '/*\n                        _______\n                       /       \\\n                      .==.    .==.\n                     ((  ))==((  ))\n                    / "=="    "=="\\\n                   /____|| || ||___\\\n       ________     ____    ________  ___    ___\n       |  ___  \\   /    \\   |  ___  \\ |  |  /  /\n       |  |  \\  \\ /  /\\  \\  |  |  \\  \\|  |_/  /\n       |  |   )  /  /__\\  \\ |  |__/  /|  ___  \\\n       |  |__/  /  ______  \\|  ____  \\|  |  \\  \\\n_______|_______/__/ ____ \\__\\__|___\\__\\__|___\\__\\____\n|  ___  \\ |  ____/ /    \\   |  ___  \\ |  ____|  ___  \\\n|  |  \\  \\|  |___ /  /\\  \\  |  |  \\  \\|  |___|  |  \\  \\\n|  |__/  /|  ____/  /__\\  \\ |  |   )  |  ____|  |__/  /\n|  ____  \\|  |__/  ______  \\|  |__/  /|  |___|  ____  \\\n|__|   \\__\\____/__/      \\__\\_______/ |______|__|   \\__\\\n                https://darkreader.org\n*/\n\n/*! Dark reader generated CSS | Licensed under MIT https://github.com/darkreader/darkreader/blob/main/LICENSE */\n';
+  function collectCSS() {
+    return __awaiter(this, void 0, void 0, function () {
+      function addStaticCSS(selector, comment) {
+        var staticStyle = document.querySelector(selector);
+        if (staticStyle && staticStyle.textContent) {
+          css.push("/* ".concat(comment, " */"));
+          css.push(staticStyle.textContent);
+          css.push("");
+        }
+      }
+      var css, modifiedCSS, formattedCSS, _a, _b;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            css = [banner];
+            addStaticCSS(".darkreader--fallback", "Fallback Style");
+            addStaticCSS(".darkreader--user-agent", "User-Agent Style");
+            addStaticCSS(".darkreader--text", "Text Style");
+            addStaticCSS(".darkreader--invert", "Invert Style");
+            addStaticCSS(".darkreader--variables", "Variables Style");
+            modifiedCSS = [];
+            document.querySelectorAll(".darkreader--sync").forEach(function (element) {
+              forEach(element.sheet.cssRules, function (rule) {
+                rule && rule.cssText && modifiedCSS.push(rule.cssText);
+              });
+            });
+            if (!modifiedCSS.length) return [3, 2];
+            formattedCSS = formatCSS(modifiedCSS.join("\n"));
+            css.push("/* Modified CSS */");
+            _b = (_a = css).push;
+            return [4, replaceBlobs(formattedCSS)];
+          case 1:
+            _b.apply(_a, [_c.sent()]);
+            css.push("");
+            _c.label = 2;
+          case 2:
+            addStaticCSS(".darkreader--override", "Override Style");
+            return [2, css.join("\n")];
+        }
+      });
+    });
+  }
+
+  var isDarkReaderEnabled = false;
+  var isIFrame = (function () {
+    try {
+      return window.self !== window.top;
+    } catch (err) {
+      return true;
+    }
+  })();
+  function enable(themeOptions, fixes) {
+    if (themeOptions === void 0) {
+      themeOptions = {};
+    }
+    if (fixes === void 0) {
+      fixes = null;
+    }
+    var theme = __assign(__assign({}, DEFAULT_THEME), themeOptions);
+    if (theme.engine !== ThemeEngine.dynamicTheme) {
+      throw new Error("Theme engine is not supported.");
+    }
+    createOrUpdateDynamicThemeInternal(theme, fixes, isIFrame);
+    isDarkReaderEnabled = true;
+  }
+  function isEnabled() {
+    return isDarkReaderEnabled;
+  }
+  function disable() {
+    removeDynamicTheme();
+    isDarkReaderEnabled = false;
+  }
+  var darkScheme = matchMedia("(prefers-color-scheme: dark)");
+  var store = {
+    themeOptions: null,
+    fixes: null,
+  };
+  function handleColorScheme() {
+    if (darkScheme.matches) {
+      enable(store.themeOptions, store.fixes);
+    } else {
+      disable();
+    }
+  }
+  function auto(themeOptions, fixes) {
+    if (themeOptions === void 0) {
+      themeOptions = {};
+    }
+    if (fixes === void 0) {
+      fixes = null;
+    }
+    if (themeOptions) {
+      store = { themeOptions: themeOptions, fixes: fixes };
+      handleColorScheme();
+      if (isMatchMediaChangeEventListenerSupported) {
+        darkScheme.addEventListener("change", handleColorScheme);
+      } else {
+        darkScheme.addListener(handleColorScheme);
+      }
+    } else {
+      if (isMatchMediaChangeEventListenerSupported) {
+        darkScheme.removeEventListener("change", handleColorScheme);
+      } else {
+        darkScheme.removeListener(handleColorScheme);
+      }
+      disable();
+    }
+  }
+  function exportGeneratedCSS() {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4, collectCSS()];
+          case 1:
+            return [2, _a.sent()];
+        }
+      });
+    });
+  }
+  var setFetchMethod = setFetchMethod$1;
+
+  exports.auto = auto;
+  exports.disable = disable;
+  exports.enable = enable;
+  exports.exportGeneratedCSS = exportGeneratedCSS;
+  exports.isEnabled = isEnabled;
+  exports.setFetchMethod = setFetchMethod;
+
+  Object.defineProperty(exports, "__esModule", { value: true });
 });
-//# sourceMappingURL=/sm/4377abaf3b88f52af0bf84c492d3b422908537e18a85eca05a6cb79c885a60b9.map
 
 addEventListener("load", () => {
   if (document.documentElement.getAttribute("darkmode") == "true") DarkReader.enable();

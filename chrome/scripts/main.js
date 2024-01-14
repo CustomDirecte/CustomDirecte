@@ -1,6 +1,9 @@
-/* ------------------- Infos ------------------- */
-// --> A Bastoon Creation
-/* --------------------------------------------- */
+/* IMPORT CHROME LIB */
+browser = chrome;
+browserStorage = browser.storage.sync;
+browserVersion = browser.runtime.getManifest().version_name;
+browserStorageOnChanged = browser.storage.sync.onChanged;
+/* ----------------- */
 
 /* ----------------- Console Log ----------------- */
 const logStyle = {
@@ -22,24 +25,87 @@ function isLoginPage() {
 }
 /* ----------------------------------------------- */
 
+/* --------------- optionsConfig ----------------- */
+function optionsConfig(options, setOption, params, toparam) {
+  if (options == false) {
+    funcName = optionsConfig.caller.name;
+    for (param of Object.entries(toparam(params))) {
+      setOption(param);
+    }
+    document.documentElement.addEventListener("optionEvent", (e) => {
+      for (param of e.detail) {
+        if (param[0] == funcName) {
+          for (ele of Object.entries(toparam(param[1]))) {
+            setOption(ele);
+          }
+        }
+      }
+    });
+    return;
+  }
+  for (option of Object.entries(options)) {
+    setOption(option);
+  }
+  document.documentElement.addEventListener("optionEvent", (e) => {
+    for (option of e.detail) {
+      if (options[option[0]] != undefined) {
+        options[option[0]] = option[1];
+        setOption(option);
+      }
+    }
+  });
+}
+/* ----------------------------------------------- */
+
+/* ----------------- Update Value ---------------- */
+function updateValue(Option, value) {
+  browserStorage.get((data) => {
+    let option = data.options.find((el) => el.option == Option);
+    option.Value = value;
+    browserStorage.set(data);
+  });
+}
+/* ----------------------------------------------- */
+
+/* ---------------- TXT Downloader ---------------- */
+function txtDownloader(content, fileName) {
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content], { type: "text/plain" }));
+  a.download = `${fileName}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+/* ----------------------------------------------- */
+
 /* ----------------- Console Log ----------------- */
 const debug = new (class Debug {
   constructor() {
     this.active = false;
+    this.logs = [];
   }
 
-  start() {
-    this.active = true;
-    console.log(`%cDebug [Enabled]`, logStyle.optionTrue);
-    this.log("Extension Version " + chrome.runtime.getManifest().version);
-    return true;
+  startLog(close = false) {
+    this.active = !close;
+    console.log(close ? `%c> Debug [Disabled]` : `%c> Debug [Enabled]`, close ? logStyle.optionFalse : logStyle.optionTrue);
   }
 
   log(module, str) {
+    str ? (str = `[${module}] ${str}`) : (str = `${module}`);
     if (this.active) {
-      str ? (str = `[${module}] ${str}`) : (str = `${module}`);
       console.log(`%cDebug | ${str}`, logStyle.debug);
     }
+    if (str != undefined) this.logs.push(str);
+  }
+
+  dev(options) {
+    optionsConfig(options, (option) => {
+      if (option[0] == "log") this.startLog(!option[1]);
+      if (option[0] == "downloadlog" && option[1]) {
+        updateValue("downloadlog", false);
+        txtDownloader(`Version ${browserVersion} ; Timestamp ${Date.now()}\n` + this.logs.join("\n"), "logs");
+      }
+    });
   }
 
   startOptionLog(module, state) {
@@ -49,11 +115,8 @@ const debug = new (class Debug {
 /* ----------------------------------------------- */
 
 /* ----------- Get option changements ------------ */
-const target = new EventTarget();
-
-chrome.storage.sync.onChanged.addListener((changes) => {
+browserStorageOnChanged.addListener((changes) => {
   let [key, { oldValue, newValue }] = Object.entries(changes)[0];
-
   if (key !== "options") return;
 
   function convert(inputOptions) {
@@ -74,7 +137,7 @@ chrome.storage.sync.onChanged.addListener((changes) => {
   }
 
   if (differences != []) {
-    target.dispatchEvent(new CustomEvent("optionEvent", { detail: differences }));
+    document.documentElement.dispatchEvent(new CustomEvent("optionEvent", { detail: differences }));
   }
 });
 /* ----------------------------------------------- */
@@ -87,69 +150,41 @@ function register(func) {
 }
 /* ----------------------------------------------- */
 
-/* --------------- optionsConfig ----------------- */
-function optionsConfig(options, setOption, params, toparam) {
-  if (options == false) {
-    funcName = optionsConfig.caller.name;
-    for (param of Object.entries(toparam(params))) {
-      setOption(param);
-    }
-    target.addEventListener("optionEvent", (e) => {
-      for (param of e.detail) {
-        if (param[0] == funcName) {
-          console.log(param);
-          for (ele of Object.entries(toparam(param[1]))) {
-            setOption(ele);
-          }
-        }
-      }
-    });
-    return;
-  }
-  for (option of Object.entries(options)) {
-    setOption(option);
-  }
-  target.addEventListener("optionEvent", (e) => {
-    for (option of e.detail) {
-      if (options[option[0]] != undefined) {
-        options[option[0]] = option[1];
-        setOption(option);
-      }
-    }
-  });
-}
-/* ----------------------------------------------- */
-
 /* --------- Options Initialitialisator ---------- */
 function Start(statue) {
-  // Active le mode de debugage si activé
-  // if (statue.debug) debug.start();
-
   // Change le logo si l'une des options est activé
-  if (Object.values(statue).some((obj) => obj.value === true)) document.querySelector("link[rel*='icon']").href = chrome.runtime.getURL(`/icons/EcoleDirecte/magenta.ico`);
+  if (Object.values(statue).some((obj) => obj.value === true) && document.querySelector("link[rel*='icon']")) document.querySelector("link[rel*='icon']").href = browser.runtime.getURL(`/icons/EcoleDirecte/magenta.ico`);
 
   // Execusion des modules avec message dans la console
   for (ele in statue) {
     let func = registedOptions[ele];
     let value = statue[ele].value;
+
+    // Active le mode de debugage si activé
+    if (ele == "dev" && value) debug.dev(statue[ele].secondary);
+
+    // Option lié a aucune fonction
+    if (!func) continue;
+
     if (!value) {
       debug.startOptionLog(func.name, false);
       continue;
     }
+
     try {
       func(statue[ele].secondary, value);
       debug.startOptionLog(func.name, true);
       debug.log(func.name + " >>> Successful execution");
     } catch (error) {
       console.error(error);
-      debug.startOptionLog(`%c${func.name} [Error]`, true);
+      debug.startOptionLog(`${func.name} [Error]`, true);
       debug.log(func.name + " >>> Error on execution");
     }
   }
 }
 
 function Run() {
-  chrome.storage.sync.get((inputOptions) => {
+  browserStorage.get((inputOptions) => {
     if (!inputOptions.options) console.log(inputOptions);
     if (!inputOptions.options) return;
     inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
@@ -166,14 +201,21 @@ function Run() {
       option[item.secondary].secondary[item.option] = item.value;
     });
 
-    Start(option);
+    const readystateHandler = () => {
+      if (["complete", "interactive"].includes(document.readyState)) {
+        Start(option);
+        document.removeEventListener("readystatechange", readystateHandler);
+      }
+    };
+
+    document.addEventListener("readystatechange", readystateHandler);
+    readystateHandler();
   });
 }
 Run();
 /* ----------------------------------------------- */
 
 /* -------------- Options Fonctions -------------- */
-
 function noteTableAnalysis(options) {
   // Setup Module internal log
   let logName = arguments.callee.name;
@@ -199,7 +241,7 @@ function noteTableAnalysis(options) {
 
   try {
     const tippy = document.createElement("script");
-    tippy.src = chrome.runtime.getURL("/scripts/tippy.js");
+    tippy.src = browser.runtime.getURL("/scripts/tippy.js");
     document.head.appendChild(tippy);
     tippyState = true;
   } catch {
@@ -244,7 +286,7 @@ function noteTableAnalysis(options) {
 
     try {
       // Change le message avec la date du dernier calcule de la moyenne
-      TableParent.querySelector("p").innerHTML = "<b>Moyennes calculées par l'extension : " + chrome.runtime.getManifest().name + "</b>";
+      TableParent.querySelector("p").innerHTML = "<b>Moyennes calculées par l'extension : " + browser.runtime.getManifest().name + "</b>";
       log(" > Message with last calculation date -> [ Updated ]");
     } catch {
       log(" > Message with last calculation date -> [ ⚠️ Non-existent or Untouchable ]");
@@ -733,7 +775,7 @@ function customization(options) {
   });
 
   customizationscss = document.createElement("style");
-  fetch(chrome.runtime.getURL("/styles/customizations.css"))
+  fetch(browser.runtime.getURL("/styles/customizations.css"))
     .then((response) => response.text())
     .then((data) => {
       customizationscss.innerHTML = data;
@@ -741,7 +783,7 @@ function customization(options) {
   document.head.appendChild(customizationscss);
 
   const darkreader = document.createElement("script");
-  darkreader.src = chrome.runtime.getURL("/scripts/darkreader.js");
+  darkreader.src = browser.runtime.getURL("/scripts/darkreader.js");
   document.head.appendChild(darkreader);
 }
 register(customization);
@@ -782,7 +824,7 @@ function customizationButton(options, value) {
   optionsPopup = document.createElement("iframe");
   optionsPopup.classList.add("optionsPopup");
   document.body.prepend(optionsPopup);
-  optionsPopup.src = chrome.runtime.getURL("/pages/popup/interface.html");
+  optionsPopup.src = browser.runtime.getURL("/pages/popup/interface.html");
 
   function closeOptionsPopup() {
     optionsPopup.contentWindow.postMessage("close", "*");
@@ -797,21 +839,21 @@ function customizationButton(options, value) {
   };
 
   defaultcss = document.createElement("style");
-  fetch(chrome.runtime.getURL("/styles/default.css"))
+  fetch(browser.runtime.getURL("/styles/default.css"))
     .then((response) => response.text())
     .then((data) => {
       defaultcss.innerHTML = data;
     });
   document.head.appendChild(defaultcss);
 
-  window.onmessage = function (e) {
+  window.addEventListener("message", (e) => {
     if (e.data == "closeOptionsPopup") {
       document.querySelector("html").classList.remove("optionsPopupActif");
     }
     if (e.data == "reloadOptionsPopup") {
       location.reload();
     }
-  };
+  });
 }
 register(customizationButton);
 

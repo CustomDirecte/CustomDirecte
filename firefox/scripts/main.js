@@ -1,6 +1,9 @@
-/* ------------------- Infos ------------------- */
-// --> A Bastoon Creation
-/* --------------------------------------------- */
+/* IMPORT FIREFOX LIB */
+browser = browser;
+browserStorage = browser.storage.local;
+browserVersion = browser.runtime.getManifest().version;
+browserStorageOnChanged = browser.storage.onChanged;
+/* ----------------- */
 
 /* ----------------- Console Log ----------------- */
 const logStyle = {
@@ -19,70 +22,6 @@ console.log("%cCustomDirecte", logStyle.title);
 // Teste si la page de connextion est afficher
 function isLoginPage() {
   return /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) ? true : false;
-}
-/* ----------------------------------------------- */
-
-/* ----------------- Console Log ----------------- */
-const debug = new (class Debug {
-  constructor() {
-    this.active = false;
-  }
-
-  start() {
-    this.active = true;
-    console.log(`%cDebug [Enabled]`, logStyle.optionTrue);
-    this.log("Extension Version " + browser.runtime.getManifest().version);
-    return true;
-  }
-
-  log(module, str) {
-    if (this.active) {
-      str ? (str = `[${module}] ${str}`) : (str = `${module}`);
-      console.log(`%cDebug | ${str}`, logStyle.debug);
-    }
-  }
-
-  startOptionLog(module, state) {
-    state ? console.log(`%c${module} [Enabled]`, logStyle.optionTrue) : console.log(`%c${module} [Disabled]`, logStyle.optionFalse);
-  }
-})();
-/* ----------------------------------------------- */
-
-/* ----------- Get option changements ------------ */
-browser.storage.onChanged.addListener((changes) => {
-  if (changes.options) changes = changes.options;
-
-  let oldValue = changes.oldValue;
-  let newValue = changes.newValue;
-
-  function convert(inputOptions) {
-    inputOptions;
-    let option = {};
-    inputOptions.forEach((item) => {
-      option[item.option] = item.Value === null ? item.Default : item.Value;
-    });
-    return option;
-  }
-
-  const differences = [];
-
-  for (const key in convert(oldValue)) {
-    if (Array.isArray(convert(oldValue)[key]) && Array.isArray(convert(newValue)[key])) {
-      if (JSON.stringify(convert(oldValue)[key]) !== JSON.stringify(convert(newValue)[key])) differences.push([key, convert(newValue)[key]]);
-    } else if (convert(oldValue)[key] !== convert(newValue)[key]) differences.push([key, convert(newValue)[key]]);
-  }
-
-  if (differences != []) {
-    document.documentElement.dispatchEvent(new CustomEvent("optionEvent", { detail: cloneInto(differences, document.defaultView) }));
-  }
-});
-/* ----------------------------------------------- */
-
-/* ------------------ Register ------------------- */
-registedOptions = {};
-
-function register(func) {
-  registedOptions[func.name] = func;
 }
 /* ----------------------------------------------- */
 
@@ -118,36 +57,135 @@ function optionsConfig(options, setOption, params, toparam) {
 }
 /* ----------------------------------------------- */
 
+/* ----------------- Update Value ---------------- */
+function updateValue(Option, value) {
+  browserStorage.get((data) => {
+    let option = data.options.find((el) => el.option == Option);
+    option.Value = value;
+    browserStorage.set(data);
+  });
+}
+/* ----------------------------------------------- */
+
+/* ---------------- TXT Downloader ---------------- */
+function txtDownloader(content, fileName) {
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content], { type: "text/plain" }));
+  a.download = `${fileName}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+/* ----------------------------------------------- */
+
+/* ----------------- Console Log ----------------- */
+const debug = new (class Debug {
+  constructor() {
+    this.active = false;
+    this.logs = [];
+  }
+
+  startLog(close = false) {
+    this.active = !close;
+    console.log(close ? `%c> Debug [Disabled]` : `%c> Debug [Enabled]`, close ? logStyle.optionFalse : logStyle.optionTrue);
+  }
+
+  log(module, str) {
+    str ? (str = `[${module}] ${str}`) : (str = `${module}`);
+    if (this.active) {
+      console.log(`%cDebug | ${str}`, logStyle.debug);
+    }
+    if (str != undefined) this.logs.push(str);
+  }
+
+  dev(options) {
+    optionsConfig(options, (option) => {
+      if (option[0] == "log") this.startLog(!option[1]);
+      if (option[0] == "downloadlog" && option[1]) {
+        updateValue("downloadlog", false);
+        txtDownloader(`Version ${browserVersion} ; Timestamp ${Date.now()}\n` + this.logs.join("\n"), "logs");
+      }
+    });
+  }
+
+  startOptionLog(module, state) {
+    state ? console.log(`%c${module} [Enabled]`, logStyle.optionTrue) : console.log(`%c${module} [Disabled]`, logStyle.optionFalse);
+  }
+})();
+/* ----------------------------------------------- */
+
+/* ----------- Get option changements ------------ */
+browserStorageOnChanged.addListener((changes) => {
+  if (changes.options) changes = changes.options;
+  let oldValue = changes.oldValue;
+  let newValue = changes.newValue;
+
+  function convert(inputOptions) {
+    inputOptions;
+    let option = {};
+    inputOptions.forEach((item) => {
+      option[item.option] = item.Value === null ? item.Default : item.Value;
+    });
+    return option;
+  }
+
+  const differences = [];
+
+  for (const key in convert(oldValue)) {
+    if (Array.isArray(convert(oldValue)[key]) && Array.isArray(convert(newValue)[key])) {
+      if (JSON.stringify(convert(oldValue)[key]) !== JSON.stringify(convert(newValue)[key])) differences.push([key, convert(newValue)[key]]);
+    } else if (convert(oldValue)[key] !== convert(newValue)[key]) differences.push([key, convert(newValue)[key]]);
+  }
+
+  if (differences != []) {
+    document.documentElement.dispatchEvent(new CustomEvent("optionEvent", { detail: cloneInto(differences, document.defaultView) }));
+  }
+});
+/* ----------------------------------------------- */
+
+/* ------------------ Register ------------------- */
+registedOptions = {};
+
+function register(func) {
+  registedOptions[func.name] = func;
+}
+/* ----------------------------------------------- */
+
 /* --------- Options Initialitialisator ---------- */
 function Start(statue) {
-  // Active le mode de debugage si activé
-  // if (statue.debug) debug.start();
-
   // Change le logo si l'une des options est activé
-  if (Object.values(statue).some((obj) => obj.value === true)) document.querySelector("link[rel*='icon']").href = browser.runtime.getURL(`/icons/EcoleDirecte/magenta.ico`);
+  if (Object.values(statue).some((obj) => obj.value === true) && document.querySelector("link[rel*='icon']")) document.querySelector("link[rel*='icon']").href = browser.runtime.getURL(`/icons/EcoleDirecte/magenta.ico`);
 
   // Execusion des modules avec message dans la console
   for (ele in statue) {
     let func = registedOptions[ele];
     let value = statue[ele].value;
+
+    // Active le mode de debugage si activé
+    if (ele == "dev" && value) debug.dev(statue[ele].secondary);
+
+    // Option lié a aucune fonction
+    if (!func) continue;
+
     if (!value) {
       debug.startOptionLog(func.name, false);
       continue;
     }
+
     try {
       func(statue[ele].secondary, value);
       debug.startOptionLog(func.name, true);
       debug.log(func.name + " >>> Successful execution");
     } catch (error) {
       console.error(error);
-      debug.startOptionLog(`%c${func.name} [Error]`, true);
+      debug.startOptionLog(`${func.name} [Error]`, true);
       debug.log(func.name + " >>> Error on execution");
     }
   }
 }
 
 function Run() {
-  browser.storage.local.get((inputOptions) => {
+  browserStorage.get((inputOptions) => {
     if (!inputOptions.options) console.log(inputOptions);
     if (!inputOptions.options) return;
     inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
@@ -164,14 +202,21 @@ function Run() {
       option[item.secondary].secondary[item.option] = item.value;
     });
 
-    Start(option);
+    const readystateHandler = () => {
+      if (["complete", "interactive"].includes(document.readyState)) {
+        Start(option);
+        document.removeEventListener("readystatechange", readystateHandler);
+      }
+    };
+
+    document.addEventListener("readystatechange", readystateHandler);
+    readystateHandler();
   });
 }
 Run();
 /* ----------------------------------------------- */
 
 /* -------------- Options Fonctions -------------- */
-
 function noteTableAnalysis(options) {
   // Setup Module internal log
   let logName = arguments.callee.name;
@@ -509,6 +554,7 @@ function noteTableAnalysis(options) {
       if (!(LineGradesAndCoef.length > 0)) {
         log(` > > > > No note in this line -> [⚠️]`);
         if (!lineProperties["IsSecondaryButNotlast"] && lineProperties["IsSecondary"]) {
+          if (!masterLineGradesAndCoef.length) continue;
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
           masterLineAverage = moyennePondere(masterLineGradesAndCoef);
           TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
@@ -522,7 +568,7 @@ function noteTableAnalysis(options) {
               master: true,
             });
           }
-          log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
+          log(` > > > > Master line average {${masterLineAverage}} with coef {${masterLineCoef}}`);
         }
         continue;
       }
@@ -545,6 +591,7 @@ function noteTableAnalysis(options) {
         log(` > > > > Secondary line average {${LineAverage}} with coef {${LineCoef}}`);
 
         if (!lineProperties["IsSecondaryButNotlast"]) {
+          if (!masterLineGradesAndCoef.length) continue;
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
           masterLineAverage = moyennePondere(masterLineGradesAndCoef);
           TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
@@ -558,7 +605,7 @@ function noteTableAnalysis(options) {
               master: true,
             });
           }
-          log(` > > > > Master line average {${LineAverage}} with coef {${LineCoef}}`);
+          log(` > > > > Master line average {${masterLineAverage}} with coef {${masterLineCoef}}`);
         }
       }
 
