@@ -501,6 +501,12 @@ main {
   color: var(--gray);
 }
 
+.optionWarning {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--primary-light);
+}
+
 /* ████████╗ ██╗   ██╗ ██████╗  ███████╗ */
 /* ╚══██╔══╝ ╚██╗ ██╔╝ ██╔══██╗ ██╔════╝ */
 /*    ██║     ╚████╔╝  ██████╔╝ █████╗   */

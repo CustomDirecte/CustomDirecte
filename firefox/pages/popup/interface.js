@@ -127,6 +127,7 @@ genere = () => {
       const optionInfoElement = document.createElement("div");
       const optionTitleElement = document.createElement("span");
       if (option.Subtitle) var optionSubtitleElement = document.createElement("span");
+      if (option.Warning) var optionWarningElement = document.createElement("span");
 
       optionElement.classList.add("option");
       option.reloadingRequired ? optionElement.setAttribute("reloadingRequired", "") : null;
@@ -137,12 +138,16 @@ genere = () => {
       optionInfoElement.classList.add("optionInfo");
       optionInfoElement.appendChild(optionTitleElement);
       if (option.Subtitle) optionInfoElement.appendChild(optionSubtitleElement);
+      if (option.Warning) optionInfoElement.appendChild(optionWarningElement);
 
       optionTitleElement.classList.add("optionTitle");
       optionTitleElement.textContent = option.Title;
 
       if (option.Subtitle) optionSubtitleElement.classList.add("optionSubtitle");
       if (option.Subtitle) optionSubtitleElement.textContent = option.Subtitle;
+
+      if (option.Warning) optionWarningElement.classList.add("optionWarning");
+      if (option.Warning) optionWarningElement.textContent = option.Warning;
 
       document.querySelector(`[group="${option.Group}"]`).appendChild(optionElement);
 

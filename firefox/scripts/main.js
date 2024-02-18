@@ -99,8 +99,8 @@ const debug = new (class Debug {
   }
 
   dev(options) {
+    this.startLog(!option[1]);
     optionsConfig(options, (option) => {
-      if (option[0] == "log") this.startLog(!option[1]);
       if (option[0] == "downloadlog" && option[1]) {
         updateValue("downloadlog", false);
         txtDownloader(`Version ${browserVersion} ; Timestamp ${Date.now()}\n` + this.logs.join("\n"), "logs");
@@ -254,15 +254,45 @@ function noteTableAnalysis(options) {
     return parseFloat(x.toFixed(2)).toString().replace(".", ",");
   }
 
+  averageTable = false;
+
   // Detecte les changement du body et execute quand nécésaire 'Calculator()'
   log("BodyObserver -> [ Starting ]");
   const averageTableObserver = new MutationObserver(() => {
     let TableParent = document.getElementById("encart-notes");
+    let periodeElement = document.getElementById("unePeriode");
+
     // execute 'Calculator()' si le tableau actuellement affiché n'a pas déjà été modifié
-    if (TableParent && TableParent.dataset.averageCalculator != "true") {
+    if (periodeElement && TableParent && TableParent.dataset.averageCalculator != "true") {
+      averageTable = averageTable || false;
+
+      // si le tableau de moyenne n'a pas été cherché, le cherche
+      if (!periodeElement.dataset.averageFinded && (options["ClassAveragesDisplay"] || !options["AveragesPerSubjectRecalculation"])) {
+        activeTab = periodeElement.querySelector("li.active > a");
+
+        tabs = periodeElement.querySelectorAll("[role=tab]");
+
+        for (let i = 0; i < tabs.length; i++) {
+          const element = tabs[i];
+
+          if (element === activeTab) continue;
+
+          element.click();
+
+          if (document.getElementById("encart-moyennes").querySelector("table")) {
+            averageTable = document.getElementById("encart-moyennes").querySelector("table").cloneNode(true);
+            break;
+          }
+        }
+        periodeElement.dataset.averageFinded = averageTable ? true : false;
+
+        activeTab.click();
+        return;
+      }
+
       log("New gradeTable not calculated -> [ Found ]");
       TableParent.dataset.averageCalculator = true;
-      Calculator(TableParent);
+      Calculator(TableParent, averageTable);
     }
   });
   averageTableObserver.observe(document.body, {
@@ -270,7 +300,36 @@ function noteTableAnalysis(options) {
     subtree: true,
   });
 
-  function Calculator(TableParent) {
+  function averageTableAnalysis(averageTable) {
+    averageTable.classList.add("newTable");
+
+    averageTableLines = {};
+
+    for (line of averageTable.tBodies[0].rows) {
+      if (!line.querySelector(".libellediscipline").innerText) continue;
+      average = line.querySelector(".moyenneeleve") ? line.querySelector(".moyenneeleve") : false;
+      classAverage = line.querySelector(".moyenneclasse") ? line.querySelector(".moyenneclasse") : false;
+
+      newFormat = (ele) => {
+        try {
+          newEle = parseFloat(ele.innerText.replace(",", "."));
+          if (isNaN(newEle)) {
+            newEle = false;
+            throw new Exception();
+          }
+        } catch {
+          if (debug.active) ele.setAttribute("style", "border: dashed red;");
+        }
+        return newEle;
+      };
+
+      if (newFormat(average)) averageTableLines[line.querySelector(".libellediscipline").innerText] = { average: newFormat(average), classAverage: newFormat(classAverage) };
+    }
+
+    return averageTableLines;
+  }
+
+  function Calculator(TableParent, averageTable) {
     log("GradeTable editing -> [ Starting ]");
 
     // Verifie la pressence du tableau
@@ -280,6 +339,12 @@ function noteTableAnalysis(options) {
     }
     gradeTable = TableParent.querySelector("table");
     log(" > Table -> [ Find ]");
+
+    if (averageTable) {
+      //gradeTable.after(averageTable);
+      //averageTable.classList.add("hidden");
+      averageTableInfos = averageTableAnalysis(averageTable);
+    }
 
     // Met a jour le design
     gradeTable.classList.add("newTable");
@@ -329,21 +394,22 @@ function noteTableAnalysis(options) {
     // ### Analyse des notes et calcules des moyennes ###
     log(" > Grade analysis and Average calculation -> [ Starting ]");
 
-    TotalGradesAndCoef = [];
+    LinesGradesAndCoef = [];
 
-    AllGradeAndAverage = [];
+    Lines = [];
 
     // Recherche la configuration du tableau
     log(" > > Table configuration finding -> [ Starting ]");
     tableConfiguration = {
       discipline: [false, undefined],
       coef: [false, undefined],
+      moyenneclasse: [false, undefined],
       relevemoyenne: [false, undefined],
       notes: [false, undefined],
     };
 
     // Cherche l'index de chaque colones
-    function tableGetIndex() {
+    tableGetIndex = () => {
       [...gradeTable.tHead.rows[0].cells].forEach((cell, index) => {
         if (cell.classList.contains("discipline")) {
           log(" > > > Column {discipline} -> [ Found ]");
@@ -354,6 +420,11 @@ function noteTableAnalysis(options) {
           log(" > > > Column {coef} -> [ Found ]");
           tableConfiguration["coef"][0] = index;
           if (tableConfiguration["coef"][1] == undefined) tableConfiguration["coef"][1] = true;
+        }
+        if (cell.classList.contains("moyenneclasse")) {
+          log(" > > > Column {moyenneclasse} -> [ Found ]");
+          tableConfiguration["moyenneclasse"][0] = index;
+          if (tableConfiguration["moyenneclasse"][1] == undefined) tableConfiguration["moyenneclasse"][1] = true;
         }
         if (cell.classList.contains("relevemoyenne")) {
           log(" > > > Column {relevemoyenne} -> [ Found ]");
@@ -366,7 +437,7 @@ function noteTableAnalysis(options) {
           if (tableConfiguration["notes"][1] == undefined) tableConfiguration["notes"][1] = true;
         }
       });
-    }
+    };
     tableGetIndex();
 
     if (tableConfiguration["coef"][1] == undefined && options["AveragesPerSubjectDisplay"]) {
@@ -378,9 +449,19 @@ function noteTableAnalysis(options) {
       tableGetIndex();
     }
 
+    if (options["ClassAveragesDisplay"]) {
+      log(" > > > Column {moyenneclasse} -> [ Genere ] -> [ Reload module ]");
+      moyenneclasseTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
+      moyenneclasseTitleRow.outerHTML = `<th class="moyenneclasse ng-star-inserted">Classe</th>`;
+      if (options["generalAverageDisplay"]) averageDiv.colSpan += 1;
+      tableConfiguration["moyenneclasse"][1] = false;
+      tableGetIndex();
+    }
+
     if (tableConfiguration["relevemoyenne"][1] == undefined && options["AveragesPerSubjectDisplay"]) {
       log(" > > > Column {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
-      relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
+      if (options["ClassAveragesDisplay"]) relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["moyenneclasse"][0] + 1);
+      else relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
       relevemoyenneTitleRow.outerHTML = `<th class="relevemoyenne ng-star-inserted">Moyennes</th>`;
       if (options["generalAverageDisplay"]) averageDiv.colSpan += 1;
       tableConfiguration["relevemoyenne"][1] = false;
@@ -391,7 +472,7 @@ function noteTableAnalysis(options) {
     log(" > > Table configuration Analysis -> [ Starting ]");
     for (item in tableConfiguration) {
       log(` > > > Column {${item}} -> [ ${tableConfiguration[item][1] === true ? "Here" : "⚠️ Not Here"} ]`);
-      tableConfiguration[item][0] ? undefined : (tableConfiguration[item] = false);
+      tableConfiguration[item][0] !== false ? undefined : (tableConfiguration[item] = false);
     }
 
     // Verifie la pressence de la colonne des notes
@@ -411,11 +492,25 @@ function noteTableAnalysis(options) {
         continue;
       }
 
+      lineTitle = line.cells[tableConfiguration["discipline"][0]].querySelector(".nommatiere") ? line.cells[tableConfiguration["discipline"][0]].querySelector(".nommatiere").innerText : false;
+
       if (tableConfiguration["coef"][1] == false && options["AveragesPerSubjectDisplay"]) {
         log(" > > > Line Element {coef} -> [ ⚠️ Non-existent ] -> [ Genere ]");
         coefTitleCell = line.insertCell(tableConfiguration["coef"][0]);
         coefTitleCell.innerHTML = `<span class="ng-star-inserted">1</span>`;
         coefTitleCell.classList.add("coef", "ng-star-inserted");
+      }
+
+      if (tableConfiguration["moyenneclasse"][1] == false && options["AveragesPerSubjectDisplay"]) {
+        log(" > > > Line Element {moyenneclasse} -> [ Genere ]");
+        moyenneclasseTitleCell = line.insertCell(tableConfiguration["moyenneclasse"][0]);
+        moyenneclasseTitleCell.classList.add("moyenneclasse", "ng-star-inserted");
+        moyenneclasseSpan = document.createElement("span");
+        moyenneclasseSpan.classList.add("ng-star-inserted");
+        moyenneclasseTitleCell.appendChild(moyenneclasseSpan);
+        if (typeof averageTableInfos !== "undefined" && averageTableInfos[lineTitle] && averageTableInfos[lineTitle].classAverage) {
+          moyenneclasseSpan.innerHTML = hundredthRound(averageTableInfos[lineTitle].classAverage);
+        }
       }
 
       if (tableConfiguration["relevemoyenne"][1] == false && options["AveragesPerSubjectDisplay"]) {
@@ -426,13 +521,20 @@ function noteTableAnalysis(options) {
 
       // Si il y au moins une note ou si la matiere contient des sous-matiere
       lineProperties = {
-        Length: line.cells[tableConfiguration["notes"][0]].childNodes.length > 1,
+        this: line,
+        title: lineTitle,
+        HasNotes: line.cells[tableConfiguration["notes"][0]].childNodes.length > 1,
         IsMaster: line.classList.contains("master"),
         IsSecondary: line.classList.contains("secondary"),
         IsSecondaryButNotlast: line.classList.contains("secondarynotlast"),
+        notes: [],
+        average: false,
+        averageSpan: false,
+        coef: false,
+        GradesAndCoef: [],
       };
 
-      if (!(lineProperties["Length"] || lineProperties["IsMaster"] || lineProperties["IsSecondary"])) {
+      if (!(lineProperties["HasNotes"] || lineProperties["IsMaster"] || lineProperties["IsSecondary"])) {
         log(" > > > This line does not contain any notes and is neither Master ou Secondary -> [⚠️]");
         continue;
       }
@@ -475,36 +577,29 @@ function noteTableAnalysis(options) {
       }
 
       // Trouve l'affichage du coef
-      LineCoef = 1;
+      lineProperties.coef = 1;
       if (tableConfiguration["coef"] && (coefColumn = tableConfiguration["coef"][0])) {
         if ((coefSpan = line.cells[coefColumn].querySelector("span"))) {
           if (debug.active) coefSpan.setAttribute("style", "border: solid orange;");
-          LineCoef = parseFloat(coefSpan.innerText);
+          lineProperties.coef = parseFloat(coefSpan.innerText);
         }
       }
 
       // Dans le cas de ligne de type "Master"
       if (lineProperties["IsMaster"]) {
         log(` > > > New Master line Analysis -> [ Starting ]`);
-        masterLineAverageSpan = averageSpan;
-        masterLineCoef = LineCoef;
-        masterLineGradesAndCoef = [];
+        masterLineProperties = lineProperties;
+        masterLineProperties.averageSpan = averageSpan;
+        masterLineProperties.coef = lineProperties.coef;
+        masterLineProperties.GradesAndCoef = [];
         continue;
       }
       // Dans le cas des autres types
 
       log(` > > > New line Analysis -> [ Starting ]`);
 
-      LineAllGradeAndAverage = {
-        notes: [],
-        average: false,
-        averageSpan: averageSpan,
-        coef: LineCoef,
-        secondary: lineProperties["IsSecondary"],
-        master: lineProperties["IsMaster"],
-      };
-
-      LineGradesAndCoef = [];
+      lineProperties.averageSpan = averageSpan;
+      lineProperties.coef = lineProperties.coef;
 
       // Pour chaque notes
       for (notes of line.cells[tableConfiguration["notes"][0]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
@@ -547,77 +642,67 @@ function noteTableAnalysis(options) {
         log(` > > > > New Note {${note}} with coef {${coef}} -> [ Added ] `);
 
         // Ajout des notes et coefs pour la ligne
-        LineGradesAndCoef.push([note, coef]);
-        LineAllGradeAndAverage["notes"].push([note, coef, notes]);
+        lineProperties.GradesAndCoef.push([note, coef]);
+        lineProperties["notes"].push([note, coef, notes]);
       }
 
-      if (!(LineGradesAndCoef.length > 0)) {
+      if (!(lineProperties.GradesAndCoef.length > 0)) {
         log(` > > > > No note in this line -> [⚠️]`);
         if (!lineProperties["IsSecondaryButNotlast"] && lineProperties["IsSecondary"]) {
-          if (!masterLineGradesAndCoef.length) continue;
+          if (!masterLineProperties.GradesAndCoef.length) continue;
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
-          masterLineAverage = moyennePondere(masterLineGradesAndCoef);
-          TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
-          if (masterLineAverageSpan) {
-            masterLineAverageSpan.innerText = hundredthRound(masterLineAverage);
-            AllGradeAndAverage.push({
-              average: masterLineAverage,
-              averageSpan: masterLineAverageSpan,
-              coef: masterLineCoef,
-              secondary: false,
-              master: true,
-            });
+          masterLineProperties.average = moyennePondere(masterLineProperties.GradesAndCoef);
+          masterLineProperties.GradesAndCoef.push([masterLineProperties.average, masterLineProperties.coef]);
+          if (masterLineProperties.averageSpan) {
+            masterLineProperties.averageSpan.innerText = hundredthRound(masterLineProperties.average);
+            Lines.push(masterLineProperties);
           }
-          log(` > > > > Master line average {${masterLineAverage}} with coef {${masterLineCoef}}`);
+          log(` > > > > Master line average {${masterLineProperties.average}} with coef {${masterLineProperties.coef}}`);
         }
         continue;
       }
 
       // Calcule de la moyenne de la ligne
-      LineAverage = moyennePondere(LineGradesAndCoef);
-      LineAllGradeAndAverage["average"] = LineAverage;
-      AllGradeAndAverage.push(LineAllGradeAndAverage);
+      lineProperties.average = moyennePondere(lineProperties.GradesAndCoef);
+      if (!options["AveragesPerSubjectRecalculation"] && typeof averageTableInfos !== "undefined" && averageTableInfos[lineTitle] && averageTableInfos[lineTitle].average) {
+        lineProperties.average = averageTableInfos[lineTitle].average;
+      }
+      Lines.push(lineProperties);
 
       // Affiche la nouvelle moyenne de la ligne
       if (tableConfiguration["relevemoyenne"][0]) {
         if (debug.active && !lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid blue;");
         if (debug.active && lineProperties["IsSecondary"]) averageSpan.setAttribute("style", "border: solid red;");
-        if (averageSpan) averageSpan.innerText = hundredthRound(LineAverage);
+        if (averageSpan) averageSpan.innerText = hundredthRound(lineProperties.average);
       }
 
       if (lineProperties["IsSecondary"]) {
         // Ajout des notes et coefs pour la ligne Master
-        masterLineGradesAndCoef.push([LineAverage, LineCoef]);
-        log(` > > > > Secondary line average {${LineAverage}} with coef {${LineCoef}}`);
+        masterLineProperties.GradesAndCoef.push([lineProperties.average, lineProperties.coef]);
+        log(` > > > > Secondary line average {${lineProperties.average}} with coef {${lineProperties.coef}}`);
 
         if (!lineProperties["IsSecondaryButNotlast"]) {
-          if (!masterLineGradesAndCoef.length) continue;
+          if (!masterLineProperties.GradesAndCoef.length) continue;
           // Si c'est la derniere ligne secondaire, calcule la somme de la principale
-          masterLineAverage = moyennePondere(masterLineGradesAndCoef);
-          TotalGradesAndCoef.push([masterLineAverage, masterLineCoef]);
-          if (masterLineAverageSpan) {
-            masterLineAverageSpan.innerText = hundredthRound(masterLineAverage);
-            AllGradeAndAverage.push({
-              average: masterLineAverage,
-              averageSpan: masterLineAverageSpan,
-              coef: masterLineCoef,
-              secondary: false,
-              master: true,
-            });
+          masterLineProperties.average = moyennePondere(masterLineProperties.GradesAndCoef);
+          LinesGradesAndCoef.push([masterLineProperties.average, masterLineProperties.coef]);
+          if (masterLineProperties.averageSpan) {
+            masterLineProperties.averageSpan.innerText = hundredthRound(masterLineProperties.average);
+            Lines.push(masterLineProperties);
           }
-          log(` > > > > Master line average {${masterLineAverage}} with coef {${masterLineCoef}}`);
+          log(` > > > > Master line average {${masterLineProperties.average}} with coef {${masterLineProperties.coef}}`);
         }
       }
 
-      if (!lineProperties["IsSecondary"] && lineProperties["Length"]) {
+      if (!lineProperties["IsSecondary"] && lineProperties["HasNotes"]) {
         // Ajout des notes et coefs pour la moyenne générale
-        TotalGradesAndCoef.push([LineAverage, LineCoef]);
-        log(` > > > > Line average {${LineAverage}} with coef {${LineCoef}}`);
+        LinesGradesAndCoef.push([lineProperties.average, lineProperties.coef]);
+        log(` > > > > Line average {${lineProperties.average}} with coef {${lineProperties.coef}}`);
       }
     }
 
     // Calcule la moyenne
-    FinalAverage = moyennePondere(TotalGradesAndCoef);
+    FinalAverage = moyennePondere(LinesGradesAndCoef);
 
     if (isNaN(FinalAverage)) {
       log(`Moyenne générale non valide -> [🛑]`);
@@ -633,17 +718,17 @@ function noteTableAnalysis(options) {
     if (!tippyState) return;
 
     // Calcule la somme des coef des matières
-    AllGradeAndAverage_SommeCoef = AllGradeAndAverage.reduce((total, item) => (item.secondary ? total : total + item.coef), 0);
-    log(` > Total Coef {${AllGradeAndAverage_SommeCoef}} -> [ Defined ]`);
+    Lines_SommeCoef = Lines.reduce((total, item) => (item.IsSecondary ? total : total + item.coef), 0);
+    log(` > Total Coef {${Lines_SommeCoef}} -> [ Defined ]`);
 
     // Pour chaque ligne du tableau
     log(` > List of All Grade And Average Analysis -> [ Starting ]`);
-    for (line of AllGradeAndAverage) {
+    for (line of Lines) {
       log(` > > New Line Analysis -> [ Starting ]`);
       // Si elle n'est pas secondaire
-      if (line.secondary) continue;
+      if (line.IsSecondary) continue;
       // Calcule sont influence
-      LineInfluence = (line.coef * (line.average - FinalAverage)) / (AllGradeAndAverage_SommeCoef - line.coef);
+      LineInfluence = (line.coef * (line.average - FinalAverage)) / (Lines_SommeCoef - line.coef);
       log(` > > > Line Influence {${LineInfluence}} -> [ Defined ]`);
       // Si un span existe
       if (line.averageSpan) {

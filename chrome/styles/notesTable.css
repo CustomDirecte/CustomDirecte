@@ -32,6 +32,14 @@ table.newTable td.moyennegeneralelibelle {
   border-left: 2px solid #e2e1e1;
 }
 
+table.newTable.hidden {
+  display: none;
+}
+
+#encart-notes table .moyenneclasse {
+  width: 95px;
+}
+
 /* ▄▀█ █ █ █▀▀ █▀█ ▄▀█ █▀▀ █▀▀ */
 /* █▀█ ▀▄▀ ██▄ █▀▄ █▀█ █▄█ ██▄ */
 
