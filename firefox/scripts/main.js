@@ -245,8 +245,10 @@ function noteTableAnalysis(options) {
     tippy.src = browser.runtime.getURL("/scripts/tippy.js");
     document.head.appendChild(tippy);
     tippyState = true;
+    log("Tippy -> [ Added ]");
   } catch {
     tippyState = false;
+    log("Tippy -> [ ⚠️ Can't be added ]");
   }
 
   // Fonction Arrondie
@@ -254,45 +256,75 @@ function noteTableAnalysis(options) {
     return parseFloat(x.toFixed(2)).toString().replace(".", ",");
   }
 
-  averageTable = false;
-
   // Detecte les changement du body et execute quand nécésaire 'Calculator()'
   log("BodyObserver -> [ Starting ]");
   const averageTableObserver = new MutationObserver(() => {
     let TableParent = document.getElementById("encart-notes");
     let periodeElement = document.getElementById("unePeriode");
 
-    // execute 'Calculator()' si le tableau actuellement affiché n'a pas déjà été modifié
-    if (periodeElement && TableParent && TableParent.dataset.averageCalculator != "true") {
-      averageTable = averageTable || false;
+    // Si le tableau des moyennes n'existe pas, le crée
+    if (typeof averageTable == "undefined") averageTable = false;
+    if (!averageTable) averageTable = false;
 
-      // si le tableau de moyenne n'a pas été cherché, le cherche
-      if (!periodeElement.dataset.averageFinded && (options["ClassAveragesDisplay"] || !options["AveragesPerSubjectRecalculation"])) {
+    // Cherche si le tableau des moyennes a été cherché
+    try {
+      averageTableSearch = periodeElement.dataset.averageTableSearch;
+      if (!averageTableSearch) averageTableSearch = false;
+    } catch (error) {
+      averageTableSearch = true;
+    }
+
+    // Si le tableau des moyennes n'a pas encore été cherché
+    if (TableParent && periodeElement && !averageTableSearch) {
+      periodeElement.dataset.averageTableSearch = averageTableSearch = true;
+      // Cherche le tableau des moyennes
+      try {
+        log(" > averageTable conditions analysis  -> [ Starting ]");
         activeTab = periodeElement.querySelector("li.active > a");
-
         tabs = periodeElement.querySelectorAll("[role=tab]");
+        averageTableFound = periodeElement.dataset.averageTableFound;
 
-        for (let i = 0; i < tabs.length; i++) {
-          const element = tabs[i];
+        // Si les conditions de recherche sont valides
+        if (tabs && !averageTableFound && activeTab) {
+          log(" > > averageTable search conditions -> [ Valid ]");
+          // Pour chaque onglet
+          try {
+            for (let i = 0; i < tabs.length; i++) {
+              // Si l'onglet est l'onglet actif, le saute
+              const element = tabs[i];
+              if (element === activeTab) continue;
 
-          if (element === activeTab) continue;
+              element.click();
 
-          element.click();
+              if (!document.getElementById("encart-moyennes")) continue;
 
-          if (document.getElementById("encart-moyennes").querySelector("table")) {
-            averageTable = document.getElementById("encart-moyennes").querySelector("table").cloneNode(true);
-            break;
+              // Si le tableau des moyennes est trouvé
+              if (document.getElementById("encart-moyennes").querySelector("table")) {
+                log(" > > averageTable -> [ Found ]");
+                averageTable = document.getElementById("encart-moyennes").querySelector("table").cloneNode(true);
+                periodeElement.dataset.averageTableFound = true;
+                break;
+              }
+            }
+          } catch (error) {
+            log(" > > averageTable -> [ ⚠️ Error ]");
           }
+          if (!averageTable) log(" > > averageTable -> [ ⚠️ Non-existent ]");
+
+          activeTab.click();
+          return;
         }
-        periodeElement.dataset.averageFinded = averageTable ? true : false;
-
-        activeTab.click();
-        return;
+      } catch (error) {
+        log(" > > averageTable -> [ ⚠️ Impossible to find ]");
       }
+    }
 
+    // execute 'Calculator()' si le tableau actuellement affiché n'a pas déjà été modifié
+    if (TableParent && TableParent.dataset.averageCalculator != "true") {
       log("New gradeTable not calculated -> [ Found ]");
+
       TableParent.dataset.averageCalculator = true;
-      Calculator(TableParent, averageTable);
+      Calculator(TableParent, averageTableAnalysis(averageTable));
     }
   });
   averageTableObserver.observe(document.body, {
@@ -301,36 +333,57 @@ function noteTableAnalysis(options) {
   });
 
   function averageTableAnalysis(averageTable) {
-    averageTable.classList.add("newTable");
+    if (!averageTable) return false;
+    log("AverageTable analysis -> [ Starting ]");
 
     averageTableLines = {};
 
-    for (line of averageTable.tBodies[0].rows) {
-      if (!line.querySelector(".libellediscipline").innerText) continue;
-      average = line.querySelector(".moyenneeleve") ? line.querySelector(".moyenneeleve") : false;
-      classAverage = line.querySelector(".moyenneclasse") ? line.querySelector(".moyenneclasse") : false;
+    try {
+      for (line of averageTable.tBodies[0].rows) {
+        if (!line.querySelector(".libellediscipline").innerText) continue;
+        if (line.querySelector(".libellediscipline").innerText == "") continue;
 
-      newFormat = (ele) => {
-        try {
-          newEle = parseFloat(ele.innerText.replace(",", "."));
-          if (isNaN(newEle)) {
-            newEle = false;
-            throw new Exception();
+        newFormat = (ele) => {
+          try {
+            newEle = parseFloat(ele.innerText.replace(",", "."));
+            if (isNaN(newEle) || typeof newEle !== "number") {
+              throw new Exception();
+            }
+            return newEle;
+          } catch {
+            try {
+              if (debug.active) ele.setAttribute("style", "border: dashed red;");
+            } catch {}
+            return false;
           }
-        } catch {
-          if (debug.active) ele.setAttribute("style", "border: dashed red;");
-        }
-        return newEle;
-      };
+        };
 
-      if (newFormat(average)) averageTableLines[line.querySelector(".libellediscipline").innerText] = { average: newFormat(average), classAverage: newFormat(classAverage) };
+        average = line.querySelector(".moyenneeleve") ? newFormat(line.querySelector(".moyenneeleve")) : false;
+        classAverage = line.querySelector(".moyenneclasse") ? newFormat(line.querySelector(".moyenneclasse")) : false;
+
+        if (!average) continue;
+
+        averageTableLines[line.querySelector(".libellediscipline").innerText] = { average: average, classAverage: classAverage };
+      }
+    } catch (error) {
+      log(" > AverageTable analysis -> [ ⚠️ Error ]");
+      return false;
     }
 
+    log(" > AverageTable analysis -> [ Finish ]");
+    if (averageTableLines == {}) return false;
     return averageTableLines;
   }
 
-  function Calculator(TableParent, averageTable) {
+  function Calculator(TableParent, averageTableInfos) {
     log("GradeTable editing -> [ Starting ]");
+
+    if (averageTableInfos) {
+      const classAverages = Object.values(averageTableInfos).map((info) => info.classAverage);
+      if (classAverages.every((average) => !average)) {
+        options["ClassAveragesDisplay2"] = false;
+      }
+    }
 
     // Verifie la pressence du tableau
     if (!TableParent.querySelector("table")) {
@@ -339,12 +392,6 @@ function noteTableAnalysis(options) {
     }
     gradeTable = TableParent.querySelector("table");
     log(" > Table -> [ Find ]");
-
-    if (averageTable) {
-      //gradeTable.after(averageTable);
-      //averageTable.classList.add("hidden");
-      averageTableInfos = averageTableAnalysis(averageTable);
-    }
 
     // Met a jour le design
     gradeTable.classList.add("newTable");
@@ -449,7 +496,7 @@ function noteTableAnalysis(options) {
       tableGetIndex();
     }
 
-    if (options["ClassAveragesDisplay"]) {
+    if (options["ClassAveragesDisplay2"] && averageTableInfos) {
       log(" > > > Column {moyenneclasse} -> [ Genere ] -> [ Reload module ]");
       moyenneclasseTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
       moyenneclasseTitleRow.outerHTML = `<th class="moyenneclasse ng-star-inserted">Classe</th>`;
@@ -460,7 +507,7 @@ function noteTableAnalysis(options) {
 
     if (tableConfiguration["relevemoyenne"][1] == undefined && options["AveragesPerSubjectDisplay"]) {
       log(" > > > Column {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ] -> [ Reload module ]");
-      if (options["ClassAveragesDisplay"]) relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["moyenneclasse"][0] + 1);
+      if (options["ClassAveragesDisplay2"] && averageTableInfos) relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["moyenneclasse"][0] + 1);
       else relevemoyenneTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
       relevemoyenneTitleRow.outerHTML = `<th class="relevemoyenne ng-star-inserted">Moyennes</th>`;
       if (options["generalAverageDisplay"]) averageDiv.colSpan += 1;
@@ -501,15 +548,15 @@ function noteTableAnalysis(options) {
         coefTitleCell.classList.add("coef", "ng-star-inserted");
       }
 
-      if (tableConfiguration["moyenneclasse"][1] == false && options["AveragesPerSubjectDisplay"]) {
+      if (tableConfiguration["moyenneclasse"][1] == false && options["ClassAveragesDisplay2"] && averageTableInfos) {
         log(" > > > Line Element {moyenneclasse} -> [ Genere ]");
         moyenneclasseTitleCell = line.insertCell(tableConfiguration["moyenneclasse"][0]);
         moyenneclasseTitleCell.classList.add("moyenneclasse", "ng-star-inserted");
         moyenneclasseSpan = document.createElement("span");
         moyenneclasseSpan.classList.add("ng-star-inserted");
         moyenneclasseTitleCell.appendChild(moyenneclasseSpan);
-        if (typeof averageTableInfos !== "undefined" && averageTableInfos[lineTitle] && averageTableInfos[lineTitle].classAverage) {
-          moyenneclasseSpan.innerHTML = hundredthRound(averageTableInfos[lineTitle].classAverage);
+        if (averageTableInfos && averageTableInfos[lineTitle]) {
+          if (averageTableInfos[lineTitle].classAverage) moyenneclasseSpan.innerHTML = hundredthRound(averageTableInfos[lineTitle].classAverage);
         }
       }
 
@@ -664,8 +711,8 @@ function noteTableAnalysis(options) {
 
       // Calcule de la moyenne de la ligne
       lineProperties.average = moyennePondere(lineProperties.GradesAndCoef);
-      if (!options["AveragesPerSubjectRecalculation"] && typeof averageTableInfos !== "undefined" && averageTableInfos[lineTitle] && averageTableInfos[lineTitle].average) {
-        lineProperties.average = averageTableInfos[lineTitle].average;
+      if (!options["AveragesPerSubjectRecalculation"] && averageTableInfos && averageTableInfos[lineTitle]) {
+        if (averageTableInfos[lineTitle].average) lineProperties.average = averageTableInfos[lineTitle].average;
       }
       Lines.push(lineProperties);
 
