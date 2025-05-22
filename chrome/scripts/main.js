@@ -1,3 +1,5 @@
+console.log("MAIN.JS");
+
 /* ----------------- Console Log ----------------- */
 const logStyle = {
   title: "font-size: 20px; color:#C8194A; font-weight: bold;",
@@ -119,7 +121,7 @@ browserStorageOnChanged.addListener((changes) => {
       option[item.option] = item.Value === null ? item.Default : item.Value;
     });
     return option;
-  }
+  } 
 
   const differences = [];
 

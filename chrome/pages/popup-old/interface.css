@@ -1,0 +1,1821 @@
+/*  ██████╗  ██╗       ██████╗  ██████╗   █████╗  ██╗      */
+/* ██╔════╝  ██║      ██╔═══██╗ ██╔══██╗ ██╔══██╗ ██║      */
+/* ██║  ███╗ ██║      ██║   ██║ ██████╔╝ ███████║ ██║      */
+/* ██║   ██║ ██║      ██║   ██║ ██╔══██╗ ██╔══██║ ██║      */
+/* ╚██████╔╝ ███████╗ ╚██████╔╝ ██████╔╝ ██║  ██║ ███████╗ */
+/*  ╚═════╝  ╚══════╝  ╚═════╝  ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ */
+
+/* █▀▀ █▀█ █▄ █ ▀█▀ */
+/* █▀  █▄█ █ ▀█  █  */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Leckerli+One:ital,wght@0,400&display=swap");
+@import url("https://fonts.cdnfonts.com/css/comic-sans");
+@import url("https://fonts.cdnfonts.com/css/opendyslexic");
+
+/* █▀▀ █   █▀█ █▄▄ ▄▀█ █   */
+/* █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄ */
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  overflow: hidden;
+  text-align: center;
+}
+
+/* █▀▀ █▀█ █   █▀█ █▀█ */
+/* █▄▄ █▄█ █▄▄ █▄█ █▀▄ */
+
+:root {
+  --font-tahoma: Tahoma, sans-serif;
+  --font-poppin: Poppin, sans-serif;
+  --font-openSans: Open Sans, sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-inter: Inter, sans-serif;
+  --font-merriweather: Merriweather, serif;
+  --font-leckerliOne: Leckerli One, cursive;
+  --font-comicSans: comic sans;
+  --font-openDyslexic: "OpenDyslexic", sans-serif;
+}
+
+:root {
+  --background: #e7e7e7;
+  --white: #fff;
+  --black: #000;
+  --gray-light: #e6e6e6;
+  --gray: #515151;
+  --gray-transparent: #51515144;
+  --transparent: #00000000;
+
+  --background-light: #2e3359;
+  --background-medium: #262a49;
+  --background-dark: #212441;
+
+  --primary-white-transparent: #faeaec;
+  --primary-white: #e4c5ca;
+  --primary-light: #c8194a;
+  --primary-medium: #a3133c;
+  --primary-dark: #7f0f2f;
+}
+
+[darkmode="true"]:root {
+  --background: rgb(24 26 27);
+  --white: #1d2021;
+  --black: #000;
+  --gray-light: #232728;
+  --gray: #b5b5b5;
+  --gray-transparent: #51515144;
+  --transparent: #00000000;
+
+  --background-light: #2e3359;
+  --background-medium: #262a49;
+  --background-dark: #ffffff;
+
+  --primary-white-transparent: #faeaec;
+  --primary-white: #e4c5ca;
+  --primary-light: #c8194a;
+  --primary-medium: #a3133c;
+  --primary-dark: #7f0f2f;
+}
+
+/* ███████╗  ██████╗   ██████╗  ███╗   ███╗ */
+/* ╚══███╔╝ ██╔═══██╗ ██╔═══██╗ ████╗ ████║ */
+/*   ███╔╝  ██║   ██║ ██║   ██║ ██╔████╔██║ */
+/*  ███╔╝   ██║   ██║ ██║   ██║ ██║╚██╔╝██║ */
+/* ███████╗ ╚██████╔╝ ╚██████╔╝ ██║ ╚═╝ ██║ */
+/* ╚══════╝  ╚═════╝   ╚═════╝  ╚═╝     ╚═╝ */
+
+/* ▀█ █▀█ █▀█ █▀▄▀█ */
+/* █▄ █▄█ █▄█ █ ▀ █ */
+
+* {
+  --zoom: 1;
+  --vh: calc(100vh * (1 / var(--zoom)));
+  --vw: calc(100vw * (1 / var(--zoom)));
+}
+
+html {
+  color: var(--background-dark);
+  transform: scale(var(--zoom));
+  transform-origin: top left;
+  -moz-transform: scale(var(--zoom));
+  -moz-transform-origin: top left;
+}
+
+/* █▀ █ ▀█ █▀▀ */
+/* ▄█ █ █▄ ██▄ */
+
+@media (width <=800px) {
+  * {
+    --zoom: 0.5;
+  }
+}
+
+@media (800px < width <=950px) {
+  * {
+    --zoom: 0.6;
+  }
+}
+
+@media (950px < width <=1090px) {
+  * {
+    --zoom: 0.7;
+  }
+}
+
+@media (1090px < width <=1220px) {
+  * {
+    --zoom: 0.8;
+  }
+}
+
+@media (1220px < width <=1350px) {
+  * {
+    --zoom: 0.9;
+  }
+}
+
+/* ██╗  ██╗ ███████╗  █████╗  ██████╗  ███████╗ ██████╗       */
+/* ██║  ██║ ██╔════╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔══██╗      */
+/* ███████║ █████╗   ███████║ ██║  ██║ █████╗   ██████╔╝      */
+/* ██╔══██║ ██╔══╝   ██╔══██║ ██║  ██║ ██╔══╝   ██╔══██╗      */
+/* ██║  ██║ ███████╗ ██║  ██║ ██████╔╝ ███████╗ ██║  ██║      */
+/* ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝ ╚═════╝  ╚══════╝ ╚═╝  ╚═╝      */
+
+/* █ █ █▀▀ ▄▀█ █▀▄ █▀▀ █▀█   */
+/* █▀█ ██▄ █▀█ █▄▀ ██▄ █▀▄   */
+
+header {
+  bottom: 0;
+  margin: 10px 20px 10px 20px;
+  height: 50px;
+  width: calc(var(--vw) - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#titleparent {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* █ █▀▀ █▀█ █▄ █ */
+/* █ █▄▄ █▄█ █ ▀█ */
+
+.icon {
+  height: 50px;
+  width: 50px;
+}
+
+/* ▀█▀ █ ▀█▀ █   █▀▀ */
+/*  █  █  █  █▄▄ ██▄ */
+
+#title {
+  margin: 0 15px;
+}
+
+#title > p {
+  color: var(--background-dark);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+/* █ █ █▀▀ █▀█ █▀ █ █▀█ █▄ █ */
+/* ▀▄▀ ██▄ █▀▄ ▄█ █ █▄█ █ ▀█ */
+
+.version-div {
+  height: 40px;
+  border-radius: 999px;
+  background: var(--background-dark);
+}
+
+#version {
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 500;
+  padding: 4px 14px;
+}
+
+/* ███╗   ███╗  █████╗  ██╗ ███╗   ██╗ */
+/* ████╗ ████║ ██╔══██╗ ██║ ████╗  ██║ */
+/* ██╔████╔██║ ███████║ ██║ ██╔██╗ ██║ */
+/* ██║╚██╔╝██║ ██╔══██║ ██║ ██║╚██╗██║ */
+/* ██║ ╚═╝ ██║ ██║  ██║ ██║ ██║ ╚████║ */
+/* ╚═╝     ╚═╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝  ╚═══╝ */
+
+/* █▀▄▀█ ▄▀█ █ █▄ █ */
+/* █ ▀ █ █▀█ █ █ ▀█ */
+
+main {
+  bottom: 0;
+  margin: 0 20px 20px 20px;
+  height: calc(var(--vh) - 90px);
+  width: calc(var(--vw) - 40px);
+  border-radius: 18px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* █▀ █▀▀ █▀█ ▄▀█ █▀█ ▄▀█ ▀█▀ █▀█ █▀█ */
+/* ▄█ ██▄ █▀▀ █▀█ █▀▄ █▀█  █  █▄█ █▀▄ */
+
+.separator {
+  border: 0;
+  border-radius: 999px;
+  background: var(--gray-light);
+  width: 100%;
+  height: 2px;
+}
+
+.separator.vertical {
+  width: 2px;
+  height: 90%;
+  margin: 0 20px;
+}
+
+/* █▀▀ █▀█ █▀█ █ █ █▀█ █▀ */
+/* █▄█ █▀▄ █▄█ █▄█ █▀▀ ▄█ */
+
+.groups {
+  height: 90%;
+  width: 300px;
+}
+
+/* █▀▀ █▀█ █▀█ █ █ █▀█ */
+/* █▄█ █▀▄ █▄█ █▄█ █▀▀ */
+
+.group {
+  color: var(--gray);
+  text-align: left;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.2s ease-in;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 10px 30px;
+}
+
+.group:hover {
+  background: var(--primary-white-transparent);
+}
+
+.group[selected] {
+  background: var(--primary-white);
+  color: var(--primary-medium);
+}
+
+.group.close {
+  color: red;
+}
+
+/* █▀▀ █▀█ █▀█ █ █ █▀█   ▀   █ █▄ █ █▀▀ █▀█ */
+/* █▄█ █▀▄ █▄█ █▄█ █▀▀   ▄   █ █ ▀█ █▀  █▄█ */
+
+.groupInfo {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 25px;
+}
+
+.groupTitle {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--background-dark);
+}
+
+.groupSubtitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--gray);
+}
+
+/*  ██████╗  ██████╗  ████████╗ ██╗  ██████╗  ███╗   ██╗ ███████╗ */
+/* ██╔═══██╗ ██╔══██╗ ╚══██╔══╝ ██║ ██╔═══██╗ ████╗  ██║ ██╔════╝ */
+/* ██║   ██║ ██████╔╝    ██║    ██║ ██║   ██║ ██╔██╗ ██║ ███████╗ */
+/* ██║   ██║ ██╔═══╝     ██║    ██║ ██║   ██║ ██║╚██╗██║ ╚════██║ */
+/* ╚██████╔╝ ██║         ██║    ██║ ╚██████╔╝ ██║ ╚████║ ███████║ */
+/*  ╚═════╝  ╚═╝         ╚═╝    ╚═╝  ╚═════╝  ╚═╝  ╚═══╝ ╚══════╝ */
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █ █▀ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█ ▄█ */
+
+.options {
+  display: block;
+  overflow-y: scroll;
+  visibility: visible;
+  opacity: 1;
+  height: 90%;
+  width: calc(100% - (300px + 42px + 40px + 20px));
+  padding-right: 20px;
+  transition: visibility 0s, opacity 0.8s;
+}
+
+.options[hide] {
+  visibility: hidden;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █ █▀   ▀   █▀ █▀▀ █▀█ █▀█ █   █   █▄▄ ▄▀█ █▀█ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█ ▄█   ▄   ▄█ █▄▄ █▀▄ █▄█ █▄▄ █▄▄ █▄█ █▀█ █▀▄ */
+
+.options::-webkit-scrollbar {
+  width: 12px;
+}
+
+.options::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: var(--gray-light);
+}
+
+.options::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--background-dark);
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█ */
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  padding: 6px 0;
+  margin: 12px 0;
+}
+
+.optionSelectionParent {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.option,
+.option > * {
+  z-index: 1;
+}
+
+.option.showMe {
+  box-shadow: inset 0px 0px 0px 0px #00000000;
+  border-radius: 18px;
+  animation: borderShow 1600ms linear;
+}
+
+@keyframes borderShow {
+  0% {
+    box-shadow: inset 0px 0px 4px 3px var(--primary-dark);
+  }
+
+  100% {
+    box-shadow: inset 0px 0px 0px 0px #00000000;
+  }
+}
+
+.option.showMe::after {
+  position: absolute;
+  z-index: 0;
+  top: 0%;
+  left: 0%;
+  content: " ";
+  background: var(--primary-white);
+  border-radius: 18px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: optionShow 700ms ease-out 1;
+}
+
+@keyframes optionShow {
+  0% {
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    width: 0%;
+    height: 0%;
+    border-radius: 100px;
+  }
+
+  35% {
+    border-radius: 100px;
+    opacity: 1;
+  }
+
+  70% {
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █   ▀   █▀▄ █ █▀ ▄▀█ █▄▄ █   █▀▀ █▀▄ */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█   ▄   █▄▀ █ ▄█ █▀█ █▄█ █▄▄ ██▄ █▄▀ */
+
+.option[disabled] {
+  border: 3px solid var(--gray);
+  border-radius: 18px;
+}
+
+.option[disabled] > .optionInfo {
+  margin-left: 20px;
+}
+
+.option[disabled] > .optionSelection {
+  margin-left: 20px;
+}
+
+.option[disabled] > .optionSwitch {
+  margin-right: 10px;
+}
+
+.option[disabled]::before {
+  z-index: 2;
+  position: absolute;
+  content: " ";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='8 0 32 48' %3E%3Cpath fill='%23424242' d='M24,4c-5.5,0-10,4.5-10,10v4h4v-4c0-3.3,2.7-6,6-6s6,2.7,6,6v4h4v-4C34,8.5,29.5,4,24,4z'/%3E%3Cpath fill='%23FB8C00' d='M36,44H12c-2.2,0-4-1.8-4-4V22c0-2.2,1.8-4,4-4h24c2.2,0,4,1.8,4,4v18C40,42.2,38.2,44,36,44z'/%3E%3Cpath fill='%23C76E00' d='M24 28A3 3 0 1 0 24 34A3 3 0 1 0 24 28Z'/%3E%3C/svg%3E"),
+    linear-gradient(var(--gray-transparent), var(--gray-transparent));
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border-radius: 16px;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+/* █▀█ █▀█ ▀█▀ █ █▀█ █▄ █   ▀   █ █▄ █ █▀▀ █▀█   */
+/* █▄█ █▀▀  █  █ █▄█ █ ▀█   ▄   █ █ ▀█ █▀  █▄█   */
+
+.optionInfo {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.optionTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--background-dark);
+}
+
+.option[reloadingrequired] > .optionInfo > .optionTitle::before {
+  content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path style="fill: rgb(50,50,50);" d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"/></svg>');
+  padding-right: 6px;
+}
+
+.optionSubtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--gray);
+}
+
+.optionWarning {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--primary-light);
+}
+
+/* ████████╗ ██╗   ██╗ ██████╗  ███████╗ */
+/* ╚══██╔══╝ ╚██╗ ██╔╝ ██╔══██╗ ██╔════╝ */
+/*    ██║     ╚████╔╝  ██████╔╝ █████╗   */
+/*    ██║      ╚██╔╝   ██╔═══╝  ██╔══╝   */
+/*    ██║       ██║    ██║      ███████╗ */
+/*    ╚═╝       ╚═╝    ╚═╝      ╚══════╝ */
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀ █ █ █ █ ▀█▀ █▀▀ █ █ */
+/*  █   █  █▀▀ ██▄   ▄   ▄█ ▀▄▀▄▀ █  █  █▄▄ █▀█ */
+
+.optionSwitch {
+  background: var(--primary-dark);
+  width: 86px;
+  height: 45px;
+  border-radius: 999px;
+  position: relative;
+  margin-top: 6.5px;
+}
+
+.optionSwitch::before {
+  content: "";
+  position: absolute;
+  background: var(--white);
+  margin: 3.5px;
+  margin-left: -38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  transition: 1s;
+}
+
+.optionSwitch[active] {
+  background: var(--primary-light);
+}
+
+.optionSwitch[active]::before {
+  margin-left: 1px;
+}
+
+.option[disabled] > .optionSwitch {
+  background: var(--gray);
+}
+
+.option[disabled] > .optionSwitch::before {
+  background: var(--gray-light);
+}
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▄▄ █ █ ▀█▀ ▀█▀ █▀█ █▄ █ */
+/*  █   █  █▀▀ ██▄   ▄   █▄█ █▄█  █   █  █▄█ █ ▀█ */
+
+.optionButton {
+  background: var(--primary-dark);
+  width: 164px;
+  height: 45px;
+  border-radius: 999px;
+  position: relative;
+  margin-top: 6.5px;
+  transition: 0.1s;
+}
+
+.optionButton.content-download::before {
+  content: "Télécharger";
+}
+
+.optionButton::before {
+  padding: 5px 0;
+  color: var(--primary-dark);
+  font-size: 20px;
+  font-weight: 800;
+  content: "Cliquez";
+  position: absolute;
+  background: var(--white);
+  margin: 3.5px;
+  margin-left: calc(-50% + 3px);
+  width: calc(100% - 6px);
+  height: calc(100% - 17px);
+  border-radius: 999px;
+  transition: 0.1s;
+}
+
+.optionButton:hover {
+  background: var(--primary-light);
+}
+
+.optionButton:hover::before {
+  padding: 3.5px 0;
+  color: var(--primary-light);
+  margin: 5.5px;
+  margin-left: calc(-50% + 6px);
+  width: calc(100% - 12px);
+  height: calc(100% - 18px);
+}
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀ █▀▀ █   █▀▀ █▀▀ ▀█▀ █ █▀█ █▄ █ */
+/*  █   █  █▀▀ ██▄   ▄   ▄█ ██▄ █▄▄ ██▄ █▄▄  █  █ █▄█ █ ▀█ */
+
+.optionSelection {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.optionBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 24px;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+
+.optionBox[active] > img,
+.optionBox[active] > div {
+  border: 3px solid var(--primary-light);
+  border-radius: 18px;
+}
+
+.optionBox[active]::after {
+  position: absolute;
+  content: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' viewBox='0 0 20 20'><path stroke='%23fff' stroke-width='2' d='m4.707 9.293 5 5m-1.414 0 7-7'/></svg>");
+  background: var(--primary-light);
+  border-radius: 999px;
+  margin-right: var(--Xplacement);
+  margin-top: -3px;
+  width: 20px;
+  height: 20px;
+}
+
+/* ▀█▀ █▄█ █▀█ █▀▀   ▀   █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █▀ █▀▀ █   █▀▀ █▀▀ ▀█▀ █ █▀█ █▄ █ */
+/*  █   █  █▀▀ ██▄   ▄   █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ ▄█ ██▄ █▄▄ ██▄ █▄▄  █  █ █▄█ █ ▀█ */
+
+/* fontDemo */
+
+.fontDemo {
+  border-radius: 12px;
+  color: var(--black);
+  height: 50px;
+  width: 170px;
+  background-color: #f9f9f9;
+  border: solid 1px var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* cornerDemo */
+
+.cornerDemo {
+  color: var(--black);
+  height: 50px;
+  width: 170px;
+  background-color: #f9f9f9;
+  border-radius: 18px;
+  border: solid 1px var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/*  
+▀█▀ █▄█ █▀█ █▀▀   ▀   █▀▀ █▀█ █   █▀█ █▀█
+ █   █  █▀▀ ██▄   ▄   █▄▄ █▄█ █▄▄ █▄█ █▀▄
+*/
+
+.colorSlider {
+  appearance: none;
+  width: 400px;
+  height: 25px;
+  background: linear-gradient(
+    90deg,
+    hsl(0, 90%, 50%),
+    hsl(20, 90%, 50%),
+    hsl(40, 90%, 50%),
+    hsl(60, 90%, 50%),
+    hsl(80, 90%, 50%),
+    hsl(100, 90%, 50%),
+    hsl(120, 90%, 50%),
+    hsl(140, 90%, 50%),
+    hsl(160, 90%, 50%),
+    hsl(180, 90%, 50%),
+    hsl(200, 90%, 50%),
+    hsl(220, 90%, 50%),
+    hsl(240, 90%, 50%),
+    hsl(260, 90%, 50%),
+    hsl(280, 90%, 50%),
+    hsl(300, 90%, 50%),
+    hsl(320, 90%, 50%),
+    hsl(340, 90%, 50%),
+    hsl(360, 90%, 50%)
+  );
+  outline: none;
+  border-radius: 20px;
+}
+
+.colorSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 40px;
+  background: var(--gray);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.colorSimulation {
+  --colorSimulation-1: hsl(var(--color), 100%, 85%);
+  --colorSimulation-2: hsl(var(--color), 98%, 78%);
+  --colorSimulation-3: hsl(var(--color), 78%, 44%);
+  --colorSimulation-4: hsl(var(--color), 79%, 36%);
+  --colorSimulation-5: hsl(var(--color), 79%, 28%);
+  --colorSimulation-6: hsl(var(--color), 82%, 19%);
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  margin-left: 10px;
+}
+
+/*  
+█▀▀ █▀█ █   █▀█ █▀█   █▀▀ █▀█ █▀▄ █▀▀
+█▄▄ █▄█ █▄▄ █▄█ █▀▄   █▄▄ █▄█ █▄▀ ██▄
+*/
+
+[color="0"] > div {
+  --color: 0;
+}
+[color="1"] > div {
+  --color: 1;
+}
+[color="2"] > div {
+  --color: 2;
+}
+[color="3"] > div {
+  --color: 3;
+}
+[color="4"] > div {
+  --color: 4;
+}
+[color="5"] > div {
+  --color: 5;
+}
+[color="6"] > div {
+  --color: 6;
+}
+[color="7"] > div {
+  --color: 7;
+}
+[color="8"] > div {
+  --color: 8;
+}
+[color="9"] > div {
+  --color: 9;
+}
+[color="10"] > div {
+  --color: 10;
+}
+[color="11"] > div {
+  --color: 11;
+}
+[color="12"] > div {
+  --color: 12;
+}
+[color="13"] > div {
+  --color: 13;
+}
+[color="14"] > div {
+  --color: 14;
+}
+[color="15"] > div {
+  --color: 15;
+}
+[color="16"] > div {
+  --color: 16;
+}
+[color="17"] > div {
+  --color: 17;
+}
+[color="18"] > div {
+  --color: 18;
+}
+[color="19"] > div {
+  --color: 19;
+}
+[color="20"] > div {
+  --color: 20;
+}
+[color="21"] > div {
+  --color: 21;
+}
+[color="22"] > div {
+  --color: 22;
+}
+[color="23"] > div {
+  --color: 23;
+}
+[color="24"] > div {
+  --color: 24;
+}
+[color="25"] > div {
+  --color: 25;
+}
+[color="26"] > div {
+  --color: 26;
+}
+[color="27"] > div {
+  --color: 27;
+}
+[color="28"] > div {
+  --color: 28;
+}
+[color="29"] > div {
+  --color: 29;
+}
+[color="30"] > div {
+  --color: 30;
+}
+[color="31"] > div {
+  --color: 31;
+}
+[color="32"] > div {
+  --color: 32;
+}
+[color="33"] > div {
+  --color: 33;
+}
+[color="34"] > div {
+  --color: 34;
+}
+[color="35"] > div {
+  --color: 35;
+}
+[color="36"] > div {
+  --color: 36;
+}
+[color="37"] > div {
+  --color: 37;
+}
+[color="38"] > div {
+  --color: 38;
+}
+[color="39"] > div {
+  --color: 39;
+}
+[color="40"] > div {
+  --color: 40;
+}
+[color="41"] > div {
+  --color: 41;
+}
+[color="42"] > div {
+  --color: 42;
+}
+[color="43"] > div {
+  --color: 43;
+}
+[color="44"] > div {
+  --color: 44;
+}
+[color="45"] > div {
+  --color: 45;
+}
+[color="46"] > div {
+  --color: 46;
+}
+[color="47"] > div {
+  --color: 47;
+}
+[color="48"] > div {
+  --color: 48;
+}
+[color="49"] > div {
+  --color: 49;
+}
+[color="50"] > div {
+  --color: 50;
+}
+[color="51"] > div {
+  --color: 51;
+}
+[color="52"] > div {
+  --color: 52;
+}
+[color="53"] > div {
+  --color: 53;
+}
+[color="54"] > div {
+  --color: 54;
+}
+[color="55"] > div {
+  --color: 55;
+}
+[color="56"] > div {
+  --color: 56;
+}
+[color="57"] > div {
+  --color: 57;
+}
+[color="58"] > div {
+  --color: 58;
+}
+[color="59"] > div {
+  --color: 59;
+}
+[color="60"] > div {
+  --color: 60;
+}
+[color="61"] > div {
+  --color: 61;
+}
+[color="62"] > div {
+  --color: 62;
+}
+[color="63"] > div {
+  --color: 63;
+}
+[color="64"] > div {
+  --color: 64;
+}
+[color="65"] > div {
+  --color: 65;
+}
+[color="66"] > div {
+  --color: 66;
+}
+[color="67"] > div {
+  --color: 67;
+}
+[color="68"] > div {
+  --color: 68;
+}
+[color="69"] > div {
+  --color: 69;
+}
+[color="70"] > div {
+  --color: 70;
+}
+[color="71"] > div {
+  --color: 71;
+}
+[color="72"] > div {
+  --color: 72;
+}
+[color="73"] > div {
+  --color: 73;
+}
+[color="74"] > div {
+  --color: 74;
+}
+[color="75"] > div {
+  --color: 75;
+}
+[color="76"] > div {
+  --color: 76;
+}
+[color="77"] > div {
+  --color: 77;
+}
+[color="78"] > div {
+  --color: 78;
+}
+[color="79"] > div {
+  --color: 79;
+}
+[color="80"] > div {
+  --color: 80;
+}
+[color="81"] > div {
+  --color: 81;
+}
+[color="82"] > div {
+  --color: 82;
+}
+[color="83"] > div {
+  --color: 83;
+}
+[color="84"] > div {
+  --color: 84;
+}
+[color="85"] > div {
+  --color: 85;
+}
+[color="86"] > div {
+  --color: 86;
+}
+[color="87"] > div {
+  --color: 87;
+}
+[color="88"] > div {
+  --color: 88;
+}
+[color="89"] > div {
+  --color: 89;
+}
+[color="90"] > div {
+  --color: 90;
+}
+[color="91"] > div {
+  --color: 91;
+}
+[color="92"] > div {
+  --color: 92;
+}
+[color="93"] > div {
+  --color: 93;
+}
+[color="94"] > div {
+  --color: 94;
+}
+[color="95"] > div {
+  --color: 95;
+}
+[color="96"] > div {
+  --color: 96;
+}
+[color="97"] > div {
+  --color: 97;
+}
+[color="98"] > div {
+  --color: 98;
+}
+[color="99"] > div {
+  --color: 99;
+}
+[color="100"] > div {
+  --color: 100;
+}
+[color="101"] > div {
+  --color: 101;
+}
+[color="102"] > div {
+  --color: 102;
+}
+[color="103"] > div {
+  --color: 103;
+}
+[color="104"] > div {
+  --color: 104;
+}
+[color="105"] > div {
+  --color: 105;
+}
+[color="106"] > div {
+  --color: 106;
+}
+[color="107"] > div {
+  --color: 107;
+}
+[color="108"] > div {
+  --color: 108;
+}
+[color="109"] > div {
+  --color: 109;
+}
+[color="110"] > div {
+  --color: 110;
+}
+[color="111"] > div {
+  --color: 111;
+}
+[color="112"] > div {
+  --color: 112;
+}
+[color="113"] > div {
+  --color: 113;
+}
+[color="114"] > div {
+  --color: 114;
+}
+[color="115"] > div {
+  --color: 115;
+}
+[color="116"] > div {
+  --color: 116;
+}
+[color="117"] > div {
+  --color: 117;
+}
+[color="118"] > div {
+  --color: 118;
+}
+[color="119"] > div {
+  --color: 119;
+}
+[color="120"] > div {
+  --color: 120;
+}
+[color="121"] > div {
+  --color: 121;
+}
+[color="122"] > div {
+  --color: 122;
+}
+[color="123"] > div {
+  --color: 123;
+}
+[color="124"] > div {
+  --color: 124;
+}
+[color="125"] > div {
+  --color: 125;
+}
+[color="126"] > div {
+  --color: 126;
+}
+[color="127"] > div {
+  --color: 127;
+}
+[color="128"] > div {
+  --color: 128;
+}
+[color="129"] > div {
+  --color: 129;
+}
+[color="130"] > div {
+  --color: 130;
+}
+[color="131"] > div {
+  --color: 131;
+}
+[color="132"] > div {
+  --color: 132;
+}
+[color="133"] > div {
+  --color: 133;
+}
+[color="134"] > div {
+  --color: 134;
+}
+[color="135"] > div {
+  --color: 135;
+}
+[color="136"] > div {
+  --color: 136;
+}
+[color="137"] > div {
+  --color: 137;
+}
+[color="138"] > div {
+  --color: 138;
+}
+[color="139"] > div {
+  --color: 139;
+}
+[color="140"] > div {
+  --color: 140;
+}
+[color="141"] > div {
+  --color: 141;
+}
+[color="142"] > div {
+  --color: 142;
+}
+[color="143"] > div {
+  --color: 143;
+}
+[color="144"] > div {
+  --color: 144;
+}
+[color="145"] > div {
+  --color: 145;
+}
+[color="146"] > div {
+  --color: 146;
+}
+[color="147"] > div {
+  --color: 147;
+}
+[color="148"] > div {
+  --color: 148;
+}
+[color="149"] > div {
+  --color: 149;
+}
+[color="150"] > div {
+  --color: 150;
+}
+[color="151"] > div {
+  --color: 151;
+}
+[color="152"] > div {
+  --color: 152;
+}
+[color="153"] > div {
+  --color: 153;
+}
+[color="154"] > div {
+  --color: 154;
+}
+[color="155"] > div {
+  --color: 155;
+}
+[color="156"] > div {
+  --color: 156;
+}
+[color="157"] > div {
+  --color: 157;
+}
+[color="158"] > div {
+  --color: 158;
+}
+[color="159"] > div {
+  --color: 159;
+}
+[color="160"] > div {
+  --color: 160;
+}
+[color="161"] > div {
+  --color: 161;
+}
+[color="162"] > div {
+  --color: 162;
+}
+[color="163"] > div {
+  --color: 163;
+}
+[color="164"] > div {
+  --color: 164;
+}
+[color="165"] > div {
+  --color: 165;
+}
+[color="166"] > div {
+  --color: 166;
+}
+[color="167"] > div {
+  --color: 167;
+}
+[color="168"] > div {
+  --color: 168;
+}
+[color="169"] > div {
+  --color: 169;
+}
+[color="170"] > div {
+  --color: 170;
+}
+[color="171"] > div {
+  --color: 171;
+}
+[color="172"] > div {
+  --color: 172;
+}
+[color="173"] > div {
+  --color: 173;
+}
+[color="174"] > div {
+  --color: 174;
+}
+[color="175"] > div {
+  --color: 175;
+}
+[color="176"] > div {
+  --color: 176;
+}
+[color="177"] > div {
+  --color: 177;
+}
+[color="178"] > div {
+  --color: 178;
+}
+[color="179"] > div {
+  --color: 179;
+}
+[color="180"] > div {
+  --color: 180;
+}
+[color="181"] > div {
+  --color: 181;
+}
+[color="182"] > div {
+  --color: 182;
+}
+[color="183"] > div {
+  --color: 183;
+}
+[color="184"] > div {
+  --color: 184;
+}
+[color="185"] > div {
+  --color: 185;
+}
+[color="186"] > div {
+  --color: 186;
+}
+[color="187"] > div {
+  --color: 187;
+}
+[color="188"] > div {
+  --color: 188;
+}
+[color="189"] > div {
+  --color: 189;
+}
+[color="190"] > div {
+  --color: 190;
+}
+[color="191"] > div {
+  --color: 191;
+}
+[color="192"] > div {
+  --color: 192;
+}
+[color="193"] > div {
+  --color: 193;
+}
+[color="194"] > div {
+  --color: 194;
+}
+[color="195"] > div {
+  --color: 195;
+}
+[color="196"] > div {
+  --color: 196;
+}
+[color="197"] > div {
+  --color: 197;
+}
+[color="198"] > div {
+  --color: 198;
+}
+[color="199"] > div {
+  --color: 199;
+}
+[color="200"] > div {
+  --color: 200;
+}
+[color="201"] > div {
+  --color: 201;
+}
+[color="202"] > div {
+  --color: 202;
+}
+[color="203"] > div {
+  --color: 203;
+}
+[color="204"] > div {
+  --color: 204;
+}
+[color="205"] > div {
+  --color: 205;
+}
+[color="206"] > div {
+  --color: 206;
+}
+[color="207"] > div {
+  --color: 207;
+}
+[color="208"] > div {
+  --color: 208;
+}
+[color="209"] > div {
+  --color: 209;
+}
+[color="210"] > div {
+  --color: 210;
+}
+[color="211"] > div {
+  --color: 211;
+}
+[color="212"] > div {
+  --color: 212;
+}
+[color="213"] > div {
+  --color: 213;
+}
+[color="214"] > div {
+  --color: 214;
+}
+[color="215"] > div {
+  --color: 215;
+}
+[color="216"] > div {
+  --color: 216;
+}
+[color="217"] > div {
+  --color: 217;
+}
+[color="218"] > div {
+  --color: 218;
+}
+[color="219"] > div {
+  --color: 219;
+}
+[color="220"] > div {
+  --color: 220;
+}
+[color="221"] > div {
+  --color: 221;
+}
+[color="222"] > div {
+  --color: 222;
+}
+[color="223"] > div {
+  --color: 223;
+}
+[color="224"] > div {
+  --color: 224;
+}
+[color="225"] > div {
+  --color: 225;
+}
+[color="226"] > div {
+  --color: 226;
+}
+[color="227"] > div {
+  --color: 227;
+}
+[color="228"] > div {
+  --color: 228;
+}
+[color="229"] > div {
+  --color: 229;
+}
+[color="230"] > div {
+  --color: 230;
+}
+[color="231"] > div {
+  --color: 231;
+}
+[color="232"] > div {
+  --color: 232;
+}
+[color="233"] > div {
+  --color: 233;
+}
+[color="234"] > div {
+  --color: 234;
+}
+[color="235"] > div {
+  --color: 235;
+}
+[color="236"] > div {
+  --color: 236;
+}
+[color="237"] > div {
+  --color: 237;
+}
+[color="238"] > div {
+  --color: 238;
+}
+[color="239"] > div {
+  --color: 239;
+}
+[color="240"] > div {
+  --color: 240;
+}
+[color="241"] > div {
+  --color: 241;
+}
+[color="242"] > div {
+  --color: 242;
+}
+[color="243"] > div {
+  --color: 243;
+}
+[color="244"] > div {
+  --color: 244;
+}
+[color="245"] > div {
+  --color: 245;
+}
+[color="246"] > div {
+  --color: 246;
+}
+[color="247"] > div {
+  --color: 247;
+}
+[color="248"] > div {
+  --color: 248;
+}
+[color="249"] > div {
+  --color: 249;
+}
+[color="250"] > div {
+  --color: 250;
+}
+[color="251"] > div {
+  --color: 251;
+}
+[color="252"] > div {
+  --color: 252;
+}
+[color="253"] > div {
+  --color: 253;
+}
+[color="254"] > div {
+  --color: 254;
+}
+[color="255"] > div {
+  --color: 255;
+}
+[color="256"] > div {
+  --color: 256;
+}
+[color="257"] > div {
+  --color: 257;
+}
+[color="258"] > div {
+  --color: 258;
+}
+[color="259"] > div {
+  --color: 259;
+}
+[color="260"] > div {
+  --color: 260;
+}
+[color="261"] > div {
+  --color: 261;
+}
+[color="262"] > div {
+  --color: 262;
+}
+[color="263"] > div {
+  --color: 263;
+}
+[color="264"] > div {
+  --color: 264;
+}
+[color="265"] > div {
+  --color: 265;
+}
+[color="266"] > div {
+  --color: 266;
+}
+[color="267"] > div {
+  --color: 267;
+}
+[color="268"] > div {
+  --color: 268;
+}
+[color="269"] > div {
+  --color: 269;
+}
+[color="270"] > div {
+  --color: 270;
+}
+[color="271"] > div {
+  --color: 271;
+}
+[color="272"] > div {
+  --color: 272;
+}
+[color="273"] > div {
+  --color: 273;
+}
+[color="274"] > div {
+  --color: 274;
+}
+[color="275"] > div {
+  --color: 275;
+}
+[color="276"] > div {
+  --color: 276;
+}
+[color="277"] > div {
+  --color: 277;
+}
+[color="278"] > div {
+  --color: 278;
+}
+[color="279"] > div {
+  --color: 279;
+}
+[color="280"] > div {
+  --color: 280;
+}
+[color="281"] > div {
+  --color: 281;
+}
+[color="282"] > div {
+  --color: 282;
+}
+[color="283"] > div {
+  --color: 283;
+}
+[color="284"] > div {
+  --color: 284;
+}
+[color="285"] > div {
+  --color: 285;
+}
+[color="286"] > div {
+  --color: 286;
+}
+[color="287"] > div {
+  --color: 287;
+}
+[color="288"] > div {
+  --color: 288;
+}
+[color="289"] > div {
+  --color: 289;
+}
+[color="290"] > div {
+  --color: 290;
+}
+[color="291"] > div {
+  --color: 291;
+}
+[color="292"] > div {
+  --color: 292;
+}
+[color="293"] > div {
+  --color: 293;
+}
+[color="294"] > div {
+  --color: 294;
+}
+[color="295"] > div {
+  --color: 295;
+}
+[color="296"] > div {
+  --color: 296;
+}
+[color="297"] > div {
+  --color: 297;
+}
+[color="298"] > div {
+  --color: 298;
+}
+[color="299"] > div {
+  --color: 299;
+}
+[color="300"] > div {
+  --color: 300;
+}
+[color="301"] > div {
+  --color: 301;
+}
+[color="302"] > div {
+  --color: 302;
+}
+[color="303"] > div {
+  --color: 303;
+}
+[color="304"] > div {
+  --color: 304;
+}
+[color="305"] > div {
+  --color: 305;
+}
+[color="306"] > div {
+  --color: 306;
+}
+[color="307"] > div {
+  --color: 307;
+}
+[color="308"] > div {
+  --color: 308;
+}
+[color="309"] > div {
+  --color: 309;
+}
+[color="310"] > div {
+  --color: 310;
+}
+[color="311"] > div {
+  --color: 311;
+}
+[color="312"] > div {
+  --color: 312;
+}
+[color="313"] > div {
+  --color: 313;
+}
+[color="314"] > div {
+  --color: 314;
+}
+[color="315"] > div {
+  --color: 315;
+}
+[color="316"] > div {
+  --color: 316;
+}
+[color="317"] > div {
+  --color: 317;
+}
+[color="318"] > div {
+  --color: 318;
+}
+[color="319"] > div {
+  --color: 319;
+}
+[color="320"] > div {
+  --color: 320;
+}
+[color="321"] > div {
+  --color: 321;
+}
+[color="322"] > div {
+  --color: 322;
+}
+[color="323"] > div {
+  --color: 323;
+}
+[color="324"] > div {
+  --color: 324;
+}
+[color="325"] > div {
+  --color: 325;
+}
+[color="326"] > div {
+  --color: 326;
+}
+[color="327"] > div {
+  --color: 327;
+}
+[color="328"] > div {
+  --color: 328;
+}
+[color="329"] > div {
+  --color: 329;
+}
+[color="330"] > div {
+  --color: 330;
+}
+[color="331"] > div {
+  --color: 331;
+}
+[color="332"] > div {
+  --color: 332;
+}
+[color="333"] > div {
+  --color: 333;
+}
+[color="334"] > div {
+  --color: 334;
+}
+[color="335"] > div {
+  --color: 335;
+}
+[color="336"] > div {
+  --color: 336;
+}
+[color="337"] > div {
+  --color: 337;
+}
+[color="338"] > div {
+  --color: 338;
+}
+[color="339"] > div {
+  --color: 339;
+}
+[color="340"] > div {
+  --color: 340;
+}
+[color="341"] > div {
+  --color: 341;
+}
+[color="342"] > div {
+  --color: 342;
+}
+[color="343"] > div {
+  --color: 343;
+}
+[color="344"] > div {
+  --color: 344;
+}
+[color="345"] > div {
+  --color: 345;
+}
+[color="346"] > div {
+  --color: 346;
+}
+[color="347"] > div {
+  --color: 347;
+}
+[color="348"] > div {
+  --color: 348;
+}
+[color="349"] > div {
+  --color: 349;
+}
+[color="350"] > div {
+  --color: 350;
+}
+[color="351"] > div {
+  --color: 351;
+}
+[color="352"] > div {
+  --color: 352;
+}
+[color="353"] > div {
+  --color: 353;
+}
+[color="354"] > div {
+  --color: 354;
+}
+[color="355"] > div {
+  --color: 355;
+}
+[color="356"] > div {
+  --color: 356;
+}
+[color="357"] > div {
+  --color: 357;
+}
+[color="358"] > div {
+  --color: 358;
+}
+[color="359"] > div {
+  --color: 359;
+}
+[color="360"] > div {
+  --color: 360;
+}
