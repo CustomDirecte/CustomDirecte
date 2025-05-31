@@ -1,4 +1,4 @@
-console.log("MAIN.JS");
+log.script("MAIN.JS");
 
 /* ----------------- Console Log ----------------- */
 const logStyle = {
@@ -10,7 +10,6 @@ const logStyle = {
   debug: "font-size: 10px; color:#bd4ee6; font-weight: bold;",
   debugRed: "font-size: 10px; color:#e64e53; font-weight: bold;",
 };
-console.log("%cCustomDirecte", logStyle.title);
 /* ----------------------------------------------- */
 
 /* ------------ Check If Is Login Page ----------- */
@@ -121,7 +120,7 @@ browserStorageOnChanged.addListener((changes) => {
       option[item.option] = item.Value === null ? item.Default : item.Value;
     });
     return option;
-  } 
+  }
 
   const differences = [];
 

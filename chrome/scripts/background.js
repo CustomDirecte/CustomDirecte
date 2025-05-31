@@ -1,7 +1,10 @@
 importScripts(chrome.runtime.getURL("scripts/browser.js"));
 importScripts(chrome.runtime.getURL("scripts/settings.js"));
 
-console.log("BACKGROUND.JS");
+log.script("BACKGROUND.JS");
+
+const isBackground = true;
+
 browser.tabs.create({
   url: browser.runtime.getURL("/pages/popup/interface.html"),
 });

@@ -1,10 +1,36 @@
-console.log("SETTINGS.JS");
+log.script("SETTINGS.JS");
 
 /**
  * @fileOverview Gestion des paramètres de l'extension.
  * @author Bastian NOEL
- * @version 2.0
+ * @version V3 - 0.0
  */
+
+/* █ █ █▀▀ █▀█ █▀ █ █▀█ █▄ █ */
+/* ▀▄▀ ██▄ █▀▄ ▄█ █ █▄█ █ ▀█ */
+
+// Séparation de la chaîne en ses composants
+const [combined, patch, stageCode] = browserVersion.split(".").map(Number);
+
+// Extraction de la version majeure et mineure à partir du nombre combiné
+const major = combined >= 10 ? Math.floor(combined / 10) : 0;
+const minor = combined >= 10 ? combined % 10 : combined;
+
+// Mapping du code de stage vers son libellé
+const stageMap = {
+  0: "alpha",
+  1: "beta",
+  2: "release candidate",
+  3: "stable",
+};
+
+// Création de l'objet contenant les informations de version
+const versionInfo = {
+  major: major,
+  minor: minor,
+  patch: patch,
+  stage: stageMap[stageCode] || "stable",
+};
 
 /* █ █ █▀█ █▀▄ ▄▀█ ▀█▀ █▀▀ */
 /* █▄█ █▀▀ █▄▀ █▀█  █  ██▄ */
@@ -120,6 +146,7 @@ class Identity {
 
 class Group extends Identity {
   static groups = [];
+  static reloadingNeeded = [];
   constructor(id, icon, name, description, defaultActived) {
     super(id, icon, name, description);
     this.parameters = [];
@@ -132,9 +159,13 @@ class Group extends Identity {
   }
 
   updateValue() {
-    if (!this.tabElement) return;
-    this.tabElement.querySelector("#switch").checked = this.actived != false;
-    this.tabElement.setAttribute("data-state", this.actived === true ? "enabled" : this.actived || "desabled");
+    if (this.tabElement) {
+      this.tabElement.querySelector("#switch").checked = this.actived != false;
+      this.tabElement.setAttribute("data-state", this.actived === true ? "enabled" : this.actived || "desabled");
+    }
+    if (this.homerowElement) {
+      this.homerowElement.setAttribute("data-state", this.actived === true ? "enabled" : this.actived || "desabled");
+    }
   }
 
   addParameter(parameter) {
@@ -273,6 +304,12 @@ class Group extends Identity {
       return Group.groups.find((group) => group.id === id);
     }
 
+    // Version
+    const versionElement = document.getElementById("version");
+    if (versionElement) {
+      versionElement.innerText = `V${versionInfo.major} | ${versionInfo.minor}.${versionInfo.patch}` + (versionInfo.stage !== "stable" ? ` | ${versionInfo.stage.toUpperCase()}` : "");
+    }
+
     // Navbar + HomeRow + Tab
     for (const group of Group.groups) {
       document.getElementById("thanks").innerText = thanks.map((name, index) => (index % 4 === 3 ? name + "\n" : name + " - ")).join(" ");
@@ -342,12 +379,12 @@ class Group extends Identity {
       },
     };
 
-    // Event listener for the HomeButtons
+    // Ecoute les événements pour les boutons de la page d'accueil
     for (const button of Object.values(HomeButtons)) {
       button.element.addEventListener("click", button.action);
     }
 
-    // Reprend le dernier onglet ouvert
+    // Retourne au dernier onglet ouvert
     const lastTab = sessionStorage.getItem("tab");
     if (lastTab) {
       document.getElementById("body").setAttribute("data-tab", lastTab === "home" ? "home" : "setting");
@@ -356,23 +393,27 @@ class Group extends Identity {
       }
     }
 
-    // Reload tooltip
-    const reloadTooltip = stringToHtml(`
+    // Tooltip pour le bouton de retour
+    try {
+      const reloadTooltip = stringToHtml(`
       <div style="font-size: 16px;"> Nécessite de rafraîchir la page ! </div>
     `);
-    document.querySelectorAll("#needReload").forEach((element) => {
-      tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true) });
-    });
+      document.querySelectorAll("#needReload").forEach((element) => {
+        tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true) });
+      });
+    } catch (error) {
+      console.error("Erreur lors de la création de tooltips", error);
+    }
   }
 
   static async genSettings() {
-    // Get the stored settings
+    // Récupérer les paramètres stockés
     await Settings.storageGet();
 
-    // Create a new object to store the settings
+    // Si les paramètres ne sont pas définis, on les initialise
     const stored = {};
 
-    // For each group, store the actived state and the parameters
+    // Pour chaque groupe, mettre à jour l'état activé et les paramètres par défaut
     for (const group of Group.groups) {
       group.updateActived(group.defaultActived);
       stored[group.id] = {
@@ -385,7 +426,7 @@ class Group extends Identity {
       }
     }
 
-    // Update the stored settings
+    // Mettre à jour les paramètres stockés
     Settings.stored = stored;
     await Settings.storageSet();
 
@@ -393,30 +434,59 @@ class Group extends Identity {
       const oldSettings = changes["settings"].oldValue;
       const newSettings = changes["settings"].newValue;
 
-      // for every group in settings and for every parameter in group
+      // Pour chaque groupe, vérifier si les paramètres ont été modifiés
       Group.groups.forEach((group) => {
         const groupSettings = newSettings[group.id];
         const oldGroupSettings = oldSettings[group.id];
 
-        // Check if the group is actived
+        // Verifier si le groupe a été modifié
         if (groupSettings.actived != oldGroupSettings.actived && typeof groupSettings.actived === "boolean") {
+          log.settingUpdate(group.id, oldGroupSettings.actived, groupSettings.actived, "Groupe");
           Settings.stored[group.id].actived = groupSettings.actived;
           group.updateActived(group.actived);
           group.updateValue();
+          // Mettre à jour l'état de l'interface si la page a besion de recharger
+          if (typeof document !== "undefined") {
+            const returnButton = document.getElementById("returnButton");
+            if (!returnButton) return;
+            // Si le paramètre est dans la liste des paramètres à recharger, on le retire, sinon on l'ajoute
+            if (Group.reloadingNeeded.includes(group.id)) Group.reloadingNeeded = Group.reloadingNeeded.filter((id) => id !== group.id);
+            else Group.reloadingNeeded.push(group.id);
+            // Mettre à jour le bouton de retour
+            if (Group.reloadingNeeded.length > 0) returnButton.setAttribute("data-needreload", "true");
+            else returnButton.setAttribute("data-needreload", "false");
+          }
         }
 
-        // Check if the parameters are actived
+        // Verifier si les paramètres du groupe ont été modifiés
         for (const parameter of group.parameters) {
           const parameterId = parameter.id;
           const parameterSettings = groupSettings.parameters[parameterId];
           const oldParameterSettings = oldGroupSettings.parameters[parameterId];
 
+          // Si le paramètre a été modifié
           if (parameterSettings != oldParameterSettings) {
+            // Si le paramètre n'a pas été modifié, on ne fait rien
             if (Array.isArray(parameterSettings) && Array.isArray(oldParameterSettings) && parameterSettings.length == oldParameterSettings.length && parameterSettings.every((value, index) => value === oldParameterSettings[index])) return;
-            console.log(`Parameter ${parameterId} updated from ${oldParameterSettings} to ${parameterSettings}`);
+            // Afficher un message de log
+            log.settingUpdate(parameterId, oldParameterSettings, parameterSettings, "Paramettre");
+            // Mettre à jour le paramètre dans les paramètres stockés
             Settings.stored[group.id].parameters[parameterId] = parameterSettings;
+            // Mettre à jour le paramètre dans la classe
             parameter.importValue(parameter.value, parameter.options ?? undefined);
+            // Mettre à jour la valeur du paramètre dans l'interface
             if (parameter.htmlElement != undefined) parameter.updateValue();
+            // Mettre à jour l'état de l'interface si la page a besion de recharger
+            if (typeof document !== "undefined" && parameter.reloadingRequired) {
+              const returnButton = document.getElementById("returnButton");
+              if (!returnButton) return;
+              // Si le paramètre est dans la liste des paramètres à recharger, on le retire, sinon on l'ajoute
+              if (Group.reloadingNeeded.includes(parameter.id)) Group.reloadingNeeded = Group.reloadingNeeded.filter((id) => id !== parameter.id);
+              else Group.reloadingNeeded.push(parameter.id);
+              // Mettre à jour le bouton de retour
+              if (Group.reloadingNeeded.length > 0) returnButton.setAttribute("data-needreload", "true");
+              else returnButton.setAttribute("data-needreload", "false");
+            }
           }
         }
       });
@@ -934,4 +1004,9 @@ const development = new ActionGroup("development", "gear", "Développement", "Pa
 new Switch(development, "dev", "sidebar", "Activer les logs", "Active les logs pour le débuggage", false, true);
 new Button(development, "downloadlog", "sidebar", "Télécharger les logs", "Télécharger les logs", false, false);
 
-Group.genSettings();
+let settingsReady;
+try {
+  settingsReady = Group.genSettings();
+} catch (error) {
+  console.error("Erreur lors de la génération des paramètres", error);
+}
