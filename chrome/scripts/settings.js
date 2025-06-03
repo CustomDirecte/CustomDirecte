@@ -297,7 +297,8 @@ class Group extends Identity {
   }
 
   static genInterface() {
-    const thanks = ["Bastian NOEL", "Lorem Ipsum", "Dolor Sit", "Amet Consectetur", "Adipiscing Elit", "Sed Do", "Eiusmod Tempor", "Incididunt Ut", "Labore Et", "Dolore Magna", "Aliqua Ut", "Enim Ad", "Minim Veniam", "Quis Nostrud", "Exercitation Ullamco", "Laboris Nisi", "Ut Aliquip", "Ex Ea"];
+    const thanks = ["Alerymin", "Mattia P.", "S1w2a3", "Leo539", "Fefedu973", "JULES2011", "TimotheeMM", "TapsHTS", "DarkEarth", "Soleil", "Taps", "Codealuxz", "Sanchaton"];
+    thanks.sort(() => Math.random() - 0.5);
 
     // Reprend le dernier onglet ouvert
     function groupById(id) {
@@ -350,15 +351,12 @@ class Group extends Identity {
     const HomeButtons = {
       return: {
         element: document.getElementById("returnButton"),
-        action: function () {},
-        setReload: function () {
-          this.setAttribute("data-needreload", "true");
-        },
-        setReturn: function () {
-          this.setAttribute("data-needreload", "false");
+        action: function () {
+          const needReload = this.getAttribute("data-needreload") === "true";
+          window.parent.postMessage(needReload ? "reload" : "close", "*");
         },
       },
-      return: {
+      title: {
         element: document.getElementById("title"),
         action: function () {
           hideSettings();
@@ -384,6 +382,14 @@ class Group extends Identity {
       button.element.addEventListener("click", button.action);
     }
 
+    // Quand un message est reçu du parent
+    window.addEventListener("message", (event) => {
+      if (event.data === "closed") document.querySelector("#returnButton")?.click();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key == "Escape") document.querySelector("#returnButton")?.click();
+    });
+
     // Retourne au dernier onglet ouvert
     const lastTab = sessionStorage.getItem("tab");
     if (lastTab) {
@@ -399,7 +405,7 @@ class Group extends Identity {
       <div style="font-size: 16px;"> Nécessite de rafraîchir la page ! </div>
     `);
       document.querySelectorAll("#needReload").forEach((element) => {
-        tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true) });
+        tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true), appendTo: () => document.querySelector(".tippyParent") });
       });
     } catch (error) {
       console.error("Erreur lors de la création de tooltips", error);
@@ -447,7 +453,7 @@ class Group extends Identity {
           group.updateValue();
           // Mettre à jour l'état de l'interface si la page a besion de recharger
           if (typeof document !== "undefined") {
-            const returnButton = document.getElementById("returnButton");
+            var returnButton = document.getElementById("returnButton");
             if (!returnButton) return;
             // Si le paramètre est dans la liste des paramètres à recharger, on le retire, sinon on l'ajoute
             if (Group.reloadingNeeded.includes(group.id)) Group.reloadingNeeded = Group.reloadingNeeded.filter((id) => id !== group.id);
@@ -478,7 +484,7 @@ class Group extends Identity {
             if (parameter.htmlElement != undefined) parameter.updateValue();
             // Mettre à jour l'état de l'interface si la page a besion de recharger
             if (typeof document !== "undefined" && parameter.reloadingRequired) {
-              const returnButton = document.getElementById("returnButton");
+              var returnButton = document.getElementById("returnButton");
               if (!returnButton) return;
               // Si le paramètre est dans la liste des paramètres à recharger, on le retire, sinon on l'ajoute
               if (Group.reloadingNeeded.includes(parameter.id)) Group.reloadingNeeded = Group.reloadingNeeded.filter((id) => id !== parameter.id);
@@ -491,9 +497,6 @@ class Group extends Identity {
         }
       });
     });
-
-    console.log("Settings generated");
-    console.log(Settings.stored);
   }
 }
 
@@ -595,7 +598,7 @@ class Parameter extends Identity {
     const descriptionTooltip = stringToHtml(`
       <div style="font-size: 16px;"> ${description} </div>
       `);
-    tippy(this.htmlElement.querySelector("#description"), { placement: "left", allowHTML: true, content: descriptionTooltip });
+    tippy(this.htmlElement.querySelector("#description"), { placement: "left", allowHTML: true, content: descriptionTooltip, appendTo: () => document.querySelector(".tippyParent") });
   }
 }
 
@@ -645,6 +648,10 @@ class RowSelector extends Parameter {
   createEventListener(htmlElement, particularity) {
     if (!particularity) return;
     particularity.querySelectorAll("div[data-actived]").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        if (event.target.tagName === "INPUT") return;
+        element.querySelector("input").click();
+      });
       element.querySelector("input").addEventListener("change", (event) => {
         if (event.currentTarget.checked) {
           var newValue = event.currentTarget.value;
@@ -711,6 +718,10 @@ class CustomSelector extends Parameter {
   createEventListener(htmlElement, particularity) {
     if (!particularity) return;
     particularity.querySelectorAll("div[data-actived]").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        if (event.target.tagName === "INPUT") return;
+        element.querySelector("input").click();
+      });
       element.querySelector("input").addEventListener("change", (event) => {
         if (event.currentTarget.checked) {
           var newValue = event.currentTarget.value;
@@ -789,6 +800,10 @@ class MultiRowSelector extends Parameter {
       const particularity = element[0];
       const j = element[1];
       particularity.querySelectorAll("div[data-actived]").forEach((element) => {
+        element.addEventListener("click", (event) => {
+          if (event.target.tagName === "INPUT") return;
+          element.querySelector("input").click();
+        });
         element.querySelector("input").addEventListener("change", (event) => {
           if (event.currentTarget.checked) {
             var newValue = this.value;
@@ -804,6 +819,8 @@ class MultiRowSelector extends Parameter {
     const id = this.id;
     var allParticularity = [];
 
+    var h = 0;
+
     for (const [j, subOptions] of this.options.entries()) {
       const particularity = stringToHtml(`
       <div class="flex flex-row items-center flex-wrap mx-[54px] my-5 gap-8">
@@ -814,6 +831,8 @@ class MultiRowSelector extends Parameter {
       for (const [i, option] of subOptions.entries()) {
         const actived = this.value?.[j] == option.id ? "enabled" : "desabled";
 
+        h += 1;
+
         const optionElement = stringToHtml(`
         <div data-actived="${actived}" class="cursor-pointer flex flex-col border rounded-xl border-custom-gray-verydark-transp data-[actived=enabled]:bg-custom-pink-ulttransp data-[actived=enabled]:border-custom-pink">
           <div class="flex flex-row items-center gap-4 mx-4 my-2">
@@ -821,7 +840,7 @@ class MultiRowSelector extends Parameter {
             <div class="text-xl font-semibold text-text">${option.name}</div>
           </div>
           <div class="m-4 mt-0 rounded-lg bg-text-white-full">
-            <img src="./svg/${id}/${i + 1}.svg">
+            <img src="./svg/${id}/${h}.svg">
           </div>
         </div>
       `);

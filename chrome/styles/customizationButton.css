@@ -5,28 +5,28 @@
 /* ██║      ╚██████╔╝ ██║      ╚██████╔╝ ██║      */
 /* ╚═╝       ╚═════╝  ╚═╝       ╚═════╝  ╚═╝      */
 
-[customizationbutton0="icon"] .optionsButton > span {
+[customizationbutton0="icon"] .settings-button > span {
   display: none !important;
 }
 
-[customizationbutton0="icon"] .optionsButton {
+[customizationbutton0="icon"] .settings-button {
   width: 60px !important;
 }
 
-[customizationbutton0="iconAndText"] .optionsButton > span {
+[customizationbutton0="iconAndText"] .settings-button > span {
   display: block;
 }
 
-[customizationbutton0="iconAndText"] .optionsButton {
+[customizationbutton0="iconAndText"] .settings-button {
   width: 230px;
 }
 
-[customizationbutton1="border"] .optionsButton {
+[customizationbutton1="border"] .settings-button {
   border-radius: 999px 0 0 999px !important;
   right: 0px !important;
 }
 
-[customizationbutton1="ile"] .optionsButton {
+[customizationbutton1="ile"] .settings-button {
   border-radius: 999px;
   right: 16px;
 }
@@ -34,20 +34,31 @@
 /* █ █ █ █ █▄ █ █▀▄ █▀█ █ █ █ */
 /* ▀▄▀▄▀ █ █ ▀█ █▄▀ █▄█ ▀▄▀▄▀ */
 
-.optionsPopupActif .optionsPopupBlur {
+/* Blur */
+.settings-popup-blur {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   z-index: 9998;
   position: fixed;
   backdrop-filter: blur(4px);
   width: 100vw;
   height: 100vh;
-  transition: var(--tran-05);
+  transition: var(--tran-02);
 }
 
-html:not(.optionsPopupActif) .optionsPopupBlur {
-  display: none;
+.settings-popup-active .settings-popup-blur {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: var(--tran-02);
 }
 
-.optionsPopupActif .optionsPopup {
+/* Popup */
+.settings-popup {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   z-index: 9999;
   position: fixed;
   width: 80vw;
@@ -56,25 +67,24 @@ html:not(.optionsPopupActif) .optionsPopupBlur {
   margin-top: 10vh;
   border-radius: var(--table-radius);
   animation-duration: 0.5s;
-  animation-name: animate-pop;
-  animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
-  transition: var(--tran-05);
+  transition: var(--tran-02);
+
+  border-color: #00000026;
+  border-style: solid;
+  border-width: 1px;
 }
 
-html:not(.optionsPopupActif) .optionsPopup {
-  display: none;
-}
-
-.optionsFrame {
-  background-color: black;
-  width: 350px;
-  height: 600px;
+.settings-popup-active .settings-popup {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: var(--tran-02);
 }
 
 /* █▄▄ █ █ ▀█▀ ▀█▀ █▀█ █▄ █ */
 /* █▄█ █▄█  █   █  █▄█ █ ▀█ */
 
-.optionsButton {
+.settings-button {
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.23);
   background-color: var(--primary-color-light);
@@ -95,23 +105,20 @@ html:not(.optionsPopupActif) .optionsPopup {
   user-select: none;
 }
 
-.optionsButton:hover {
+.settings-button:hover {
   background-color: var(--primary-color);
 }
 
-.optionsButton > i {
+.settings-button-icon {
+  background-color: var(--footer-primary-color);
+  display: block;
   font-size: 15px;
-  padding-right: 8px;
-}
-
-@keyframes animate-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0.5, 0.5);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1, 1);
-  }
+  margin-inline-end: 0px;
+  margin-inline-start: 0px;
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHBhdGggZD0iTTMgMTcuMjVWMjFoMy43NUwxNy44MSA5Ljk0bC0zLjc1LTMuNzVMMyAxNy4yNXpNMjAuNzEgNy4wNGEuOTk2Ljk5NiAwIDAgMCAwLTEuNDFsLTIuMzQtMi4zNGEuOTk2Ljk5NiAwIDAgMC0xLjQxIDBsLTEuODMgMS44MyAzLjc1IDMuNzUgMS44My0xLjgzeiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=");
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
 }

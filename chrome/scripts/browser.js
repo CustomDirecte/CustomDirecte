@@ -8,11 +8,16 @@ browserStorageOnChanged = browser.storage.sync.onChanged;
 /* █▀▀ █▀▀ █▀ ▀█▀ █ █▀█ █▄ █   █▀▄ █▀▀ █▀   █   █▀█ █▀▀ █▀ */
 /* █▄█ ██▄ ▄█  █  █ █▄█ █ ▀█   █▄▀ ██▄ ▄█   █▄▄ █▄█ █▄█ ▄█ */
 
-// Titre: CustomDirecte
-console.log("%cCustomDirecte", "font-size: 20px; color:#C8194A; font-weight: bold;");
+// Vérification de l'environnement d'exécution
+var isBackground = typeof isBackground !== "undefined" ? isBackground : false;
+var isPopup = location.protocol === "chrome-extension:";
+const scriptType = isBackground ? "background" : isPopup ? "popup" : "ed";
 
 // Genération d'un ID de console unique
-consoleID = Date.now().toString(36).slice(-3);
+consoleID = Math.random().toString(36).slice(2, 5);
+
+// Titre: CustomDirecte
+console.log(`%cCustomDirecte [${scriptType.toUpperCase()}-${consoleID}]`, "font-size: 20px; color:#C8194A; font-weight: bold;");
 
 // VARIABLES
 headerStyle = (size = false) => `color:#ff9800; font-weight: bold; ${size ? `font-size: ${size}px;` : ""}`;
@@ -40,7 +45,7 @@ function devLogger(message) {
  */
 function settingUpdateLogger(parameterId, oldParameterSettings, parameterSettings, parameterType) {
   // Ne pas afficher dans le script de fond
-  if (typeof isBackground !== "undefined") return;
+  if (isBackground) return;
 
   // Style pour l'affichage dans la console
   const baseStyle = "font-size: 10px; font-weight: bold;";
@@ -68,7 +73,7 @@ function settingUpdateLogger(parameterId, oldParameterSettings, parameterSetting
  * @param {string} script - Nom du script.
  */
 function scriptLogger(script) {
-  console.log(`%c[${script}] %c[${consoleID}] %cScripte en cours d'exécution`, headerStyle(), consoleIDStyle(), "color:#00bcd4; font-weight: normal;");
+  console.log(`%c[${script}] %c[${consoleID}] %cScript en cours d'exécution`, headerStyle(), consoleIDStyle(), "color:#00bcd4; font-weight: normal;");
 }
 
 /**

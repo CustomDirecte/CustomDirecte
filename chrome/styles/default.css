@@ -33,13 +33,13 @@
   --font-merriweather: Merriweather, serif;
   --font-leckerliOne: Leckerli One, cursive;
   --font-comicSans: comic sans;
-  --font-openDyslexic: 'OpenDyslexic', sans-serif;
+  --font-openDyslexic: "OpenDyslexic", sans-serif;
   --body-color: var(--theme-body-color, #ffffff);
   --sidebar-color: var(--theme-sidebar-color, rgb(46, 106, 200));
   --primary-color: var(--light-primary-color);
   --primary-color-light: var(--dark-primary-color);
   --text-color: var(--theme-text-color, #ebebeb);
-  --tran-03: all 0.2s ease;
+  --tran-02: all 0.2s ease;
   --tran-03: all 0.3s ease;
   --tran-04: all 0.3s ease;
   --tran-05: all 0.3s ease;
