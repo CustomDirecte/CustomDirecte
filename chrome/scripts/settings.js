@@ -168,7 +168,7 @@ class Identity {
 /**
  * Classe représentant un groupe de paramètres.
  * @extends Identity
- * 
+ */
 class Group extends Identity {
   static groups = [];
   static reloadingNeeded = [];
