@@ -24,7 +24,7 @@ jobs:
         run: npx jsdoc -c jsdoc.json
 
       - name: Upload JSDoc as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: ./docs
