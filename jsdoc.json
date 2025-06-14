@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": ["./scripts", "./pages"]
+    "include": ["./chrome/scripts", "./chrome/pages"]
   },
   "opts": {
     "destination": "./docs",
