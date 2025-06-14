@@ -1,5 +1,6 @@
 /**
- * Groupes et paramètres
+ * @fileOverview Gestion des groupes et paramètres de l'extension CustomDirecte.
+ * @author Bastian NOEL
  *
  * C'est ici que l'on peut ajouter des groupes et des paramètres.
  * Chaque groupe contient des paramètres, qui permettent de personnaliser l'expérience utilisateur.
@@ -20,7 +21,7 @@ new ColorSelector(customizations, "colorCustomization", "sidebar", "Couleur", "C
 new CustomSelector(
   customizations,
   "cornerCustomization",
-  "sidebar", 
+  "sidebar",
   "Angle des coins",
   "Angle des coins",
   "none",

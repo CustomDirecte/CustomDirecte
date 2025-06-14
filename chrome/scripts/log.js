@@ -1,3 +1,8 @@
+/**
+ * @fileOverview Gestion des logs de l'extension.
+ * @author Bastian NOEL
+ */
+
 /* █▀▀ █▀▀ █▀ ▀█▀ █ █▀█ █▄ █   █▀▄ █▀▀ █▀   █   █▀█ █▀▀ █▀ */
 /* █▄█ ██▄ ▄█  █  █ █▄█ █ ▀█   █▄▀ ██▄ ▄█   █▄▄ █▄█ █▄█ ▄█ */
 

@@ -1,5 +1,10 @@
 log.script("INTERFACE.JS");
 
+/**
+ * @fileOverview Lance la genération de l'interface utilisateur.
+ * @author Bastian NOEL
+ */
+
 window.onload = async function () {
   try {
     await settingsReady;

@@ -1,5 +1,10 @@
 log.script("MAIN.JS");
 
+/**
+ * @fileOverview Gere le fonctionnement des cripts dans la page.
+ * @author Bastian NOEL
+ */
+
 /* █ █▄ █ █ ▀█▀ █ ▄▀█ █   █ █▀ ▄▀█ ▀█▀ █ █▀█ █▄ █ */
 /* █ █ ▀█ █  █  █ █▀█ █▄▄ █ ▄█ █▀█  █  █ █▄█ █ ▀█ */
 
@@ -135,14 +140,14 @@ var tools = {
    * @param {string} content - Le contenu à télécharger
    * @param {string} fileName - Le nom du fichier sans l'extension
    */
-    txtDownloader(content, fileName) {
+  txtDownloader(content, fileName) {
     var a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([content], { type: "text/plain" }));
     a.download = `${fileName}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }
+  },
 };
 
 /* █▀█ █   █▀▄ */

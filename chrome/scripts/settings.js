@@ -3,7 +3,6 @@ log.script("SETTINGS.JS");
 /**
  * @fileOverview Gestion des paramètres de l'extension.
  * @author Bastian NOEL
- * @version V3 - 0.0
  */
 
 /* █ █ █▀▀ █▀█ █▀ █ █▀█ █▄ █ */
@@ -11,7 +10,6 @@ log.script("SETTINGS.JS");
 
 /**
  * Valeurs extraites de la version de l'extension.
- * @description La version de l'extension est au format X.Y.Z, où X est la version combinée majeure et mineure, Y est le numéro de patch, et Z l'etape de développement.
  * @type {number} combined - Version combinée majeure et mineure "MajorMinor" (Major * 10 + Minor).
  * @type {number} patch - Numéro de patch.
  * @type {number} stageCode - L'étape de développement de l'extension (alpha, beta, release candidate, stable).
