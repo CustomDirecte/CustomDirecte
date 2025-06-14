@@ -9,27 +9,27 @@ log.script("SETTINGS.JS");
 /* █ █ █▀▀ █▀█ █▀ █ █▀█ █▄ █ */
 /* ▀▄▀ ██▄ █▀▄ ▄█ █ █▄█ █ ▀█ */
 
-// Séparation de la chaîne en ses composants
+/**
+ * Valeurs extraites de la version de l'extension.
+ * @description La version de l'extension est au format X.Y.Z, où X est la version combinée majeure et mineure, Y est le numéro de patch, et Z l'etape de développement.
+ * @type {number} combined - Version combinée majeure et mineure "MajorMinor" (Major * 10 + Minor).
+ * @type {number} patch - Numéro de patch.
+ * @type {number} stageCode - L'étape de développement de l'extension (alpha, beta, release candidate, stable).
+ */
 const [combined, patch, stageCode] = browserVersion.split(".").map(Number);
 
-// Extraction de la version majeure et mineure à partir du nombre combiné
-const major = combined >= 10 ? Math.floor(combined / 10) : 0;
-const minor = combined >= 10 ? combined % 10 : combined;
-
-// Mapping du code de stage vers son libellé
-const stageMap = {
-  0: "alpha",
-  1: "beta",
-  2: "release candidate",
-  3: "stable",
-};
-
-// Création de l'objet contenant les informations de version
+/**
+ * @constant {Object} versionInfo - Informations sur la version de l'extension.
+ * @property {number} major - La version majeure.
+ * @property {number} minor - La version mineure.
+ * @property {number} patch - Le numéro de patch.
+ * @property {string} stage - L'étape de développement de l'extension (alpha, beta, release candidate, stable).
+ */
 const versionInfo = {
-  major: major,
-  minor: minor,
+  major: combined >= 10 ? Math.floor(combined / 10) : 0,
+  minor: combined >= 10 ? combined % 10 : combined,
   patch: patch,
-  stage: stageMap[stageCode] || "stable",
+  stage: { 0: "alpha", 1: "beta", 2: "release candidate", 3: "stable" }[stageCode] || "stable",
 };
 
 /* █ █ █▀█ █▀▄ ▄▀█ ▀█▀ █▀▀ */
@@ -68,12 +68,12 @@ var Updates = {
 /* ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█ */
 
 /**
- * Objet contenant les paramètres de l'extension.
+ * Objet permettant de gérer les paramètres de l'extension.
  * @namespace Settings
  * @property {number} version La version des paramètres.
  * @property {Object} stored Les paramètres de l'extension.
  * @property {function} storageSet Enregistre les paramètres de l'extension.
- * @property {function} updateSettings Met à jour les paramètres de l'extension.
+ * @property {function} updateSettings Vérifie si une mise à jour est nécessaire et l'applique.
  * @property {function} storageGet Récupère les paramètres de l'extension.
  */
 var Settings = {
@@ -82,6 +82,8 @@ var Settings = {
 
   /**
    * Enregistre les paramètres de l'extension.
+   * @function
+   * @description Enregistre les paramètres du script actuel dans le stockage du navigateur.
    */
   async storageSet() {
     // Enregistre les nouveaux paramètres
@@ -90,7 +92,8 @@ var Settings = {
 
   /**
    * Vérifie si une mise à jour est nécessaire et l'applique.
-   * @param {Object} result L'objet contenant les paramètres de l'extension.
+   * @function
+   * @param {Object} result - L'objet contenant les paramètres de l'extension.
    */
   async updateSettings(result) {
     if (this.version == result.version) return;
@@ -111,6 +114,7 @@ var Settings = {
 
   /**
    * Récupère les paramètres de l'extension.
+   * @function
    * @returns {Object} Les paramètres de l'extension.
    */
   async storageGet() {
@@ -129,13 +133,30 @@ var Settings = {
 /* █▀█ ▄▀█ █▀█ ▄▀█ █▀▄▀█ █▀▀ ▀█▀ █▀▀ █▀█ █▀ */
 /* █▀▀ █▀█ █▀▄ █▀█ █ ▀ █ ██▄  █  ██▄ █▀▄ ▄█ */
 
+/**
+ * Convertit une chaîne de caractères en un élément HTML.
+ * @param {string} string - La chaîne de caractères à convertir.
+ * @return {HTMLElement} Unn elément HTML créé à partir de la chaîne.
+ */
 function stringToHtml(string) {
   const html = document.createElement("div");
   html.innerHTML = string.trim();
   return html.firstChild;
 }
 
+/**
+ * Classe de base pour tous ce qui est configurable.
+ * @description C'est une base qui ce définit par un identifiant, une icône, un nom et une description.
+ */
 class Identity {
+  /**
+   * Crée une instance d'identité.
+   * @constructor
+   * @param {string} id - L'identifiant unique.
+   * @param {string} icon - L'icône associée.
+   * @param {string} name - Le nom .
+   * @param {string} description - La description.
+   */
   constructor(id, icon, name, description) {
     this.id = id;
     this.icon = icon;
@@ -144,9 +165,14 @@ class Identity {
   }
 }
 
+/**
+ * Classe représentant un groupe de paramètres.
+ * @extends Identity
+ * 
 class Group extends Identity {
   static groups = [];
   static reloadingNeeded = [];
+
   constructor(id, icon, name, description, defaultActived) {
     super(id, icon, name, description);
     this.parameters = [];
@@ -977,55 +1003,14 @@ new MultiRowSelector(
   false
 );
 
-const customizations = new Group("customizations", "swatchbook", "Personnalisation", "Paramètres de personnalisation", true);
-
-new Switch(customizations, "customization", "sidebar", "Activer les options de personnalisation", "Permet l'activation des options de personnalisation", true, true);
-new Switch(customizations, "darkmode", "sidebar", "Activer le mode sombre", "L'ensemble du site sera sombre, utile la nuit !", false, false);
-new ColorSelector(customizations, "colorCustomization", "sidebar", "Couleur", "Couleur", 340, false);
-new CustomSelector(
-  customizations,
-  "cornerCustomization",
-  "sidebar",
-  "Angle des coins",
-  "Angle des coins",
-  "none",
-  [
-    { id: "none", name: "Aucune", style: { first: "border-radius: 0px;" } },
-    { id: "thin", name: "Fin", style: { first: "border-radius: 10px;" } },
-    { id: "wide", name: "Large", style: { first: "border-radius: 20px;" } },
-  ],
-  false
-);
-new CustomSelector(
-  customizations,
-  "fontCustomization",
-  "sidebar",
-  "Police d'écriture",
-  "Police d'écriture",
-  "tahoma",
-  [
-    { id: "tahoma", name: "Tahoma", style: { third: "font-family: var(--font-comicSans);" } },
-    { id: "roboto", name: "Roboto", style: { third: "font-family: var(--font-roboto);" } },
-    { id: "poppin", name: "Poppin", style: { third: "font-family: var(--font-poppin);" } },
-    { id: "openSans", name: "Open Sans", style: { third: "font-family: var(--font-openSans);" } },
-    { id: "openDyslexic", name: "Open Dyslexic", style: { third: "font-family: var(--font-comicSans);" } },
-    { id: "montserrat", name: "Montserrat", style: { third: "font-family: var(--font-montserrat);" } },
-    { id: "merriweather", name: "Merriweather", style: { third: "font-family: var(--font-merriweather);" } },
-    { id: "leckerliOne", name: "Leckerli One", style: { third: "font-family: var(--font-leckerliOne);" } },
-    { id: "inter", name: "Inter", style: { third: "font-family: var(--font-openDyslexic);" } },
-    { id: "comicSans", name: "Comic Sans", style: { third: "font-family: var(--font-comicSans);" } },
-  ],
-  false
-);
-
-const development = new ActionGroup("development", "gear", "Développement", "Paramètres de développement");
-
-new Switch(development, "dev", "sidebar", "Activer les logs", "Active les logs pour le débuggage", false, true);
-new Button(development, "downloadlog", "sidebar", "Télécharger les logs", "Télécharger les logs", false, false);
+/* █▀▀ █▀▀ █▄ █ █▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀ █▀ */
+/* █▄█ ██▄ █ ▀█ ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█ */
 
 let settingsReady;
-try {
-  settingsReady = Group.genSettings();
-} catch (error) {
-  console.error("Erreur lors de la génération des paramètres", error);
+function genSettings() {
+  try {
+    settingsReady = Group.genSettings();
+  } catch (error) {
+    console.error("Erreur lors de la génération des paramètres", error);
+  }
 }

@@ -1,5 +1,8 @@
 log.script("MAIN.JS");
 
+/* █ █▄ █ █ ▀█▀ █ ▄▀█ █   █ █▀ ▄▀█ ▀█▀ █ █▀█ █▄ █ */
+/* █ █ ▀█ █  █  █ █▀█ █▄▄ █ ▄█ █▀█  █  █ █▄█ █ ▀█ */
+
 var initialize = {
   /**
    * Ajoute le CSS par défaut à la page.
@@ -80,6 +83,9 @@ var initialize = {
     }
   },
 
+  /**
+   * Lance l'initialisation de l'interface utilisateur de l'extension.
+   */
   all() {
     initialize.defaultCSS();
     settingsButton = initialize.menuButton();
@@ -101,7 +107,9 @@ var initialize = {
   },
 };
 
-// Attend le chargement du document
+/**
+ * Attend que le document soit prêt avant d'initialiser l'interface utilisateur de l'extension.
+ */
 if (document.readyState === "loading")
   document.addEventListener("readystatechange", function listener() {
     if (document.readyState !== "loading") {
@@ -110,7 +118,32 @@ if (document.readyState === "loading")
     }
   });
 else initialize.all();
-//
+
+/* █▀█ █ █ ▀█▀ █ █   █▀ */
+/* █▄█ █▄█  █  █ █▄▄ ▄█ */
+
+var tools = {
+  /**
+   * Vérifie si la page actuelle est la page de connexion.
+   * @returns {boolean} True si c'est la page de connexion, sinon false.
+   */
+  isLoginPage() {
+    return /(?:http|https)(?::\/\/)(.+\.|)(?:ecoledirecte\.com\/login).*/.test(window.location.href) ? true : false;
+  },
+  /**
+   * Telecharge du texte dans un fichier .txt
+   * @param {string} content - Le contenu à télécharger
+   * @param {string} fileName - Le nom du fichier sans l'extension
+   */
+    txtDownloader(content, fileName) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([content], { type: "text/plain" }));
+    a.download = `${fileName}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+};
 
 /* █▀█ █   █▀▄ */
 /* █▄█ █▄▄ █▄▀ */
