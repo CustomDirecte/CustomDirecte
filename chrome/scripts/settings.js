@@ -171,6 +171,15 @@ class Group extends Identity {
   static groups = [];
   static reloadingNeeded = [];
 
+  /**
+   * Crée une instance de groupe.
+   * @constructor
+   * @param {string} id - L'identifiant unique du groupe.
+   * @param {string} icon - L'icône associée au groupe.
+   * @param {string} name - Le nom du groupe.
+   * @param {string} description - La description du groupe.
+   * @param {boolean} defaultActived - Indique si le groupe est activé par défaut.
+   */
   constructor(id, icon, name, description, defaultActived) {
     super(id, icon, name, description);
     this.parameters = [];
@@ -178,10 +187,17 @@ class Group extends Identity {
     Group.groups.push(this);
   }
 
+  /**
+   * Déterminer si le groupe doit être activé ou non.
+   * @param {boolean} defaultActived - La valeur par défaut pour l'activation du groupe.
+   */
   updateActived(defaultActived) {
     this.actived = typeof Settings.stored[this.id]?.actived === "boolean" ? Settings.stored[this.id]?.actived ?? defaultActived : defaultActived;
   }
 
+  /**
+   * Mettre à jour l’état du groupe.
+   */
   updateValue() {
     if (this.tabElement) {
       this.tabElement.querySelector("#switch").checked = this.actived != false;
@@ -192,11 +208,18 @@ class Group extends Identity {
     }
   }
 
+  /**
+   * Ajoute un paramètre au groupe.
+   * @param {Parameter} parameter - Le paramètre à ajouter.
+   */
   addParameter(parameter) {
-    // Ajoute le parametre au groupe
     this.parameters.push(parameter);
   }
 
+  /**
+   * Génère la barre de navigation pour le groupe.
+   * @param {HTMLElement} navbar - L'élément de la barre de navigation où le groupe sera ajouté.
+   */
   genNavbar(navbar) {
     const selected = false;
     const icon = this.icon;
@@ -212,6 +235,10 @@ class Group extends Identity {
     navbar.appendChild(this.navbarElement);
   }
 
+  /**
+   * Génère la ligne dans la page d'accueil pour le groupe.
+   * @param {HTMLElement} main - L'élément principal où la ligne sera ajoutée.
+   */
   genHomeRow(main) {
     const state = this.actived === true ? "enabled" : this.actived || "desabled";
     const icon = this.icon;
@@ -245,6 +272,10 @@ class Group extends Identity {
     main.appendChild(this.homerowElement);
   }
 
+  /**
+   * Génère l'onglet de paramètres pour le groupe.
+   * @param {HTMLElement} setting - L'élément de paramètres où le groupe sera ajouté.
+   */
   genTab(setting) {
     const state = this.actived === true ? "enabled" : this.actived || "desabled";
     const icon = this.icon;
@@ -320,6 +351,9 @@ class Group extends Identity {
     });
   }
 
+  /**
+   * Génère l'interface utilisateur pour tous les groupes et paramètres.
+   */
   static genInterface() {
     const thanks = ["Alerymin", "Mattia P.", "S1w2a3", "Leo539", "Fefedu973", "JULES2011", "TimotheeMM", "TapsHTS", "DarkEarth", "Soleil", "Taps", "Codealuxz", "Sanchaton"];
     thanks.sort(() => Math.random() - 0.5);
@@ -436,6 +470,9 @@ class Group extends Identity {
     }
   }
 
+  /**
+   * Genère les paramètres de l'extension : recuperation, initialisation et changement des paramètres.
+   */
   static async genSettings() {
     // Récupérer les paramètres stockés
     await Settings.storageGet();
@@ -524,7 +561,19 @@ class Group extends Identity {
   }
 }
 
+/**
+ * Représente un groupe d'actions : un groupe spécial qui ne peut pas être désactivé.
+ * @extends Group
+ */
 class ActionGroup extends Group {
+  /**
+   * Crée une instance de ActionGroup.
+   * @constructor
+   * @param {string} id - L'identifiant unique du groupe d'actions.
+   * @param {string} icon - L'icône associée au groupe d'actions.
+   * @param {string} name - Le nom du groupe d'actions.
+   * @param {string} description - La description du groupe d'actions.
+   */
   constructor(id, icon, name, description) {
     super(id, icon, name, description, true);
   }

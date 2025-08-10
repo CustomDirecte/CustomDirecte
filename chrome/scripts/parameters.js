@@ -1,6 +1,5 @@
 /**
  * @fileOverview Gestion des groupes et paramètres de l'extension CustomDirecte.
- * @author Bastian NOEL
  *
  * C'est ici que l'on peut ajouter des groupes et des paramètres.
  * Chaque groupe contient des paramètres, qui permettent de personnaliser l'expérience utilisateur.
@@ -11,6 +10,8 @@
  * Les paramètres sont de types variés et permettent de personnaliser l'expérience.
  *
  * Chaque paramètre ou groupe est généré automatiquement dans l'interface et dispose de systèmes de vérification et de protection.
+ *
+ * @author Bastian NOEL
  */
 
 const customizations = new Group("customizations", "swatchbook", "Personnalisation", "Paramètres de personnalisation", true);
