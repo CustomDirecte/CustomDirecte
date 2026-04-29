@@ -255,6 +255,108 @@ function noteTableAnalysis(options) {
     return parseFloat(x.toFixed(2)).toString().replace(".", ",");
   }
 
+  // --- Custom Notes: CSS + helpers ---
+  if (!document.getElementById("cd-custom-note-css")) {
+    const customNoteCSS = document.createElement("style");
+    customNoteCSS.id = "cd-custom-note-css";
+    customNoteCSS.textContent = `
+      .cd-custom-note-wrapper { position: relative; display: inline-block; margin: 1px 4px; vertical-align: middle; }
+      .cd-custom-note-wrapper button.cd-custom-note-btn { opacity: 0.5; filter: grayscale(20%); cursor: default; }
+      .cd-custom-note-delete {
+        position: absolute; top: -5px; right: -5px;
+        width: 14px; height: 14px; border-radius: 50%; border: none;
+        background: #C8194A; color: white; font-size: 8px; font-weight: 700;
+        cursor: pointer; padding: 0; line-height: 1;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.15s; z-index: 10;
+      }
+      .cd-custom-note-wrapper:hover .cd-custom-note-delete { opacity: 1; }
+      .cd-add-note-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 18px; height: 18px; border-radius: 50%;
+        border: 1.5px solid #C8194A; background: transparent; color: #C8194A;
+        font-size: 14px; cursor: pointer; padding: 0; margin-left: 4px;
+        line-height: 1; font-weight: 700; vertical-align: middle; transition: all 0.15s;
+      }
+      .cd-add-note-btn:hover { background: #C8194A; color: white; }
+      .cd-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99999; display: flex; align-items: center; justify-content: center; }
+      .cd-modal { background: white; border-radius: 12px; padding: 24px 28px; min-width: 300px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); font-family: Montserrat, sans-serif; }
+      .cd-modal h3 { margin: 0 0 4px; color: #C8194A; font-size: 15px; font-weight: 700; }
+      .cd-modal-subject { margin: 0 0 16px; font-size: 12px; color: #888; }
+      .cd-modal-row { display: flex; gap: 8px; align-items: flex-end; }
+      .cd-modal-field { display: flex; flex-direction: column; gap: 4px; }
+      .cd-modal-field label { font-size: 10px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+      .cd-modal-field input { width: 64px; padding: 7px 8px; border: 1.5px solid #e0e0e0; border-radius: 7px; font-size: 14px; text-align: center; outline: none; transition: border-color 0.15s; font-family: inherit; }
+      .cd-modal-field input:focus { border-color: #C8194A; }
+      .cd-modal-sep { font-size: 22px; color: #ccc; padding-bottom: 3px; font-weight: 300; }
+      .cd-modal-coef-wrap { margin-left: 8px; }
+      .cd-modal-error { color: #C8194A; font-size: 11px; margin-top: 8px; display: none; }
+      .cd-modal-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+      .cd-modal-btn { padding: 8px 16px; border-radius: 7px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; transition: all 0.15s; font-family: inherit; letter-spacing: 0.3px; }
+      .cd-modal-btn-primary { background: #C8194A; color: white; }
+      .cd-modal-btn-primary:hover { background: #a61540; }
+      .cd-modal-btn-secondary { background: #f0f0f0; color: #555; }
+      .cd-modal-btn-secondary:hover { background: #e0e0e0; }
+    `;
+    document.head.appendChild(customNoteCSS);
+  }
+
+  function getCustomNotes(subjectName) {
+    try { return JSON.parse(localStorage.getItem("customNotes_" + subjectName) || "[]"); }
+    catch { return []; }
+  }
+
+  function saveCustomNotes(subjectName, notes) {
+    localStorage.setItem("customNotes_" + subjectName, JSON.stringify(notes));
+  }
+
+  function openCustomNoteModal(subjectName, onSuccess) {
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Note simulée</h3>' +
+        '<p class="cd-modal-subject">' + subjectName + '</p>' +
+        '<div class="cd-modal-row">' +
+          '<div class="cd-modal-field"><label>Note</label><input type="number" id="cd-f-note" min="0" step="0.5" value="10"></div>' +
+          '<div class="cd-modal-sep">/</div>' +
+          '<div class="cd-modal-field"><label>Sur</label><input type="number" id="cd-f-sur" min="1" step="1" value="20"></div>' +
+          '<div class="cd-modal-field cd-modal-coef-wrap"><label>Coef.</label><input type="number" id="cd-f-coef" min="0.1" step="0.5" value="1"></div>' +
+        '</div>' +
+        '<div class="cd-modal-error" id="cd-modal-error">Valeurs invalides.</div>' +
+        '<div class="cd-modal-actions">' +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-add">Ajouter</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector("#cd-f-note").focus();
+
+    overlay.querySelector("#cd-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-add").click();
+    });
+
+    overlay.querySelector("#cd-add").addEventListener("click", () => {
+      const note = parseFloat(overlay.querySelector("#cd-f-note").value);
+      const sur = parseFloat(overlay.querySelector("#cd-f-sur").value);
+      const coef = parseFloat(overlay.querySelector("#cd-f-coef").value);
+      const err = overlay.querySelector("#cd-modal-error");
+      if (isNaN(note) || isNaN(sur) || isNaN(coef) || note < 0 || sur <= 0 || coef <= 0) {
+        err.style.display = "block";
+        return;
+      }
+      const arr = getCustomNotes(subjectName);
+      arr.push({ note, sur, coef });
+      saveCustomNotes(subjectName, arr);
+      overlay.remove();
+      onSuccess();
+    });
+  }
+  // --- End Custom Notes Setup ---
+
   // Detecte les changement du body et execute quand nécésaire 'Calculator()'
   log("BodyObserver -> [ Starting ]");
   const averageTableObserver = new MutationObserver(() => {
@@ -495,7 +597,7 @@ function noteTableAnalysis(options) {
       tableGetIndex();
     }
 
-    if (options["ClassAveragesDisplay2"] && averageTableInfos) {
+    if (tableConfiguration["moyenneclasse"][1] == undefined && options["ClassAveragesDisplay2"] && averageTableInfos) {
       log(" > > > Column {moyenneclasse} -> [ Genere ] -> [ Reload module ]");
       moyenneclasseTitleRow = gradeTable.tHead.rows[0].insertCell(tableConfiguration["coef"][0] + 1);
       moyenneclasseTitleRow.outerHTML = `<th class="moyenneclasse ng-star-inserted">Classe</th>`;
@@ -531,6 +633,13 @@ function noteTableAnalysis(options) {
     // Fonction moyennePondere
     const moyennePondere = (liste) => liste.reduce((total, [combre, coeficient]) => total + combre * coeficient, 0) / liste.reduce((total, [_, coeficient]) => total + coeficient, 0);
 
+    // --- Custom notes: refresh helper ---
+    function refreshNotes() {
+      TableParent.dataset.averageCalculator = "";
+      Calculator(TableParent, averageTableAnalysis(averageTable));
+      TableParent.dataset.averageCalculator = "true";
+    }
+
     // Pour chaque ligne
     log(" > > Line by Line analysis -> [ Starting ]");
     for (line of gradeTable.tBodies[0].rows) {
@@ -564,6 +673,72 @@ function noteTableAnalysis(options) {
         relevemoyenneTitleCell = line.insertCell(tableConfiguration["relevemoyenne"][0]);
         relevemoyenneTitleCell.classList.add("relevemoyenne", "ng-star-inserted");
       }
+
+      // --- Inject custom notes (after artificial cells are in correct positions) ---
+      if (lineTitle && tableConfiguration["notes"][0] !== false) {
+        const cdNotesCell = line.cells[tableConfiguration["notes"][0]];
+        const cdSubjectName = lineTitle; // capture before next iteration overwrites lineTitle
+        if (cdNotesCell) {
+          cdNotesCell.querySelectorAll(".cd-custom-note-wrapper, .cd-add-note-btn").forEach((el) => el.remove());
+
+          getCustomNotes(cdSubjectName).forEach((cn, cdIndex) => {
+            const wrapper = document.createElement("span");
+            wrapper.className = "cd-custom-note-wrapper";
+
+            const noteBtn = document.createElement("button");
+            noteBtn.type = "button";
+            noteBtn.className = "cd-custom-note-btn";
+
+            const valeurSpan = document.createElement("span");
+            valeurSpan.className = "valeur ng-star-inserted";
+            valeurSpan.appendChild(document.createTextNode(String(cn.note).replace(".", ",")));
+
+            if (cn.sur !== 20) {
+              const q = document.createElement("span");
+              q.className = "quotien ng-star-inserted";
+              q.appendChild(document.createTextNode("/" + cn.sur));
+              valeurSpan.appendChild(q);
+            }
+            if (cn.coef !== 1) {
+              const c = document.createElement("span");
+              c.className = "coef ng-star-inserted";
+              c.appendChild(document.createTextNode("(" + cn.coef + ")"));
+              valeurSpan.appendChild(c);
+            }
+
+            noteBtn.appendChild(valeurSpan);
+
+            const delBtn = document.createElement("button");
+            delBtn.type = "button";
+            delBtn.className = "cd-custom-note-delete";
+            delBtn.title = "Supprimer cette note simulée";
+            delBtn.textContent = "✕";
+            delBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const arr = getCustomNotes(cdSubjectName);
+              arr.splice(cdIndex, 1);
+              saveCustomNotes(cdSubjectName, arr);
+              refreshNotes();
+            });
+
+            wrapper.appendChild(noteBtn);
+            wrapper.appendChild(delBtn);
+            cdNotesCell.appendChild(wrapper);
+          });
+
+          const addBtn = document.createElement("button");
+          addBtn.type = "button";
+          addBtn.className = "cd-add-note-btn";
+          addBtn.title = "Ajouter une note simulée";
+          addBtn.textContent = "+";
+          addBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openCustomNoteModal(cdSubjectName, refreshNotes);
+          });
+          cdNotesCell.appendChild(addBtn);
+        }
+      }
+      // --- End inject custom notes ---
 
       // Si il y au moins une note ou si la matiere contient des sous-matiere
       lineProperties = {
