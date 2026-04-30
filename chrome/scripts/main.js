@@ -264,9 +264,9 @@ function noteTableAnalysis(options) {
       .cd-custom-note-wrapper button.cd-custom-note-btn { opacity: 0.5; filter: grayscale(20%); cursor: default; border: none; background: none; padding: 0; }
       .cd-custom-note-delete {
         position: absolute; top: -5px; right: -5px;
-        width: 14px; height: 14px; border-radius: 50%; border: none;
-        background: var(--primary-color); color: white; font-size: 8px; font-weight: 700;
-        cursor: pointer; padding: 0; line-height: 1;
+        width: 13px; height: 13px; border-radius: 50%; border: none;
+        background: var(--primary-color); color: white;
+        cursor: pointer; padding: 0;
         display: flex; align-items: center; justify-content: center;
         opacity: 0; transition: opacity 0.15s; z-index: 10;
       }
@@ -274,17 +274,17 @@ function noteTableAnalysis(options) {
       .cd-add-note-btn {
         display: inline-flex; align-items: center; justify-content: center;
         width: 18px; height: 18px; border-radius: 50%;
-        border: 1.5px solid var(--primary-color); background: transparent; color: var(--primary-color);
-        font-size: 14px; cursor: pointer; padding: 0; margin-left: 4px;
-        line-height: 1; font-weight: 700; vertical-align: middle; transition: all 0.15s;
+        border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);
+        cursor: pointer; padding: 0; margin-left: 4px;
+        vertical-align: middle; transition: all 0.15s;
       }
       .cd-add-note-btn:hover { background: var(--primary-color); color: white; }
       .cd-clear-notes-btn {
         display: inline-flex; align-items: center; justify-content: center;
         width: 18px; height: 18px; border-radius: 50%;
-        border: 1.5px solid var(--primary-color); background: transparent; color: var(--primary-color);
-        font-size: 11px; cursor: pointer; padding: 0; margin-left: 2px;
-        line-height: 1; font-weight: 700; vertical-align: middle; transition: all 0.15s;
+        border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);
+        cursor: pointer; padding: 0; margin-left: 2px;
+        vertical-align: middle; transition: all 0.15s;
       }
       .cd-clear-notes-btn:hover { background: var(--primary-color); color: white; }
       .cd-modal-confirm-msg { margin: 0 0 16px; font-size: 13px; }
@@ -827,7 +827,7 @@ function noteTableAnalysis(options) {
             delBtn.type = "button";
             delBtn.className = "cd-custom-note-delete";
             delBtn.title = "Supprimer cette note simulée";
-            delBtn.textContent = "✕";
+            delBtn.innerHTML = '<svg width="7" height="7" viewBox="0 0 7 7" fill="none" style="pointer-events:none"><line x1="1" y1="1" x2="6" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="1" x2="1" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
             delBtn.addEventListener("click", (e) => {
               e.stopPropagation();
               const arr = getCustomNotes(cdSubjectName);
@@ -845,7 +845,7 @@ function noteTableAnalysis(options) {
           addBtn.type = "button";
           addBtn.className = "cd-add-note-btn";
           addBtn.title = "Ajouter une note simulée";
-          addBtn.textContent = "+";
+          addBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>';
           addBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             openCustomNoteModal(cdSubjectName, refreshNotes);
@@ -858,7 +858,7 @@ function noteTableAnalysis(options) {
             clearBtn.type = "button";
             clearBtn.className = "cd-clear-notes-btn";
             clearBtn.title = "Supprimer toutes les notes simulées";
-            clearBtn.textContent = "✕";
+            clearBtn.innerHTML = '<svg width="9" height="9" viewBox="0 0 9 9" fill="none" style="pointer-events:none"><line x1="1.5" y1="1.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><line x1="7.5" y1="1.5" x2="1.5" y2="7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
             clearBtn.addEventListener("click", (e) => {
               e.stopPropagation();
               openClearNotesModal(cdSubjectName, cdExistingNotes.length, refreshNotes);
