@@ -364,6 +364,12 @@ function noteTableAnalysis(options) {
       const coef = parseFloat(overlay.querySelector("#cd-f-coef").value);
       const err = overlay.querySelector("#cd-modal-error");
       if (isNaN(note) || isNaN(sur) || isNaN(coef) || note < 0 || sur <= 0 || coef <= 0) {
+        err.textContent = "Valeurs invalides.";
+        err.style.display = "block";
+        return;
+      }
+      if (note > sur) {
+        err.textContent = "La note ne peut pas dépasser le barème (" + sur + ").";
         err.style.display = "block";
         return;
       }
