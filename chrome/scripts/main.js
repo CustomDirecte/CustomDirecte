@@ -261,11 +261,11 @@ function noteTableAnalysis(options) {
     customNoteCSS.id = "cd-custom-note-css";
     customNoteCSS.textContent = `
       .cd-custom-note-wrapper { position: relative; display: inline-block; margin: 1px 4px; vertical-align: middle; }
-      .cd-custom-note-wrapper button.cd-custom-note-btn { opacity: 0.5; filter: grayscale(20%); cursor: default; }
+      .cd-custom-note-wrapper button.cd-custom-note-btn { opacity: 0.5; filter: grayscale(20%); cursor: default; border: none; background: none; padding: 0; }
       .cd-custom-note-delete {
         position: absolute; top: -5px; right: -5px;
         width: 14px; height: 14px; border-radius: 50%; border: none;
-        background: #C8194A; color: white; font-size: 8px; font-weight: 700;
+        background: var(--primary-color); color: white; font-size: 8px; font-weight: 700;
         cursor: pointer; padding: 0; line-height: 1;
         display: flex; align-items: center; justify-content: center;
         opacity: 0; transition: opacity 0.15s; z-index: 10;
@@ -274,29 +274,48 @@ function noteTableAnalysis(options) {
       .cd-add-note-btn {
         display: inline-flex; align-items: center; justify-content: center;
         width: 18px; height: 18px; border-radius: 50%;
-        border: 1.5px solid #C8194A; background: transparent; color: #C8194A;
+        border: 1.5px solid var(--primary-color); background: transparent; color: var(--primary-color);
         font-size: 14px; cursor: pointer; padding: 0; margin-left: 4px;
         line-height: 1; font-weight: 700; vertical-align: middle; transition: all 0.15s;
       }
-      .cd-add-note-btn:hover { background: #C8194A; color: white; }
+      .cd-add-note-btn:hover { background: var(--primary-color); color: white; }
+      .cd-clear-notes-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 18px; height: 18px; border-radius: 50%;
+        border: 1.5px solid var(--primary-color); background: transparent; color: var(--primary-color);
+        font-size: 11px; cursor: pointer; padding: 0; margin-left: 2px;
+        line-height: 1; font-weight: 700; vertical-align: middle; transition: all 0.15s;
+      }
+      .cd-clear-notes-btn:hover { background: var(--primary-color); color: white; }
+      .cd-modal-confirm-msg { margin: 0 0 16px; font-size: 13px; }
+      .cd-global-clear-wrapper { display: flex; justify-content: flex-end; margin-top: 8px; }
+      .cd-global-clear-btn {
+        display: inline-flex; align-items: center;
+        padding: 4px 14px; border-radius: 999px; border: none;
+        cursor: pointer; font-size: 11px; font-weight: 600;
+        font-family: inherit; transition: all 0.15s;
+        background: var(--smalldark-placeholder-color); color: inherit;
+      }
+      .cd-global-clear-btn:hover { background: var(--dark-placeholder-color); }
       .cd-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99999; display: flex; align-items: center; justify-content: center; }
-      .cd-modal { background: white; border-radius: 12px; padding: 24px 28px; min-width: 300px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); font-family: Montserrat, sans-serif; }
-      .cd-modal h3 { margin: 0 0 4px; color: #C8194A; font-size: 15px; font-weight: 700; }
-      .cd-modal-subject { margin: 0 0 16px; font-size: 12px; color: #888; }
+      @keyframes cd-animate-pop { 0% { opacity: 0; transform: scale(0.5, 0.5); } 100% { opacity: 1; transform: scale(1, 1); } }
+      .cd-modal { background: var(--body-color); border-radius: var(--table-radius); padding: 24px 28px; min-width: 300px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: cd-animate-pop 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48); }
+      .cd-modal h3 { margin: 0 0 4px; color: var(--primary-color); font-size: 15px; font-weight: 700; }
+      .cd-modal-subject { margin: 0 0 16px; font-size: 12px; color: var(--dark-placeholder-color); }
       .cd-modal-row { display: flex; gap: 8px; align-items: flex-end; }
       .cd-modal-field { display: flex; flex-direction: column; gap: 4px; }
-      .cd-modal-field label { font-size: 10px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-      .cd-modal-field input { width: 64px; padding: 7px 8px; border: 1.5px solid #e0e0e0; border-radius: 7px; font-size: 14px; text-align: center; outline: none; transition: border-color 0.15s; font-family: inherit; }
-      .cd-modal-field input:focus { border-color: #C8194A; }
-      .cd-modal-sep { font-size: 22px; color: #ccc; padding-bottom: 3px; font-weight: 300; }
+      .cd-modal-field label { font-size: 10px; color: var(--dark-placeholder-color); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+      .cd-modal-field input { width: 64px; padding: 7px 8px; border: 1.5px solid var(--smalldark-placeholder-color); border-radius: var(--borderRadius-thin); font-size: 14px; text-align: center; outline: none; transition: border-color 0.15s; font-family: inherit; background: var(--light-placeholder-color); color: inherit; }
+      .cd-modal-field input:focus { border-color: var(--primary-color); }
+      .cd-modal-sep { font-size: 22px; color: var(--dark-placeholder-color); padding-bottom: 3px; font-weight: 300; }
       .cd-modal-coef-wrap { margin-left: 8px; }
-      .cd-modal-error { color: #C8194A; font-size: 11px; margin-top: 8px; display: none; }
+      .cd-modal-error { color: var(--primary-color); font-size: 11px; margin-top: 8px; display: none; }
       .cd-modal-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
-      .cd-modal-btn { padding: 8px 16px; border-radius: 7px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; transition: all 0.15s; font-family: inherit; letter-spacing: 0.3px; }
-      .cd-modal-btn-primary { background: #C8194A; color: white; }
-      .cd-modal-btn-primary:hover { background: #a61540; }
-      .cd-modal-btn-secondary { background: #f0f0f0; color: #555; }
-      .cd-modal-btn-secondary:hover { background: #e0e0e0; }
+      .cd-modal-btn { padding: 8px 20px; border-radius: 999px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; font-family: inherit; }
+      .cd-modal-btn-primary { background: var(--primary-color); color: white; }
+      .cd-modal-btn-primary:hover { background: var(--smalldark-primary-color); }
+      .cd-modal-btn-secondary { background: var(--smalldark-placeholder-color); color: inherit; }
+      .cd-modal-btn-secondary:hover { background: var(--dark-placeholder-color); }
     `;
     document.head.appendChild(customNoteCSS);
   }
@@ -351,6 +370,66 @@ function noteTableAnalysis(options) {
       const arr = getCustomNotes(subjectName);
       arr.push({ note, sur, coef });
       saveCustomNotes(subjectName, arr);
+      overlay.remove();
+      onSuccess();
+    });
+  }
+
+  function openClearAllNotesModal(totalNotes, subjectCount, onConfirm) {
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Tout supprimer</h3>' +
+        '<p class="cd-modal-confirm-msg">' +
+          totalNotes + ' note simulée' + (totalNotes > 1 ? 's' : '') +
+          ' sur ' + subjectCount + ' matière' + (subjectCount > 1 ? 's' : '') +
+          ' seront supprimées.' +
+        '</p>' +
+        '<div class="cd-modal-actions">' +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-confirm">Supprimer tout</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    overlay.querySelector("#cd-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-confirm").click();
+    });
+
+    overlay.querySelector("#cd-confirm").addEventListener("click", () => {
+      overlay.remove();
+      onConfirm();
+    });
+  }
+
+  function openClearNotesModal(subjectName, count, onSuccess) {
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Supprimer tout</h3>' +
+        '<p class="cd-modal-subject">' + subjectName + '</p>' +
+        '<p class="cd-modal-confirm-msg">' + count + ' note simulée' + (count > 1 ? 's' : '') + ' seront supprimées.</p>' +
+        '<div class="cd-modal-actions">' +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-confirm">Supprimer</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    overlay.querySelector("#cd-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-confirm").click();
+    });
+
+    overlay.querySelector("#cd-confirm").addEventListener("click", () => {
+      saveCustomNotes(subjectName, []);
       overlay.remove();
       onSuccess();
     });
@@ -640,6 +719,36 @@ function noteTableAnalysis(options) {
       TableParent.dataset.averageCalculator = "true";
     }
 
+    // --- Global clear all custom notes button ---
+    const cdExistingWrapper = TableParent.querySelector(".cd-global-clear-wrapper");
+    if (cdExistingWrapper) cdExistingWrapper.remove();
+
+    const cdAllKeys = Object.keys(localStorage).filter(k => k.startsWith("customNotes_"));
+    const cdTotalCount = cdAllKeys.reduce((sum, k) => {
+      try { return sum + JSON.parse(localStorage.getItem(k) || "[]").length; } catch { return sum; }
+    }, 0);
+
+    if (cdTotalCount > 0) {
+      const cdSubjectCount = cdAllKeys.filter(k => {
+        try { return JSON.parse(localStorage.getItem(k) || "[]").length > 0; } catch { return false; }
+      }).length;
+      const cdGlobalClearBtn = document.createElement("button");
+      cdGlobalClearBtn.type = "button";
+      cdGlobalClearBtn.className = "cd-global-clear-btn";
+      cdGlobalClearBtn.textContent = "Supprimer toutes les notes simulées (" + cdTotalCount + ")";
+      cdGlobalClearBtn.addEventListener("click", () => {
+        openClearAllNotesModal(cdTotalCount, cdSubjectCount, () => {
+          cdAllKeys.forEach(k => localStorage.removeItem(k));
+          refreshNotes();
+        });
+      });
+      const cdWrapper = document.createElement("div");
+      cdWrapper.className = "cd-global-clear-wrapper";
+      cdWrapper.appendChild(cdGlobalClearBtn);
+      gradeTable.after(cdWrapper);
+    }
+    // --- End global clear button ---
+
     // Pour chaque ligne
     log(" > > Line by Line analysis -> [ Starting ]");
     for (line of gradeTable.tBodies[0].rows) {
@@ -679,7 +788,7 @@ function noteTableAnalysis(options) {
         const cdNotesCell = line.cells[tableConfiguration["notes"][0]];
         const cdSubjectName = lineTitle; // capture before next iteration overwrites lineTitle
         if (cdNotesCell) {
-          cdNotesCell.querySelectorAll(".cd-custom-note-wrapper, .cd-add-note-btn").forEach((el) => el.remove());
+          cdNotesCell.querySelectorAll(".cd-custom-note-wrapper, .cd-add-note-btn, .cd-clear-notes-btn").forEach((el) => el.remove());
 
           getCustomNotes(cdSubjectName).forEach((cn, cdIndex) => {
             const wrapper = document.createElement("span");
@@ -736,6 +845,22 @@ function noteTableAnalysis(options) {
             openCustomNoteModal(cdSubjectName, refreshNotes);
           });
           cdNotesCell.appendChild(addBtn);
+
+          const cdExistingNotes = getCustomNotes(cdSubjectName);
+          if (cdExistingNotes.length > 0) {
+            const clearBtn = document.createElement("button");
+            clearBtn.type = "button";
+            clearBtn.className = "cd-clear-notes-btn";
+            clearBtn.title = "Supprimer toutes les notes simulées";
+            clearBtn.textContent = "✕";
+            clearBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              openClearNotesModal(cdSubjectName, cdExistingNotes.length, refreshNotes);
+            });
+            cdNotesCell.appendChild(clearBtn);
+          }
+          // Mark the row so the average override is skipped when custom notes exist
+          line.dataset.cdHasCustomNotes = getCustomNotes(cdSubjectName).length > 0 ? "1" : "";
         }
       }
       // --- End inject custom notes ---
@@ -885,7 +1010,7 @@ function noteTableAnalysis(options) {
 
       // Calcule de la moyenne de la ligne
       lineProperties.average = moyennePondere(lineProperties.GradesAndCoef);
-      if (!options["AveragesPerSubjectRecalculation"] && averageTableInfos && averageTableInfos[lineTitle]) {
+      if (!options["AveragesPerSubjectRecalculation"] && !line.dataset.cdHasCustomNotes && averageTableInfos && averageTableInfos[lineTitle]) {
         if (averageTableInfos[lineTitle].average) lineProperties.average = averageTableInfos[lineTitle].average;
       }
       Lines.push(lineProperties);
