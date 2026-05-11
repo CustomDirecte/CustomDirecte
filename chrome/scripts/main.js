@@ -316,6 +316,28 @@ function noteTableAnalysis(options) {
       .cd-modal-btn-primary:hover { background: var(--smalldark-primary-color); }
       .cd-modal-btn-secondary { background: var(--smalldark-placeholder-color); color: inherit; }
       .cd-modal-btn-secondary:hover { background: var(--dark-placeholder-color); }
+      .cd-add-subject-btn {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 14px; border-radius: 999px;
+        border: 1.5px solid var(--primary-color); background: transparent; color: var(--primary-color);
+        cursor: pointer; font-size: 11px; font-weight: 600;
+        font-family: inherit; transition: all 0.15s;
+      }
+      .cd-add-subject-btn:hover { background: var(--primary-color); color: white; }
+      .cd-subject-delete-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 18px; height: 18px; border-radius: 50%;
+        border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);
+        cursor: pointer; padding: 0; margin-left: 6px;
+        vertical-align: middle; transition: all 0.15s;
+      }
+      .cd-subject-delete-btn:hover { background: var(--primary-color); color: white; }
+      .cd-custom-subject-badge {
+        display: inline-block; font-size: 9px; font-weight: 700;
+        color: var(--primary-color); border: 1px solid var(--primary-color);
+        border-radius: 3px; padding: 1px 4px; margin-left: 6px;
+        opacity: 0.7; vertical-align: middle;
+      }
     `;
     document.head.appendChild(customNoteCSS);
   }
@@ -327,6 +349,15 @@ function noteTableAnalysis(options) {
 
   function saveCustomNotes(subjectName, notes) {
     localStorage.setItem("customNotes_" + subjectName, JSON.stringify(notes));
+  }
+
+  function getCustomSubjects() {
+    try { return JSON.parse(localStorage.getItem("customSubjects") || "[]"); }
+    catch { return []; }
+  }
+
+  function saveCustomSubjects(subjects) {
+    localStorage.setItem("customSubjects", JSON.stringify(subjects));
   }
 
   function openCustomNoteModal(subjectName, onSuccess) {
@@ -438,6 +469,93 @@ function noteTableAnalysis(options) {
       saveCustomNotes(subjectName, []);
       overlay.remove();
       onSuccess();
+    });
+  }
+
+  function openAddSubjectModal(onSuccess) {
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Nouvelle matière</h3>' +
+        '<p class="cd-modal-subject">Matière personnalisée</p>' +
+        '<div style="display:flex;flex-direction:column;gap:12px;">' +
+          '<div class="cd-modal-field">' +
+            '<label>Nom</label>' +
+            '<input type="text" id="cd-f-subj-name" placeholder="ex. Philosophie" style="width:180px;text-align:left;">' +
+          '</div>' +
+          '<div class="cd-modal-field">' +
+            '<label>Coef.</label>' +
+            '<input type="number" id="cd-f-subj-coef" min="0.1" step="0.5" value="1">' +
+          '</div>' +
+        '</div>' +
+        '<div class="cd-modal-error" id="cd-modal-subj-error"></div>' +
+        '<div class="cd-modal-actions">' +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-subj-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-subj-add">Ajouter</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector("#cd-f-subj-name").focus();
+
+    overlay.querySelector("#cd-subj-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-subj-add").click();
+    });
+
+    overlay.querySelector("#cd-subj-add").addEventListener("click", () => {
+      const name = overlay.querySelector("#cd-f-subj-name").value.trim();
+      const coef = parseFloat(overlay.querySelector("#cd-f-subj-coef").value);
+      const err = overlay.querySelector("#cd-modal-subj-error");
+      if (!name) {
+        err.textContent = "Le nom ne peut pas être vide.";
+        err.style.display = "block";
+        return;
+      }
+      if (isNaN(coef) || coef <= 0) {
+        err.textContent = "Le coefficient doit être supérieur à 0.";
+        err.style.display = "block";
+        return;
+      }
+      const subjects = getCustomSubjects();
+      if (subjects.some(s => s.name === name)) {
+        err.textContent = "Une matière avec ce nom existe déjà.";
+        err.style.display = "block";
+        return;
+      }
+      subjects.push({ name, coef });
+      saveCustomSubjects(subjects);
+      overlay.remove();
+      onSuccess();
+    });
+  }
+
+  function openDeleteSubjectModal(subjectName, onConfirm) {
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Supprimer la matière</h3>' +
+        '<p class="cd-modal-confirm-msg">La matière <strong>' + subjectName + '</strong> et toutes ses notes simulées seront supprimées.</p>' +
+        '<div class="cd-modal-actions">' +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-confirm">Supprimer</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    overlay.querySelector("#cd-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-confirm").click();
+    });
+
+    overlay.querySelector("#cd-confirm").addEventListener("click", () => {
+      overlay.remove();
+      onConfirm();
     });
   }
   // --- End Custom Notes Setup ---
@@ -725,7 +843,7 @@ function noteTableAnalysis(options) {
       TableParent.dataset.averageCalculator = "true";
     }
 
-    // --- Global clear all custom notes button ---
+    // --- Global action buttons (add subject + clear notes) ---
     const cdExistingWrapper = TableParent.querySelector(".cd-global-clear-wrapper");
     if (cdExistingWrapper) cdExistingWrapper.remove();
 
@@ -733,6 +851,16 @@ function noteTableAnalysis(options) {
     const cdTotalCount = cdAllKeys.reduce((sum, k) => {
       try { return sum + JSON.parse(localStorage.getItem(k) || "[]").length; } catch { return sum; }
     }, 0);
+
+    const cdWrapper = document.createElement("div");
+    cdWrapper.className = "cd-global-clear-wrapper";
+
+    const cdAddSubjectBtn = document.createElement("button");
+    cdAddSubjectBtn.type = "button";
+    cdAddSubjectBtn.className = "cd-add-subject-btn";
+    cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière';
+    cdAddSubjectBtn.addEventListener("click", () => { openAddSubjectModal(refreshNotes); });
+    cdWrapper.appendChild(cdAddSubjectBtn);
 
     if (cdTotalCount > 0) {
       const cdSubjectCount = cdAllKeys.filter(k => {
@@ -748,12 +876,73 @@ function noteTableAnalysis(options) {
           refreshNotes();
         });
       });
-      const cdWrapper = document.createElement("div");
-      cdWrapper.className = "cd-global-clear-wrapper";
       cdWrapper.appendChild(cdGlobalClearBtn);
-      gradeTable.after(cdWrapper);
     }
-    // --- End global clear button ---
+
+    gradeTable.after(cdWrapper);
+    // --- End global action buttons ---
+
+    // --- Inject custom subject rows ---
+    gradeTable.tBodies[0].querySelectorAll("tr.cd-custom-subject-row").forEach(r => r.remove());
+
+    const cdCustomSubjectsList = getCustomSubjects();
+    cdCustomSubjectsList.forEach((subject) => {
+      const tr = document.createElement("tr");
+      tr.className = "ng-star-inserted cd-custom-subject-row";
+
+      const totalCols = gradeTable.tHead.rows[0].cells.length;
+      for (let i = 0; i < totalCols; i++) tr.insertCell(i).className = "ng-star-inserted";
+
+      const disCol = tableConfiguration["discipline"][0];
+      const coefCol = tableConfiguration["coef"] ? tableConfiguration["coef"][0] : false;
+      const notesCol = tableConfiguration["notes"] ? tableConfiguration["notes"][0] : false;
+      const avgCol = tableConfiguration["relevemoyenne"] ? tableConfiguration["relevemoyenne"][0] : false;
+      const classAvgCol = tableConfiguration["moyenneclasse"] ? tableConfiguration["moyenneclasse"][0] : false;
+
+      tr.cells[disCol].classList.add("discipline");
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "nommatiere ng-star-inserted";
+      nameSpan.textContent = subject.name;
+      tr.cells[disCol].appendChild(nameSpan);
+
+      const badge = document.createElement("span");
+      badge.className = "cd-custom-subject-badge";
+      badge.textContent = "perso";
+      tr.cells[disCol].appendChild(badge);
+
+      const csDelBtn = document.createElement("button");
+      csDelBtn.type = "button";
+      csDelBtn.className = "cd-subject-delete-btn";
+      csDelBtn.title = "Supprimer cette matière";
+      csDelBtn.innerHTML = '<svg width="9" height="9" viewBox="0 0 9 9" fill="none" style="pointer-events:none"><line x1="1.5" y1="1.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><line x1="7.5" y1="1.5" x2="1.5" y2="7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+      const capturedSubjectName = subject.name;
+      csDelBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openDeleteSubjectModal(capturedSubjectName, () => {
+          const subs = getCustomSubjects();
+          const idx = subs.findIndex(s => s.name === capturedSubjectName);
+          if (idx !== -1) subs.splice(idx, 1);
+          saveCustomSubjects(subs);
+          localStorage.removeItem("customNotes_" + capturedSubjectName);
+          refreshNotes();
+        });
+      });
+      tr.cells[disCol].appendChild(csDelBtn);
+
+      if (coefCol !== false) {
+        tr.cells[coefCol].classList.add("coef");
+        const coefSpan = document.createElement("span");
+        coefSpan.className = "ng-star-inserted";
+        coefSpan.textContent = String(subject.coef);
+        tr.cells[coefCol].appendChild(coefSpan);
+      }
+      if (notesCol !== false) tr.cells[notesCol].classList.add("notes");
+      if (avgCol !== false) tr.cells[avgCol].classList.add("relevemoyenne");
+      if (classAvgCol !== false) tr.cells[classAvgCol].classList.add("moyenneclasse");
+
+      gradeTable.tBodies[0].appendChild(tr);
+    });
+    // --- End inject custom subject rows ---
 
     // Pour chaque ligne
     log(" > > Line by Line analysis -> [ Starting ]");
@@ -764,14 +953,14 @@ function noteTableAnalysis(options) {
 
       lineTitle = line.cells[tableConfiguration["discipline"][0]].querySelector(".nommatiere") ? line.cells[tableConfiguration["discipline"][0]].querySelector(".nommatiere").innerText : false;
 
-      if (tableConfiguration["coef"][1] == false && options["AveragesPerSubjectDisplay"]) {
+      if (tableConfiguration["coef"][1] == false && options["AveragesPerSubjectDisplay"] && !line.classList.contains("cd-custom-subject-row")) {
         log(" > > > Line Element {coef} -> [ ⚠️ Non-existent ] -> [ Genere ]");
         coefTitleCell = line.insertCell(tableConfiguration["coef"][0]);
         coefTitleCell.innerHTML = `<span class="ng-star-inserted">1</span>`;
         coefTitleCell.classList.add("coef", "ng-star-inserted");
       }
 
-      if (tableConfiguration["moyenneclasse"][1] == false && options["ClassAveragesDisplay2"] && averageTableInfos) {
+      if (tableConfiguration["moyenneclasse"][1] == false && options["ClassAveragesDisplay2"] && averageTableInfos && !line.classList.contains("cd-custom-subject-row")) {
         log(" > > > Line Element {moyenneclasse} -> [ Genere ]");
         moyenneclasseTitleCell = line.insertCell(tableConfiguration["moyenneclasse"][0]);
         moyenneclasseTitleCell.classList.add("moyenneclasse", "ng-star-inserted");
@@ -783,7 +972,7 @@ function noteTableAnalysis(options) {
         }
       }
 
-      if (tableConfiguration["relevemoyenne"][1] == false && options["AveragesPerSubjectDisplay"]) {
+      if (tableConfiguration["relevemoyenne"][1] == false && options["AveragesPerSubjectDisplay"] && !line.classList.contains("cd-custom-subject-row")) {
         log(" > > > Line Element {relevemoyenne} -> [ ⚠️ Non-existent ] -> [ Genere ]");
         relevemoyenneTitleCell = line.insertCell(tableConfiguration["relevemoyenne"][0]);
         relevemoyenneTitleCell.classList.add("relevemoyenne", "ng-star-inserted");
