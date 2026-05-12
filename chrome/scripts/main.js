@@ -978,63 +978,68 @@ function noteTableAnalysis(options) {
     const cdExistingWrapper = TableParent.querySelector(".cd-global-clear-wrapper");
     if (cdExistingWrapper) cdExistingWrapper.remove();
 
-    const cdAllKeys = Object.keys(localStorage).filter(k => k.startsWith("customNotes_"));
-    const cdTotalCount = cdAllKeys.reduce((sum, k) => {
-      try { return sum + JSON.parse(localStorage.getItem(k) || "[]").length; } catch { return sum; }
-    }, 0);
-
     const cdWrapper = document.createElement("div");
     cdWrapper.className = "cd-global-clear-wrapper";
 
-    const cdAddSubjectBtn = document.createElement("button");
-    cdAddSubjectBtn.type = "button";
-    cdAddSubjectBtn.className = "cd-add-subject-btn";
-    cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière custom';
-    cdAddSubjectBtn.addEventListener("click", () => { openAddSubjectModal(refreshNotes); });
-    cdWrapper.appendChild(cdAddSubjectBtn);
-
-    if (cdTotalCount > 0) {
-      const cdSubjectCount = cdAllKeys.filter(k => {
-        try { return JSON.parse(localStorage.getItem(k) || "[]").length > 0; } catch { return false; }
-      }).length;
-      const cdGlobalClearBtn = document.createElement("button");
-      cdGlobalClearBtn.type = "button";
-      cdGlobalClearBtn.className = "cd-global-clear-btn";
-      cdGlobalClearBtn.textContent = "Supprimer toutes les notes custom (" + cdTotalCount + ")";
-      cdGlobalClearBtn.addEventListener("click", () => {
-        openClearAllNotesModal(cdTotalCount, cdSubjectCount, () => {
-          cdAllKeys.forEach(k => localStorage.removeItem(k));
-          refreshNotes();
-        });
-      });
-      cdWrapper.appendChild(cdGlobalClearBtn);
+    if (options["customSubjectsFeature"] !== false && options["customNotesFeature"] !== false) {
+      const cdAddSubjectBtn = document.createElement("button");
+      cdAddSubjectBtn.type = "button";
+      cdAddSubjectBtn.className = "cd-add-subject-btn";
+      cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière custom';
+      cdAddSubjectBtn.addEventListener("click", () => { openAddSubjectModal(refreshNotes); });
+      cdWrapper.appendChild(cdAddSubjectBtn);
     }
 
-    const cdModAllKeys = Object.keys(localStorage).filter(k => k.startsWith("modifiedNotes_"));
-    const cdTotalMods = cdModAllKeys.reduce((sum, k) => {
-      try { return sum + Object.keys(JSON.parse(localStorage.getItem(k) || "{}")).length; } catch { return sum; }
-    }, 0);
-    if (cdTotalMods > 0) {
-      const cdResetAllModsBtn = document.createElement("button");
-      cdResetAllModsBtn.type = "button";
-      cdResetAllModsBtn.className = "cd-reset-all-mods-btn";
-      cdResetAllModsBtn.textContent = "Rétablir toutes les notes modifiées (" + cdTotalMods + ")";
-      cdResetAllModsBtn.addEventListener("click", () => {
-        openResetAllModsModal(cdTotalMods, () => {
-          cdModAllKeys.forEach(k => localStorage.removeItem(k));
-          refreshNotes();
+    if (options["customNotesFeature"] !== false) {
+      const cdAllKeys = Object.keys(localStorage).filter(k => k.startsWith("customNotes_"));
+      const cdTotalCount = cdAllKeys.reduce((sum, k) => {
+        try { return sum + JSON.parse(localStorage.getItem(k) || "[]").length; } catch { return sum; }
+      }, 0);
+      if (cdTotalCount > 0) {
+        const cdSubjectCount = cdAllKeys.filter(k => {
+          try { return JSON.parse(localStorage.getItem(k) || "[]").length > 0; } catch { return false; }
+        }).length;
+        const cdGlobalClearBtn = document.createElement("button");
+        cdGlobalClearBtn.type = "button";
+        cdGlobalClearBtn.className = "cd-global-clear-btn";
+        cdGlobalClearBtn.textContent = "Supprimer toutes les notes custom (" + cdTotalCount + ")";
+        cdGlobalClearBtn.addEventListener("click", () => {
+          openClearAllNotesModal(cdTotalCount, cdSubjectCount, () => {
+            cdAllKeys.forEach(k => localStorage.removeItem(k));
+            refreshNotes();
+          });
         });
-      });
-      cdWrapper.appendChild(cdResetAllModsBtn);
+        cdWrapper.appendChild(cdGlobalClearBtn);
+      }
     }
 
-    gradeTable.after(cdWrapper);
+    if (options["editNotesFeature"] !== false) {
+      const cdModAllKeys = Object.keys(localStorage).filter(k => k.startsWith("modifiedNotes_"));
+      const cdTotalMods = cdModAllKeys.reduce((sum, k) => {
+        try { return sum + Object.keys(JSON.parse(localStorage.getItem(k) || "{}")).length; } catch { return sum; }
+      }, 0);
+      if (cdTotalMods > 0) {
+        const cdResetAllModsBtn = document.createElement("button");
+        cdResetAllModsBtn.type = "button";
+        cdResetAllModsBtn.className = "cd-reset-all-mods-btn";
+        cdResetAllModsBtn.textContent = "Rétablir toutes les notes modifiées (" + cdTotalMods + ")";
+        cdResetAllModsBtn.addEventListener("click", () => {
+          openResetAllModsModal(cdTotalMods, () => {
+            cdModAllKeys.forEach(k => localStorage.removeItem(k));
+            refreshNotes();
+          });
+        });
+        cdWrapper.appendChild(cdResetAllModsBtn);
+      }
+    }
+
+    if (cdWrapper.children.length > 0) gradeTable.after(cdWrapper);
     // --- End global action buttons ---
 
     // --- Inject custom subject rows ---
     gradeTable.tBodies[0].querySelectorAll("tr.cd-custom-subject-row").forEach(r => r.remove());
 
-    const cdCustomSubjectsList = getCustomSubjects();
+    const cdCustomSubjectsList = (options["customSubjectsFeature"] !== false && options["customNotesFeature"] !== false) ? getCustomSubjects() : [];
     cdCustomSubjectsList.forEach((subject) => {
       const tr = document.createElement("tr");
       tr.className = "ng-star-inserted cd-custom-subject-row";
@@ -1142,6 +1147,7 @@ function noteTableAnalysis(options) {
           });
 
           // Wrap each ED note button with edit controls and apply any modifications
+          if (options["editNotesFeature"] !== false) {
           const cdMods = getModifiedNotes(cdSubjectName);
           [...cdNotesCell.querySelectorAll("button")].forEach((btn, cdEdIdx) => {
             const valeurSpan = btn.querySelector(":scope > span.valeur");
@@ -1239,8 +1245,9 @@ function noteTableAnalysis(options) {
               edWrapper.appendChild(resetBtn);
             }
           });
-          // --- End inject ED note edit controls ---
+          } // --- End inject ED note edit controls ---
 
+          if (options["customNotesFeature"] !== false) {
           getCustomNotes(cdSubjectName).forEach((cn, cdIndex) => {
             const wrapper = document.createElement("span");
             wrapper.className = "cd-custom-note-wrapper";
@@ -1310,8 +1317,12 @@ function noteTableAnalysis(options) {
             });
             cdNotesCell.appendChild(clearBtn);
           }
+          } // --- End inject custom notes ---
+
           // Mark the row so the average override is skipped when custom or modified notes exist
-          line.dataset.cdHasCustomNotes = (getCustomNotes(cdSubjectName).length > 0 || Object.keys(getModifiedNotes(cdSubjectName)).length > 0) ? "1" : "";
+          const _cdHasCustom = options["customNotesFeature"] !== false && getCustomNotes(cdSubjectName).length > 0;
+          const _cdHasMods = options["editNotesFeature"] !== false && Object.keys(getModifiedNotes(cdSubjectName)).length > 0;
+          line.dataset.cdHasCustomNotes = (_cdHasCustom || _cdHasMods) ? "1" : "";
         }
       }
       // --- End inject custom notes ---
