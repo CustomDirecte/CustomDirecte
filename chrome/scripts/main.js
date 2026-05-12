@@ -402,7 +402,7 @@ function noteTableAnalysis(options) {
     overlay.className = "cd-modal-overlay";
     overlay.innerHTML =
       '<div class="cd-modal">' +
-        '<h3>Note simulée</h3>' +
+        '<h3>Note custom</h3>' +
         '<p class="cd-modal-subject">' + subjectName + '</p>' +
         '<div class="cd-modal-row">' +
           '<div class="cd-modal-field"><label>Note</label><input type="number" id="cd-f-note" min="0" step="0.5" value="10"></div>' +
@@ -456,8 +456,8 @@ function noteTableAnalysis(options) {
       '<div class="cd-modal">' +
         '<h3>Tout supprimer</h3>' +
         '<p class="cd-modal-confirm-msg">' +
-          totalNotes + ' note simulée' + (totalNotes > 1 ? 's' : '') +
-          ' sur ' + subjectCount + ' matière' + (subjectCount > 1 ? 's' : '') +
+          totalNotes + ' note custom' +
+          ' sur ' + subjectCount + ' matière custom' +
           ' seront supprimées.' +
         '</p>' +
         '<div class="cd-modal-actions">' +
@@ -487,7 +487,7 @@ function noteTableAnalysis(options) {
       '<div class="cd-modal">' +
         '<h3>Supprimer tout</h3>' +
         '<p class="cd-modal-subject">' + subjectName + '</p>' +
-        '<p class="cd-modal-confirm-msg">' + count + ' note simulée' + (count > 1 ? 's' : '') + ' seront supprimées.</p>' +
+        '<p class="cd-modal-confirm-msg">' + count + ' note custom seront supprimées.</p>' +
         '<div class="cd-modal-actions">' +
           '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
           '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-confirm">Supprimer</button>' +
@@ -514,8 +514,8 @@ function noteTableAnalysis(options) {
     overlay.className = "cd-modal-overlay";
     overlay.innerHTML =
       '<div class="cd-modal">' +
-        '<h3>Nouvelle matière</h3>' +
-        '<p class="cd-modal-subject">Matière personnalisée</p>' +
+        '<h3>Nouvelle matière custom</h3>' +
+        '<p class="cd-modal-subject">Matière custom</p>' +
         '<div style="display:flex;flex-direction:column;gap:12px;">' +
           '<div class="cd-modal-field">' +
             '<label>Nom</label>' +
@@ -668,8 +668,8 @@ function noteTableAnalysis(options) {
     overlay.className = "cd-modal-overlay";
     overlay.innerHTML =
       '<div class="cd-modal">' +
-        '<h3>Supprimer la matière</h3>' +
-        '<p class="cd-modal-confirm-msg">La matière <strong>' + subjectName + '</strong> et toutes ses notes simulées seront supprimées.</p>' +
+        '<h3>Supprimer la matière custom</h3>' +
+        '<p class="cd-modal-confirm-msg">La matière custom <strong>' + subjectName + '</strong> et toutes ses notes custom seront supprimées.</p>' +
         '<div class="cd-modal-actions">' +
           '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
           '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-confirm">Supprimer</button>' +
@@ -989,7 +989,7 @@ function noteTableAnalysis(options) {
     const cdAddSubjectBtn = document.createElement("button");
     cdAddSubjectBtn.type = "button";
     cdAddSubjectBtn.className = "cd-add-subject-btn";
-    cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière';
+    cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière custom';
     cdAddSubjectBtn.addEventListener("click", () => { openAddSubjectModal(refreshNotes); });
     cdWrapper.appendChild(cdAddSubjectBtn);
 
@@ -1000,7 +1000,7 @@ function noteTableAnalysis(options) {
       const cdGlobalClearBtn = document.createElement("button");
       cdGlobalClearBtn.type = "button";
       cdGlobalClearBtn.className = "cd-global-clear-btn";
-      cdGlobalClearBtn.textContent = "Supprimer toutes les notes simulées (" + cdTotalCount + ")";
+      cdGlobalClearBtn.textContent = "Supprimer toutes les notes custom (" + cdTotalCount + ")";
       cdGlobalClearBtn.addEventListener("click", () => {
         openClearAllNotesModal(cdTotalCount, cdSubjectCount, () => {
           cdAllKeys.forEach(k => localStorage.removeItem(k));
@@ -1056,7 +1056,7 @@ function noteTableAnalysis(options) {
 
       const badge = document.createElement("span");
       badge.className = "cd-custom-subject-badge";
-      badge.textContent = "perso";
+      badge.textContent = "custom";
       tr.cells[disCol].appendChild(badge);
 
       const csDelBtn = document.createElement("button");
@@ -1271,7 +1271,7 @@ function noteTableAnalysis(options) {
             const delBtn = document.createElement("button");
             delBtn.type = "button";
             delBtn.className = "cd-custom-note-delete";
-            delBtn.title = "Supprimer cette note simulée";
+            delBtn.title = "Supprimer cette note custom";
             delBtn.innerHTML = '<svg width="7" height="7" viewBox="0 0 7 7" fill="none" style="pointer-events:none"><line x1="1" y1="1" x2="6" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="1" x2="1" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
             delBtn.addEventListener("click", (e) => {
               e.stopPropagation();
@@ -1289,7 +1289,7 @@ function noteTableAnalysis(options) {
           const addBtn = document.createElement("button");
           addBtn.type = "button";
           addBtn.className = "cd-add-note-btn";
-          addBtn.title = "Ajouter une note simulée";
+          addBtn.title = "Ajouter une note custom";
           addBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>';
           addBtn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -1302,7 +1302,7 @@ function noteTableAnalysis(options) {
             const clearBtn = document.createElement("button");
             clearBtn.type = "button";
             clearBtn.className = "cd-clear-notes-btn";
-            clearBtn.title = "Supprimer toutes les notes simulées";
+            clearBtn.title = "Supprimer toutes les notes custom";
             clearBtn.innerHTML = '<svg width="9" height="9" viewBox="0 0 9 9" fill="none" style="pointer-events:none"><line x1="1.5" y1="1.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><line x1="7.5" y1="1.5" x2="1.5" y2="7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
             clearBtn.addEventListener("click", (e) => {
               e.stopPropagation();
