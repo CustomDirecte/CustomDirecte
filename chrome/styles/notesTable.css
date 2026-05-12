@@ -36,7 +36,23 @@ table.newTable.hidden {
   display: none;
 }
 
-#encart-notes table .moyenneclasse {
+table:not(.newTable) tr.groupematiere td {
+  background-color: hsl(var(--colorbase), 78%, 95%) !important;
+}
+
+table:not(.newTable) tr td.moyennegenerale-valeur,
+table:not(.newTable) tr td span.moyennegeneralelibelle {
+  color: var(--primary-color) !important;
+}
+
+#encart-moyennes:has(table:not(.newTable)) {
+  border-collapse: collapse !important;
+  border-radius: var(--table-radius) !important;
+  border-style: hidden !important;
+  box-shadow: rgb(100 100 111 / 30%) 3px 3px 20px 0px !important;
+}
+
+#encart-notes table:not(.newTable) .moyenneclasse {
   width: 95px;
 }
 
