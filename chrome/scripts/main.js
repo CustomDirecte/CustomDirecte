@@ -338,6 +338,34 @@ function noteTableAnalysis(options) {
         border-radius: 3px; padding: 1px 4px; margin-left: 6px;
         opacity: 0.7; vertical-align: middle;
       }
+      .cd-edit-note-wrapper { position: relative; display: inline-block; }
+      .cd-edit-note-btn {
+        position: absolute; top: -5px; left: -5px;
+        width: 13px; height: 13px; border-radius: 50%; border: none;
+        background: var(--primary-color); color: white;
+        cursor: pointer; padding: 0;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.15s; z-index: 10;
+      }
+      .cd-edit-note-wrapper:hover .cd-edit-note-btn { opacity: 1; }
+      .cd-reset-note-btn {
+        position: absolute; top: -5px; right: -5px;
+        width: 13px; height: 13px; border-radius: 50%; border: none;
+        background: var(--smalldark-placeholder-color); color: var(--primary-color);
+        cursor: pointer; padding: 0;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.15s; z-index: 10;
+      }
+      .cd-edit-note-wrapper:hover .cd-reset-note-btn { opacity: 1; }
+      .cd-note-modified > button { outline: 1.5px solid var(--primary-color); border-radius: 3px; }
+      .cd-reset-all-mods-btn {
+        display: inline-flex; align-items: center;
+        padding: 4px 14px; border-radius: 999px; border: none;
+        cursor: pointer; font-size: 11px; font-weight: 600;
+        font-family: inherit; transition: all 0.15s;
+        background: var(--smalldark-placeholder-color); color: inherit;
+      }
+      .cd-reset-all-mods-btn:hover { background: var(--dark-placeholder-color); }
     `;
     document.head.appendChild(customNoteCSS);
   }
@@ -358,6 +386,15 @@ function noteTableAnalysis(options) {
 
   function saveCustomSubjects(subjects) {
     localStorage.setItem("customSubjects", JSON.stringify(subjects));
+  }
+
+  function getModifiedNotes(subjectName) {
+    try { return JSON.parse(localStorage.getItem("modifiedNotes_" + subjectName) || "{}"); }
+    catch { return {}; }
+  }
+
+  function saveModifiedNotes(subjectName, mods) {
+    localStorage.setItem("modifiedNotes_" + subjectName, JSON.stringify(mods));
   }
 
   function openCustomNoteModal(subjectName, onSuccess) {
@@ -529,6 +566,100 @@ function noteTableAnalysis(options) {
       saveCustomSubjects(subjects);
       overlay.remove();
       onSuccess();
+    });
+  }
+
+  function openEditNoteModal(subjectName, noteIndex, origNote, origSur, origCoef, onSuccess) {
+    const mods = getModifiedNotes(subjectName);
+    const current = mods[noteIndex] || { note: origNote, sur: origSur, coef: origCoef };
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Modifier la note</h3>' +
+        '<p class="cd-modal-subject">' + subjectName + '</p>' +
+        '<p style="font-size:11px;color:var(--dark-placeholder-color);margin:0 0 12px;">Note originale : <strong>' + String(origNote).replace(".", ",") + '/' + origSur + (origCoef !== 1 ? ' (coef. ' + origCoef + ')' : '') + '</strong></p>' +
+        '<div class="cd-modal-row">' +
+          '<div class="cd-modal-field"><label>Note</label><input type="number" id="cd-f-edit-note" min="0" step="0.5" value="' + current.note + '"></div>' +
+          '<div class="cd-modal-sep">/</div>' +
+          '<div class="cd-modal-field"><label>Sur</label><input type="number" id="cd-f-edit-sur" min="1" step="1" value="' + current.sur + '"></div>' +
+          '<div class="cd-modal-field cd-modal-coef-wrap"><label>Coef.</label><input type="number" id="cd-f-edit-coef" min="0.1" step="0.5" value="' + current.coef + '"></div>' +
+        '</div>' +
+        '<div class="cd-modal-error" id="cd-edit-modal-error"></div>' +
+        '<div class="cd-modal-actions">' +
+          (mods[noteIndex] ? '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-edit-reset" style="margin-right:auto;">Réinitialiser</button>' : '') +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-edit-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-edit-save">Enregistrer</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector("#cd-f-edit-note").focus();
+    overlay.querySelector("#cd-f-edit-note").select();
+
+    overlay.querySelector("#cd-edit-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-edit-save").click();
+    });
+
+    if (mods[noteIndex]) {
+      overlay.querySelector("#cd-edit-reset").addEventListener("click", () => {
+        const m = getModifiedNotes(subjectName);
+        delete m[noteIndex];
+        saveModifiedNotes(subjectName, m);
+        overlay.remove();
+        onSuccess();
+      });
+    }
+
+    overlay.querySelector("#cd-edit-save").addEventListener("click", () => {
+      const note = parseFloat(overlay.querySelector("#cd-f-edit-note").value);
+      const sur = parseFloat(overlay.querySelector("#cd-f-edit-sur").value);
+      const coef = parseFloat(overlay.querySelector("#cd-f-edit-coef").value);
+      const err = overlay.querySelector("#cd-edit-modal-error");
+      if (isNaN(note) || isNaN(sur) || isNaN(coef) || note < 0 || sur <= 0 || coef <= 0) {
+        err.textContent = "Valeurs invalides.";
+        err.style.display = "block";
+        return;
+      }
+      if (note > sur) {
+        err.textContent = "La note ne peut pas dépasser le barème (" + sur + ").";
+        err.style.display = "block";
+        return;
+      }
+      const m = getModifiedNotes(subjectName);
+      m[noteIndex] = { note, sur, coef };
+      saveModifiedNotes(subjectName, m);
+      overlay.remove();
+      onSuccess();
+    });
+  }
+
+  function openResetAllModsModal(count, onConfirm) {
+    const overlay = document.createElement("div");
+    overlay.className = "cd-modal-overlay";
+    overlay.innerHTML =
+      '<div class="cd-modal">' +
+        '<h3>Rétablir toutes les notes</h3>' +
+        '<p class="cd-modal-confirm-msg">' +
+          count + ' modification' + (count > 1 ? 's' : '') + ' seront annulées.' +
+        '</p>' +
+        '<div class="cd-modal-actions">' +
+          '<button class="cd-modal-btn cd-modal-btn-secondary" id="cd-cancel">Annuler</button>' +
+          '<button class="cd-modal-btn cd-modal-btn-primary" id="cd-confirm">Rétablir tout</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector("#cd-cancel").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.remove();
+      if (e.key === "Enter") overlay.querySelector("#cd-confirm").click();
+    });
+    overlay.querySelector("#cd-confirm").addEventListener("click", () => {
+      overlay.remove();
+      onConfirm();
     });
   }
 
@@ -879,6 +1010,24 @@ function noteTableAnalysis(options) {
       cdWrapper.appendChild(cdGlobalClearBtn);
     }
 
+    const cdModAllKeys = Object.keys(localStorage).filter(k => k.startsWith("modifiedNotes_"));
+    const cdTotalMods = cdModAllKeys.reduce((sum, k) => {
+      try { return sum + Object.keys(JSON.parse(localStorage.getItem(k) || "{}")).length; } catch { return sum; }
+    }, 0);
+    if (cdTotalMods > 0) {
+      const cdResetAllModsBtn = document.createElement("button");
+      cdResetAllModsBtn.type = "button";
+      cdResetAllModsBtn.className = "cd-reset-all-mods-btn";
+      cdResetAllModsBtn.textContent = "Rétablir toutes les notes modifiées (" + cdTotalMods + ")";
+      cdResetAllModsBtn.addEventListener("click", () => {
+        openResetAllModsModal(cdTotalMods, () => {
+          cdModAllKeys.forEach(k => localStorage.removeItem(k));
+          refreshNotes();
+        });
+      });
+      cdWrapper.appendChild(cdResetAllModsBtn);
+    }
+
     gradeTable.after(cdWrapper);
     // --- End global action buttons ---
 
@@ -985,6 +1134,113 @@ function noteTableAnalysis(options) {
         if (cdNotesCell) {
           cdNotesCell.querySelectorAll(".cd-custom-note-wrapper, .cd-add-note-btn, .cd-clear-notes-btn").forEach((el) => el.remove());
 
+          // Unwrap previous edit wrappers, restoring original ED buttons as direct children
+          cdNotesCell.querySelectorAll(".cd-edit-note-wrapper").forEach(wrapper => {
+            const btn = wrapper.querySelector(":scope > button");
+            if (btn) wrapper.replaceWith(btn);
+            else wrapper.remove();
+          });
+
+          // Wrap each ED note button with edit controls and apply any modifications
+          const cdMods = getModifiedNotes(cdSubjectName);
+          [...cdNotesCell.querySelectorAll("button")].forEach((btn, cdEdIdx) => {
+            const valeurSpan = btn.querySelector(":scope > span.valeur");
+            if (!valeurSpan) return;
+
+            // Store original values on first encounter (before any modification)
+            if (btn.dataset.cdOrigNote === undefined) {
+              let origTextNode = null;
+              for (const node of valeurSpan.childNodes) {
+                if (node.nodeType === Node.TEXT_NODE) { origTextNode = node; break; }
+              }
+              btn.dataset.cdOrigNote = origTextNode ? origTextNode.nodeValue.trim() : "";
+              btn.dataset.cdOrigSur = valeurSpan.querySelector(".quotien") ? valeurSpan.querySelector(".quotien").textContent.replace("/", "") : "20";
+              btn.dataset.cdOrigCoef = valeurSpan.querySelector(".coef") ? valeurSpan.querySelector(".coef").textContent.replace("(", "").replace(")", "") : "1";
+            }
+
+            // Restore DOM to original values before applying any modification
+            let textNode = null;
+            for (const node of valeurSpan.childNodes) {
+              if (node.nodeType === Node.TEXT_NODE) { textNode = node; break; }
+            }
+            if (textNode) textNode.nodeValue = btn.dataset.cdOrigNote;
+            else valeurSpan.prepend(document.createTextNode(btn.dataset.cdOrigNote));
+
+            let qEl = valeurSpan.querySelector(".quotien");
+            if (btn.dataset.cdOrigSur !== "20") {
+              if (!qEl) { qEl = document.createElement("span"); qEl.className = "quotien ng-star-inserted"; valeurSpan.appendChild(qEl); }
+              qEl.textContent = "/" + btn.dataset.cdOrigSur;
+            } else if (qEl) { qEl.remove(); }
+
+            let cEl = valeurSpan.querySelector(".coef");
+            if (btn.dataset.cdOrigCoef !== "1") {
+              if (!cEl) { cEl = document.createElement("span"); cEl.className = "coef ng-star-inserted"; valeurSpan.appendChild(cEl); }
+              cEl.textContent = "(" + btn.dataset.cdOrigCoef + ")";
+            } else if (cEl) { cEl.remove(); }
+
+            // Apply stored modification to DOM (Calculator will read these values)
+            const mod = cdMods[cdEdIdx];
+            if (mod) {
+              let tn = null;
+              for (const node of valeurSpan.childNodes) {
+                if (node.nodeType === Node.TEXT_NODE) { tn = node; break; }
+              }
+              if (tn) tn.nodeValue = String(mod.note).replace(".", ",");
+              else valeurSpan.prepend(document.createTextNode(String(mod.note).replace(".", ",")));
+
+              let qEl2 = valeurSpan.querySelector(".quotien");
+              if (mod.sur !== 20) {
+                if (!qEl2) { qEl2 = document.createElement("span"); qEl2.className = "quotien ng-star-inserted"; valeurSpan.appendChild(qEl2); }
+                qEl2.textContent = "/" + mod.sur;
+              } else if (qEl2) { qEl2.remove(); }
+
+              let cEl2 = valeurSpan.querySelector(".coef");
+              if (mod.coef !== 1) {
+                if (!cEl2) { cEl2 = document.createElement("span"); cEl2.className = "coef ng-star-inserted"; valeurSpan.appendChild(cEl2); }
+                cEl2.textContent = "(" + mod.coef + ")";
+              } else if (cEl2) { cEl2.remove(); }
+            }
+
+            // Wrap button with edit controls
+            const edWrapper = document.createElement("span");
+            edWrapper.className = "cd-edit-note-wrapper" + (mod ? " cd-note-modified" : "");
+            btn.parentNode.insertBefore(edWrapper, btn);
+            edWrapper.appendChild(btn);
+
+            const origNote = parseFloat(btn.dataset.cdOrigNote.replace(",", ".")) || 0;
+            const origSur = parseFloat(btn.dataset.cdOrigSur) || 20;
+            const origCoef = parseFloat(btn.dataset.cdOrigCoef) || 1;
+            const capturedEdIdx = cdEdIdx;
+
+            const editBtn = document.createElement("button");
+            editBtn.type = "button";
+            editBtn.className = "cd-edit-note-btn";
+            editBtn.title = "Modifier cette note";
+            editBtn.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="pointer-events:none"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
+            editBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              openEditNoteModal(cdSubjectName, capturedEdIdx, origNote, origSur, origCoef, refreshNotes);
+            });
+            edWrapper.appendChild(editBtn);
+
+            if (mod) {
+              const resetBtn = document.createElement("button");
+              resetBtn.type = "button";
+              resetBtn.className = "cd-reset-note-btn";
+              resetBtn.title = "Rétablir la note originale";
+              resetBtn.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="pointer-events:none"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>';
+              resetBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const m = getModifiedNotes(cdSubjectName);
+                delete m[capturedEdIdx];
+                saveModifiedNotes(cdSubjectName, m);
+                refreshNotes();
+              });
+              edWrapper.appendChild(resetBtn);
+            }
+          });
+          // --- End inject ED note edit controls ---
+
           getCustomNotes(cdSubjectName).forEach((cn, cdIndex) => {
             const wrapper = document.createElement("span");
             wrapper.className = "cd-custom-note-wrapper";
@@ -1054,8 +1310,8 @@ function noteTableAnalysis(options) {
             });
             cdNotesCell.appendChild(clearBtn);
           }
-          // Mark the row so the average override is skipped when custom notes exist
-          line.dataset.cdHasCustomNotes = getCustomNotes(cdSubjectName).length > 0 ? "1" : "";
+          // Mark the row so the average override is skipped when custom or modified notes exist
+          line.dataset.cdHasCustomNotes = (getCustomNotes(cdSubjectName).length > 0 || Object.keys(getModifiedNotes(cdSubjectName)).length > 0) ? "1" : "";
         }
       }
       // --- End inject custom notes ---
