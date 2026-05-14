@@ -366,6 +366,25 @@ function noteTableAnalysis(options) {
         background: var(--smalldark-placeholder-color); color: inherit;
       }
       .cd-reset-all-mods-btn:hover { background: var(--dark-placeholder-color); }
+      .cd-custom-data-switch-label {
+        display: flex; align-items: center; gap: 7px;
+        cursor: pointer; font-size: 11px; font-weight: 600;
+        margin-right: auto; user-select: none;
+      }
+      .cd-custom-data-switch-label input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+      .cd-custom-data-switch-track {
+        position: relative; display: inline-block;
+        width: 28px; height: 16px;
+        background: var(--smalldark-placeholder-color);
+        border-radius: 16px; transition: background 0.2s; flex-shrink: 0;
+      }
+      .cd-custom-data-switch-track::before {
+        content: ""; position: absolute;
+        width: 12px; height: 12px; left: 2px; top: 2px;
+        background: white; border-radius: 50%; transition: transform 0.2s;
+      }
+      .cd-custom-data-switch-label input:checked ~ .cd-custom-data-switch-track { background: var(--primary-color); }
+      .cd-custom-data-switch-label input:checked ~ .cd-custom-data-switch-track::before { transform: translateX(12px); }
     `;
     document.head.appendChild(customNoteCSS);
   }
@@ -812,6 +831,7 @@ function noteTableAnalysis(options) {
 
   function Calculator(TableParent, averageTableInfos) {
     log("GradeTable editing -> [ Starting ]");
+    const cdIncludeCustomData = localStorage.getItem("cd-include-custom-data") !== "false";
 
     if (averageTableInfos) {
       const classAverages = Object.values(averageTableInfos).map((info) => info.classAverage);
@@ -981,6 +1001,26 @@ function noteTableAnalysis(options) {
     const cdWrapper = document.createElement("div");
     cdWrapper.className = "cd-global-clear-wrapper";
 
+    const cdSwitchLabel = document.createElement("label");
+    cdSwitchLabel.className = "cd-custom-data-switch-label";
+    cdSwitchLabel.title = "Prendre en compte les notes custom, modifications et matières custom dans le recalcul de la moyenne";
+    const cdSwitchChk = document.createElement("input");
+    cdSwitchChk.type = "checkbox";
+    cdSwitchChk.checked = cdIncludeCustomData;
+    cdSwitchChk.addEventListener("change", (e) => {
+      e.stopPropagation();
+      localStorage.setItem("cd-include-custom-data", cdSwitchChk.checked ? "true" : "false");
+      refreshNotes();
+    });
+    const cdSwitchTrack = document.createElement("span");
+    cdSwitchTrack.className = "cd-custom-data-switch-track";
+    const cdSwitchText = document.createElement("span");
+    cdSwitchText.textContent = "Prendre en compte les données custom (notes, modifications, matières)";
+    cdSwitchLabel.appendChild(cdSwitchChk);
+    cdSwitchLabel.appendChild(cdSwitchTrack);
+    cdSwitchLabel.appendChild(cdSwitchText);
+    cdWrapper.appendChild(cdSwitchLabel);
+
     if (options["customSubjectsFeature"] !== false && options["customNotesFeature"] !== false) {
       const cdAddSubjectBtn = document.createElement("button");
       cdAddSubjectBtn.type = "button";
@@ -1033,7 +1073,7 @@ function noteTableAnalysis(options) {
       }
     }
 
-    if (cdWrapper.children.length > 0) gradeTable.after(cdWrapper);
+    gradeTable.after(cdWrapper);
     // --- End global action buttons ---
 
     // --- Inject custom subject rows ---
@@ -1186,7 +1226,7 @@ function noteTableAnalysis(options) {
 
             // Apply stored modification to DOM (Calculator will read these values)
             const mod = cdMods[cdEdIdx];
-            if (mod) {
+            if (cdIncludeCustomData && mod) {
               let tn = null;
               for (const node of valeurSpan.childNodes) {
                 if (node.nodeType === Node.TEXT_NODE) { tn = node; break; }
@@ -1320,8 +1360,8 @@ function noteTableAnalysis(options) {
           } // --- End inject custom notes ---
 
           // Mark the row so the average override is skipped when custom or modified notes exist
-          const _cdHasCustom = options["customNotesFeature"] !== false && getCustomNotes(cdSubjectName).length > 0;
-          const _cdHasMods = options["editNotesFeature"] !== false && Object.keys(getModifiedNotes(cdSubjectName)).length > 0;
+          const _cdHasCustom = cdIncludeCustomData && options["customNotesFeature"] !== false && getCustomNotes(cdSubjectName).length > 0;
+          const _cdHasMods = cdIncludeCustomData && options["editNotesFeature"] !== false && Object.keys(getModifiedNotes(cdSubjectName)).length > 0;
           line.dataset.cdHasCustomNotes = (_cdHasCustom || _cdHasMods) ? "1" : "";
         }
       }
@@ -1411,6 +1451,7 @@ function noteTableAnalysis(options) {
 
       // Pour chaque notes
       for (notes of line.cells[tableConfiguration["notes"][0]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
+        if (!cdIncludeCustomData && notes.closest(".cd-custom-note-wrapper")) continue;
         // Récuperation de la note
         try {
           note = parseFloat(notes.childNodes[0].nodeValue.replace(",", "."));
