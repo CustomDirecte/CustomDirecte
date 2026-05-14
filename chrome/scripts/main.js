@@ -1001,25 +1001,27 @@ function noteTableAnalysis(options) {
     const cdWrapper = document.createElement("div");
     cdWrapper.className = "cd-global-clear-wrapper";
 
-    const cdSwitchLabel = document.createElement("label");
-    cdSwitchLabel.className = "cd-custom-data-switch-label";
-    cdSwitchLabel.title = "Prendre en compte les notes custom, modifications et matières custom dans le recalcul de la moyenne";
-    const cdSwitchChk = document.createElement("input");
-    cdSwitchChk.type = "checkbox";
-    cdSwitchChk.checked = cdIncludeCustomData;
-    cdSwitchChk.addEventListener("change", (e) => {
-      e.stopPropagation();
-      localStorage.setItem("cd-include-custom-data", cdSwitchChk.checked ? "true" : "false");
-      refreshNotes();
-    });
-    const cdSwitchTrack = document.createElement("span");
-    cdSwitchTrack.className = "cd-custom-data-switch-track";
-    const cdSwitchText = document.createElement("span");
-    cdSwitchText.textContent = "Prendre en compte les données custom (notes, modifications, matières)";
-    cdSwitchLabel.appendChild(cdSwitchChk);
-    cdSwitchLabel.appendChild(cdSwitchTrack);
-    cdSwitchLabel.appendChild(cdSwitchText);
-    cdWrapper.appendChild(cdSwitchLabel);
+    if (options["customNotesFeature"] !== false || options["editNotesFeature"] !== false) {
+      const cdSwitchLabel = document.createElement("label");
+      cdSwitchLabel.className = "cd-custom-data-switch-label";
+      cdSwitchLabel.title = "Prendre en compte les notes custom, modifications et matières custom dans le recalcul de la moyenne";
+      const cdSwitchChk = document.createElement("input");
+      cdSwitchChk.type = "checkbox";
+      cdSwitchChk.checked = cdIncludeCustomData;
+      cdSwitchChk.addEventListener("change", (e) => {
+        e.stopPropagation();
+        localStorage.setItem("cd-include-custom-data", cdSwitchChk.checked ? "true" : "false");
+        refreshNotes();
+      });
+      const cdSwitchTrack = document.createElement("span");
+      cdSwitchTrack.className = "cd-custom-data-switch-track";
+      const cdSwitchText = document.createElement("span");
+      cdSwitchText.textContent = "Prendre en compte les données custom";
+      cdSwitchLabel.appendChild(cdSwitchChk);
+      cdSwitchLabel.appendChild(cdSwitchTrack);
+      cdSwitchLabel.appendChild(cdSwitchText);
+      cdWrapper.appendChild(cdSwitchLabel);
+    }
 
     if (options["customSubjectsFeature"] !== false && options["customNotesFeature"] !== false) {
       const cdAddSubjectBtn = document.createElement("button");
@@ -1073,7 +1075,7 @@ function noteTableAnalysis(options) {
       }
     }
 
-    gradeTable.after(cdWrapper);
+    if (cdWrapper.children.length > 0) gradeTable.after(cdWrapper);
     // --- End global action buttons ---
 
     // --- Inject custom subject rows ---
