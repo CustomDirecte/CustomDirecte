@@ -2,14 +2,12 @@
   "name": "CustomDirecte",
   "description": "Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...",
   "author": "Bastian NOEL",
-  "version": "20.1.2",
+  "version": "20.1.5",
   "version_name": "2.1",
   "manifest_version": 3,
   "devtools_page": "/pages/popup/interface.html",
   "permissions": ["storage"],
-  "host_permissions": [
-    "*://*.ecoledirecte.com/*"
-  ],
+  "host_permissions": ["*://*.ecoledirecte.com/*"],
   "action": {
     "default_title": "CustomDirecte",
     "default_icon": {
@@ -25,17 +23,21 @@
     "48": "/icons/default/icon48.png",
     "128": "/icons/default/icon128.png"
   },
-  "content_scripts": [{
-    "matches": ["*://*.ecoledirecte.com/*"],
-    "run_at": "document_start",
-    "all_frames": true,
-    "js": ["/scripts/main.js"],
-    "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
-  }],
-  "web_accessible_resources": [{
-    "resources": ["/styles/customizations.css", "/pages/popup/interface.html", "/scripts/schema.js", "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico"],
-    "matches": ["*://*.ecoledirecte.com/*"]
-  }],
+  "content_scripts": [
+    {
+      "matches": ["*://*.ecoledirecte.com/*"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "js": ["/scripts/main.js"],
+      "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["/styles/customizations.css", "/pages/popup/interface.html", "/scripts/schema.js", "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/gold.ico", "/icons/EcoleDirecte/magenta.ico", "/icons/EcoleDirecte/purple.ico", "/icons/EcoleDirecte/turquoise.ico"],
+      "matches": ["*://*.ecoledirecte.com/*"]
+    }
+  ],
   "background": {
     "service_worker": "/scripts/background.js"
   }
