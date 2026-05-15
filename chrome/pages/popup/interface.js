@@ -30,13 +30,14 @@ var urlParams = new URLSearchParams(window.location.search);
 const updateValue = (optionId, isSwitch, Value = false, i = false) => {
   browserStorage.get((data) => {
     let option = data.options.find((el) => el.option == optionId);
+    const schemaDef = defaultOptions.options.find((el) => el.option == optionId);
     if (i !== false) {
       if (option.Value == null) option.Value = option.Default;
       option.Value[i] = Value;
     } else option.Value = isSwitch ? !(option.Value == null ? option.Default : option.Value) : Value;
     browserStorage.set(data, () => {
       urlParams.set("scoll", document.querySelector("[group]:not([hide])").scrollTop);
-      if (isSwitch && option.reloadingRequired) urlParams.has("reload", option.option) ? urlParams.delete("reload", option.option) : urlParams.append("reload", option.option);
+      if (isSwitch && schemaDef && schemaDef.reloadingRequired) urlParams.has("reload", option.option) ? urlParams.delete("reload", option.option) : urlParams.append("reload", option.option);
       genere();
     });
   });
@@ -115,14 +116,14 @@ genere = () => {
       main.appendChild(OptionsGroup);
     };
 
-    for (const group of data.groups) {
+    for (const group of defaultOptions.groups) {
       const isClose = group.ID === "close";
-      const isSelected = group === data.groups[0];
+      const isSelected = group === defaultOptions.groups[0];
       makeAGroupButton(group.ID, group.Title, isClose, isSelected);
       makeAOptionsGroup(group.ID, group.Title, group.Subtitle, isSelected);
     }
 
-    for (const option of data.options) {
+    for (const option of defaultOptions.options) {
       const optionElement = document.createElement("div");
       const optionInfoElement = document.createElement("div");
       const optionTitleElement = document.createElement("span");
@@ -131,7 +132,8 @@ genere = () => {
 
       optionElement.classList.add("option");
       option.reloadingRequired ? optionElement.setAttribute("reloadingRequired", "") : null;
-      option.lock && !getOptionValue(option.lock) ? optionElement.setAttribute("disabled", "") : null;
+      const isDisabled = (option.lock && !getOptionValue(option.lock)) || (option.requires && !getOptionValue(option.requires));
+      if (isDisabled) optionElement.setAttribute("disabled", "");
       optionElement.setAttribute("option", option.option);
       optionElement.appendChild(optionInfoElement);
 
@@ -151,14 +153,17 @@ genere = () => {
 
       document.querySelector(`[group="${option.Group}"]`).appendChild(optionElement);
 
-      if (option.lock) {
+      if (option.lock || option.requires) {
         optionElement.addEventListener("click", () => {
-          const lock = document.querySelector("[option=" + option.lock + "]");
-          if (lock && !getOptionValue(option.lock)) {
-            scrollIntoView(lock);
-            lock.classList.remove("showMe");
-            lock.offsetWidth;
-            lock.classList.add("showMe");
+          const prereqId = (option.requires && !getOptionValue(option.requires)) ? option.requires : (option.lock && !getOptionValue(option.lock)) ? option.lock : null;
+          if (prereqId) {
+            const prereqEl = document.querySelector("[option=" + prereqId + "]");
+            if (prereqEl) {
+              scrollIntoView(prereqEl);
+              prereqEl.classList.remove("showMe");
+              prereqEl.offsetWidth;
+              prereqEl.classList.add("showMe");
+            }
           }
         });
       }
@@ -173,7 +178,11 @@ genere = () => {
 
           optionElement.appendChild(optionSwitchElement);
 
-          optionElement.addEventListener("click", () => ((option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, true) : null));
+          optionElement.addEventListener("click", () => {
+            const lockOk = !option.lock || getOptionValue(option.lock);
+            const requiresOk = !option.requires || getOptionValue(option.requires);
+            if (lockOk && requiresOk) updateValue(option.option, true);
+          });
 
           break;
         case "Button":
@@ -183,7 +192,11 @@ genere = () => {
 
           optionElement.appendChild(optionButtonElement);
 
-          optionElement.addEventListener("click", () => ((option.lock && getOptionValue(option.lock)) || !option.lock ? updateValue(option.option, false, true) : null));
+          optionElement.addEventListener("click", () => {
+            const lockOk = !option.lock || getOptionValue(option.lock);
+            const requiresOk = !option.requires || getOptionValue(option.requires);
+            if (lockOk && requiresOk) updateValue(option.option, false, true);
+          });
 
           break;
         case "Color":
