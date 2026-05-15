@@ -6,6 +6,9 @@
 
 ---
 
+> **⚠️ Fin du support Firefox — 15 mai 2026**  
+> Le support et les mises à jour pour l'add-on Firefox sont arrêtés. L'extension n'est plus maintenue pour Firefox. Pour continuer, utilisez la version chromium.
+
 <p align='center'>
   Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
   <br><br>
@@ -26,11 +29,6 @@
     <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=chrome%2Fmanifest.json&style=for-the-badge&logo=googlechrome&logoColor=fff&label=Chrome%20Web%20Store&labelColor=7f0f2f&color=c8194a" />
     <img src="https://img.shields.io/chrome-web-store/users/ngibpoegkheookihjcnjihkfhfnglfei?style=for-the-badge&logo=googlechrome&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
   </a>
-  <br><br>
-  <a href="https://bit.ly/CustomDirecteFirefox">
-    <img src="https://img.shields.io/github/manifest-json/v/CustomDirecte/CustomDirecte/main?filename=firefox%2Fmanifest.json&style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=Firefox%20ADD-ONS&labelColor=7f0f2f&color=c8194a" />
-    <img src="https://img.shields.io/amo/users/customdirecte?style=for-the-badge&logo=firefoxbrowser&logoColor=fff&label=DOWNLOADS&labelColor=darkgreen&color=limegreen" />
-  </a>
 </p>
 
 ---
@@ -39,7 +37,7 @@
 
 ---
 
-## ✨  Voici la liste des fonctionnalités ajoutées :
+## ✨ Voici la liste des fonctionnalités ajoutées :
 
 ★ Un calculateur de moyennes qui évalue instantanément les moyennes par matières ainsi que la moyenne générale.
 
@@ -47,40 +45,43 @@
 
   <summary><i>Voir en image</i></summary>
 
-  ![Contribution guidelines for this project](assets/CustomDirectePromo02.png)
+![Contribution guidelines for this project](assets/CustomDirectePromo02.png)
+
 </details>
 
 ★ Une barre latérale (ou menu) repensée pour une meilleure lisibilité :
-* Format plus compact
-* Occupant moins d'espace
-* Agrégeant davantage de paramètres
+
+- Format plus compact
+- Occupant moins d'espace
+- Agrégeant davantage de paramètres
 
 <details>
 
   <summary><i>Voir en image</i></summary>
 
-  ![Contribution guidelines for this project](assets/CustomDirectePromo04.png)
+![Contribution guidelines for this project](assets/CustomDirectePromo04.png)
+
 </details>
 
 ★ Options de personnalisation avancées pour l'affichage :
-* Sélection de la couleur principale
-* Choix de la police de caractère
-* Paramétrage de l'angle des bordures arrondies
-* Possibilité de basculer entre un mode sombre et un mode clair
+
+- Sélection de la couleur principale
+- Choix de la police de caractère
+- Paramétrage de l'angle des bordures arrondies
+- Possibilité de basculer entre un mode sombre et un mode clair
 
 <details>
 
   <summary><i>Voir en image</i></summary>
 
-  ![Contribution guidelines for this project](assets/CustomDirectePromo03.png)
-  ![Contribution guidelines for this project](assets/CustomDirectePromo05.png)
+![Contribution guidelines for this project](assets/CustomDirectePromo03.png) ![Contribution guidelines for this project](assets/CustomDirectePromo05.png)
+
 </details>
 
-> [!NOTE]
-> Les moyennes sont calculées en utilisant les notes actuellement affichées à l'écran, sans aucun accès restreint pour les élèves ou les parents, ce qui permet de prendre en compte les dernières notes instantanément, sans attendre le traitement du site.
+> [!NOTE] Les moyennes sont calculées en utilisant les notes actuellement affichées à l'écran, sans aucun accès restreint pour les élèves ou les parents, ce qui permet de prendre en compte les dernières notes instantanément, sans attendre le traitement du site.
 
 > [!CAUTION]
-> + Cette extension ne collecte aucune donnée personnelle.
-> + Toutes les modifications apportées au site sont purement visuelles ; en aucun cas, le fonctionnement du site n'est altéré.
-> + Cette extension n'est pas affiliée avec le site [EcoleDirecte](https://www.ecoledirecte.com)
-
+>
+> - Cette extension ne collecte aucune donnée personnelle.
+> - Toutes les modifications apportées au site sont purement visuelles ; en aucun cas, le fonctionnement du site n'est altéré.
+> - Cette extension n'est pas affiliée avec le site [EcoleDirecte](https://www.ecoledirecte.com)
