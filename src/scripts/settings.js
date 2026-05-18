@@ -85,7 +85,11 @@ var Settings = {
    */
   async storageSet() {
     // Enregistre les nouveaux paramètres
-    await browserStorage.set({ settings: this.stored, version: this.version });
+    try {
+      await browserStorage.set({ settings: this.stored, version: this.version });
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement des paramètres :", error);
+    }
   },
 
   /**
@@ -94,20 +98,24 @@ var Settings = {
    * @param {Object} result - L'objet contenant les paramètres de l'extension.
    */
   async updateSettings(result) {
-    if (this.version == result.version) return;
-    // Applique les mises à jour nécessaires
-    let current = this.version;
-    while (result.version < this.version) {
-      if (Updates[current]?.[result.version] != undefined) {
-        result.settings = Updates[current][result.version](result.settings);
-        result.version = current;
-        current = this.version;
-      } else current--;
+    try {
+      if (this.version == result.version) return;
+      // Applique les mises à jour nécessaires
+      let current = this.version;
+      while (result.version < this.version) {
+        if (Updates[current]?.[result.version] != undefined) {
+          result.settings = Updates[current][result.version](result.settings);
+          result.version = current;
+          current = this.version;
+        } else current--;
+      }
+      this.stored = result.settings;
+      // Vide le stockage
+      await browserStorage.clear();
+      await this.storageSet();
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des paramètres :", error);
     }
-    this.stored = result.settings;
-    // Vide le stockage
-    await browserStorage.clear();
-    await this.storageSet();
   },
 
   /**
@@ -116,14 +124,18 @@ var Settings = {
    * @returns {Object} Les paramètres de l'extension.
    */
   async storageGet() {
-    var result = await browserStorage.get();
-    // Si la version est la même, on récupère les paramètres
-    if (result.version == this.version) this.stored = result.settings;
-    else {
-      // Si la version n'est pas définie, definit la version à 0
-      if (result.version == undefined) result = { settings: result, version: 0 };
-      // Met à jour les paramètres
-      await this.updateSettings(result);
+    try {
+      var result = await browserStorage.get();
+      // Si la version est la même, on récupère les paramètres
+      if (result.version == this.version) this.stored = result.settings;
+      else {
+        // Si la version n'est pas définie, definit la version à 0
+        if (result.version == undefined) result = { settings: result, version: 0 };
+        // Met à jour les paramètres
+        await this.updateSettings(result);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des paramètres :", error);
     }
   },
 };
@@ -166,9 +178,19 @@ class Identity {
 /**
  * Classe représentant un groupe de paramètres.
  * @extends Identity
+ * @description Un groupe est une collection de paramètres liés entre eux.
  */
 class Group extends Identity {
+  /**
+   * Liste des groupes existants.
+   * @type {Group[]}
+   */
   static groups = [];
+
+  /**
+   * Liste des groupes nécessitant un rechargement.
+   * @type {Group[]}
+   */
   static reloadingNeeded = [];
 
   /**
@@ -355,118 +377,122 @@ class Group extends Identity {
    * Génère l'interface utilisateur pour tous les groupes et paramètres.
    */
   static genInterface() {
-    const thanks = ["Alerymin", "Mattia P.", "S1w2a3", "Leo539", "Fefedu973", "JULES2011", "TimotheeMM", "TapsHTS", "DarkEarth", "Soleil", "Taps", "Codealuxz", "Sanchaton"];
-    thanks.sort(() => Math.random() - 0.5);
-
-    // Reprend le dernier onglet ouvert
-    function groupById(id) {
-      return Group.groups.find((group) => group.id === id);
-    }
-
-    // Version
-    const versionElement = document.getElementById("version");
-    if (versionElement) {
-      versionElement.innerText = `V${versionInfo.major} | ${versionInfo.minor}.${versionInfo.patch}` + (versionInfo.stage !== "stable" ? ` | ${versionInfo.stage.toUpperCase()}` : "");
-    }
-
-    // Navbar + HomeRow + Tab
-    for (const group of Group.groups) {
-      document.getElementById("thanks").innerText = thanks.map((name, index) => (index % 4 === 3 ? name + "\n" : name + " - ")).join(" ");
-      group.genNavbar(document.getElementById("navbar"));
-      group.genHomeRow(document.getElementById("main"));
-      group.genTab(document.getElementById("setting"));
-      // Genere les parametres
-      for (const parameter of group.parameters) {
-        parameter.genParameter(group.tabElement);
-      }
-    }
-
-    // HideSettings
-    function hideSettings() {
-      sessionStorage.setItem("tab", "home");
-      for (const group of Group.groups) {
-        group.navbarElement.setAttribute("data-selected", "false");
-        group.tabElement.setAttribute("data-show", "false");
-      }
-    }
-
-    // ShowSettings
-    function showSetting(group) {
-      hideSettings();
-      sessionStorage.setItem("tab", group.id);
-      group.navbarElement.setAttribute("data-selected", "true");
-      group.tabElement.setAttribute("data-show", "true");
-      document.getElementById("body").setAttribute("data-tab", "setting");
-    }
-
-    // Event listener for the navbar
-    for (const group of Group.groups) {
-      group.navbarElement.addEventListener("click", () => showSetting(group));
-      group.homerowElement.addEventListener("click", () => showSetting(group));
-    }
-
-    // HomeButtons
-    const HomeButtons = {
-      return: {
-        element: document.getElementById("returnButton"),
-        action: function () {
-          const needReload = this.getAttribute("data-needreload") === "true";
-          window.parent.postMessage(needReload ? "reload" : "close", "*");
-        },
-      },
-      title: {
-        element: document.getElementById("title"),
-        action: function () {
-          hideSettings();
-          document.getElementById("body").setAttribute("data-tab", "home");
-        },
-      },
-      stars: {
-        element: document.getElementById("starsButton"),
-        action: function () {
-          window.open("https://chromewebstore.google.com/detail/customdirecte/ngibpoegkheookihjcnjihkfhfnglfei/reviews", "_blank");
-        },
-      },
-      github: {
-        element: document.getElementById("githubButton"),
-        action: function () {
-          window.open("https://github.com/CustomDirecte/CustomDirecte", "_blank");
-        },
-      },
-    };
-
-    // Ecoute les événements pour les boutons de la page d'accueil
-    for (const button of Object.values(HomeButtons)) {
-      button.element.addEventListener("click", button.action);
-    }
-
-    // Quand un message est reçu du parent
-    window.addEventListener("message", (event) => {
-      if (event.data === "closed") document.querySelector("#returnButton")?.click();
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key == "Escape") document.querySelector("#returnButton")?.click();
-    });
-
-    // Retourne au dernier onglet ouvert
-    const lastTab = sessionStorage.getItem("tab");
-    if (lastTab) {
-      document.getElementById("body").setAttribute("data-tab", lastTab === "home" ? "home" : "setting");
-      if (lastTab !== "home") {
-        if (groupById(lastTab)) showSetting(groupById(lastTab));
-      }
-    }
-
-    // Tooltip pour le bouton de retour
     try {
-      const reloadTooltip = stringToHtml(`
+      const thanks = ["Alerymin", "Mattia P.", "S1w2a3", "Leo539", "Fefedu973", "JULES2011", "TimotheeMM", "TapsHTS", "DarkEarth", "Soleil", "Taps", "Codealuxz", "Sanchaton"];
+      thanks.sort(() => Math.random() - 0.5);
+
+      // Reprend le dernier onglet ouvert
+      function groupById(id) {
+        return Group.groups.find((group) => group.id === id);
+      }
+
+      // Version
+      const versionElement = document.getElementById("version");
+      if (versionElement) {
+        versionElement.innerText = `V${versionInfo.major} | ${versionInfo.minor}.${versionInfo.patch}` + (versionInfo.stage !== "stable" ? ` | ${versionInfo.stage.toUpperCase()}` : "");
+      }
+
+      // Navbar + HomeRow + Tab
+      for (const group of Group.groups) {
+        document.getElementById("thanks").innerText = thanks.map((name, index) => (index % 4 === 3 ? name + "\n" : name + " - ")).join(" ");
+        group.genNavbar(document.getElementById("navbar"));
+        group.genHomeRow(document.getElementById("main"));
+        group.genTab(document.getElementById("setting"));
+        // Genere les parametres
+        for (const parameter of group.parameters) {
+          parameter.genParameter(group.tabElement);
+        }
+      }
+
+      // HideSettings
+      function hideSettings() {
+        sessionStorage.setItem("tab", "home");
+        for (const group of Group.groups) {
+          group.navbarElement.setAttribute("data-selected", "false");
+          group.tabElement.setAttribute("data-show", "false");
+        }
+      }
+
+      // ShowSettings
+      function showSetting(group) {
+        hideSettings();
+        sessionStorage.setItem("tab", group.id);
+        group.navbarElement.setAttribute("data-selected", "true");
+        group.tabElement.setAttribute("data-show", "true");
+        document.getElementById("body").setAttribute("data-tab", "setting");
+      }
+
+      // Event listener for the navbar
+      for (const group of Group.groups) {
+        group.navbarElement.addEventListener("click", () => showSetting(group));
+        group.homerowElement.addEventListener("click", () => showSetting(group));
+      }
+
+      // HomeButtons
+      const HomeButtons = {
+        return: {
+          element: document.getElementById("returnButton"),
+          action: function () {
+            const needReload = this.getAttribute("data-needreload") === "true";
+            window.parent.postMessage(needReload ? "reload" : "close", "*");
+          },
+        },
+        title: {
+          element: document.getElementById("title"),
+          action: function () {
+            hideSettings();
+            document.getElementById("body").setAttribute("data-tab", "home");
+          },
+        },
+        stars: {
+          element: document.getElementById("starsButton"),
+          action: function () {
+            window.open("https://chromewebstore.google.com/detail/customdirecte/ngibpoegkheookihjcnjihkfhfnglfei/reviews", "_blank");
+          },
+        },
+        github: {
+          element: document.getElementById("githubButton"),
+          action: function () {
+            window.open("https://github.com/CustomDirecte/CustomDirecte", "_blank");
+          },
+        },
+      };
+
+      // Ecoute les événements pour les boutons de la page d'accueil
+      for (const button of Object.values(HomeButtons)) {
+        button.element.addEventListener("click", button.action);
+      }
+
+      // Quand un message est reçu du parent
+      window.addEventListener("message", (event) => {
+        if (event.data === "closed") document.querySelector("#returnButton")?.click();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key == "Escape") document.querySelector("#returnButton")?.click();
+      });
+
+      // Retourne au dernier onglet ouvert
+      const lastTab = sessionStorage.getItem("tab");
+      if (lastTab) {
+        document.getElementById("body").setAttribute("data-tab", lastTab === "home" ? "home" : "setting");
+        if (lastTab !== "home") {
+          if (groupById(lastTab)) showSetting(groupById(lastTab));
+        }
+      }
+
+      // Tooltip pour le bouton de retour
+      try {
+        const reloadTooltip = stringToHtml(`
       <div style="font-size: 16px;"> Nécessite de rafraîchir la page ! </div>
     `);
-      document.querySelectorAll("#needReload").forEach((element) => {
-        tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true), appendTo: () => document.querySelector(".tippyParent") });
-      });
+        document.querySelectorAll("#needReload").forEach((element) => {
+          tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true), appendTo: () => document.querySelector(".tippyParent") });
+        });
+      } catch (error) {
+        console.error("Erreur lors de la création de tooltips", error);
+      }
     } catch (error) {
-      console.error("Erreur lors de la création de tooltips", error);
+      console.error("Erreur lors de la génération de l'interface :", error);
     }
   }
 
@@ -583,7 +609,25 @@ class ActionGroup extends Group {
   }
 }
 
+/**
+ * Classe représentant un paramètre configurable.
+ * @extends Identity
+ * @description Un paramètre est une option configurable appartenant à un groupe.
+ */
 class Parameter extends Identity {
+  /**
+   * Crée une instance de paramètre.
+   * @constructor
+   * @param {Group} group - Le groupe auquel le paramètre appartient.
+   * @param {string} id - L'identifiant unique du paramètre.
+   * @param {string} icon - L'icône associée au paramètre.
+   * @param {string} name - Le nom du paramètre.
+   * @param {string} description - La description du paramètre.
+   * @param {string} type - Le type de paramètre (ex: "switch", "button").
+   * @param {*} defaultValue - La valeur par défaut du paramètre.
+   * @param {boolean} reloadingRequired - Indique si un rechargement est nécessaire après la modification du paramètre.
+   * @param {string|boolean} warning - Un avertissement à afficher si nécessaire.
+   */
   constructor(group, id, icon, name, description, type, defaultValue, reloadingRequired = false, warning = false) {
     super(id, icon, name, description);
     this.group = group;
@@ -594,27 +638,51 @@ class Parameter extends Identity {
     this.defaultValue = defaultValue;
   }
 
+  /**
+   * Importe la valeur du paramètre depuis les paramètres stockés.
+   * @param {*} defaultValue - La valeur par défaut du paramètre.
+   */
   importValue(defaultValue) {
     this.value = defaultValue;
   }
 
+  /**
+   * Exporte la nouvelle valeur du paramètre vers les paramètres stockés.
+   * @param {*} newValue - La nouvelle valeur du paramètre.
+   */
   async exportValue(newValue) {
     Settings.stored[this.group.id].parameters[this.id] = newValue;
     await Settings.storageSet();
   }
 
+  /**
+   * Met à jour l'élément HTML du paramètre en fonction de sa valeur.
+   */
   updateValue() {
     this.htmlElement.setAttribute("data-actived", this.value != false ? "enabled" : "desabled");
   }
 
+  /**
+   * Génère le selecteur de paramètre spécifique au type de paramètre.
+   * @param {HTMLElement} htmlElement - L'élément HTML du paramètre.
+   */
   genParameterParticularity(htmlElement) {
     return;
   }
 
+  /**
+   * Crée les écouteurs d'événements qui ecouteront les changements de valeur du paramètre.
+   * @param {HTMLElement} htmlElement - L'élément HTML du paramètre.
+   * @param {*} particularity - Les particularités spécifiques au type de paramètre.
+   */
   createEventListener(htmlElement, particularity) {
     return;
   }
 
+  /**
+   * Génère l'élément HTML du paramètre et l'ajoute à l'onglet du groupe.
+   * @param {HTMLElement} groupTab - L'élément HTML de l'onglet du groupe.
+   */
   genParameter(groupTab) {
     const icon = this.icon;
     const title = this.name;
@@ -675,6 +743,11 @@ class Parameter extends Identity {
   }
 }
 
+/**
+ * Représente un paramètre de type interrupteur (switch).
+ * @extends Parameter
+ * @description Un interrupteur permet d'activer ou de désactiver une fonctionnalité.
+ */
 class Switch extends Parameter {
   constructor(group, id, icon, name, description, defaultValue = true, reloadingRequired = false, warning = false) {
     super(group, id, icon, name, description, "switch", defaultValue, reloadingRequired, warning);
@@ -697,6 +770,10 @@ class Switch extends Parameter {
   }
 }
 
+/** Représente un paramètre de type sélecteur en ligne (row selector).
+ * @extends Parameter
+ * @description Un sélecteur en ligne permet de choisir une option parmi plusieurs, affichées en ligne avec des illustrations.
+ */
 class RowSelector extends Parameter {
   constructor(group, id, icon, name, description, defaultValue, options, reloadingRequired = false, warning = false) {
     super(group, id, icon, name, description, "rowselector", defaultValue, reloadingRequired, warning);
@@ -767,6 +844,10 @@ class RowSelector extends Parameter {
   }
 }
 
+/** Représente un paramètre de type sélecteur en ligne personnalisé (custom row selector).
+ * @extends Parameter
+ * @description Un sélecteur en ligne personnalisé permet de choisir une option parmi plusieurs, affichées en ligne avec des styles personnalisés.
+ */
 class CustomSelector extends Parameter {
   constructor(group, id, icon, name, description, defaultValue, options, reloadingRequired = false, warning = false) {
     super(group, id, icon, name, description, "rowselector", defaultValue, reloadingRequired, warning);
@@ -834,6 +915,10 @@ class CustomSelector extends Parameter {
   }
 }
 
+/** Représente un paramètre de type sélecteur multi-lignes (multi row selector).
+ * @extends Parameter
+ * @description Un sélecteur multi-lignes permet de choisir une option pour chaque ligne parmi plusieurs, affichées en ligne avec des illustrations.
+ */
 class MultiRowSelector extends Parameter {
   constructor(group, id, icon, name, description, defaultValue, options, reloadingRequired = false, warning = false) {
     super(group, id, icon, name, description, "multirowselector", defaultValue, reloadingRequired, warning);
@@ -932,6 +1017,10 @@ class MultiRowSelector extends Parameter {
   }
 }
 
+/** Représente un paramètre de type sélecteur de couleur (color selector).
+ * @extends Parameter
+ * @description Un sélecteur de couleur permet de choisir une couleur parmi un spectre de couleurs.
+ */
 class ColorSelector extends Parameter {
   constructor(group, id, icon, name, description, defaultValue, reloadingRequired = false, warning = false) {
     super(group, id, icon, name, description, "colorselector", defaultValue, reloadingRequired, warning);
@@ -981,78 +1070,24 @@ class ColorSelector extends Parameter {
   }
 }
 
+/** Représente un paramètre de type bouton (button).
+ * @extends Parameter
+ * @description Un bouton permet d'exécuter une action lorsqu'il est cliqué.
+ */
 class Button extends Parameter {
   constructor(group, id, icon, name, description, warning = false) {
     super(group, id, icon, name, description, "button", true, false, warning);
   }
 }
 
-const notesTable = new Group("notesTable", "chart-mixed", "Notes", "Paramètres du tableau des notes", true);
-
-new Switch(notesTable, "noteTableAnalysis", "sidebar", "Activer l'analyse du tableau de notes", "Active les fonctionnalités ci-dessous", true, true);
-new Switch(notesTable, "generalAverageDisplay", "sidebar", "Forcer l'affichage de la moyenne générale", "Force l'affichage des moyennes par matières", true, true);
-new Switch(notesTable, "AveragesPerSubjectDisplay", "sidebar", "Forcer l'affichage des moyennes par matières", "Force l'affichage des moyennes par matières et les recalcule", true, true);
-new Switch(notesTable, "ClassAveragesDisplay", "sidebar", "Afficher les moyennes de classe", "Affiche les moyennes de classe dans le tableau de notes", true, true);
-new Switch(notesTable, "AveragesPerSubjectRecalculation", "sidebar", "Recalculer les moyennes par matières", "Force le recalcul des moyennes par matières", false, true, "Si votre établissement désactive les coeficients, les moyennes par matières ne seront pas correctes");
-new RowSelector(
-  notesTable,
-  "AveragesColorIndicator",
-  "sidebar",
-  "Indicateurs colorés sur les moyennes par matières",
-  "Indique à l’aide de couleurs si les moyennes réduisent ou augmentent la moyenne générale",
-  "background",
-  [
-    { id: "none", name: "Aucun" },
-    { id: "round", name: "Rond" },
-    { id: "background", name: "Fond" },
-    { id: "outline", name: "Contour" },
-  ],
-  false
-);
-new RowSelector(
-  notesTable,
-  "AveragesInfluenceTooltips",
-  "sidebar",
-  "Info-bulles indiquant l’influence des moyennes par matières",
-  "Info-bulles qui affichent combien de points cette moyenne fait perdre/gagner à la moyenne générale",
-  "textAndValue",
-  [
-    { id: "none", name: "Aucun" },
-    { id: "value", name: "Valeur" },
-    { id: "textAndValue", name: "Texte & Valeur" },
-  ],
-  false
-);
-
-const sidebar = new Group("sidebar", "sidebar", "Barre latérale", "Paramètres de la barre latérale", false);
-
-new Switch(sidebar, "newSidebar", "sidebar", "Nouveau design pour la barre latérale", "Donne une allure moderne à la barre permettant l’ajout d’options", false, true);
-new Switch(sidebar, "sidebarDarkmode", "sidebar", "Mode sombre pour la barre latérale", "Rend les couleurs de fond de la barre latérale plus sombres, pour une meilleure lisibilité", true, false);
-new Switch(sidebar, "pinnedSidebar", "sidebar", "Laisser la barre latérale déployée en continu", "Empêche la barre latérale de se réduire lorsqu'elle n’est plus survolée par la souris", false, false);
-new Switch(sidebar, "hideCustomizationButton", "sidebar", "Cacher le bouton de personnalisation", "Si cette option est activée, vous devez uiliser le bouton de la barre latérale pour accéder à ce menu", false, false);
-new MultiRowSelector(
-  sidebar,
-  "customizationButton",
-  "sidebar",
-  "Style du bouton de personnalisation",
-  "Changer le style du bouton de personnalisation pour vous correspondre au mieux",
-  ["iconAndText", "ile"],
-  [
-    [
-      { id: "icon", name: "Icon" },
-      { id: "iconAndText", name: "Texte & Icon" },
-    ],
-    [
-      { id: "ile", name: "En Île" },
-      { id: "border", name: "En Bordure" },
-    ],
-  ],
-  false
-);
-
 /* █▀▀ █▀▀ █▄ █ █▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀ █▀ */
 /* █▄█ ██▄ █ ▀█ ▄█ ██▄  █   █  █ █ ▀█ █▄█ ▄█ */
 
+/**
+ * Génère les paramètres de l'extension et gère les erreurs éventuelles.
+ * @returns {Promise<void>} Une promesse qui se résout lorsque les paramètres sont générés.
+ * @description Cette fonction appelle la méthode statique genSettings de la classe Group pour générer les paramètres. En cas d'erreur, elle affiche un message d'erreur dans la console.
+ */
 let settingsReady;
 function genSettings() {
   try {

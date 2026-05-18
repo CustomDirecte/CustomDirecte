@@ -35,6 +35,14 @@ function devLogger(message) {
 }
 
 /**
+ * Affiche le nom du script en cours d'exécution dans la console.
+ * @param {string} script - Nom du script.
+ */
+function scriptLogger(script) {
+  console.log(`%c[${script}] %c[${consoleID}] %cScript en cours d'exécution`, headerStyle(), consoleIDStyle(), "color:#00bcd4; font-weight: normal;");
+}
+
+/**
  * Affiche les changements de paramètres dans la console.
  * @param {string} parameterId - Identifiant du paramètre.
  * @param {any} oldParameterSettings - Anciennes valeurs des paramètres.
@@ -64,14 +72,6 @@ function settingUpdateLogger(parameterId, oldParameterSettings, parameterSetting
 
   // Affichage dans la console
   console.log(`%c[SETTINGS] %c[${consoleID}] %c${parameterType} %c"${parameterId}" %cmodifié de %c"${oldParam.symbol}" %cà %c"${newParam.symbol}"`, headerStyle(10), consoleIDStyle(10), neutralStyle, parameterIdStyle, neutralStyle, oldParam.style, neutralStyle, newParam.style);
-}
-
-/**
- * Affiche le nom du script en cours d'exécution dans la console.
- * @param {string} script - Nom du script.
- */
-function scriptLogger(script) {
-  console.log(`%c[${script}] %c[${consoleID}] %cScript en cours d'exécution`, headerStyle(), consoleIDStyle(), "color:#00bcd4; font-weight: normal;");
 }
 
 /**

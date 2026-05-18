@@ -1,4 +1,4 @@
-log.script("BROWSER.JS");
+// log.script("BROWSER.JS");
 
 /**
  * @fileOverview Ce fichier contient les focntion relatives au navigateur.
@@ -10,4 +10,5 @@ browser = chrome;
 browserStorage = browser.storage.sync;
 browserVersion = browser.runtime.getManifest().version;
 browserStorageOnChanged = browser.storage.sync.onChanged;
+browserRuntime = browser.runtime;
 /* ----------------- */
