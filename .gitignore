@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# JSDoc output
+out/
+docs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
+*.zip
+*.crx
+*.pem
