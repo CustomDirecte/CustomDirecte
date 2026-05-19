@@ -29,8 +29,8 @@
 
 ## Documentation locale
 
-- [Architecture globale](docs/ARCHITECTURE.md)
-- [Guide dev : ajouter un parametre ou un module](docs/ADDING_PARAMETERS.md)
+- [Architecture globale](https://github.com/CustomDirecte/CustomDirecte/blob/dev/docs/ARCHITECTURE.md)
+- [Guide dev : ajouter un parametre ou un module](https://github.com/CustomDirecte/CustomDirecte/blob/dev/docs/ADDING_PARAMETERS.md)
 
 ## Merci
 
