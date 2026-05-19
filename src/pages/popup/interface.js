@@ -8,8 +8,9 @@ log.script("INTERFACE.JS");
 window.onload = async function () {
   try {
     await settingsReady;
+    if (Settings.stored?.development?.parameters?.dev === true) devModeActive = true;
     Group.genInterface();
   } catch (error) {
-    console.error("Erreur lors de l'initialisation de l'interface :", error);
+    log.error("UI", `Erreur lors de l'initialisation de l'interface : ${error}`);
   }
 };

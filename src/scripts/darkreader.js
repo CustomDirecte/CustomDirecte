@@ -6509,7 +6509,7 @@ addEventListener("load", () => {
   window.addEventListener("message", (e) => {
     if (e.data == "DarkReader-enable") {
       DarkReader.enable();
-    } else if (e.data == "DarkReader-desable") {
+    } else if (e.data == "DarkReader-disable") {
       DarkReader.disable();
     }
   });

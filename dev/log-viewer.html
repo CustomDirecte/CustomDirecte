@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDL2 Log Viewer</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #0f0f13;
+      --surface: #1a1a22;
+      --surface2: #24242f;
+      --border: #2e2e3f;
+      --text: #e0e0e0;
+      --dim: #666;
+      --accent: #C8194A;
+      --info: #4fc3f7;
+      --warn: #ffb74d;
+      --err: #ef5350;
+      --dbg: #90a4ae;
+      --set: #CE93D8;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden
+    }
+
+    #drop-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 14px;
+      border: 2px dashed var(--border);
+      transition: background .2s;
+    }
+
+    #drop-zone.over {
+      border-color: var(--accent);
+      background: rgba(200, 25, 74, .05)
+    }
+
+    #drop-zone h1 {
+      font-size: 2rem;
+      color: var(--accent)
+    }
+
+    #drop-zone p {
+      color: var(--dim);
+      font-size: 14px
+    }
+
+    #open-btn {
+      padding: 8px 22px;
+      border: 1px solid #444;
+      background: var(--surface);
+      color: #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: border-color .15s
+    }
+
+    #open-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    #file-input {
+      display: none
+    }
+
+    #app {
+      display: none;
+      flex-direction: column;
+      height: 100vh
+    }
+
+    #app.visible {
+      display: flex
+    }
+
+    #meta-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 16px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--dim);
+      flex-shrink: 0;
+      flex-wrap: wrap
+    }
+
+    #meta-bar b {
+      color: var(--text)
+    }
+
+    #new-btn {
+      margin-left: auto;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 11px
+    }
+
+    #new-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    #toolbar {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      flex-shrink: 0
+    }
+
+    #search {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 220px;
+      outline: none
+    }
+
+    #search:focus {
+      border-color: var(--accent)
+    }
+
+    .fg {
+      display: flex;
+      gap: 4px
+    }
+
+    .fb {
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all .12s
+    }
+
+    .fb.active[data-lvl="ALL"] {
+      background: #333;
+      border-color: #555;
+      color: var(--text)
+    }
+
+    .fb.active[data-lvl="INFO"] {
+      background: var(--info);
+      border-color: var(--info);
+      color: #000
+    }
+
+    .fb.active[data-lvl="WARN"] {
+      background: var(--warn);
+      border-color: var(--warn);
+      color: #000
+    }
+
+    .fb.active[data-lvl="ERR"] {
+      background: var(--err);
+      border-color: var(--err);
+      color: #fff
+    }
+
+    .fb.active[data-lvl="DBG"] {
+      background: var(--dbg);
+      border-color: var(--dbg);
+      color: #000
+    }
+
+    .fb.active[data-lvl="SET"] {
+      background: var(--set);
+      border-color: var(--set);
+      color: #000
+    }
+
+    .fb.active[data-lvl="SNAP"] {
+      background: #26a69a;
+      border-color: #26a69a;
+      color: #000
+    }
+
+    .fb.active[data-ctx="ALL"] {
+      background: #333;
+      border-color: #555;
+      color: var(--text)
+    }
+
+    .fb.active[data-ctx="ED"] {
+      background: #42a5f5;
+      border-color: #42a5f5;
+      color: #000
+    }
+
+    .fb.active[data-ctx="POP"] {
+      background: #66bb6a;
+      border-color: #66bb6a;
+      color: #000
+    }
+
+    .fb.active[data-ctx="BG"] {
+      background: #ab47bc;
+      border-color: #ab47bc;
+      color: #fff
+    }
+
+    #reset-btn {
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 11px
+    }
+
+    #reset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    #count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--dim)
+    }
+
+    #err-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(239, 83, 80, .1);
+      border-bottom: 1px solid rgba(239, 83, 80, .25);
+      padding: 6px 16px;
+      font-size: 12px;
+      color: var(--err);
+      flex-shrink: 0
+    }
+
+    #err-banner.on {
+      display: flex
+    }
+
+    #err-banner button {
+      padding: 2px 8px;
+      border: 1px solid var(--err);
+      background: transparent;
+      color: var(--err);
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer
+    }
+
+    #err-banner button:hover {
+      background: var(--err);
+      color: #fff
+    }
+
+    #table-wrap {
+      flex: 1;
+      overflow-y: auto;
+      font-size: 12px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      z-index: 10
+    }
+
+    th {
+      padding: 7px 12px;
+      text-align: left;
+      color: var(--dim);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      user-select: none;
+      cursor: pointer
+    }
+
+    th:hover {
+      color: var(--text)
+    }
+
+    td {
+      padding: 4px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, .03);
+      vertical-align: top;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    tr:hover td {
+      background: var(--surface2)
+    }
+
+    tr.err-row td {
+      background: rgba(239, 83, 80, .06)
+    }
+
+    tr.err-row:hover td {
+      background: rgba(239, 83, 80, .12)
+    }
+
+    .ct {
+      width: 80px;
+      color: var(--dim)
+    }
+
+    .cc {
+      width: 45px
+    }
+
+    .cl {
+      width: 46px;
+      font-weight: 700
+    }
+
+    .cm {
+      width: 110px
+    }
+
+    .cs {
+      width: 140px;
+      color: var(--dim);
+      font-size: 11px
+    }
+
+    .cg {
+      max-width: 0;
+      width: auto
+    }
+
+    .cu {
+      width: 150px;
+      color: var(--dim);
+      font-size: 11px
+    }
+
+    .info {
+      color: var(--info)
+    }
+
+    .warn {
+      color: var(--warn)
+    }
+
+    .err {
+      color: var(--err)
+    }
+
+    .dbg {
+      color: var(--dbg)
+    }
+
+    .set {
+      color: var(--set)
+    }
+
+    .snap {
+      color: #26a69a;
+      font-weight: 700
+    }
+
+    .ed {
+      color: #42a5f5
+    }
+
+    .pop {
+      color: #66bb6a
+    }
+
+    .bg {
+      color: #ab47bc
+    }
+
+    tr.snap-row td {
+      background: rgba(38, 166, 154, .07) !important;
+      border-left: 3px solid #26a69a;
+    }
+
+    tr.snap-row:hover td {
+      background: rgba(38, 166, 154, .14) !important;
+    }
+
+    tr.snap-row .snap-label {
+      color: #26a69a;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #snap-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, .75);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #snap-modal.on {
+      display: flex;
+    }
+
+    #snap-modal-inner {
+      background: #1a1a22;
+      border: 1px solid #2e2e3f;
+      border-radius: 10px;
+      width: 92vw;
+      max-width: 1100px;
+      height: 82vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #snap-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #2e2e3f;
+      flex-shrink: 0;
+    }
+
+    #snap-modal-header span {
+      color: #26a69a;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: system-ui;
+    }
+
+    #snap-modal-header .snap-meta {
+      font-size: 11px;
+      color: #666;
+      font-family: system-ui;
+    }
+
+    #snap-modal-header .snap-btns {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    #snap-modal-header button {
+      padding: 3px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 11px;
+      border: 1px solid #444;
+      background: transparent;
+      color: #aaa;
+    }
+
+    #snap-modal-header button:hover {
+      border-color: #26a69a;
+      color: #26a69a;
+    }
+
+    #snap-modal-iframe {
+      flex: 1;
+      border: none;
+      background: #fff;
+    }
+
+    tr.xrow td {
+      background: var(--surface2) !important;
+      white-space: pre-wrap;
+      max-width: none;
+      padding: 12px;
+      color: var(--dim);
+      font-size: 11px;
+      border-bottom: 2px solid var(--border)
+    }
+
+    #empty {
+      display: none;
+      text-align: center;
+      padding: 48px;
+      color: var(--dim)
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="drop-zone">
+    <h1>CDL2 Log Viewer</h1>
+    <p>Glissez un fichier <strong>.ndjson</strong> ici</p>
+    <p style="color:#333;font-size:11px">ou</p>
+    <button id="open-btn">Ouvrir un fichier</button>
+    <input type="file" id="file-input" accept=".ndjson,.jsonl,.txt">
+  </div>
+
+  <div id="app">
+    <div id="meta-bar">
+      <span>📄 <b id="m-file">—</b></span>
+      <span>⚙ v<b id="m-ver">—</b></span>
+      <span>🆔 <b id="m-cid">—</b></span>
+      <span>📅 <b id="m-sess">—</b></span>
+      <span>⏱ <b id="m-dur">—</b></span>
+      <span>📝 <b id="m-tot">—</b> entrées</span>
+      <button id="new-btn">← Nouveau fichier</button>
+    </div>
+
+    <div id="toolbar">
+      <input type="text" id="search" placeholder="🔍 Rechercher mod, message, source…">
+      <div class="fg" id="lfg">
+        <button class="fb active" data-lvl="ALL">Tous</button>
+        <button class="fb" data-lvl="INFO">INFO</button>
+        <button class="fb" data-lvl="WARN">WARN</button>
+        <button class="fb" data-lvl="ERR">ERR</button>
+        <button class="fb" data-lvl="DBG">DBG</button>
+        <button class="fb" data-lvl="SET">SET</button>
+        <button class="fb" data-lvl="SNAP">SNAP</button>
+      </div>
+      <div class="fg" id="cfg">
+        <button class="fb active" data-ctx="ALL">Tous</button>
+        <button class="fb" data-ctx="ED">ED</button>
+        <button class="fb" data-ctx="POP">POP</button>
+        <button class="fb" data-ctx="BG">BG</button>
+      </div>
+      <button id="reset-btn">Réinitialiser</button>
+      <span id="count">0 / 0</span>
+    </div>
+
+    <div id="err-banner">
+      <span>⛔ <b id="err-n">0</b> erreur(s) détectée(s)</span>
+      <button onclick="setLevel('ERR')">Filtrer</button>
+      <button onclick="gotoErr()">Première erreur ↓</button>
+    </div>
+
+    <div id="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="ct" onclick="toggleSort()">+ms <span id="sort-icon">↓</span></th>
+            <th class="cc">CTX</th>
+            <th class="cl">LVL</th>
+            <th class="cm">MODULE</th>
+            <th class="cs">SOURCE</th>
+            <th class="cg">MESSAGE</th>
+            <th class="cu">URL</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div id="empty">Aucun log ne correspond aux filtres.</div>
+    </div>
+  </div>
+
+  <script>
+    let all = [], meta = null, lvl = 'ALL', ctx = 'ALL', q = '', sortAsc = true;
+
+    // ── File loading ──────────────────────────────────────────────────
+    const dz = document.getElementById('drop-zone');
+    document.getElementById('open-btn').onclick = () => document.getElementById('file-input').click();
+    document.getElementById('file-input').onchange = e => e.target.files[0] && load(e.target.files[0]);
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('over'); e.dataTransfer.files[0] && load(e.dataTransfer.files[0]); });
+    document.getElementById('new-btn').onclick = () => { dz.style.display = ''; document.getElementById('app').classList.remove('visible'); all = []; meta = null; };
+
+    function load(file) {
+      const r = new FileReader();
+      r.onload = e => parse(e.target.result, file.name);
+      r.readAsText(file);
+    }
+
+    function parse(text, name) {
+      all = []; meta = null;
+      for (const line of text.trim().split('\n')) {
+        if (!line.trim()) continue;
+        try { const o = JSON.parse(line); o._meta ? (meta = o) : all.push(o); } catch { }
+      }
+      renderMeta(name);
+      render();
+      dz.style.display = 'none';
+      document.getElementById('app').classList.add('visible');
+    }
+
+    // ── Meta ──────────────────────────────────────────────────────────
+    function renderMeta(name) {
+      document.getElementById('m-file').textContent = name ?? '—';
+      document.getElementById('m-ver').textContent = meta?.version ?? '—';
+      document.getElementById('m-cid').textContent = meta?.consoleId ?? '—';
+      document.getElementById('m-tot').textContent = all.length;
+      if (meta?.session) document.getElementById('m-sess').textContent = new Date(meta.session).toLocaleString('fr-FR');
+      if (meta?.session && meta?.sessionEnd) document.getElementById('m-dur').textContent = ((meta.sessionEnd - meta.session) / 1000).toFixed(1) + 's';
+      const errs = all.filter(e => e.lvl === 'ERR').length;
+      const b = document.getElementById('err-banner');
+      document.getElementById('err-n').textContent = errs;
+      errs > 0 ? b.classList.add('on') : b.classList.remove('on');
+    }
+
+    // ── Filters ───────────────────────────────────────────────────────
+    document.getElementById('search').oninput = e => { q = e.target.value.toLowerCase(); render(); };
+
+    document.getElementById('lfg').onclick = e => {
+      const b = e.target.closest('.fb'); if (!b) return;
+      document.querySelectorAll('#lfg .fb').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); lvl = b.dataset.lvl; render();
+    };
+    document.getElementById('cfg').onclick = e => {
+      const b = e.target.closest('.fb'); if (!b) return;
+      document.querySelectorAll('#cfg .fb').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); ctx = b.dataset.ctx; render();
+    };
+    document.getElementById('reset-btn').onclick = () => {
+      lvl = 'ALL'; ctx = 'ALL'; q = '';
+      document.getElementById('search').value = '';
+      document.querySelectorAll('.fb[data-lvl]').forEach(b => b.classList.toggle('active', b.dataset.lvl === 'ALL'));
+      document.querySelectorAll('.fb[data-ctx]').forEach(b => b.classList.toggle('active', b.dataset.ctx === 'ALL'));
+      render();
+    };
+
+    function setLevel(l) {
+      lvl = l;
+      document.querySelectorAll('.fb[data-lvl]').forEach(b => b.classList.toggle('active', b.dataset.lvl === l));
+      render();
+    }
+    function gotoErr() { document.querySelector('tr.err-row')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    function toggleSort() { sortAsc = !sortAsc; document.getElementById('sort-icon').textContent = sortAsc ? '↓' : '↑'; render(); }
+
+    // ── Render ────────────────────────────────────────────────────────
+    function filtered() {
+      return all
+        .filter(e => lvl === 'ALL' || e.lvl === lvl)
+        .filter(e => ctx === 'ALL' || e.ctx === ctx)
+        .filter(e => !q || [e.mod, e.msg, e.src, e.url].some(v => v && String(v).toLowerCase().includes(q)))
+        .sort((a, b) => ((a.t ?? 0) - (b.t ?? 0)) * (sortAsc ? 1 : -1));
+    }
+
+    const lvlClass = { INFO: 'info', WARN: 'warn', ERR: 'err', DBG: 'dbg', SET: 'set', SNAP: 'snap' };
+    const ctxClass = { ED: 'ed', POP: 'pop', BG: 'bg' };
+
+    function fmt(ms) { return '+' + String(ms ?? 0).padStart(6, '0') + 'ms'; }
+    function esc(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function hi(s) {
+      if (!q) return esc(s);
+      return esc(s).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'), '<mark style="background:#C8194A55;color:inherit;border-radius:2px">$1</mark>');
+    }
+
+    function render() {
+      const rows = filtered();
+      document.getElementById('count').textContent = `${rows.length} / ${all.length}`;
+      document.getElementById('empty').style.display = rows.length ? 'none' : 'block';
+      const tb = document.getElementById('tbody');
+      tb.innerHTML = '';
+      for (const e of rows) {
+        const tr = document.createElement('tr');
+        if (e.lvl === 'ERR') tr.classList.add('err-row');
+        const lc = lvlClass[e.lvl] ?? '';
+        const cc = ctxClass[e.ctx] ?? '';
+        tr.innerHTML =
+          `<td class="ct">${fmt(e.t)}</td>` +
+          `<td class="cc ${cc}">${esc(e.ctx)}</td>` +
+          `<td class="cl ${lc}">${esc(e.lvl)}</td>` +
+          `<td class="cm" title="${esc(e.mod)}">${hi(e.mod)}</td>` +
+          `<td class="cs" title="${esc(e.src)}">${esc(e.src ?? '—')}</td>` +
+          `<td class="cg">${e.lvl === 'SNAP' ? '<span class="snap-label">📸 Snapshot tableau notes — cliquer pour aperçu</span>' : hi(e.msg)}</td>` +
+          `<td class="cu" title="${esc(e.url)}">${esc(e.url ?? '')}</td>`;
+        if (e.lvl === 'SNAP') {
+          tr.classList.add('snap-row');
+          tr.onclick = () => openSnapModal(e);
+        } else {
+          tr.onclick = () => expand(tr, e);
+        }
+        tb.appendChild(tr);
+      }
+    }
+
+    function openSnapModal(e) {
+      const snapModal = document.getElementById('snap-modal');
+      const snapIframe = document.getElementById('snap-modal-iframe');
+      document.getElementById('snap-modal-title').textContent = `📸 Snapshot — ${e.mod ?? 'NOTETABLE'}`;
+      document.getElementById('snap-modal-info').textContent = `+${String(e.t ?? 0).padStart(6, '0')}ms`;
+      document.getElementById('snap-modal-close').onclick = () => snapModal.classList.remove('on');
+      document.getElementById('snap-modal-fullscreen').onclick = () => {
+        const w = window.open('', '_blank');
+        w.document.write(snapIframe.srcdoc);
+        w.document.close();
+      };
+      document.getElementById('snap-modal-download').onclick = () => {
+        const a = document.createElement('a');
+        a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(e.html ?? '');
+        a.download = `cd-snapshot_${e.t ?? Date.now()}.html`;
+        a.click();
+      };
+      snapModal.onclick = ev => { if (ev.target === snapModal) snapModal.classList.remove('on'); };
+      const css = `
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+          --primary-color: #26a69a; --body-color: #1e1e2e; --table-radius: 8px;
+          --borderRadius-thin: 4px; --smalldark-placeholder-color: #2e2e3e;
+          --dark-placeholder-color: #555; --light-placeholder-color: #2a2a3a;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #1e1e2e; color: #cdd6f4; padding: 16px; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; border-radius: var(--table-radius); overflow: hidden; }
+        th, td { padding: 7px 12px; border-bottom: 1px solid rgba(255,255,255,.06); text-align: left; }
+        thead th { background: #181825; color: #89b4fa; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+        tbody tr:hover td { background: rgba(255,255,255,.03); }
+        tr.master td { background: rgba(137,180,250,.06); font-weight: 600; }
+        tr.secondary td { background: rgba(255,255,255,.02); padding-left: 28px; }
+        .discipline { font-weight: 500; color: #cdd6f4; }
+        .relevemoyenne { color: #a6e3a1; font-weight: 600; }
+        .moyenneclasse { color: #89dceb; }
+        .coef { color: #f38ba8; font-size: 11px; }
+        .notes { color: #cdd6f4; }
+        .valeur { white-space: nowrap; }
+        .quotien { color: #6c7086; font-size: 11px; }
+        .averageDisplay { text-align: center; padding: 10px; font-weight: 700; color: #a6e3a1; background: #181825; }
+        button { background: none; border: none; padding: 0; color: inherit; font: inherit; cursor: default; }
+        .cd-add-note-btn, .cd-clear-notes-btn, .cd-edit-note-btn, .cd-reset-note-btn,
+        .cd-custom-note-delete, .cd-global-clear-wrapper, .cd-add-subject-btn,
+        .cd-subject-delete-btn, .cd-reset-all-mods-btn, .cd-global-clear-btn,
+        .cd-custom-data-switch-label, .cd-custom-note-wrapper button.cd-custom-note-btn ~ *
+        { display: none !important; }
+        .sr-only, .visually-hidden, [class*="screen-reader"], [class*="screenreader"] { display: none !important; }
+        p b { color: #89b4fa; font-size: 11px; }
+      `;
+      snapIframe.srcdoc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${e.html ?? '<p>Aucun HTML capturé</p>'}</body></html>`;
+      snapModal.classList.add('on');
+    }
+
+    function expand(tr, e) {
+      const existing = tr.nextElementSibling;
+      if (existing?.classList.contains('xrow')) { existing.remove(); return; }
+      document.querySelectorAll('tr.xrow').forEach(r => r.remove());
+      const xr = document.createElement('tr');
+      xr.classList.add('xrow');
+      xr.innerHTML = `<td colspan="7">${esc(JSON.stringify(e, null, 2))}</td>`;
+      tr.after(xr);
+    }
+  </script>
+
+  <div id="snap-modal">
+    <div id="snap-modal-inner">
+      <div id="snap-modal-header">
+        <span id="snap-modal-title">📸 Snapshot</span>
+        <span class="snap-meta" id="snap-modal-info"></span>
+        <div class="snap-btns">
+          <button id="snap-modal-download">⬇ Télécharger HTML</button>
+          <button id="snap-modal-fullscreen">↗ Plein écran</button>
+          <button id="snap-modal-close">✕ Fermer</button>
+        </div>
+      </div>
+      <iframe id="snap-modal-iframe"></iframe>
+    </div>
+  </div>
+</body>
+
+</html>

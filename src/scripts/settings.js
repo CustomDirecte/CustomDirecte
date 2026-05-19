@@ -44,19 +44,19 @@ var Updates = {
   1: {
     // Met à jour les paramètres de la version 0 à la version 1
     0: function (settings) {
-      console.log(`Update settings from version 0 to version 1 ${Date.now()}`);
+      log.warn("SETTINGS", `Migration des paramètres : version 0 → version 1 (${Date.now()})`);  
       return {};
     },
   },
   2: {
     // Met à jour les paramètres de la version 1 à la version 2
     1: function (settings) {
-      console.log(`Update settings from version 1 to version 2 ${Date.now()}`);
+      log.warn("SETTINGS", `Migration des paramètres : version 1 → version 2 (${Date.now()})`);  
       return {};
     },
     // Met à jour les paramètres de la version 0 à la version 2
     0: function (settings) {
-      console.log(`Update settings from version 0 to version 2 ${Date.now()}`);
+      log.warn("SETTINGS", `Migration des paramètres : version 0 → version 2 (${Date.now()})`);  
       return {};
     },
   },
@@ -88,7 +88,7 @@ var Settings = {
     try {
       await browserStorage.set({ settings: this.stored, version: this.version });
     } catch (error) {
-      console.error("Erreur lors de l'enregistrement des paramètres :", error);
+      log.error("SETTINGS", `Erreur lors de l'enregistrement des paramètres : ${error}`);
     }
   },
 
@@ -114,7 +114,7 @@ var Settings = {
       await browserStorage.clear();
       await this.storageSet();
     } catch (error) {
-      console.error("Erreur lors de la mise à jour des paramètres :", error);
+      log.error("SETTINGS", `Erreur lors de la mise à jour des paramètres : ${error}`);
     }
   },
 
@@ -135,7 +135,8 @@ var Settings = {
         await this.updateSettings(result);
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération des paramètres :", error);
+      log.error("SETTINGS", `Erreur lors de la récupération des paramètres : ${error}`);
+
     }
   },
 };
@@ -377,9 +378,13 @@ class Group extends Identity {
    * Génère l'interface utilisateur pour tous les groupes et paramètres.
    */
   static genInterface() {
+    log.info("UI", `Génération de l'interface — ${Group.groups.length} groupe(s)`);
     try {
-      const thanks = ["Alerymin", "Mattia P.", "S1w2a3", "Leo539", "Fefedu973", "JULES2011", "TimotheeMM", "TapsHTS", "DarkEarth", "Soleil", "Taps", "Codealuxz", "Sanchaton"];
-      thanks.sort(() => Math.random() - 0.5);
+      const thanks = ["⭐ Viktorabe", "Alerymin", "Mattia P.", "S1w2a3", "Leo539", "Fefedu973", "JULES2011", "TimotheeMM", "TapsHTS", "DarkEarth", "Soleil", "Taps", "Codealuxz", "Sanchaton"];
+      const randomize = (items) => items.sort(() => Math.random() - 0.5);
+      const starredThanks = randomize(thanks.filter((name) => name.startsWith("⭐")));
+      const regularThanks = randomize(thanks.filter((name) => !name.startsWith("⭐")));
+      thanks.splice(0, thanks.length, ...starredThanks, ...regularThanks);
 
       // Reprend le dernier onglet ouvert
       function groupById(id) {
@@ -398,9 +403,11 @@ class Group extends Identity {
         group.genNavbar(document.getElementById("navbar"));
         group.genHomeRow(document.getElementById("main"));
         group.genTab(document.getElementById("setting"));
+        log.debug("UI", `Groupe "${group.id}" — navbar+homerow+tab générés`);
         // Genere les parametres
         for (const parameter of group.parameters) {
           parameter.genParameter(group.tabElement);
+          log.debug("UI", `  └ Paramètre "${parameter.id}" (${parameter.type}) rendu`);
         }
       }
 
@@ -473,6 +480,7 @@ class Group extends Identity {
 
       // Retourne au dernier onglet ouvert
       const lastTab = sessionStorage.getItem("tab");
+      log.debug("UI", `Dernier onglet : ${lastTab ?? "aucun"} — restauration${lastTab ? " en cours" : " ignorée"}`);
       if (lastTab) {
         document.getElementById("body").setAttribute("data-tab", lastTab === "home" ? "home" : "setting");
         if (lastTab !== "home") {
@@ -489,10 +497,11 @@ class Group extends Identity {
           tippy(element, { placement: "left", allowHTML: true, content: reloadTooltip.cloneNode(true), appendTo: () => document.querySelector(".tippyParent") });
         });
       } catch (error) {
-        console.error("Erreur lors de la création de tooltips", error);
+        log.error("UI", `Erreur lors de la création de tooltips : ${error}`);
       }
+      log.info("UI", "Interface générée avec succès");
     } catch (error) {
-      console.error("Erreur lors de la génération de l'interface :", error);
+      log.error("UI", `Erreur lors de la génération de l'interface : ${error}`);
     }
   }
 
@@ -500,8 +509,11 @@ class Group extends Identity {
    * Genère les paramètres de l'extension : recuperation, initialisation et changement des paramètres.
    */
   static async genSettings() {
+    log.info("SETTINGS", `Initialisation — ${Group.groups.length} groupe(s) déclaré(s)`);
     // Récupérer les paramètres stockés
+    log.debug("SETTINGS", "Récupération du storage...");
     await Settings.storageGet();
+    log.debug("SETTINGS", "Storage récupéré");
 
     // Si les paramètres ne sont pas définis, on les initialise
     const stored = {};
@@ -513,20 +525,25 @@ class Group extends Identity {
         actived: group.actived,
         parameters: {},
       };
+      log.debug("SETTINGS", `Groupe "${group.id}" — actived=${group.actived}, ${group.parameters.length} param(s)`);
       for (const parameter of group.parameters) {
         parameter.importValue(parameter.defaultValue, parameter.options ?? undefined);
         stored[group.id].parameters[parameter.id] = parameter.value;
+        log.debug("SETTINGS", `  └ "${parameter.id}" (${parameter.type}) = ${JSON.stringify(parameter.value)}`);
       }
     }
 
     // Mettre à jour les paramètres stockés
     Settings.stored = stored;
+    log.debug("SETTINGS", "Écriture dans le storage...");
     await Settings.storageSet();
+    log.info("SETTINGS", "Paramètres initialisés et sauvegardés");
 
     browserStorageOnChanged.addListener((changes) => {
       const oldSettings = changes["settings"].oldValue;
       const newSettings = changes["settings"].newValue;
 
+      log.debug("SETTINGS", "Changement storage détecté — traitement...");
       // Pour chaque groupe, vérifier si les paramètres ont été modifiés
       Group.groups.forEach((group) => {
         const groupSettings = newSettings[group.id];
@@ -534,6 +551,7 @@ class Group extends Identity {
 
         // Verifier si le groupe a été modifié
         if (groupSettings.actived != oldGroupSettings.actived && typeof groupSettings.actived === "boolean") {
+          log.debug("SETTINGS", `Groupe "${group.id}" actived : ${oldGroupSettings.actived} → ${groupSettings.actived}`);
           log.settingUpdate(group.id, oldGroupSettings.actived, groupSettings.actived, "Groupe");
           Settings.stored[group.id].actived = groupSettings.actived;
           group.updateActived(group.actived);
@@ -562,7 +580,8 @@ class Group extends Identity {
             // Si le paramètre n'a pas été modifié, on ne fait rien
             if (Array.isArray(parameterSettings) && Array.isArray(oldParameterSettings) && parameterSettings.length == oldParameterSettings.length && parameterSettings.every((value, index) => value === oldParameterSettings[index])) return;
             // Afficher un message de log
-            log.settingUpdate(parameterId, oldParameterSettings, parameterSettings, "Paramettre");
+            if (parameter.type === "button") { if (parameterSettings > 0) log.settingAction(parameterId); }
+            else log.settingUpdate(parameterId, oldParameterSettings, parameterSettings, "Paramettre");
             // Mettre à jour le paramètre dans les paramètres stockés
             Settings.stored[group.id].parameters[parameterId] = parameterSettings;
             // Mettre à jour le paramètre dans la classe
@@ -1027,7 +1046,8 @@ class ColorSelector extends Parameter {
   }
 
   importValue(defaultValue) {
-    this.value = Number.isInteger(Settings.stored[this.group.id]?.parameters[this.id]) && 360 >= Settings.stored[this.group.id]?.parameters[this.id] >= 0 ? Settings.stored[this.group.id].parameters[this.id] : defaultValue;
+    const val = Settings.stored[this.group.id]?.parameters[this.id];
+    this.value = Number.isInteger(val) && val >= 0 && val <= 360 ? val : defaultValue;
   }
 
   updateValue() {
@@ -1076,7 +1096,13 @@ class ColorSelector extends Parameter {
  */
 class Button extends Parameter {
   constructor(group, id, icon, name, description, warning = false) {
-    super(group, id, icon, name, description, "button", true, false, warning);
+    super(group, id, icon, name, description, "button", 0, false, warning);
+  }
+
+  createEventListener(htmlElement) {
+    htmlElement.querySelector("button").addEventListener("click", () => {
+      this.exportValue(Date.now());
+    });
   }
 }
 
@@ -1093,6 +1119,6 @@ function genSettings() {
   try {
     settingsReady = Group.genSettings();
   } catch (error) {
-    console.error("Erreur lors de la génération des paramètres", error);
+    log.error("SETTINGS", `Erreur lors de la génération des paramètres : ${error}`);
   }
 }
