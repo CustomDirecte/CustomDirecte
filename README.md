@@ -12,9 +12,6 @@
 <p align='center'>
   Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
   <br><br>
-  <a href="https://customdirecte.github.io/">
-    <img src="https://img.shields.io/badge/Website%20%26%20Doc-Open?style=for-the-badge&color=purple" />
-  </a>
   <a href="https://discord.gg/vQYhP3q8eR">
     <img src="https://img.shields.io/badge/Suggestions,%20Aide%20&%20Bugs-Open?style=for-the-badge&color=darkblue&logo=discord&logoColor=fff" />
   </a>
