@@ -53,6 +53,9 @@ new RowSelector(
   ],
   false
 );
+new Switch(notesTable, "customNotesFeature", "file-bookmark", "Notes custom", "Ajouter des notes prédictives et gérer l'ensemble du système autour", true, true);
+new Switch(notesTable, "customSubjectsFeature", "shapes", "Matières custom", "Ajouter une matière et gérer l'ensemble du système autour", true, true, false, "customNotesFeature");
+new Switch(notesTable, "editNotesFeature", "draw-square", "Modifier une note", "Modifier une note déjà présente sur EcoleDirecte", true, true);
 
 const sidebar = new Group("sidebar", "sidebar", "Barre latérale", "Paramètres de la barre latérale", false);
 

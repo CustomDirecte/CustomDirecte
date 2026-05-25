@@ -330,6 +330,13 @@ var noteTableModule = {
     const p = this._params;
     const cdIncludeCustomData = localStorage.getItem("cd-include-custom-data") !== "false";
 
+    /* ── Feature flags (réglages "notesTable") ──
+       Si une option est désactivée, la fonctionnalité ne doit ni s'afficher ni agir sur les moyennes.
+       customSubjects dépend de customNotes : il est inactif si customNotes l'est. */
+    const customNotesOn = p["customNotesFeature"] !== false;
+    const customSubjectsOn = customNotesOn && p["customSubjectsFeature"] !== false;
+    const editNotesOn = p["editNotesFeature"] !== false;
+
     function refreshNotes() {
       tableParent.dataset.averageCalculator = "";
       try {
@@ -461,38 +468,42 @@ var noteTableModule = {
     const cdWrapper = document.createElement("div");
     cdWrapper.className = "cd-global-clear-wrapper";
 
-    const cdSwitchLabel = document.createElement("label");
-    cdSwitchLabel.className = "cd-custom-data-switch-label";
-    cdSwitchLabel.title = "Prendre en compte les notes custom, modifications et matières custom dans le recalcul de la moyenne";
-    const cdSwitchChk = document.createElement("input");
-    cdSwitchChk.type = "checkbox";
-    cdSwitchChk.checked = cdIncludeCustomData;
-    cdSwitchChk.addEventListener("change", (e) => {
-      e.stopPropagation();
-      localStorage.setItem("cd-include-custom-data", cdSwitchChk.checked ? "true" : "false");
-      refreshNotes();
-    });
-    const cdSwitchTrack = document.createElement("span");
-    cdSwitchTrack.className = "cd-custom-data-switch-track";
-    const cdSwitchText = document.createElement("span");
-    cdSwitchText.textContent = "Prendre en compte les données custom";
-    cdSwitchLabel.appendChild(cdSwitchChk);
-    cdSwitchLabel.appendChild(cdSwitchTrack);
-    cdSwitchLabel.appendChild(cdSwitchText);
-    cdWrapper.appendChild(cdSwitchLabel);
+    if (customNotesOn || editNotesOn) {
+      const cdSwitchLabel = document.createElement("label");
+      cdSwitchLabel.className = "cd-custom-data-switch-label";
+      cdSwitchLabel.title = "Prendre en compte les notes custom, modifications et matières custom dans le recalcul de la moyenne";
+      const cdSwitchChk = document.createElement("input");
+      cdSwitchChk.type = "checkbox";
+      cdSwitchChk.checked = cdIncludeCustomData;
+      cdSwitchChk.addEventListener("change", (e) => {
+        e.stopPropagation();
+        localStorage.setItem("cd-include-custom-data", cdSwitchChk.checked ? "true" : "false");
+        refreshNotes();
+      });
+      const cdSwitchTrack = document.createElement("span");
+      cdSwitchTrack.className = "cd-custom-data-switch-track";
+      const cdSwitchText = document.createElement("span");
+      cdSwitchText.textContent = "Prendre en compte les données custom";
+      cdSwitchLabel.appendChild(cdSwitchChk);
+      cdSwitchLabel.appendChild(cdSwitchTrack);
+      cdSwitchLabel.appendChild(cdSwitchText);
+      cdWrapper.appendChild(cdSwitchLabel);
+    }
 
-    const cdCustomSubjectsList = getCustomSubjects();
+    const cdCustomSubjectsList = customSubjectsOn ? getCustomSubjects() : [];
 
-    const cdAddSubjectBtn = document.createElement("button");
-    cdAddSubjectBtn.type = "button";
-    cdAddSubjectBtn.className = "cd-add-subject-btn";
-    cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière custom';
-    cdAddSubjectBtn.addEventListener("click", () => {
-      openAddSubjectModal(refreshNotes);
-    });
-    cdWrapper.appendChild(cdAddSubjectBtn);
+    if (customSubjectsOn) {
+      const cdAddSubjectBtn = document.createElement("button");
+      cdAddSubjectBtn.type = "button";
+      cdAddSubjectBtn.className = "cd-add-subject-btn";
+      cdAddSubjectBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="pointer-events:none"><line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> Nouvelle matière custom';
+      cdAddSubjectBtn.addEventListener("click", () => {
+        openAddSubjectModal(refreshNotes);
+      });
+      cdWrapper.appendChild(cdAddSubjectBtn);
+    }
 
-    const cdAllKeys = Object.keys(localStorage).filter((k) => k.startsWith("customNotes_"));
+    const cdAllKeys = customNotesOn ? Object.keys(localStorage).filter((k) => k.startsWith("customNotes_")) : [];
     const cdTotalCount = cdAllKeys.reduce((sum, k) => {
       try {
         return sum + JSON.parse(localStorage.getItem(k) || "[]").length;
@@ -521,7 +532,7 @@ var noteTableModule = {
       cdWrapper.appendChild(cdGlobalClearBtn);
     }
 
-    const cdModAllKeys = Object.keys(localStorage).filter((k) => k.startsWith("modifiedNotes_"));
+    const cdModAllKeys = editNotesOn ? Object.keys(localStorage).filter((k) => k.startsWith("modifiedNotes_")) : [];
     const cdTotalMods = cdModAllKeys.reduce((sum, k) => {
       try {
         return sum + Object.keys(JSON.parse(localStorage.getItem(k) || "{}")).length;
@@ -647,6 +658,7 @@ var noteTableModule = {
             else wrapper.remove();
           });
 
+          if (editNotesOn) {
           const cdMods = getModifiedNotes(cdSubjectName);
           [...cdNotesCell.querySelectorAll("button")].forEach((btn, cdEdIdx) => {
             const valeurSpan = btn.querySelector(":scope > span.valeur");
@@ -773,7 +785,9 @@ var noteTableModule = {
               edWrapper.appendChild(resetBtn);
             }
           });
+          }
 
+          if (customNotesOn) {
           getCustomNotes(cdSubjectName).forEach((cn, cdIndex) => {
             const wrapper = document.createElement("span");
             wrapper.className = "cd-custom-note-wrapper";
@@ -837,9 +851,10 @@ var noteTableModule = {
             });
             cdNotesCell.appendChild(clearBtn);
           }
+          }
 
-          const hasCustom = cdIncludeCustomData && getCustomNotes(cdSubjectName).length > 0;
-          const hasMods = cdIncludeCustomData && Object.keys(getModifiedNotes(cdSubjectName)).length > 0;
+          const hasCustom = cdIncludeCustomData && customNotesOn && getCustomNotes(cdSubjectName).length > 0;
+          const hasMods = cdIncludeCustomData && editNotesOn && Object.keys(getModifiedNotes(cdSubjectName)).length > 0;
           line.dataset.cdHasCustomNotes = hasCustom || hasMods ? "1" : "";
         }
       }
