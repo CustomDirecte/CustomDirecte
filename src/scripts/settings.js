@@ -602,6 +602,13 @@ class Group extends Identity {
           }
         }
       });
+
+      // Réapplique les dépendances entre paramètres (option "requires")
+      Group.groups.forEach((group) => {
+        for (const parameter of group.parameters) {
+          if (parameter.requires) parameter.applyDependencyState();
+        }
+      });
     });
   }
 }
@@ -646,8 +653,9 @@ class Parameter extends Identity {
    * @param {*} defaultValue - La valeur par défaut du paramètre.
    * @param {boolean} reloadingRequired - Indique si un rechargement est nécessaire après la modification du paramètre.
    * @param {string|boolean} warning - Un avertissement à afficher si nécessaire.
+   * @param {string|boolean} requires - Identifiant d'un autre paramètre du même groupe qui doit être activé pour que celui-ci le soit.
    */
-  constructor(group, id, icon, name, description, type, defaultValue, reloadingRequired = false, warning = false) {
+  constructor(group, id, icon, name, description, type, defaultValue, reloadingRequired = false, warning = false, requires = false) {
     super(id, icon, name, description);
     this.group = group;
     group.addParameter(this);
@@ -655,6 +663,33 @@ class Parameter extends Identity {
     this.reloadingRequired = reloadingRequired;
     this.warning = warning;
     this.defaultValue = defaultValue;
+    this.requires = requires;
+  }
+
+  /**
+   * Applique l'état de dépendance d'un paramètre lié à un autre (option "requires").
+   * Si le paramètre parent est désactivé, ce paramètre est forcé à false et verrouillé dans l'UI.
+   */
+  applyDependencyState() {
+    if (!this.requires) return;
+    const parent = this.group.parameters.find((parameter) => parameter.id === this.requires);
+    if (!parent) return;
+    const parentOn = parent.value != false;
+
+    // Force la valeur à false tant que le parent est désactivé
+    if (!parentOn && this.value != false) {
+      this.value = false;
+      this.exportValue(false);
+    }
+
+    // Verrouille / déverrouille l'UI (uniquement dans le popup)
+    if (this.htmlElement) {
+      const input = this.htmlElement.querySelector("#switch");
+      if (input) input.disabled = !parentOn;
+      this.htmlElement.style.opacity = parentOn ? "" : "0.5";
+      this.htmlElement.style.pointerEvents = parentOn ? "" : "none";
+      this.htmlElement.setAttribute("data-locked", parentOn ? "false" : "true");
+    }
   }
 
   /**
@@ -759,6 +794,9 @@ class Parameter extends Identity {
       <div style="font-size: 16px;"> ${description} </div>
       `);
     tippy(this.htmlElement.querySelector("#description"), { placement: "left", allowHTML: true, content: descriptionTooltip, appendTo: () => document.querySelector(".tippyParent") });
+
+    // Verrouille le paramètre si sa dépendance n'est pas satisfaite
+    if (this.requires) this.applyDependencyState();
   }
 }
 
@@ -768,8 +806,8 @@ class Parameter extends Identity {
  * @description Un interrupteur permet d'activer ou de désactiver une fonctionnalité.
  */
 class Switch extends Parameter {
-  constructor(group, id, icon, name, description, defaultValue = true, reloadingRequired = false, warning = false) {
-    super(group, id, icon, name, description, "switch", defaultValue, reloadingRequired, warning);
+  constructor(group, id, icon, name, description, defaultValue = true, reloadingRequired = false, warning = false, requires = false) {
+    super(group, id, icon, name, description, "switch", defaultValue, reloadingRequired, warning, requires);
   }
 
   importValue(defaultValue) {
