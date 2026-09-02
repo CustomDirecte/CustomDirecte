@@ -36,17 +36,6 @@
   --sidebar-page-bg: var(--darkreader-bg--bs-body-bg);
 }
 
-/* █ █ █ █▀▄ █▀▀ █▀▀ █ █ █▀ ▀█▀ █▀█ █▀▄▀█ █ ▀█ ▄▀█ ▀█▀ █ █▀█ █▄ █ █▄▄ █ █ ▀█▀ ▀█▀ █▀█ █▄ █ */
-/* █▀█ █ █▄▀ ██▄ █▄▄ █▄█ ▄█  █  █▄█ █ ▀ █ █ █▄ █▀█  █  █ █▄█ █ ▀█ █▄█ █▄█  █   █  █▄█ █ ▀█ */
-
-[hideCustomizationButton="true"] .optionsButton {
-  display: none;
-}
-
-[hideCustomizationButton="false"] .optionsButton {
-  display: flex;
-}
-
 /* █   █▀█ ▄▀█ █▀▄ █ █▄ █ █▀▀ */
 /* █▄▄ █▄█ █▀█ █▄▀ █ █ ▀█ █▄█ */
 
@@ -320,8 +309,7 @@ html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper {
   width: 100%;
 }
 
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul,
-html.new-menu .menuMoreOptions {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -330,8 +318,7 @@ html.new-menu .menuMoreOptions {
 /* 
 BOUTTON 
 */
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li,
-html.new-menu .menuMoreOptions li {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li {
   padding: 0;
   margin: 0;
   margin-left: 16px;
@@ -357,8 +344,7 @@ html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li div {
 /* 
 BOUTTON MAIN ELEMENT
 */
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a,
-html.new-menu .moreOption {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a {
   border-radius: 16px 0 0 16px;
   display: flex;
   align-items: center;
@@ -371,13 +357,11 @@ html.new-menu .moreOption {
   transition: none;
 }
 
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a::before,
-html.new-menu .moreOption::before {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a::before {
   display: none;
 }
 
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a:not(.item-actif):hover,
-html.new-menu .moreOption:not(.item-actif):hover {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a:not(.item-actif):hover {
   opacity: 0.5;
 }
 
@@ -415,8 +399,7 @@ html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a.item-actif:
 /* 
 BOUTTON ICON
 */
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a i,
-html.new-menu .moreOption i {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a i {
   min-width: 3rem;
   width: 3rem;
   opacity: 1;
@@ -425,8 +408,7 @@ html.new-menu .moreOption i {
 /* 
 BOUTTON TEXT
 */
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a span.item-name,
-html.new-menu .moreOption span {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a span.item-name {
   text-align: left;
   font-size: 16px;
   left: 8px;
@@ -457,26 +439,6 @@ html[pinnedsidebar="true"].new-menu #container-menu .ed-menu .ed-menu-list-wrapp
   top: 0;
   transform: none;
   position: relative;
-}
-
-html.new-menu .moreOption {
-  text-decoration: none;
-  color: color-mix(in srgb, var(--sidebar-text) 70%, transparent);
-  transition: var(--tran-03);
-}
-
-html:not([pinnedsidebar="true"]).new-menu .moreOption span {
-  opacity: 0;
-}
-
-html.new-menu #container-menu:hover .moreOption span,
-html[pinnedsidebar="true"].new-menu#container-menu .moreOption span {
-  opacity: 1;
-}
-
-html.new-menu .moreOption:hover {
-  text-decoration: none;
-  color: color-mix(in srgb, var(--sidebar-text) 70%, transparent);
 }
 
 html[pinnedsidebar="true"].new-menu #container-menu .ed-menu-list-wrapper li a span.item-name {

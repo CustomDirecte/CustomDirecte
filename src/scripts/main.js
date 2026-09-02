@@ -25,6 +25,96 @@ function isLoginPage() {
 }
 /* ----------------------------------------------- */
 
+/* -------------------- Icons -------------------- */
+// EcoleDirecte n'embarque plus Font Awesome : les icones sont donc fournies
+// par l'extension elle meme sous forme de SVG inline (aucune dependance au site).
+const icons = {
+  pencil: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
+  cog: "M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z",
+  user: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z",
+  signOut: "M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H4V5z",
+};
+
+// Markup SVG de l'icone demandee (la taille et la couleur suivent le parent)
+function iconSvg(name) {
+  return `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="${icons[name]}"></path></svg>`;
+}
+
+// Cree un element <i> contenant l'icone demandee
+function createIcon(name) {
+  const iconElement = document.createElement("i");
+  iconElement.classList.add("cdIcon");
+  iconElement.innerHTML = iconSvg(name);
+  return iconElement;
+}
+/* ----------------------------------------------- */
+
+/* ----------- Sidebar Menu Injection ------------ */
+// Ajoute des entrees dans le menu natif d'EcoleDirecte, que le nouveau design
+// de barre laterale soit actif ou non. Chaque entree est clonee depuis un
+// element existant du menu : elle herite ainsi exactement de son style, aussi
+// bien celui du site que celui applique par l'extension en mode "new-menu".
+const sidebarMenuEntries = [];
+let sidebarMenuObserverStarted = false;
+
+function addSidebarMenuEntry(entry) {
+  sidebarMenuEntries.push(entry);
+  sidebarMenuEntries.sort((a, b) => a.order - b.order);
+
+  // Le menu est rendu par Angular : il faut le (re)garnir a chaque rendu
+  if (!sidebarMenuObserverStarted) {
+    sidebarMenuObserverStarted = true;
+    new MutationObserver(injectSidebarMenuEntries).observe(document.body, { subtree: true, childList: true });
+  }
+
+  injectSidebarMenuEntries();
+}
+
+function injectSidebarMenuEntries() {
+  const list = document.querySelector("#container-menu .ed-menu-list");
+  if (!list) return;
+
+  // Sortie rapide : l'observateur est appele a chaque rendu d'Angular
+  if (list.querySelectorAll("[cdMenuEntry]").length == sidebarMenuEntries.length) return;
+
+  // Modele : un element natif du menu, pour en heriter le style
+  const template = [...list.children].find((li) => li.tagName == "LI" && !li.hasAttribute("cdMenuEntry") && li.querySelector("a > i"));
+  if (!template) return;
+
+  let added = false;
+
+  for (const entry of sidebarMenuEntries) {
+    if (list.querySelector(`[cdMenuEntry="${entry.id}"]`)) continue;
+
+    const li = template.cloneNode(true);
+    li.setAttribute("cdMenuEntry", entry.id);
+    li.querySelectorAll("span.badge, cg-busy").forEach((ele) => ele.remove());
+
+    const link = li.querySelector("a");
+    link.removeAttribute("href");
+    link.removeAttribute("aria-current");
+    link.classList.remove("item-actif");
+    link.setAttribute("role", "button");
+    link.setAttribute("tabindex", "0");
+    link.setAttribute("aria-label", entry.text);
+    link.onclick = entry.onclick;
+
+    link.querySelector("span.item-name").textContent = entry.text;
+
+    // Remplace l'icone native par celle de l'extension
+    const iconElement = link.querySelector("i");
+    iconElement.classList.add("cdIcon");
+    iconElement.innerHTML = iconSvg(entry.icon);
+
+    list.appendChild(li);
+    added = true;
+  }
+
+  // Reordonne les entrees si l'une d'elles vient d'etre ajoutee
+  if (added) sidebarMenuEntries.forEach((entry) => list.appendChild(list.querySelector(`[cdMenuEntry="${entry.id}"]`)));
+}
+/* ----------------------------------------------- */
+
 /* --------------- optionsConfig ----------------- */
 function optionsConfig(options, setOption, params, toparam) {
   if (options == false) {
@@ -1623,6 +1713,13 @@ function newSidebar(options) {
   document.querySelector("html").classList.add("new-menu");
   log('css attribute "new-menu" -> [ Added ]');
 
+  // La barre du haut (nom + déconnexion) étant masquée par ce design,
+  // ses actions sont déplacées dans le menu latéral
+  addSidebarMenuEntry({ id: "Account", order: 1, icon: "user", text: "Mon Compte", onclick: () => document.getElementById("user-account-link").click() });
+  log(" > Account menu entry -> [ Registered ]");
+  addSidebarMenuEntry({ id: "Logout", order: 2, icon: "signOut", text: "Déconnexion", onclick: () => document.querySelector(".logout").click() });
+  log(" > Deconnexion menu entry -> [ Registered ]");
+
   // Detecte les changement du body et execute quand nécésaire le code pour changer le menu
   log("BodyObserver -> [ Starting ]");
   const observer = new MutationObserver(() => {
@@ -1646,45 +1743,6 @@ function newSidebar(options) {
       rootName.innerHTML = `:root { --userName: "${usernameElem.innerText.trim().replace(/ /, "\\A ")}" }`;
       document.head.appendChild(rootName);
       log(" > UserName in CSS Root -> [ Added ]");
-
-      // Crée une div pour insérer dedans les nouveaux boutons du menu
-      menuMoreOptions = document.createElement("div");
-      menuElem.appendChild(menuMoreOptions);
-      menuMoreOptions.classList.add("menuMoreOptions");
-      log(" > Div for new button -> [ Added ]");
-
-      // Fonction qui permet d'ajouté un nouveau bouton au menu
-      function menuAddNewOptions(id, icon, text, onclick) {
-        // li
-        li = document.createElement("li");
-        menuMoreOptions.appendChild(li);
-
-        // Element principale
-        moreOptionElement = document.createElement("a");
-        li.appendChild(moreOptionElement);
-        moreOptionElement.id = `moreOption-${id}`;
-        moreOptionElement.classList.add("moreOption");
-        if (onclick) moreOptionElement.onclick = onclick;
-
-        // Icon
-        moreOptionElement_Icon = document.createElement("i");
-        moreOptionElement.appendChild(moreOptionElement_Icon);
-        moreOptionElement_Icon.classList.add("fa", icon);
-
-        // Texte
-        moreOptionElement_Span = document.createElement("span");
-        moreOptionElement.appendChild(moreOptionElement_Span);
-        moreOptionElement_Span.innerText = text;
-      }
-
-      // Ajout de nouveaux boutons
-      log(" > Creation of news buttons -> [ Starting ]");
-      menuAddNewOptions("Options", "fa-cog", "Personnalisation", () => document.querySelector("html").classList.add("optionsPopupActif"));
-      log(" > Options button -> [ Added ]");
-      menuAddNewOptions("Account", "fa-user", "Mon Compte", () => document.getElementById("user-account-link").click());
-      log(" > Account button -> [ Added ]");
-      menuAddNewOptions("Déconnexion", "fa-sign-out", "Déconnexion", () => document.querySelector(".logout").click());
-      log(" > Deconnexion button -> [ Added ]");
 
       // Cache la bare qui contiens le nom et la bouton de déconnexion
       if (document.querySelector(".navbar-nav")) document.querySelector(".navbar-nav").style.display = "none";
@@ -1730,6 +1788,11 @@ function customization(options) {
 register(customization);
 
 function customizationButton(options, value) {
+  // Options secondaires (hideCustomizationButton...)
+  optionsConfig(options, (option) => {
+    document.documentElement.setAttribute(option[0], option[1]);
+  });
+
   optionsConfig(
     false, // config pour value et pas option
     (option) => {
@@ -1746,8 +1809,7 @@ function customizationButton(options, value) {
   // Bouton de personnalisation
   optionsButtonDiv = document.createElement("div");
   optionsButtonDiv.classList.add("optionsButton");
-  optionsButtonIcon = document.createElement("i");
-  optionsButtonIcon.classList.add("fa", "fa-pencil");
+  optionsButtonIcon = createIcon("pencil");
   optionsButtonSpan = document.createElement("span");
   optionsButtonSpan.innerText = "Personnaliser EcoleDirecte";
   document.body.prepend(optionsButtonDiv);
@@ -1757,6 +1819,10 @@ function customizationButton(options, value) {
     if (document.querySelector("html").classList.contains("optionsPopupActif")) document.querySelector("html").classList.remove("optionsPopupActif");
     else document.querySelector("html").classList.add("optionsPopupActif");
   };
+
+  // Entrée dans le menu latéral : toujours présente, elle permet de rouvrir ce
+  // menu même quand le bouton flottant est masqué
+  addSidebarMenuEntry({ id: "Options", order: 0, icon: "cog", text: "Personnalisation", onclick: () => document.querySelector("html").classList.add("optionsPopupActif") });
 
   optionsPopupBlur = document.createElement("div");
   optionsPopupBlur.classList.add("optionsPopupBlur");

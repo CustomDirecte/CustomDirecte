@@ -74,6 +74,14 @@ html:not(.optionsPopupActif) .optionsPopup {
 /* █▄▄ █ █ ▀█▀ ▀█▀ █▀█ █▄ █ */
 /* █▄█ █▄█  █   █  █▄█ █ ▀█ */
 
+[hideCustomizationButton="true"] .optionsButton {
+  display: none;
+}
+
+[hideCustomizationButton="false"] .optionsButton {
+  display: flex;
+}
+
 .optionsButton {
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.23);
@@ -100,8 +108,15 @@ html:not(.optionsPopupActif) .optionsPopup {
 }
 
 .optionsButton > i {
+  display: flex;
+  align-items: center;
   font-size: 15px;
   padding-right: 8px;
+}
+
+/* Sans texte, l'icone doit rester centree dans la pastille */
+[customizationbutton0="icon"] .optionsButton > i {
+  padding-right: 0;
 }
 
 @keyframes animate-pop {

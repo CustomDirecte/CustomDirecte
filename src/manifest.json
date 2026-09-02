@@ -29,7 +29,7 @@
       "run_at": "document_start",
       "all_frames": true,
       "js": ["/scripts/main.js"],
-      "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
+      "css": ["/styles/icons.css", "/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
     }
   ],
   "web_accessible_resources": [

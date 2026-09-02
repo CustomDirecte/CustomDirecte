@@ -1,0 +1,22 @@
+/* ██╗  ██████╗  ██████╗  ███╗   ██╗ ███████╗ */
+/* ██║ ██╔════╝ ██╔═══██╗ ████╗  ██║ ██╔════╝ */
+/* ██║ ██║      ██║   ██║ ██╔██╗ ██║ ███████╗ */
+/* ██║ ██║      ██║   ██║ ██║╚██╗██║ ╚════██║ */
+/* ██║ ╚██████╗ ╚██████╔╝ ██║ ╚████║ ███████║ */
+/* ╚═╝  ╚═════╝  ╚═════╝  ╚═╝  ╚═══╝ ╚══════╝ */
+
+/* Icones embarquees par l'extension (voir createIcon / iconSvg dans main.js).
+   EcoleDirecte n'inclut plus Font Awesome : les anciennes classes .fa ne
+   rendaient plus aucun glyphe, d'ou des boutons vides. */
+
+/* Neutralise le glyphe natif lorsqu'une entree du menu est clonee */
+.cdIcon::before {
+  content: none !important;
+}
+
+.cdIcon > svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: middle;
+}

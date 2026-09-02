@@ -225,9 +225,9 @@ defaultOptions = {
       Default: false,
       option: "hideCustomizationButton",
       Title: "Cacher le bouton de personnalisation",
-      Subtitle: "Si cette option est activée, vous devez uiliser le bouton de la barre latérale pour accéder à ce menu",
+      Subtitle: "Si cette option est activée, vous devez utiliser le bouton de la barre latérale pour accéder à ce menu",
       reloadingRequired: false,
-      lock: "newSidebar",
+      lock: "customizationButton",
     },
     {
       Group: "sidebar",
