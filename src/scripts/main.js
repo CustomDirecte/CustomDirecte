@@ -57,6 +57,8 @@ function createIcon(name) {
 const sidebarMenuEntries = [];
 let sidebarMenuObserverStarted = false;
 
+// Une entree peut porter un predicat "visible" reevalue a chaque rafraichissement,
+// ce qui permet de l'ajouter et de la retirer a chaud sans recharger la page.
 function addSidebarMenuEntry(entry) {
   sidebarMenuEntries.push(entry);
   sidebarMenuEntries.sort((a, b) => a.order - b.order);
@@ -64,18 +66,25 @@ function addSidebarMenuEntry(entry) {
   // Le menu est rendu par Angular : il faut le (re)garnir a chaque rendu
   if (!sidebarMenuObserverStarted) {
     sidebarMenuObserverStarted = true;
-    new MutationObserver(injectSidebarMenuEntries).observe(document.body, { subtree: true, childList: true });
+    new MutationObserver(refreshSidebarMenuEntries).observe(document.body, { subtree: true, childList: true });
   }
 
-  injectSidebarMenuEntries();
+  refreshSidebarMenuEntries();
 }
 
-function injectSidebarMenuEntries() {
+function refreshSidebarMenuEntries() {
   const list = document.querySelector("#container-menu .ed-menu-list");
   if (!list) return;
 
+  const visibleEntries = sidebarMenuEntries.filter((entry) => !entry.visible || entry.visible());
+
+  // Retire les entrees qui ne doivent plus etre affichees
+  list.querySelectorAll("[cdMenuEntry]").forEach((li) => {
+    if (!visibleEntries.some((entry) => entry.id == li.getAttribute("cdMenuEntry"))) li.remove();
+  });
+
   // Sortie rapide : l'observateur est appele a chaque rendu d'Angular
-  if (list.querySelectorAll("[cdMenuEntry]").length == sidebarMenuEntries.length) return;
+  if (list.querySelectorAll("[cdMenuEntry]").length == visibleEntries.length) return;
 
   // Modele : un element natif du menu, pour en heriter le style
   const template = [...list.children].find((li) => li.tagName == "LI" && !li.hasAttribute("cdMenuEntry") && li.querySelector("a > i"));
@@ -83,7 +92,7 @@ function injectSidebarMenuEntries() {
 
   let added = false;
 
-  for (const entry of sidebarMenuEntries) {
+  for (const entry of visibleEntries) {
     if (list.querySelector(`[cdMenuEntry="${entry.id}"]`)) continue;
 
     const li = template.cloneNode(true);
@@ -111,7 +120,7 @@ function injectSidebarMenuEntries() {
   }
 
   // Reordonne les entrees si l'une d'elles vient d'etre ajoutee
-  if (added) sidebarMenuEntries.forEach((entry) => list.appendChild(list.querySelector(`[cdMenuEntry="${entry.id}"]`)));
+  if (added) visibleEntries.forEach((entry) => list.appendChild(list.querySelector(`[cdMenuEntry="${entry.id}"]`)));
 }
 /* ----------------------------------------------- */
 
@@ -280,15 +289,27 @@ function Run() {
     inputOptions = inputOptions.options ? inputOptions.options : inputOptions;
     let option = {};
     let secondaryOption = [];
+    // Le module auquel une option est rattachée est lu dans le schéma et non
+    // dans le storage : la valeur persistée peut être périmée tant que le
+    // service worker n'a pas corrigé le storage, et il n'y a pas de service
+    // worker dans les environnements type Electron
+    const optionLock = (optionName) => {
+      const schemaOption = defaultOptions.options.find((defOpt) => defOpt.option == optionName);
+      return schemaOption ? schemaOption.lock : false;
+    };
+
     inputOptions.forEach((item) => {
-      if (item.lock === false) {
+      const lock = optionLock(item.option);
+      if (lock === false) {
         option[item.option] = { value: item.Value === null ? item.Default : item.Value, secondary: {} };
       } else {
-        secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: item.lock });
+        secondaryOption.push({ option: item.option, value: item.Value === null ? item.Default : item.Value, secondary: lock });
       }
     });
     secondaryOption.forEach((item) => {
-      option[item.secondary].secondary[item.option] = item.value;
+      // Une option rattachée à un module inconnu est ignorée plutôt que de
+      // faire échouer le chargement de toutes les autres
+      if (option[item.secondary]) option[item.secondary].secondary[item.option] = item.value;
     });
 
     const readystateHandler = () => {
@@ -1791,6 +1812,8 @@ function customizationButton(options, value) {
   // Options secondaires (hideCustomizationButton...)
   optionsConfig(options, (option) => {
     document.documentElement.setAttribute(option[0], option[1]);
+    // L'option ne demande pas de rechargement : l'entrée du menu doit suivre
+    refreshSidebarMenuEntries();
   });
 
   optionsConfig(
@@ -1820,9 +1843,17 @@ function customizationButton(options, value) {
     else document.querySelector("html").classList.add("optionsPopupActif");
   };
 
-  // Entrée dans le menu latéral : toujours présente, elle permet de rouvrir ce
-  // menu même quand le bouton flottant est masqué
-  addSidebarMenuEntry({ id: "Options", order: 0, icon: "cog", text: "Personnalisation", onclick: () => document.querySelector("html").classList.add("optionsPopupActif") });
+  // Entrée dans le menu latéral. Elle fait partie du nouveau design, et elle
+  // reste le seul accès à ce menu quand le bouton flottant est masqué : dans
+  // les deux cas elle doit être présente, sinon elle ferait doublon.
+  addSidebarMenuEntry({
+    id: "Options",
+    order: 0,
+    icon: "cog",
+    text: "Personnalisation",
+    visible: () => document.documentElement.classList.contains("new-menu") || document.documentElement.getAttribute("hideCustomizationButton") == "true",
+    onclick: () => document.querySelector("html").classList.add("optionsPopupActif"),
+  });
 
   optionsPopupBlur = document.createElement("div");
   optionsPopupBlur.classList.add("optionsPopupBlur");

@@ -28,7 +28,7 @@
       "matches": ["*://*.ecoledirecte.com/*"],
       "run_at": "document_start",
       "all_frames": true,
-      "js": ["/scripts/main.js"],
+      "js": ["/scripts/schema.js", "/scripts/main.js"],
       "css": ["/styles/icons.css", "/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
     }
   ],

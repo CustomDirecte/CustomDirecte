@@ -8,8 +8,10 @@ browserStorageOnChanged = browser.storage.sync.onChanged;
 importScripts("/scripts/schema.js");
 
 
+// "lock" n'est volontairement pas persisté : il appartient au schéma, et une
+// copie dans le storage devient périmée dès qu'une option change de module
 function compactOption(defOpt, value) {
-  return { option: defOpt.option, Value: value, lock: defOpt.lock, Default: defOpt.Default };
+  return { option: defOpt.option, Value: value, Default: defOpt.Default };
 }
 
 function compactStorage(storedOptions) {
