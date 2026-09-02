@@ -399,10 +399,26 @@ html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a.item-actif:
 /* 
 BOUTTON ICON
 */
-html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a i {
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a i,
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a fa-icon {
   min-width: 3rem;
   width: 3rem;
   opacity: 1;
+}
+
+/* "Manuels & ressources" est la seule entrée rendue via <fa-icon> (SVG) et non
+   via la police d'icônes du site : sans ça son icône est plus grande et garde
+   l'opacité d'origine, ce qui la démarque des autres */
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a fa-icon {
+  display: inline-block;
+  text-align: center;
+  font-size: 16px;
+  line-height: 21px;
+}
+
+html.new-menu #container-menu .ed-menu .ed-menu-list-wrapper ul li a fa-icon svg {
+  height: 1em;
+  vertical-align: middle;
 }
 
 /* 
