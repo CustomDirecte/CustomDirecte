@@ -1,45 +1,39 @@
-# CustomDirecte
+<H1 align="center">
+CustomDirecte
+</H1>
+<H4 align="center">
+Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
+</H4>
+<p align="center">
+<a href=""><img alt="Version" src="https://img.shields.io/badge/release-v6.1.1-blue"/></a>
+<a href="https://bit.ly/new-interface-for-ed-chrome"><img alt="Chrome" src="https://img.shields.io/badge/Web%20Chrome%20Store-Published-green"/></a>
+<a href="https://bit.ly/new-interface-for-ed-firefox"><img alt="Firefox" src="https://img.shields.io/badge/Firefox%20ADD--ONS-Published-green"/></a> 
+         
+</p>
 
-Extension Chrome MV3 pour personnaliser EcoleDirecte et enrichir le tableau des notes.
+<p align="center">
+A Bastoon project made with ❤️</a>
+</p>
 
-## Développement
+<H4>Voici la liste des fonctionnalités ajoutées :</H4>
 
-```bash
-npm install
-npm run popup:build
-npm run bac:build
-npm run popup:validate
-```
+★ Un calculateur de moyennes qui calcule en direct les moyennes par matières ainsi que la moyenne générale[^1].
 
-Pour tester les interfaces du popup :
+★ Une nouvelle barre latérale (ou menu) à la place de l'ancienne :
+* Plus lisible
+* Prend moins de place
+* Regroupe plus de paramètres
 
-```bash
-npm run popup:preview:classic
-npm run popup:preview:legacy
-```
+★ Des options de personnalisations de l'affichage :
+* Choix de la couleur principale
+* Choix de la police d'écriture
+* Choix de l'angle des bordures arrondie
+* Choix d'un mode sombre ou claire
 
-Le chargement de l’extension se fait depuis le dossier `src/` dans Chrome, en mode développeur.
+----
 
-## Fonctionnalités principales
-
-- moyennes et notes custom dans le tableau EcoleDirecte ;
-- calculateur BAC dans le side panel ;
-- glisser-déposer d’une moyenne vers un champ BAC ;
-- personnalisation visuelle et mode sombre ;
-- popup avec interfaces classic et legacy ;
-- logs de développement téléchargeables.
-
-## Architecture
-
-| Dossier | Rôle |
-| --- | --- |
-| `src/core/settings/` | Modèle des groupes et paramètres, sans DOM. |
-| `src/modules/` | Fonctionnalités injectées dans EcoleDirecte. |
-| `src/pages/popup/` | Runtime du popup et adaptateurs d’interfaces. |
-| `src/pages/bac/` | Source React et build du calculateur BAC. |
-| `src/styles/` | Styles injectés dans EcoleDirecte. |
-| `src/utils/` | Utilitaires partagés. |
-| `popup-tooling/` | Sources Tailwind/templates des interfaces popup. |
-| `dev/` | Build, preview et validation. |
-
-Voir [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) pour le fonctionnement détaillé.
+⚠ Important :
+- Cette extension ne récupérera aucune donnée personnelle
+- Tous les changements apportés au site sont visuels, en aucun cas le fonctionnement du site n'est changé.
+- Cette extension n'est pas affiliée avec le site "ecoledirecte.com"
+[^1]: Les moyennes sont calculées grâce aux notes déjà affichées à l'écran, elles ne donnent aucun accès bloqué à l'élève ou au parent, et permet de prendre en compte les dernières notes sans attendre que le site s'en charge.
