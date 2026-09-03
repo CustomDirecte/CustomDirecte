@@ -32,6 +32,10 @@ const noteModule = read("src/modules/noteTableModule.js");
 const manifestText = read("src/manifest.json");
 const packageText = read("package.json");
 const buildScript = read("dev/build-popup.js");
+const popupManager = read("src/modules/popupManager.js");
+const popupCampaigns = read("src/modules/popups/campaigns.js");
+const popupBridge = read("src/modules/popupConsoleBridge.js");
+const popupStyles = read("src/styles/popups.css");
 
 assert(
   !/(document|querySelector|innerHTML|outerHTML|classList|setAttribute|createElement|addEventListener)/.test(core),
@@ -60,6 +64,16 @@ assert(parameters.includes('"bacCalculator"'), "L'option du calculateur du bac e
 assert(bacPage.includes("assets/") && bacSource.includes("Calculateur du bac"), "Le calculateur du bac n'est pas intégré.");
 assert(noteModule.includes("cd-bac-draggable-average") && noteModule.includes("application/x-customdirecte-average"), "Les moyennes du tableau ne sont pas glissables vers le BAC.");
 assert(bacSource.includes("readDraggedAverage") && bacSource.includes("data-bac-drop-target"), "Les champs du calculateur BAC n'acceptent pas le glisser-déposer.");
+assert(popupManager.includes("WelcomeCampaign") && popupManager.includes("ReminderCampaign"), "Le gestionnaire de popups ne contient pas les campagnes attendues.");
+assert(popupCampaigns.includes("Bienvenue sur CustomDirecte") && popupCampaigns.includes("Un calculateur du bac") && popupCampaigns.includes("supportText"), "Les contenus des campagnes de popup sont incomplets.");
+assert(popupCampaigns.includes("Astuce — glisser-déposer") && popupCampaigns.includes("side_move.webm"), "L’astuce glisser-déposer du calculateur est absente.");
+assert(popupManager.includes("customdirecte:popup:display-counts") && popupManager.includes("customdirecte:popup:v3-installed-at") && popupManager.includes("14 * 24 * 60 * 60 * 1000"), "Le suivi compact et le délai de la popup de rappel ne sont pas présents.");
+assert(popupManager.includes("customdirecte:existing-settings"), "La détection d’une installation précédente via les paramètres est absente.");
+assert(popupStyles.includes(".cd-popup-overlay") && popupStyles.includes(".cd-popup-feature-card") && popupStyles.includes(".cd-popup-video-controls"), "Les styles des popups sont incomplets.");
+assert(popupBridge.includes("CustomDirectePopups") && popupBridge.includes("customdirecte-popup-console"), "Le pont console de la page est absent ou incomplet.");
+assert(!popupBridge.includes("showWelcome") && !popupBridge.includes("showReminder"), "Les anciennes commandes console aliasées sont encore exposées.");
+assert(popupCampaigns.includes("welcome: Object.freeze({") && popupCampaigns.includes("videos: Object.freeze([])"), "La popup de première installation doit rester sans démonstration vidéo.");
+assert(popupCampaigns.includes("update: Object.freeze({") && (popupCampaigns.match(/videoKey: "notes"/g) || []).length >= 1 && (popupCampaigns.match(/videoKey: "bac"/g) || []).length >= 1, "La popup de mise à jour ne contient pas les démonstrations attendues.");
 
 for (const match of popupHtml.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)) {
   const source = match[1];
@@ -89,12 +103,14 @@ try {
   assert(contentScripts.includes("/core/settings/parameters.js"), "Le manifest ne charge pas la déclaration des paramètres.");
   assert(!contentScripts.includes("/scripts/settings.js"), "L'ancien chemin scripts/settings.js est encore déclaré.");
   assert(!contentScripts.includes("/scripts/parameters.js"), "L'ancien chemin scripts/parameters.js est encore déclaré.");
+  assert(manifest.content_scripts?.some((entry) => entry.world === "MAIN" && entry.js?.includes("/modules/popupConsoleBridge.js")), "Le pont console n'est pas déclaré dans le contexte MAIN.");
 
   const resources = manifest.web_accessible_resources?.flatMap((entry) => entry.resources || []) || [];
   assert(resources.includes("/pages/popup/interfaces/classic/templates.html"), "Les templates classic ne sont pas accessibles à l'extension.");
   assert(resources.includes("/pages/popup/interfaces/legacy/templates.html"), "Les templates legacy ne sont pas accessibles à l'extension.");
   assert(resources.includes("/pages/popup/interfaces/legacy/interface.css"), "Les styles legacy ne sont pas accessibles à l'extension.");
   assert(resources.includes("/pages/bac/sidebar.html"), "Le panneau du calculateur n'est pas déclaré dans le manifest.");
+  assert(resources.includes("/videos/*"), "Les vidéos des popups ne sont pas déclarées comme ressources accessibles.");
   assert(manifest.icons?.["16"] === "/icons/EcoleDirecte/default/icon16.png", "Le chemin de l'icône 16px du manifeste est invalide.");
   assert(fs.existsSync(path.join(root, "src/icons/EcoleDirecte/default/icon16.png")), "L'icône 16px déclarée n'existe pas dans src.");
 } catch (error) {

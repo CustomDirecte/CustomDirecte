@@ -74,8 +74,8 @@ new MultiRowSelector(
       { id: "iconAndText", name: "Texte & Icon" },
     ],
     [
-      { id: "ile", name: "En Île" },
       { id: "border", name: "En Bordure" },
+      { id: "ile", name: "En Île" },
     ],
   ],
   false
@@ -121,7 +121,7 @@ new CustomSelector(
   false
 );
 
-const interfaceSettings = new Group("interface", "swatchbook", "Interface", "Choisissez le style de cette interface", true);
+const interfaceSettings = new Group("interface", "layout", "Interface", "Choisissez le style de cette interface", true);
 
 new RowSelector(
   interfaceSettings,

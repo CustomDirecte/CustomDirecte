@@ -34,30 +34,94 @@ const versionInfo = {
 /* █▄█ █▀▀ █▄▀ █▀█  █  ██▄ */
 
 /**
- * Fonctions de mise à jour des paramètres.
+ * Lit une option du stockage V0.
+ * V0 stockait les définitions complètes dans `{ options: [...] }`, mais
+ * certaines installations plus anciennes peuvent encore avoir des clés à plat.
+ */
+function readLegacyOption(source, ...ids) {
+  const options = Array.isArray(source?.options) ? source.options : [];
+  const item = options.find((option) => ids.includes(option.option));
+  if (item) return item.Value === null || item.Value === undefined ? item.Default : item.Value;
+  for (const id of ids) {
+    if (source?.[id] !== undefined) return source[id];
+  }
+  return undefined;
+}
+
+function legacyBoolean(source, defaultValue, ...ids) {
+  const value = readLegacyOption(source, ...ids);
+  return typeof value === "boolean" ? value : defaultValue;
+}
+
+function legacyEnum(source, defaultValue, values, ...ids) {
+  const value = readLegacyOption(source, ...ids);
+  return values.includes(value) ? value : defaultValue;
+}
+
+/**
+ * Convertit le schéma V0 de l'ancienne version vers le schéma groupé actuel V1.
+ * Aucun champ V0 n'est recopié dans le résultat : cela évite de doubler le
+ * stockage pendant et après la transition.
+ */
+function migrateLegacyV0(source) {
+  const oldColor = readLegacyOption(source, "newColor");
+  const colorMap = { default: 340, magenta: 340, purple: 280, turquoise: 170, gold: 45 };
+  const color = Number.isInteger(oldColor) ? oldColor : colorMap[oldColor] ?? 340;
+
+  return {
+    notesTable: {
+      actived: legacyBoolean(source, true, "noteTableAnalysis", "averageCalculator"),
+      parameters: {
+        customNotesEnabled: legacyBoolean(source, true, "customNotesFeature"),
+        bacCalculator: true,
+        generalAverageDisplay: legacyBoolean(source, true, "generalAverageDisplay"),
+        AveragesPerSubjectDisplay: legacyBoolean(source, true, "AveragesPerSubjectDisplay"),
+        ClassAveragesDisplay: legacyBoolean(source, true, "ClassAveragesDisplay2", "ClassAveragesDisplay"),
+        AveragesPerSubjectRecalculation: legacyBoolean(source, false, "AveragesPerSubjectRecalculation"),
+        AveragesColorIndicator: legacyEnum(source, "background", ["none", "round", "background", "outline"], "AveragesColorIndicator"),
+        AveragesInfluenceTooltips: legacyEnum(source, "textAndValue", ["none", "value", "textAndValue"], "AveragesInfluenceTooltips"),
+      },
+    },
+    sidebar: {
+      actived: legacyBoolean(source, false, "newSidebar", "newMenu"),
+      parameters: {
+        sidebarDarkmode: readLegacyOption(source, "menuTheme") === "dark" || legacyBoolean(source, false, "sidebarDarkmode"),
+        pinnedSidebar: legacyBoolean(source, false, "pinnedSidebar"),
+        hideCustomizationButton: legacyBoolean(source, false, "hideCustomizationButton"),
+        customizationButton: readLegacyOption(source, "customizationButton") || ["iconAndText", "ile"],
+      },
+    },
+    customizations: {
+      actived: legacyBoolean(source, true, "customization"),
+      parameters: {
+        darkmode: readLegacyOption(source, "theme") === "dark" || legacyBoolean(source, false, "darkmode"),
+        colorCustomization: color,
+        cornerCustomization: legacyEnum(source, "none", ["none", "thin", "wide"], "newBorder", "cornerCustomization"),
+        fontCustomization: legacyEnum(source, "tahoma", ["tahoma", "roboto", "poppin", "openSans", "openDyslexic", "montserrat", "merriweather", "leckerliOne", "inter", "comicSans"], "newFont", "fontCustomization"),
+      },
+    },
+    interface: {
+      actived: true,
+      parameters: {
+        interfaceStyle: readLegacyOption(source, "newDesign") === undefined ? "classic" : (readLegacyOption(source, "newDesign") ? "classic" : "legacy"),
+      },
+    },
+    development: {
+      actived: "action",
+      parameters: { dev: legacyBoolean(source, false, "debug", "dev"), captureTable: false },
+    },
+  };
+}
+
+/**
+ * Fonctions de mise à jour des paramètres internes.
  * @namespace Updates
- * @example
- * // Retourne les paramètres ('settings') mis à jour de la version 0 à la version 1
- * Updates[1][0](settings);
  */
 var Updates = {
   1: {
-    // Met à jour les paramètres de la version 0 à la version 1
     0: function (settings) {
-      log.warn("SETTINGS", `Migration des paramètres : version 0 → version 1 (${Date.now()})`);  
-      return {};
-    },
-  },
-  2: {
-    // Met à jour les paramètres de la version 1 à la version 2
-    1: function (settings) {
-      log.warn("SETTINGS", `Migration des paramètres : version 1 → version 2 (${Date.now()})`);  
-      return {};
-    },
-    // Met à jour les paramètres de la version 0 à la version 2
-    0: function (settings) {
-      log.warn("SETTINGS", `Migration des paramètres : version 0 → version 2 (${Date.now()})`);  
-      return {};
+      log.warn("SETTINGS", `Migration des paramètres : version 0 → version 1 (${Date.now()})`);
+      return migrateLegacyV0(settings);
     },
   },
 };
@@ -75,7 +139,7 @@ var Updates = {
  * @property {function} storageGet Récupère les paramètres de l'extension.
  */
 var Settings = {
-  version: 2,
+  version: 1,
   stored: {},
 
   /**
@@ -102,6 +166,10 @@ var Settings = {
       if (this.version == result.version) return;
       // Applique les mises à jour nécessaires
       let current = this.version;
+      try {
+        const hasLegacyData = result?.settings && typeof result.settings === "object" && Object.keys(result.settings).length > 0;
+        if (hasLegacyData) localStorage.setItem("customdirecte:legacy-detected", "true");
+      } catch {}
       while (result.version < this.version) {
         if (Updates[current]?.[result.version] != undefined) {
           result.settings = Updates[current][result.version](result.settings);
@@ -110,9 +178,9 @@ var Settings = {
         } else current--;
       }
       this.stored = result.settings;
-      // Vide le stockage
+      // Supprime V0 avant la prochaine écriture. Le nouveau format n'est
+      // donc jamais présent en même temps que l'ancien dans sync storage.
       await browserStorage.clear();
-      await this.storageSet();
     } catch (error) {
       log.error("SETTINGS", `Erreur lors de la mise à jour des paramètres : ${error}`);
     }
@@ -126,11 +194,30 @@ var Settings = {
   async storageGet() {
     try {
       var result = await browserStorage.get();
+      // Un stockage déjà présent prouve qu'une version précédente a été
+      // utilisée, même si aucun marqueur de campagne n'existe encore.
+      try {
+        const hasExistingSettings = Boolean(
+          result?.version !== undefined ||
+          (result?.settings && typeof result.settings === "object") ||
+          Array.isArray(result?.options)
+        );
+        if (hasExistingSettings) localStorage.setItem("customdirecte:existing-settings", "true");
+        else {
+          localStorage.removeItem("customdirecte:existing-settings");
+          localStorage.removeItem("customdirecte:legacy-detected");
+        }
+      } catch {}
       // Si la version est la même, on récupère les paramètres
-      if (result.version == this.version) this.stored = result.settings;
+      if (result.version == this.version && result.settings && typeof result.settings === "object" && !Array.isArray(result.settings.options)) {
+        this.stored = result.settings;
+      }
       else {
-        // Si la version n'est pas définie, definit la version à 0
+        // L'ancien dépôt stockait `{ options: [...] }` sans version : c'est V0.
+        // Une migration interrompue peut aussi avoir laissé ce tableau dans
+        // `settings` avec une version apparente : on le traite pareil.
         if (result.version == undefined) result = { settings: result, version: 0 };
+        else if (Array.isArray(result.settings?.options)) result = { settings: result.settings, version: 0 };
         // Met à jour les paramètres
         await this.updateSettings(result);
       }

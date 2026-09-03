@@ -2,8 +2,8 @@
   "name": "CustomDirecte",
   "description": "Ajoute de nouvelles options sur EcoleDirecte ! Afficher votre moyenne générale, personnaliser l'interface...",
   "author": "Bastian NOEL",
-  "version": "30.0.1",
-  "version_name": "3.0.1",
+  "version": "30.0.2",
+  "version_name": "3.0.2",
   "manifest_version": 3,
   "devtools_page": "/pages/popup/interface.html",
   "permissions": ["storage", "sidePanel"],
@@ -32,11 +32,16 @@
     "matches": ["*://*.ecoledirecte.com/*"],
     "run_at": "document_start",
     "all_frames": true,
-    "js": ["/scripts/browser.js", "/scripts/log.js", "/core/settings/settings.js", "/core/settings/parameters.js", "/utils/math.js", "/utils/notesStorage.js", "/scripts/main.js", "/modules/customizationModule.js", "/modules/sidebarModule.js", "/modules/noteTableModule.js"],
-    "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css"]
+    "js": ["/scripts/browser.js", "/scripts/log.js", "/core/settings/settings.js", "/core/settings/parameters.js", "/utils/math.js", "/utils/notesStorage.js", "/scripts/main.js", "/modules/customizationModule.js", "/modules/sidebarModule.js", "/modules/noteTableModule.js", "/modules/popups/campaigns.js", "/modules/popupManager.js"],
+    "css": ["/styles/notesTable.css", "/styles/sidebar.css", "/styles/customizationButton.css", "/styles/popups.css"]
+  }, {
+    "matches": ["*://*.ecoledirecte.com/*"],
+    "run_at": "document_start",
+    "world": "MAIN",
+    "js": ["/modules/popupConsoleBridge.js"]
   }],
   "web_accessible_resources": [{
-    "resources": ["/styles/customizations.css", "/pages/popup/interface.html", "/pages/popup/interfaces/classic/templates.html", "/pages/popup/interfaces/legacy/templates.html", "/pages/popup/interfaces/legacy/interface.css", "/pages/bac/sidebar.html", "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/EcoleDirecte/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/magenta.ico"],
+    "resources": ["/styles/customizations.css", "/pages/popup/interface.html", "/pages/popup/interfaces/classic/templates.html", "/pages/popup/interfaces/legacy/templates.html", "/pages/popup/interfaces/legacy/interface.css", "/pages/bac/sidebar.html", "/scripts/darkreader.js", "/scripts/tippy.js", "/styles/default.css", "/icons/EcoleDirecte/default/icon.svg", "/icons/EcoleDirecte/default.ico", "/icons/EcoleDirecte/magenta.ico", "/videos/*"],
     "matches": ["*://*.ecoledirecte.com/*"]
   }],
   "background": {

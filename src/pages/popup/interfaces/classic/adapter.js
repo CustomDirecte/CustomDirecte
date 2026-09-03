@@ -131,6 +131,8 @@ class ClassicAdapter {
 
   renderNavbar(group) {
     const element = this.clone("classic-navbar-item");
+    element.dataset.groupId = group.id;
+    element.title = group.name;
     element.querySelector(".navbar-icon").src = this.asset(`/pages/popup/svg/icons/${group.icon}.svg`);
     element.querySelector(".navbar-label").textContent = group.name;
     return element;

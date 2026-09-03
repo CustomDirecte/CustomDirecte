@@ -12,6 +12,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Les libellés des actions et des choix restent lisibles sur une seule ligne. */
+.parameter-button-label,
+.parameter-option .option-label {
+  white-space: nowrap;
+}
+
+.parameter-option {
+  flex: 0 0 auto;
+}
+
+.navbar-label,
+.moreOption-label {
+  white-space: nowrap;
+}
+
+#navbar > li {
+  flex-wrap: nowrap;
+}
+
+/* Dans une popup étroite, les onglets les plus longs restent identifiables
+   grâce à leur title et passent en icône seule plutôt que de se casser sur
+   plusieurs lignes. */
+@media (max-width: 1400px) {
+  #navbar > li[data-group-id="development"] .navbar-label {
+    display: none;
+  }
+
+  #navbar > li[data-group-id="development"] {
+    justify-content: center;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  #navbar > li[data-group-id="development"] .navbar-icon {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  #navbar > li[data-group-id="interface"] .navbar-label {
+    display: none;
+  }
+
+  #navbar > li[data-group-id="interface"] {
+    justify-content: center;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  #navbar > li[data-group-id="interface"] .navbar-icon {
+    padding-right: 0;
+  }
+}
+
 /* Keep every switch knob centered independently of Tailwind transform helpers. */
 .switch-knob {
   left: 4px;
