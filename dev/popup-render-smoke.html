@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head><link rel="icon" href="../src/icons/EcoleDirecte/default/icon.svg"></head>
+<body id="body" data-tab="home">
+  <div class="tippyParent"></div>
+  <h1 id="title"></h1>
+  <ul id="navbar"></ul>
+  <p id="version"></p>
+  <button id="returnButton" data-needreload="false"></button>
+  <main id="main"></main>
+  <button id="starsButton"></button>
+  <p id="thanks"></p>
+  <button id="githubButton"></button>
+  <main id="setting"></main>
+
+  <script>
+    window.browser = { runtime: { getURL: (resource) => new URL(`../src/${resource.slice(1)}`, location.href).href } };
+    window.Settings = { stored: {}, storageSet: async () => {} };
+    window.Group = { reloadingNeeded: [] };
+    window.tippy = () => {};
+    window.sessionStorage.clear();
+
+    const listenable = (value) => ({ ...value, onChange: () => () => {} });
+    const option = (id, name) => ({ id, name });
+    const groups = [
+      listenable({
+        id: "switches",
+        icon: "lock",
+        name: "Switches",
+        description: "Test",
+        actived: true,
+        parameters: [listenable({ id: "enabled", icon: "lock", name: "Actif", description: "Test", type: "switch", value: true, reloadingRequired: false })]
+      }),
+      listenable({
+        id: "selectors",
+        icon: "shapes",
+        name: "Sélecteurs",
+        description: "Test",
+        actived: true,
+        parameters: [
+          listenable({ id: "AveragesColorIndicator", icon: "shapes", name: "Ligne", description: "Test", type: "rowselector", value: "background", options: [option("none", "Aucun"), option("background", "Fond")] }),
+          listenable({ id: "custom", icon: "shapes", name: "Custom", description: "Test", type: "customselector", value: "one", options: [option("one", "Un"), option("two", "Deux")] }),
+          listenable({ id: "customizationButton", icon: "shapes", name: "Multi", description: "Test", type: "multirowselector", value: ["iconAndText", "ile"], options: [[option("icon", "Icon"), option("iconAndText", "Texte & Icon")], [option("ile", "En Île"), option("border", "En Bordure")]] }),
+          listenable({ id: "color", icon: "shapes", name: "Couleur", description: "Test", type: "colorselector", value: 120, options: [] })
+        ]
+      })
+    ];
+
+    groups.forEach((group) => {
+      Settings.stored[group.id] = { actived: group.actived, parameters: {} };
+      group.parameters.forEach((parameter) => { Settings.stored[group.id].parameters[parameter.id] = parameter.value; });
+    });
+  </script>
+  <script src="../src/pages/popup/interfaces/registry.js"></script>
+  <script src="../src/pages/popup/interfaces/classic/adapter.js"></script>
+  <script src="../src/pages/popup/interfaces/legacy/adapter.js"></script>
+  <script>
+    (async () => {
+      const interfaceId = new URLSearchParams(location.search).get("interface") || "classic";
+      const adapter = await createPopupInterface(interfaceId);
+      adapter.render(groups, { major: 3, minor: 0, patch: 1, stage: "stable" });
+      document.body.dataset.smoke = interfaceId === "legacy"
+        ? [document.querySelectorAll("main > .groups > .group").length, document.querySelectorAll("main > .options").length, document.querySelectorAll(".option").length, document.querySelectorAll("input").length].join(",")
+        : [
+          document.querySelectorAll("#navbar > li").length,
+          document.querySelectorAll("#main > div").length,
+          document.querySelectorAll("#setting .group-options > [data-type]").length,
+          document.querySelectorAll("#setting input").length
+        ].join(",");
+    })().catch((error) => {
+      document.body.dataset.smoke = `error:${error.message}`;
+    });
+  </script>
+</body>
+</html>

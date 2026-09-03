@@ -25,3 +25,7 @@ build/
 *.zip
 *.crx
 *.pem
+
+# Local browser preview artifacts
+.playwright-cli/
+output/

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body>
+  <template id="legacy-header">
+    <header>
+      <div id="titleparent">
+        <object class="icon" type="image/svg+xml" aria-hidden="true"></object>
+        <div id="title"><p>CustomDirecte</p></div>
+      </div>
+      <div class="version-div"><p id="version">Loading</p></div>
+    </header>
+  </template>
+
+  <template id="legacy-layout">
+    <main>
+      <div class="groups"></div>
+      <hr class="separator vertical">
+    </main>
+  </template>
+
+  <template id="legacy-group"><div class="group" role="button" tabindex="0"></div></template>
+
+  <template id="legacy-panel">
+    <section class="options">
+      <div class="groupInfo">
+        <span class="groupTitle"></span>
+        <span class="groupSubtitle"></span>
+        <button class="optionSwitch groupSwitch" type="button" data-group-switch aria-label="Activer ou désactiver la catégorie"></button>
+      </div>
+      <hr class="separator">
+      <div data-parameters></div>
+    </section>
+  </template>
+
+  <template id="legacy-parameter">
+    <article class="option">
+      <div class="optionInfo">
+        <span class="optionTitle"></span>
+        <span class="optionSubtitle"></span>
+        <span class="optionWarning"></span>
+      </div>
+      <div data-control></div>
+    </article>
+  </template>
+
+  <template id="legacy-switch"><button class="optionSwitch" type="button" aria-label="Activer ou désactiver"></button></template>
+  <template id="legacy-button"><div class="optionButton"></div></template>
+  <template id="legacy-selection"><div class="optionSelection"></div></template>
+  <template id="legacy-option"><label class="optionBox"><input type="radio"><img alt=""><span></span></label></template>
+  <template id="legacy-custom-option"><label class="optionBox"><input type="radio"><div class="fontDemo"></div></label></template>
+  <template id="legacy-color"><div class="optionSelection" color="0"><div class="colorSimulation"><div></div></div><input class="colorSlider" type="range" min="0" max="360" value="0"></div></template>
+  <template id="legacy-separator"><hr class="separator"></template>
+  <template id="legacy-empty-control"><span hidden></span></template>
+</body>
+</html>

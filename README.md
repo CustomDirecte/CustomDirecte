@@ -1,37 +1,45 @@
-![CustomDirecte](https://capsule-render.vercel.app/api?type=waving&height=170&text=CustomDirecte%20Dev&animation=fadeIn&fontSize=80&fontColor=0000&fontAlignY=34&stroke=fff&strokeWidth=2.2&color=0:7f0f2f,45:c8194a)
+# CustomDirecte
 
-<p align="center">
-  Un projet de @Bastian-Noel !
-</p>
+Extension Chrome MV3 pour personnaliser EcoleDirecte et enrichir le tableau des notes.
 
----
+## Développement
 
-<p align='center'>
-  Ajoute de nouvelles options sur EcoleDirecte ! Affichez votre moyenne générale, personnalisez l'interface...
-  <br><br>
-  <a href="https://discord.gg/vQYhP3q8eR">
-    <img src="https://img.shields.io/badge/Suggestions,%20Aide%20&%20Bugs-Open?style=for-the-badge&color=darkblue&logo=discord&logoColor=fff" />
-  </a>
-</p>
+```bash
+npm install
+npm run popup:build
+npm run bac:build
+npm run popup:validate
+```
 
-> [!CAUTION]
+Pour tester les interfaces du popup :
 
-> - Cette extension ne collecte aucune donnée personnelle.
-> - Toutes les modifications apportées au site sont purement visuelles ; en aucun cas, le fonctionnement du site n'est altéré.
-> - Cette extension n'est pas affiliée avec le site [EcoleDirecte](https://www.ecoledirecte.com)
+```bash
+npm run popup:preview:classic
+npm run popup:preview:legacy
+```
 
-## Informations de base
+Le chargement de l’extension se fait depuis le dossier `src/` dans Chrome, en mode développeur.
 
-- **Type** : Extension Chrome MV3 injectee sur `*.ecoledirecte.com`.
-- **Objectif** : Ajouter des options visuelles et des outils (moyennes, personnalisation, interface, etc.).
-- **Structure** : Modules actifs dans `src/modules/`, styles dans `src/styles/`, popup dans `src/pages/popup/`.
-- **Version** : Consulte `src/manifest.json` pour `version` et `version_name`.
+## Fonctionnalités principales
 
-## Documentation locale
+- moyennes et notes custom dans le tableau EcoleDirecte ;
+- calculateur BAC dans le side panel ;
+- glisser-déposer d’une moyenne vers un champ BAC ;
+- personnalisation visuelle et mode sombre ;
+- popup avec interfaces classic et legacy ;
+- logs de développement téléchargeables.
 
-- [Architecture globale](https://github.com/CustomDirecte/CustomDirecte/blob/dev/docs/ARCHITECTURE.md)
-- [Guide dev : ajouter un parametre ou un module](https://github.com/CustomDirecte/CustomDirecte/blob/dev/docs/ADDING_PARAMETERS.md)
+## Architecture
 
-## Merci
+| Dossier | Rôle |
+| --- | --- |
+| `src/core/settings/` | Modèle des groupes et paramètres, sans DOM. |
+| `src/modules/` | Fonctionnalités injectées dans EcoleDirecte. |
+| `src/pages/popup/` | Runtime du popup et adaptateurs d’interfaces. |
+| `src/pages/bac/` | Source React et build du calculateur BAC. |
+| `src/styles/` | Styles injectés dans EcoleDirecte. |
+| `src/utils/` | Utilitaires partagés. |
+| `popup-tooling/` | Sources Tailwind/templates des interfaces popup. |
+| `dev/` | Build, preview et validation. |
 
-Merci pour votre soutien, vos retours et vos idees. Ca aide enormement a faire evoluer CustomDirecte !
+Voir [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) pour le fonctionnement détaillé.

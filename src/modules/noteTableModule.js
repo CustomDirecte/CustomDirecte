@@ -11,6 +11,8 @@ var noteTableModule = {
   _observer: null,
   _params: {},
   _averageTable: false,
+  _originalTableParent: null,
+  _originalGradeTable: null,
   _tippyState: false,
 
   /* ─── start ─────────────────────────────────────────── */
@@ -85,6 +87,10 @@ var noteTableModule = {
 
       if (tableParent && tableParent.dataset.averageCalculator !== "true") {
         log.debug("NOTETABLE", "Nouveau tableau détecté");
+        if (tableParent.querySelector("table")) {
+          this._originalTableParent = tableParent;
+          this._originalGradeTable = tableParent.querySelector("table").cloneNode(true);
+        }
         tableParent.dataset.averageCalculator = true;
         this._calculator(tableParent, this._averageTableAnalysis(this._averageTable));
       }
@@ -106,6 +112,25 @@ var noteTableModule = {
     this._params[paramId] = newValue;
     document.documentElement.setAttribute(paramId, newValue);
     log.debug("NOTETABLE", `${paramId} → ${newValue}`);
+
+    if (paramId === "customNotesEnabled") {
+      const tableParent = document.getElementById("encart-notes");
+      if (tableParent) {
+        tableParent.dataset.averageCalculator = "";
+        this._calculator(tableParent, this._averageTableAnalysis(this._averageTable));
+        tableParent.dataset.averageCalculator = "true";
+      }
+      log.info("NOTETABLE", `Notes custom ${newValue === true ? "activées" : "désactivées"}`);
+    }
+
+    if (paramId === "bacCalculator") {
+      const tableParent = document.getElementById("encart-notes");
+      if (tableParent) {
+        tableParent.dataset.averageCalculator = "";
+        this._calculator(tableParent, this._averageTableAnalysis(this._averageTable));
+        tableParent.dataset.averageCalculator = "true";
+      }
+    }
 
     if (paramId === "AveragesInfluenceTooltips") {
       window.postMessage(newValue === "none" ? "tippy-noteEvent-disable" : "tippy-noteEvent-enable", "*");
@@ -158,6 +183,15 @@ var noteTableModule = {
         background: var(--smalldark-placeholder-color); color: inherit;
       }
       .cd-global-clear-btn:hover { background: var(--dark-placeholder-color); }
+      .cd-bac-calculator-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        margin: 8px 0 0 auto; padding: 6px 14px; border: 0; border-radius: 999px;
+        color: #fff; background: var(--primary-color); cursor: pointer;
+        font: inherit; font-size: 12px; font-weight: 600;
+      }
+      .cd-bac-calculator-btn:hover { filter: brightness(.92); }
+      .cd-bac-draggable-average { cursor: grab; }
+      .cd-bac-draggable-average:active, .cd-bac-dragging-average { cursor: grabbing; opacity: .65; }
       .cd-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99999; display: flex; align-items: center; justify-content: center; }
       @keyframes cd-animate-pop { 0% { opacity: 0; transform: scale(0.5, 0.5); } 100% { opacity: 1; transform: scale(1, 1); } }
       .cd-modal { background: var(--body-color); border-radius: var(--table-radius); padding: 24px 28px; min-width: 300px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: cd-animate-pop 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48); }
@@ -328,7 +362,50 @@ var noteTableModule = {
   _calculator(tableParent, averageTableInfos) {
     log.debug("NOTETABLE", "Calculator démarré");
     const p = this._params;
-    const cdIncludeCustomData = localStorage.getItem("cd-include-custom-data") !== "false";
+    const cdCustomNotesEnabled = p.customNotesEnabled !== false;
+    const cdIncludeCustomData = cdCustomNotesEnabled;
+
+    // En mode désactivé, repartir du tableau natif mémorisé garantit qu'aucune
+    // colonne, ligne, valeur ou classe ajoutée par le mode custom ne survive.
+    if (!cdCustomNotesEnabled && this._originalTableParent === tableParent && this._originalGradeTable) {
+      const currentGradeTable = tableParent.querySelector("table");
+      if (currentGradeTable) currentGradeTable.replaceWith(this._originalGradeTable.cloneNode(true));
+      log.debug("NOTETABLE", "Tableau natif restauré avant le recalcul sans custom");
+    }
+
+    // Nettoie les contrôles ajoutés lors d'un calcul précédent. Cela permet à
+    // l'option globale d'être appliquée immédiatement sans recharger la page.
+    tableParent.querySelectorAll(".cd-custom-note-wrapper, .cd-add-note-btn, .cd-clear-notes-btn, .cd-global-clear-wrapper").forEach((el) => el.remove());
+    tableParent.querySelectorAll(".cd-edit-note-wrapper").forEach((wrapper) => {
+      const btn = wrapper.querySelector(":scope > button");
+      if (!btn) {
+        wrapper.remove();
+        return;
+      }
+
+      if (!cdCustomNotesEnabled) {
+        const value = btn.querySelector(":scope > span.valeur");
+        if (value) {
+          const textNode = [...value.childNodes].find((node) => node.nodeType === Node.TEXT_NODE);
+          if (textNode) textNode.nodeValue = btn.dataset.cdOrigNote || textNode.nodeValue;
+          const quotient = value.querySelector(".quotien");
+          if (btn.dataset.cdOrigSur && btn.dataset.cdOrigSur !== "20") {
+            if (quotient) quotient.textContent = "/" + btn.dataset.cdOrigSur;
+          } else quotient?.remove();
+          const coef = value.querySelector(".coef");
+          if (btn.dataset.cdOrigCoef && btn.dataset.cdOrigCoef !== "1") {
+            if (coef) coef.textContent = "(" + btn.dataset.cdOrigCoef + ")";
+          } else coef?.remove();
+        }
+      }
+      wrapper.replaceWith(btn);
+    });
+    tableParent.querySelectorAll("tr.cd-custom-subject-row").forEach((row) => row.remove());
+    tableParent.querySelectorAll("[data-cd-has-custom-notes]").forEach((line) => line.removeAttribute("data-cd-has-custom-notes"));
+
+    if (!cdCustomNotesEnabled) {
+      log.debug("NOTETABLE", "Mode custom désactivé — recalcul exclusivement avec les données officielles");
+    }
 
     function refreshNotes() {
       tableParent.dataset.averageCalculator = "";
@@ -457,31 +534,30 @@ var noteTableModule = {
 
     /* ── Global action buttons ── */
     tableParent.querySelector(".cd-global-clear-wrapper")?.remove();
+    tableParent.querySelector(".cd-bac-calculator-btn")?.remove();
+
+    if (p["bacCalculator"] !== false) {
+      const calculatorButton = document.createElement("button");
+      calculatorButton.type = "button";
+      calculatorButton.className = "cd-bac-calculator-btn";
+      calculatorButton.textContent = "Ouvrir le calculateur du bac";
+      calculatorButton.addEventListener("click", () => {
+        browserRuntime.sendMessage({ type: "CD_OPEN_BAC_CALCULATOR" }).catch((error) => log.warn("NOTETABLE", `Ouverture du calculateur impossible : ${error}`));
+      });
+      tableParent.appendChild(calculatorButton);
+    }
 
     const cdWrapper = document.createElement("div");
     cdWrapper.className = "cd-global-clear-wrapper";
 
-    const cdSwitchLabel = document.createElement("label");
-    cdSwitchLabel.className = "cd-custom-data-switch-label";
-    cdSwitchLabel.title = "Prendre en compte les notes custom, modifications et matières custom dans le recalcul de la moyenne";
-    const cdSwitchChk = document.createElement("input");
-    cdSwitchChk.type = "checkbox";
-    cdSwitchChk.checked = cdIncludeCustomData;
-    cdSwitchChk.addEventListener("change", (e) => {
-      e.stopPropagation();
-      localStorage.setItem("cd-include-custom-data", cdSwitchChk.checked ? "true" : "false");
-      refreshNotes();
-    });
-    const cdSwitchTrack = document.createElement("span");
-    cdSwitchTrack.className = "cd-custom-data-switch-track";
-    const cdSwitchText = document.createElement("span");
-    cdSwitchText.textContent = "Prendre en compte les données custom";
-    cdSwitchLabel.appendChild(cdSwitchChk);
-    cdSwitchLabel.appendChild(cdSwitchTrack);
-    cdSwitchLabel.appendChild(cdSwitchText);
-    cdWrapper.appendChild(cdSwitchLabel);
+    if (cdCustomNotesEnabled) {
+      const cdSwitchLabel = document.createElement("span");
+      cdSwitchLabel.className = "cd-custom-data-switch-label";
+      cdSwitchLabel.textContent = "Notes custom activées";
+      cdWrapper.appendChild(cdSwitchLabel);
+    }
 
-    const cdCustomSubjectsList = getCustomSubjects();
+    const cdCustomSubjectsList = cdCustomNotesEnabled ? getCustomSubjects() : [];
 
     const cdAddSubjectBtn = document.createElement("button");
     cdAddSubjectBtn.type = "button";
@@ -490,9 +566,9 @@ var noteTableModule = {
     cdAddSubjectBtn.addEventListener("click", () => {
       openAddSubjectModal(refreshNotes);
     });
-    cdWrapper.appendChild(cdAddSubjectBtn);
+    if (cdCustomNotesEnabled) cdWrapper.appendChild(cdAddSubjectBtn);
 
-    const cdAllKeys = Object.keys(localStorage).filter((k) => k.startsWith("customNotes_"));
+    const cdAllKeys = cdCustomNotesEnabled ? Object.keys(localStorage).filter((k) => k.startsWith("customNotes_")) : [];
     const cdTotalCount = cdAllKeys.reduce((sum, k) => {
       try {
         return sum + JSON.parse(localStorage.getItem(k) || "[]").length;
@@ -521,7 +597,7 @@ var noteTableModule = {
       cdWrapper.appendChild(cdGlobalClearBtn);
     }
 
-    const cdModAllKeys = Object.keys(localStorage).filter((k) => k.startsWith("modifiedNotes_"));
+    const cdModAllKeys = cdCustomNotesEnabled ? Object.keys(localStorage).filter((k) => k.startsWith("modifiedNotes_")) : [];
     const cdTotalMods = cdModAllKeys.reduce((sum, k) => {
       try {
         return sum + Object.keys(JSON.parse(localStorage.getItem(k) || "{}")).length;
@@ -546,8 +622,6 @@ var noteTableModule = {
     if (cdWrapper.children.length > 0) gradeTable.after(cdWrapper);
 
     /* ── Custom subject rows ── */
-    gradeTable.tBodies[0].querySelectorAll("tr.cd-custom-subject-row").forEach((r) => r.remove());
-
     cdCustomSubjectsList.forEach((subject) => {
       const tr = document.createElement("tr");
       tr.className = "ng-star-inserted cd-custom-subject-row";
@@ -636,7 +710,7 @@ var noteTableModule = {
       }
 
       /* ── Inject edit controls & custom notes ── */
-      if (lineTitle && tableConfig.notes[0] !== false) {
+      if (cdCustomNotesEnabled && lineTitle && tableConfig.notes[0] !== false) {
         const cdNotesCell = line.cells[tableConfig.notes[0]];
         const cdSubjectName = lineTitle;
         if (cdNotesCell) {
@@ -892,7 +966,10 @@ var noteTableModule = {
 
       /* ── Parse notes ── */
       for (const notesSpan of line.cells[tableConfig.notes[0]].querySelectorAll("button > span:nth-of-type(1).valeur")) {
-        if (!cdIncludeCustomData && notesSpan.closest(".cd-custom-note-wrapper")) continue;
+        // Les notes custom sont ajoutées depuis le stockage juste après cette
+        // boucle. Ne pas les relire depuis le DOM évite les doublons et rend le
+        // recalcul indépendant des wrappers reconstruits par l'interface.
+        if (notesSpan.closest(".cd-custom-note-wrapper")) continue;
         let note,
           coef = 1;
         try {
@@ -925,6 +1002,16 @@ var noteTableModule = {
         lineProperties.notes.push([note, coef, notesSpan]);
       }
 
+      if (cdIncludeCustomData && lineTitle) {
+        getCustomNotes(lineTitle).forEach((customNote) => {
+          const note = Number(String(customNote?.note ?? "").replace(",", "."));
+          const sur = Number(String(customNote?.sur ?? "20").replace(",", ".")) || 20;
+          const coef = Number(String(customNote?.coef ?? "1").replace(",", ".")) || 1;
+          if (!Number.isFinite(note) || !Number.isFinite(sur) || sur <= 0 || note < 0) return;
+          lineProperties.GradesAndCoef.push([note * (20 / sur), coef]);
+        });
+      }
+
       if (!lineProperties.GradesAndCoef.length) {
         if (lineProperties.IsSecondary && !lineProperties.IsSecondaryButNotlast) {
           if (masterLineProperties?.GradesAndCoef.length) {
@@ -948,6 +1035,20 @@ var noteTableModule = {
 
       if (tableConfig.relevemoyenne && averageSpan) {
         averageSpan.innerText = hundredthRound(lineProperties.average);
+        if (lineTitle && Number.isFinite(lineProperties.average)) {
+          averageSpan.classList.add("cd-bac-draggable-average");
+          averageSpan.draggable = true;
+          averageSpan.title = "Glisser cette moyenne vers une case du calculateur BAC";
+          averageSpan.setAttribute("aria-label", `Moyenne de ${lineTitle} : ${hundredthRound(lineProperties.average)}. Glisser vers le calculateur BAC`);
+          averageSpan.ondragstart = (event) => {
+            const payload = JSON.stringify({ subject: lineTitle, value: lineProperties.average });
+            event.dataTransfer.effectAllowed = "copy";
+            event.dataTransfer.setData("application/x-customdirecte-average", payload);
+            event.dataTransfer.setData("text/plain", payload);
+            averageSpan.classList.add("cd-bac-dragging-average");
+          };
+          averageSpan.ondragend = () => averageSpan.classList.remove("cd-bac-dragging-average");
+        }
       }
 
       if (lineProperties.IsSecondary) {

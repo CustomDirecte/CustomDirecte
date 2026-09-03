@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview popup — legacy</title>
+</head>
+<body>
+  <script>window.previewInterface="legacy";window.browser={runtime:{getURL:(resource)=>new URL(`/src${resource}`,location.origin).href}};</script>
+  <script src="/dev/previews/preview-fixture.js"></script>
+  <script src="/src/pages/popup/interfaces/registry.js"></script>
+  <script src="/src/pages/popup/interfaces/classic/adapter.js"></script>
+  <script src="/src/pages/popup/interfaces/legacy/adapter.js"></script>
+  <script src="/dev/previews/boot.js"></script>
+</body>
+</html>

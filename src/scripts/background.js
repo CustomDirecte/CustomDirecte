@@ -29,7 +29,7 @@ allDevLogs = [];
  * @param {{ type: string, entry?: object }} msg - Message reçu.
  * @returns {true|undefined}
  */
-browser.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "CD_LOG" && msg.entry) {
     allDevLogs.push(msg.entry);
     return;
@@ -40,5 +40,10 @@ browser.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     const allEntries = [...bgDevLogs, ...contextLogs].sort((a, b) => a.t - b.t);
     sendResponse({ file: buildLogFile(allEntries) });
     return true;
+  }
+
+  if (msg.type === "CD_OPEN_BAC_CALCULATOR" && sender?.tab?.id !== undefined) {
+    chrome.sidePanel.open({ tabId: sender.tab.id }).catch((error) => log.warn("BACKGROUND", `Impossible d'ouvrir le calculateur : ${error}`));
+    return;
   }
 });

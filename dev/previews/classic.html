@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview popup — classic</title>
+  <link rel="stylesheet" href="/src/pages/popup/interface.css" data-popup-runtime-css>
+</head>
+<body id="body" data-tab="home" class="flex flex-col w-full h-full group/body bg-custom-gray">
+  <div class="tippyParent" aria-hidden="true"></div>
+  <header class="h-[54px] flex items-center px-5 shadow-sm bg-custom-white-light"><h1 id="title" class="flex-none text-[22px] font-semibold !text-text cursor-pointer">CustomDirecte</h1><nav class="flex-1"><ul id="navbar" class="flex items-center gap-4 pl-4"></ul></nav><p id="version"></p><button id="returnButton" type="button" data-needreload="false">Retour</button></header>
+  <main id="main" class="hidden group-data-[tab=home]/body:flex mx-[38px] my-6 flex-col flex-nowrap gap-6"></main>
+  <footer class="hidden group-data-[tab=home]/body:flex"><button id="starsButton" type="button"></button><p id="thanks"></p><button id="githubButton" type="button"></button></footer>
+  <main id="setting" class="flex-1 hidden group-data-[tab=setting]/body:flex flex-col overflow-y-auto"></main>
+  <script>window.previewInterface="classic";window.browser={runtime:{getURL:(resource)=>new URL(`/src${resource}`,location.origin).href}};</script>
+  <script src="/dev/previews/preview-fixture.js"></script>
+  <script src="/src/pages/popup/interfaces/registry.js"></script>
+  <script src="/src/pages/popup/interfaces/classic/adapter.js"></script>
+  <script src="/src/pages/popup/interfaces/legacy/adapter.js"></script>
+  <script src="/dev/previews/boot.js"></script>
+</body>
+</html>

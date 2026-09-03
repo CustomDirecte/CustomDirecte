@@ -1,0 +1,92 @@
+<template id="classic-navbar-item">
+  <li data-selected="false" class="transition-all duration-150 ease-in-out cursor-pointer group/li flex items-center rounded-[5px] bg-none data-[selected=true]:bg-custom-pink-transp py-1 px-2">
+    <img class="navbar-icon h-[26px] filter-mainColor pr-2">
+    <span class="navbar-label text-[18px] transition-all duration-150 ease-in-out font-medium text-text group-data-[selected=true]/li:text-text-pink group-hover/li:text-text-pink"></span>
+  </li>
+</template>
+
+<template id="classic-home-row">
+  <div data-state="desabled" class="transition-all duration-150 ease-in-out group/home cursor-pointer rounded-[18px] flex flex-none w-full border border-solid border-custom-gray-verydark-transp bg-custom-white data-[state=desabled]:bg-custom-white-dark p-3 shadow-lg">
+    <div class="flex w-full gap-5">
+      <div class="flex flex-col flex-1">
+        <div class="gap-[18px] flex items-center self-stretch">
+          <img class="state-icon h-[22px]">
+          <h2 class="home-title text-[22px] font-semibold text-text"></h2>
+        </div>
+        <p class="home-description text-[16px] ml-10 font-medium text-text-light"></p>
+      </div>
+      <div class="gap-[26px] flex items-center">
+        <img class="home-next h-[26px] filter-white-on-dark">
+        <img class="home-icon mr-1.5 h-[50px] filter-mainColor">
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="classic-group-tab">
+  <div data-state="desabled" data-show="false" class="group/setting flex data-[show=false]:hidden rounded-[18px] my-6 mx-[38px] flex-col flex-none border border-solid border-custom-gray-verydark-transp bg-custom-white p-3 shadow-lg">
+    <div class="flex flex-row justify-between w-full p-2">
+      <div class="flex flex-row">
+        <div class="flex rounded-full bg-custom-pink-transp h-[38px] w-[38px] items-center justify-center">
+          <img class="group-icon h-[24px] filter-mainColor">
+        </div>
+        <div class="flex flex-col ml-5">
+          <h2 class="group-title text-[22px] font-semibold text-text"></h2>
+          <p class="group-description text-[16px] font-medium text-text-light"></p>
+        </div>
+      </div>
+      <div class="flex flex-row items-center group-data-[state=action]/setting:hidden">
+        <div class="need-reload flex items-center justify-center w-8 h-8 mr-4 rounded-full bg-custom-pink-transp">
+          <img class="h-3.5 filter-mainColor">
+        </div>
+        <label class="flex items-center cursor-pointer select-none">
+          <div class="relative">
+            <input type="checkbox" class="group-switch-input group-switch sr-only peer">
+            <div class="block h-8 rounded-full border-[1.5px] bg-switch-off border-switch-stroke peer-checked:bg-switch-main peer-checked:border-switch-stroke w-14"></div>
+            <div class="switch-knob absolute flex items-center justify-center w-6 h-6 border-[1.5px] rounded-full group bg-switch-circle border-switch-circle-stroke"></div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="group-options flex flex-col w-full gap-4 my-4 group-data-[state=desabled]/setting:blur-[3px] group-data-[state=desabled]/setting:grayscale group-data-[state=desabled]/setting:pointer-events-none"></div>
+  </div>
+</template>
+
+<template id="classic-parameter">
+  <div data-actived="desabled" data-warning="false" data-type="switch" class="group/option data-[actived=desabled]:grayscale p-[7.5px] m-2 mb-0 border shadow-lg bg-transparent data-[actived=enabled]:bg-custom-pink-ulttransp rounded-xl border-solid border-custom-gray-verydark-transp data-[actived=enabled]:border-custom-pink">
+    <div class="flex flex-row items-center w-full">
+      <div class="w-6 h-6 mx-4"><img class="parameter-icon filter-mainColor"></div>
+      <div class="parameter-title flex-1 text-xl font-semibold text-text"></div>
+      <div class="parameter-description flex items-center justify-center w-8 h-8 mr-2 text-center rounded-full bg-custom-pink-transp"><div class="flex-1 text-xl font-semibold text-custom-pink">?</div></div>
+      <div class="parameter-reload flex hidden items-center justify-center w-8 h-8 mr-2 rounded-full bg-custom-pink-transp"><img class="h-3.5 filter-mainColor"></div>
+      <label class="parameter-switch items-center mr-4 cursor-pointer select-none hidden group-data-[type=switch]/option:flex"><div class="relative"><input type="checkbox" class="parameter-switch-input sr-only peer"><div class="block h-8 rounded-full border-[1.5px] bg-switch-off border-switch-stroke peer-checked:bg-custom-pink peer-checked:border-switch-stroke w-14"></div><div class="switch-knob absolute flex items-center justify-center w-6 h-6 border-[1.5px] rounded-full group bg-switch-circle border-switch-circle-stroke"></div></div></label>
+      <button class="parameter-button hidden group-data-[type=button]/option:flex transition-all duration-150 ease-in-out group/button cursor-pointer ml-1 px-2 py-1 hover:bg-custom-pink-transp active:bg-custom-pink flex-none rounded-lg focus:outline-none focus:ring-4 focus:ring-custom-pink-transp border border-solid border-custom-gray-verydark-transp shadow-xl items-center"><p class="parameter-button-label text-[18px] font-medium text-text"></p></button>
+    </div>
+    <div class="flex flex-row items-center w-full"><div class="w-6 mx-4"></div><div class="parameter-warning flex-1 text-base font-medium text-custom-pink hidden group-data-[warning=true]/option:block"></div></div>
+  </div>
+</template>
+
+<template id="classic-tooltip">
+  <div class="classic-tooltip"></div>
+</template>
+
+<template id="classic-options-row">
+  <div class="parameter-options flex flex-row items-center flex-wrap mx-[54px] my-5 gap-8"></div>
+</template>
+
+<template id="classic-option">
+  <div data-actived="desabled" class="parameter-option cursor-pointer flex flex-col border rounded-xl border-custom-gray-verydark-transp data-[actived=enabled]:bg-custom-pink-ulttransp data-[actived=enabled]:border-custom-pink">
+    <div class="flex flex-row items-center gap-4 mx-4 my-2"><input type="radio" class="option-input w-5 h-5 transition-all duration-150 ease-in-out border-2 cursor-pointer border-custom-gray-dark text-custom-pink focus:ring-0 focus:ring-offset-0"><div class="option-label text-xl font-semibold text-text"></div></div>
+    <div class="option-preview m-4 mt-0 rounded-lg bg-text-white-full"><img class="option-image"></div>
+  </div>
+</template>
+
+<template id="classic-custom-option">
+  <div data-actived="desabled" class="parameter-option cursor-pointer flex flex-col border rounded-xl border-custom-gray-verydark-transp data-[actived=enabled]:bg-custom-pink-ulttransp data-[actived=enabled]:border-custom-pink">
+    <div class="custom-option-content flex flex-row items-center gap-4 mx-4 my-2"><input type="radio" class="option-input w-5 h-5 transition-all duration-150 ease-in-out border-2 cursor-pointer border-custom-gray-dark text-custom-pink focus:ring-0 focus:ring-offset-0"><div class="option-label text-xl font-semibold text-text"></div></div>
+  </div>
+</template>
+
+<template id="classic-color-option">
+  <div class="color-option optionSelection mx-[54px] my-5"><input type="range" class="colorSlider" min="0" max="360" step="1"><div class="colorSimulation" style="background-color: var(--colorSimulation-6);"></div><div class="colorSimulation" style="background-color: var(--colorSimulation-5);"></div><div class="colorSimulation" style="background-color: var(--colorSimulation-4);"></div><div class="colorSimulation" style="background-color: var(--colorSimulation-3);"></div><div class="colorSimulation" style="background-color: var(--colorSimulation-2);"></div><div class="colorSimulation" style="background-color: var(--colorSimulation-1);"></div></div>
+</template>

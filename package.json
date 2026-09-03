@@ -1,5 +1,17 @@
 {
+  "scripts": {
+    "popup:build": "node dev/build-popup.js",
+    "popup:validate": "node dev/validate-popup-architecture.js",
+    "popup:preview:classic": "node dev/preview-popup.js classic",
+    "popup:preview:legacy": "node dev/preview-popup.js legacy",
+    "bac:build": "node ./node_modules/vite/bin/vite.js build --config vite.bac.config.js"
+  },
   "devDependencies": {
-    "jsdoc": "^4.0.0"
+    "@vitejs/plugin-react": "^4.7.0",
+    "chromium-ui-react": "^0.4.3",
+    "jsdoc": "^4.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "vite": "^7.1.3"
   }
 }
