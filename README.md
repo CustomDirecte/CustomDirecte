@@ -82,32 +82,4 @@ Estimez votre résultat au baccalauréat grâce à un calculateur dédié access
 
 ## Développement
 
-```bash
-npm install
-npm run popup:build
-npm run bac:build
-npm run popup:validate
-```
-
-Pour prévisualiser les interfaces du popup :
-
-```bash
-npm run popup:preview:classic
-npm run popup:preview:legacy
-```
-
-L’extension se charge depuis le dossier `src/` dans Chrome, en mode développeur.
-
-## Architecture
-
-| Dossier | Rôle |
-| --- | --- |
-| `src/core/settings/` | Modèle des groupes et paramètres. |
-| `src/modules/` | Fonctionnalités injectées dans EcoleDirecte. |
-| `src/pages/popup/` | Runtime du popup et adaptateurs d’interfaces. |
-| `src/pages/bac/` | Source et build du calculateur du bac. |
-| `src/styles/` | Styles injectés dans EcoleDirecte. |
-| `src/utils/` | Utilitaires partagés. |
-| `dev/` | Build, prévisualisation et validation. |
-
-Voir [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) pour le fonctionnement détaillé.
+La structure du projet, le fonctionnement des modules, les règles de contribution et les commandes de développement sont détaillés dans la [documentation technique](docs/ARCHITECTURE.md).
